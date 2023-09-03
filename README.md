@@ -34,7 +34,7 @@ If you have a bug, please open an issue on github and put the Bug tag or contact
 If you want to suggest a feature, open an issue and put the Feature Tag.
 
 ## Credits
-- [Fabric](https://fabricmc.net/) Team
-- [Ionar]("https://github.com/ionar2/spidermod") for the original Salhack
+- [Fabric Team](https://fabricmc.net/)
+- [Original Salhack]("https://github.com/ionar2/spidermod")
 - [CreepyOrb924]("https://github.com/CreepyOrb924/creepy-salhack") for Creepy Salhack code
 - [MrZak360]("https://github.com/MrZak360/salhack-1.20-client-base") for Client Base
