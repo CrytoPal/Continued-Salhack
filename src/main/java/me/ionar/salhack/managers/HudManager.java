@@ -39,6 +39,7 @@ public class HudManager
         Add(new DirectionComponent());
         Add(new TPSComponent());
         Add(new PingComponent());
+        Add(new ResourcesComponent());
         /*
         Add(new ArrayListComponent());
         Add(new InventoryComponent());
