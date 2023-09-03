@@ -23,6 +23,8 @@ Salhack is a 1.12.2 open sourced client that got discontinued. This project is a
 
 Salhack is a fabric mod for `1.20.1`. There are already pre build jar files on our [release page](https://github.com/CrytoPal/Continued-Salhack/releases). To use Salhack just download and drop the jar file in your mods folder with latest Fabric Api and start fabric. Have fun!
 
+If you want the latest dev build click [here](https://github.com/CrytoPal/Continued-Salhack/actions) and select the build, then download the artifact. Extract it from the zip and drop the jar file in your mods folder with the latest Fabric Api and start fabric. Have fun.
+
 **Tip:** You can open the GUI with Right Shift (You can change that later.)
 
 ## Support
