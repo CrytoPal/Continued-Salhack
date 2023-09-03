@@ -38,3 +38,12 @@ If you want to suggest a feature, open an issue and put the Feature Tag.
 - [Ionar2](https://github.com/ionar2/spidermod) for Original Salhack
 - [CreepyOrb924](https://github.com/CreepyOrb924/creepy-salhack) for Creepy Salhack code
 - [MrZak360](https://github.com/MrZak360/salhack-1.20-client-base) for Client Base
+
+## Licensing
+This project is licensed under the [Creative Commons Zero v1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/legalcode).
+
+If you use **ANY** code from the source:
+- You must disclose the source code of your modified work and the source code you took from this project. This means you are not allowed to use code from this project (even partially) in a closed-source and/or obfuscated application.
+- You must state clearly and obviously to all end users that you are using code from this project.
+- Your application must also be licensed under the same license.
+
