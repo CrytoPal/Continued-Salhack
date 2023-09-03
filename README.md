@@ -5,8 +5,8 @@
 </div>
 <div align="center">
 
-[![GitHub All Releases](https://img.shields.io/github/release/CrytoPal/Continued-Salhack.svg)](https://github.com/CrytoPal/Continued-Salhack/releases/)
-[![GitHub All Releases](https://img.shields.io/badge/Maintained-yes-green.svg)](https://github.com/CrytoPal/Continued-Salhack/releases/)
+[![GitHub Contributors](https://img.shields.io/github/contributors/CrytoPal/Continued-Salhack.svg)](https://github.com/CrytoPal/Continued-Salhack/graphs/contributors/)
+[![GitHub Maintained](https://img.shields.io/badge/Maintained-yes-green.svg)]
 [![GitHub All Downloads](https://img.shields.io/github/downloads/CrytoPal/Continued-Salhack/total.svg)](https://github.com/CrytoPal/Continued-Salhack/releases/)
 [![Gradle Build](https://github.com/CrytoPal/Continued-Salhack/actions/workflows/gradle.yml/badge.svg)](https://github.com/CrytoPal/Continued-Salhack/actions)
 
