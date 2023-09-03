@@ -1,0 +1,26 @@
+{
+  "required": true,
+  "package": "me.ionar.salhack.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MixinClientConnection",
+    "MixinPlayerEntity"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "client": [
+    "GameRendererMixin",
+    "RotationMixin",
+    "CoordsModifyPosMixin",
+    "KeyboardMixin",
+    "MixinClientPlayerEntity",
+    "MixinEntityRenderer",
+    "MixinIngameHud",
+    "MixinMinecraftClient",
+    "MixinMouse",
+    "MixinRenderTickCounter",
+    "PlayerListHudMixin",
+    "MinecraftClientAccessor"
+  ]
+}
