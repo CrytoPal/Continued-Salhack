@@ -23,8 +23,7 @@ public class CoordsSpooferModule extends Module {
 
     @Override
     public void onEnable() {
-        if (mc.worldRenderer == null) {
-        } else {
+        if (mc.worldRenderer != null) {
             super.onEnable();
             mc.worldRenderer.reload();
         }
