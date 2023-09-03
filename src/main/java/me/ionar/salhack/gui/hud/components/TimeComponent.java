@@ -6,6 +6,7 @@ import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.ui.HudModule;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,7 +22,7 @@ public class TimeComponent extends HudComponentItem {
     public void render(int mouseX, int mouseY, float partialTicks, DrawContext context) {
         super.render(mouseX, mouseY, partialTicks, context);
 
-        final String time = new SimpleDateFormat("h:mm a").format(new Date());
+        final String time = "Time " + Formatting.WHITE + new SimpleDateFormat("h:mm a").format(new Date());
 
         context.drawTextWithShadow(mc.textRenderer, Text.of(time), (int) GetX(), (int) GetY(), 0x2ACCED);
 

@@ -11,9 +11,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class CoordsModifyPosMixin {
     @ModifyVariable(method = "getModelOffset", at = @At("HEAD"), argsOnly = true)
     private BlockPos modifyPos(BlockPos pos) {
-        if (ModuleManager.Get().GetMod(CoordsSpooferModule.class) == null) {
-            return pos;
-        } else {
+        if (ModuleManager.Get().GetMod(CoordsSpooferModule.class) != null) {
             CoordsSpooferModule coordspoof =  (CoordsSpooferModule) ModuleManager.Get().GetMod(CoordsSpooferModule.class);
             if (coordspoof.isEnabled()) {
                 if (coordspoof.TextureSpoof.getValue()) {

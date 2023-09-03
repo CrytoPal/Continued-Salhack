@@ -21,7 +21,7 @@ public class DirectionComponent extends HudComponentItem {
     public void render(int mouseX, int mouseY, float partialTicks, DrawContext context) {
         super.render(mouseX, mouseY, partialTicks, context);
 
-        final String direction = String.format("%s" + " " + Formatting.GRAY + "%s", this.getFacing(mc.player), this.getTowards(mc.player));
+        final String direction = this.getFacing(mc.player) + " " + Formatting.GRAY + this.getTowards(mc.player);
 
         context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), 0x2ACCED);
 
