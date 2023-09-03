@@ -16,7 +16,7 @@ import org.apache.commons.io.IOUtils;
 
 public class FakePlayer extends Module
 {
-    public static final Value<String> name = new Value<>("Name", new String[] {"name"}, "Name of the fake player", "jared2013");
+    public static final Value<String> name = new Value<>("Name", new String[] {"name"}, "Name of the fake player", "bluegooon");
 
     public FakePlayer()
     {
@@ -44,7 +44,7 @@ public class FakePlayer extends Module
         }
         catch (Exception e)
         {
-            _fakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString("70ee432d-0a96-4137-a2c0-37cc9df67f03"), name.getValue()));
+            _fakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString("20a81bb7-fba6-4185-bd81-4c827c9cd010"), name.getValue()));
             SendMessage("Failed to load uuid, setting another one.");
         }
         SendMessage(String.format("%s has been spawned.", name.getValue()));
