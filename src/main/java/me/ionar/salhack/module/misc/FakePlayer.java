@@ -16,7 +16,7 @@ import org.apache.commons.io.IOUtils;
 
 public class FakePlayer extends Module
 {
-    public static final Value<String> name = new Value<>("Name", new String[] {"name"}, "Name of the fake player", "BlueGooon");
+    public static final Value<String> name = new Value<>("Name", new String[] {"name"}, "Name of the fake player", "jared2013");
 
     public FakePlayer()
     {
