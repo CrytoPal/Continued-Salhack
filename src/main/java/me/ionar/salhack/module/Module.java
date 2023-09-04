@@ -54,7 +54,7 @@ public abstract class Module implements Listenable
         /// allow events to be called
         SalHackMod.EVENT_BUS.subscribe(this);
 
-        if (Wrapper.GetPlayer() != null) RemainingXAnimation = mc.textRenderer.getWidth(GetFullArrayListDisplayName())+10f;
+        if (mc.player != null) RemainingXAnimation = mc.textRenderer.getWidth(GetFullArrayListDisplayName())+10f;
 
         ModuleManager.Get().OnModEnable(this);
         if (mc.player != null) {

@@ -13,8 +13,4 @@ public class Wrapper {
         return mc;
     }
 
-    public static ClientPlayerEntity GetPlayer()
-    {
-        return mc.player;
-    }
 }
