@@ -14,40 +14,43 @@ import net.minecraft.util.Formatting;
 
 public class ResourcesComponent extends HudComponentItem {
     private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
-
-    // Will add in the future
-
-    //public final Value<Boolean> Totems = new Value<Boolean>("Totems", new String[]{ "Totems" }, "Include Totems", true);
-    //public final Value<Boolean> Crystals = new Value<Boolean>("Crystals", new String[]{ "Crystals" }, "Include Crystals", true);
-    //public final Value<Boolean> EXP = new Value<Boolean>("EXP", new String[]{ "EXP" }, "Include EXP", true);
-    //public final Value<Boolean> EGap = new Value<Boolean>("EGap", new String[]{ "EGap" }, "Include EGap", true);
+    
+    public final Value<Boolean> Totems = new Value<Boolean>("Totems", new String[]{ "Totems" }, "Include Totems", true);
+    public final Value<Boolean> Crystals = new Value<Boolean>("Crystals", new String[]{ "Crystals" }, "Include Crystals", true);
+    public final Value<Boolean> EXP = new Value<Boolean>("EXP", new String[]{ "EXP" }, "Include EXP", true);
+    public final Value<Boolean> EGap = new Value<Boolean>("EGap", new String[]{ "EGap" }, "Include EGap", true);
     public ResourcesComponent() {
-        super("Resources", 2, 83);
+        super("Resources", 2, 53);
     }
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks, DrawContext context) {
         super.render(mouseX, mouseY, partialTicks, context);
 
+        int EGapCount = getItemCount(Items.ENCHANTED_GOLDEN_APPLE);
         int totemCount = getItemCount(Items.TOTEM_OF_UNDYING);
         int expCount = getItemCount(Items.EXPERIENCE_BOTTLE);
         int crystalCount = getItemCount(Items.END_CRYSTAL);
-        int EGapCount = getItemCount(Items.ENCHANTED_GOLDEN_APPLE);
 
-
+        final String EGapCount1 = "EGap: " + Formatting.WHITE + EGapCount;
         final String totemCount1 = "Totems: " + Formatting.WHITE + totemCount;
         final String crystals1 = "Crystals: " + Formatting.WHITE + crystalCount;
         final String expCount1 = "Exp: " + Formatting.WHITE + expCount;
-        final String EGapCount1 = "EGap: " + Formatting.WHITE + EGapCount;
 
-
-        context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) GetX(), (int) GetY(), GetTextColor());
-        context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) GetX(), (int) GetY() - 10, GetTextColor());
-        context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) GetX(), (int) GetY() - 20, GetTextColor());
-        context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) GetX(), (int) GetY() - 30, GetTextColor());
-
-        SetWidth(Wrapper.GetMC().textRenderer.getWidth(totemCount1));
-        SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        if (EGap.getValue()) {
+            context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) GetX(), (int) GetY(), GetTextColor());
+            SetWidth(mc.textRenderer.getWidth(EGapCount1));
+            SetHeight(mc.textRenderer.fontHeight + 30);
+        }
+        if (Totems.getValue()) {
+            context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) GetX(), (int) GetY() + 30, GetTextColor());
+        }
+        if (Crystals.getValue()) {
+            context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) GetX(), (int) GetY() + 10, GetTextColor());
+        }
+        if (EXP.getValue()) {
+            context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) GetX(), (int) GetY() + 20, GetTextColor());
+        }
     }
 
     public int getItemCount(Item item) {
