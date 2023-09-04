@@ -18,9 +18,9 @@
 	"license": "CC0-1.0",
 	"icon": "assets/salhack/icon.png",
 
-	"environment": "*",
+	"environment": "client",
 	"entrypoints": {
-		"main": [
+		"client": [
 			"me.ionar.salhack.SalHackMod"
 		]
 	},
