@@ -20,7 +20,7 @@ This project is still in Beta, there will be a lot of bugs and possibly crashes.
 Salhack is a 1.12.2 open sourced client that got discontinued. This project is a continuation for the client for the latest version of minecraft and fabric.
 
 ## Baritone
-Salhack does not include Baritone Integration as we do not want to wait for baritone to update for newer Minecraft versions everytime. You can download baritone separately [here](https://github.com/cabaletta/baritone/releases).
+Salhack does not include Baritone Integration as we do not want to wait for baritone to update for newer Minecraft versions everytime. You can download baritone separately [here](https://github.com/cabaletta/baritone/releases). Any bugs should be reported to the Baritone github or discord.
 
 ## Installation
 
