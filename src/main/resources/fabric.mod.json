@@ -7,11 +7,12 @@
 	"description": "Based utility client",
 	"authors": [
 		"Cryo",
+		"Crosby",
 		"MrZak360"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"sources": "https://github.com/CrytoPal/Continued-Salhack",
+		"issues": "https://github.com/CrytoPal/Continued-Salhack/issues"
 	},
 
 	"license": "CC0-1.0",
