@@ -33,7 +33,7 @@ public class FPSComponent extends HudComponentItem {
 
         final String fPS = "FPS " + Formatting.WHITE + MinecraftClientAccessor.getCurrentFps();
 
-        context.drawTextWithShadow(mc.textRenderer, Text.of(fPS), (int) GetX(), (int) GetY(), 0x2ACCED);
+        context.drawTextWithShadow(mc.textRenderer, Text.of(fPS), (int) GetX(), (int) GetY(), GetTextColor());
 
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(fPS));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

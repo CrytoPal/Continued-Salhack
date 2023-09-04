@@ -23,7 +23,7 @@ public class DirectionComponent extends HudComponentItem {
 
         final String direction = this.getFacing(mc.player) + " " + Formatting.GRAY + this.getTowards(mc.player);
 
-        context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), 0x2ACCED);
+        context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), GetTextColor());
 
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(direction));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

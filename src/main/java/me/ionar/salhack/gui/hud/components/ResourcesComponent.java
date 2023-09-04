@@ -41,10 +41,10 @@ public class ResourcesComponent extends HudComponentItem {
         final String EGapCount1 = "EGap: " + Formatting.WHITE + EGapCount;
 
 
-        context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) GetX(), (int) GetY(), 0x2ACCED);
-        context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) GetX(), (int) GetY() - 10, 0x2ACCED);
-        context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) GetX(), (int) GetY() - 20, 0x2ACCED);
-        context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) GetX(), (int) GetY() - 30, 0x2ACCED);
+        context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) GetX(), (int) GetY(), GetTextColor());
+        context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) GetX(), (int) GetY() - 10, GetTextColor());
+        context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) GetX(), (int) GetY() - 20, GetTextColor());
+        context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) GetX(), (int) GetY() - 30, GetTextColor());
 
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(totemCount1));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

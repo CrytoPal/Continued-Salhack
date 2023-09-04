@@ -14,6 +14,7 @@ import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.CommandManager;
 import me.ionar.salhack.managers.HudManager;
 import me.ionar.salhack.module.Value;
+import me.ionar.salhack.module.ui.HudModule;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
@@ -417,5 +418,15 @@ public class HudComponentItem
             HudManager.Get().ScheduleSave(this);
             CommandManager.Get().Reload();
         }
+    }
+
+    private int GetColor()
+    {
+        return (HudModule.Red.getValue() << 16) & 0x00FF0000 | (HudModule.Green.getValue() << 8) & 0x0000FF00 | HudModule.Blue.getValue() & 0x000000FF;
+    }
+
+    public int GetTextColor()
+    {
+        return (HudModule.Red.getValue() << 16) & 0x00FF0000 | (HudModule.Green.getValue() << 8) & 0x0000FF00 | HudModule.Blue.getValue() & 0x000000FF;
     }
 }

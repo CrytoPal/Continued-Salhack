@@ -12,6 +12,10 @@ public final class HudModule extends Module
     public static final Value<Integer> ExtraTab = new Value<Integer>("ExtraTab", new String[]
             { "ET" }, "Max playerslots to show in the tab list", 80, 80, 1000, 10);
 
+    public static final Value<Integer> Red = new Value<Integer>("Red", new String[] {"bRed"}, "Red for rendering", 242, 0, 255, 11);
+    public static final Value<Integer> Green = new Value<Integer>("Green", new String[] {"bGreen"}, "Green for rendering", 216, 0, 255, 11);
+    public static final Value<Integer> Blue = new Value<Integer>("Blue", new String[] {"bBlue"}, "Blue for rendering", 0, 0, 255, 11);
+
     public HudModule()
     {
         super("HUD", new String[]

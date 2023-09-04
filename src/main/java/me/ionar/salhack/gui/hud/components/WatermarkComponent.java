@@ -29,14 +29,14 @@ public class WatermarkComponent extends HudComponentItem
         {
             final String l_Text = "Reliant (rel-1.20.1-Fabric)";
 
-            context.drawTextWithShadow(mc.textRenderer, Text.of(l_Text), (int) GetX(), (int) GetY(), 0xFFFFFF);
+            context.drawTextWithShadow(mc.textRenderer, Text.of(l_Text), (int) GetX(), (int) GetY(), GetTextColor());
 
             SetWidth(Wrapper.GetMC().textRenderer.getWidth(l_Text));
             SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
         }
         else
         {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), 0x2ACCED);
+            context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), GetTextColor());
 
             SetWidth(Wrapper.GetMC().textRenderer.getWidth(WatermarkString));
             SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

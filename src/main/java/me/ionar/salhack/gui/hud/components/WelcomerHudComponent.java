@@ -41,7 +41,7 @@ public class WelcomerHudComponent extends HudComponentItem
             WatermarkString = Formatting.AQUA + "Hello, " + Formatting.WHITE + mc.getSession().getUsername() + ".. psst! something went wrong!" + Formatting.AQUA + " :(";
         }
 
-            context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), 0x2ACCED);
+            context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), GetTextColor());
 
             SetWidth(Wrapper.GetMC().textRenderer.getWidth(WatermarkString));
             SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

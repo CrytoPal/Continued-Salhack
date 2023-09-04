@@ -30,7 +30,7 @@ public class PingComponent extends HudComponentItem {
 
             final String ping = "Ping " + Formatting.WHITE + playerListEntry.getLatency();
 
-            context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) GetX(), (int) GetY(), 0x2ACCED);
+            context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) GetX(), (int) GetY(), GetTextColor());
 
             SetWidth(Wrapper.GetMC().textRenderer.getWidth(ping));
             SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

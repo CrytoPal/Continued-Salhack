@@ -35,7 +35,7 @@ public class TPSComponent extends HudComponentItem {
 
         final String tickrate = "TPS " + Formatting.WHITE +  format(TickRateManager.Get().getTickRate());
 
-        context.drawTextWithShadow(mc.textRenderer, Text.of(tickrate), (int) GetX(), (int) GetY(), 0x2ACCED);
+        context.drawTextWithShadow(mc.textRenderer, Text.of(tickrate), (int) GetX(), (int) GetY(), GetTextColor());
 
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(tickrate));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

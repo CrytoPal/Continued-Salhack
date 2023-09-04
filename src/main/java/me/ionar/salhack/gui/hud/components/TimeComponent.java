@@ -24,7 +24,7 @@ public class TimeComponent extends HudComponentItem {
 
         final String time = "Time " + Formatting.WHITE + new SimpleDateFormat("h:mm a").format(new Date());
 
-        context.drawTextWithShadow(mc.textRenderer, Text.of(time), (int) GetX(), (int) GetY(), 0x2ACCED);
+        context.drawTextWithShadow(mc.textRenderer, Text.of(time), (int) GetX(), (int) GetY(), GetTextColor());
 
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(time));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
