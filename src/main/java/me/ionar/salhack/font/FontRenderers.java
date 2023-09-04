@@ -11,6 +11,7 @@ public class FontRenderers {
     private static FontAdapter mono;
     private static FontAdapter twCenMtStd28;
     private static FontAdapter twCenMtStd22;
+    private static FontAdapter twCenMtStd25;
     private static FontAdapter twCenMtStd15;
 
     public static FontAdapter getRenderer() {
@@ -64,6 +65,21 @@ public class FontRenderers {
             }
         }
         return twCenMtStd22;
+    }
+
+    public static FontAdapter getTwCenMtStd25() {
+        if (twCenMtStd25 == null) {
+            int v = 50;
+            try {
+                twCenMtStd25 = new RendererFontAdapter(Font.createFont(
+                        Font.TRUETYPE_FONT,
+                        Objects.requireNonNull(FontRenderers.class.getClassLoader().getResourceAsStream("assets/minecraft/salhack/fonts/tcm.TTF"))
+                ).deriveFont(Font.PLAIN, v), v);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+        return twCenMtStd25;
     }
 
     public static FontAdapter getTwCenMtStd28() {

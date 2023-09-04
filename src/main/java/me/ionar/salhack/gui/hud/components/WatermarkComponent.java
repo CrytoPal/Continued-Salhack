@@ -1,9 +1,11 @@
 package me.ionar.salhack.gui.hud.components;
 
 import me.ionar.salhack.SalHackMod;
+import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Value;
+import me.ionar.salhack.module.ui.HudModule;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -29,14 +31,22 @@ public class WatermarkComponent extends HudComponentItem
         {
             final String l_Text = "Reliant (rel-1.20.1-Fabric)";
 
-            context.drawTextWithShadow(mc.textRenderer, Text.of(l_Text), (int) GetX(), (int) GetY(), GetTextColor());
+            if (HudModule.CustomFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), l_Text, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+            } else {
+                context.drawTextWithShadow(mc.textRenderer, Text.of(l_Text), (int) GetX(), (int) GetY(), GetTextColor());
+            }
 
             SetWidth(Wrapper.GetMC().textRenderer.getWidth(l_Text));
             SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
         }
         else
         {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), GetTextColor());
+            if (HudModule.CustomFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), WatermarkString, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+            } else {
+                context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), GetTextColor());
+            }
 
             SetWidth(Wrapper.GetMC().textRenderer.getWidth(WatermarkString));
             SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

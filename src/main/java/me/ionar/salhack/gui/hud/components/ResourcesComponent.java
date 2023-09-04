@@ -1,5 +1,6 @@
 package me.ionar.salhack.gui.hud.components;
 
+import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
@@ -14,7 +15,7 @@ import net.minecraft.util.Formatting;
 
 public class ResourcesComponent extends HudComponentItem {
     private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
-    
+
     public final Value<Boolean> Totems = new Value<Boolean>("Totems", new String[]{ "Totems" }, "Include Totems", true);
     public final Value<Boolean> Crystals = new Value<Boolean>("Crystals", new String[]{ "Crystals" }, "Include Crystals", true);
     public final Value<Boolean> EXP = new Value<Boolean>("EXP", new String[]{ "EXP" }, "Include EXP", true);
@@ -38,18 +39,34 @@ public class ResourcesComponent extends HudComponentItem {
         final String expCount1 = "Exp: " + Formatting.WHITE + expCount;
 
         if (EGap.getValue()) {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) GetX(), (int) GetY(), GetTextColor());
+            if (HudModule.CustomFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), EGapCount1, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+            } else {
+                context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) GetX(), (int) GetY(), GetTextColor());
+            }
             SetWidth(mc.textRenderer.getWidth(EGapCount1));
             SetHeight(mc.textRenderer.fontHeight + 30);
         }
         if (Totems.getValue()) {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) GetX(), (int) GetY() + 30, GetTextColor());
+            if (HudModule.CustomFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), totemCount1, (int) (GetX()), (int) (GetY()) + 30, GetTextColor(), true);
+            } else {
+                context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) GetX(), (int) GetY() + 30, GetTextColor());
+            }
         }
         if (Crystals.getValue()) {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) GetX(), (int) GetY() + 10, GetTextColor());
+            if (HudModule.CustomFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), crystals1, (int) (GetX()), (int) (GetY()) + 10, GetTextColor(), true);
+            } else {
+                context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) GetX(), (int) GetY() + 10, GetTextColor());
+            }
         }
         if (EXP.getValue()) {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) GetX(), (int) GetY() + 20, GetTextColor());
+            if (HudModule.CustomFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), expCount1, (int) (GetX()), (int) (GetY()) + 20, GetTextColor(), true);
+            } else {
+                context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) GetX(), (int) GetY() + 20, GetTextColor());
+            }
         }
     }
 

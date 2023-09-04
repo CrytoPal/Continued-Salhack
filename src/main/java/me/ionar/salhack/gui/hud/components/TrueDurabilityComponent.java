@@ -1,7 +1,9 @@
 package me.ionar.salhack.gui.hud.components;
 
+import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
+import me.ionar.salhack.module.ui.HudModule;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
@@ -30,7 +32,11 @@ public class TrueDurabilityComponent extends HudComponentItem {
             durability = "Durability:";
         }
 
-        context.drawTextWithShadow(mc.textRenderer, Text.of(durability), (int) GetX(), (int) GetY(), GetTextColor());
+        if (HudModule.CustomFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), durability, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+        } else {
+            context.drawTextWithShadow(mc.textRenderer, Text.of(durability), (int) GetX(), (int) GetY(), GetTextColor());
+        }
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(durability));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
     }

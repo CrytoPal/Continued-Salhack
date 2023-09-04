@@ -1,5 +1,6 @@
 package me.ionar.salhack.gui.hud.components;
 
+import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
@@ -24,7 +25,11 @@ public class TimeComponent extends HudComponentItem {
 
         final String time = "Time " + Formatting.WHITE + new SimpleDateFormat("h:mm a").format(new Date());
 
-        context.drawTextWithShadow(mc.textRenderer, Text.of(time), (int) GetX(), (int) GetY(), GetTextColor());
+        if (HudModule.CustomFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), time, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+        } else {
+            context.drawTextWithShadow(mc.textRenderer, Text.of(time), (int) GetX(), (int) GetY(), GetTextColor());
+        }
 
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(time));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

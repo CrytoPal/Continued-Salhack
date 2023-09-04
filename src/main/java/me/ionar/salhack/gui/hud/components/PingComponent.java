@@ -1,5 +1,6 @@
 package me.ionar.salhack.gui.hud.components;
 
+import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.font.Renderer;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
@@ -30,10 +31,13 @@ public class PingComponent extends HudComponentItem {
 
             final String ping = "Ping " + Formatting.WHITE + playerListEntry.getLatency();
 
-            context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) GetX(), (int) GetY(), GetTextColor());
-
-            SetWidth(Wrapper.GetMC().textRenderer.getWidth(ping));
-            SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+            if (HudModule.CustomFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), ping, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+            } else {
+                context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) GetX(), (int) GetY(), GetTextColor());
+            }
+            SetWidth(mc.textRenderer.getWidth(ping));
+            SetHeight(mc.textRenderer.fontHeight);
         }
     }
 }

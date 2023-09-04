@@ -1,8 +1,10 @@
 package me.ionar.salhack.gui.hud.components;
 
 import me.ionar.salhack.events.MinecraftEvent;
+import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
+import me.ionar.salhack.module.ui.HudModule;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
@@ -41,7 +43,11 @@ public class WelcomerHudComponent extends HudComponentItem
             WatermarkString = Formatting.AQUA + "Hello, " + Formatting.WHITE + mc.getSession().getUsername() + ".. psst! something went wrong!" + Formatting.AQUA + " :(";
         }
 
+        if (HudModule.CustomFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), WatermarkString, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+        } else {
             context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), GetTextColor());
+        }
 
             SetWidth(Wrapper.GetMC().textRenderer.getWidth(WatermarkString));
             SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

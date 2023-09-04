@@ -1,5 +1,6 @@
 package me.ionar.salhack.gui.hud.components;
 
+import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
@@ -35,7 +36,11 @@ public class TPSComponent extends HudComponentItem {
 
         final String tickrate = "TPS " + Formatting.WHITE +  format(TickRateManager.Get().getTickRate());
 
-        context.drawTextWithShadow(mc.textRenderer, Text.of(tickrate), (int) GetX(), (int) GetY(), GetTextColor());
+        if (HudModule.CustomFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), tickrate, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+        } else {
+            context.drawTextWithShadow(mc.textRenderer, Text.of(tickrate), (int) GetX(), (int) GetY(), GetTextColor());
+        }
 
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(tickrate));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

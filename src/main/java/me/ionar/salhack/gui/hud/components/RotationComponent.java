@@ -1,9 +1,12 @@
 package me.ionar.salhack.gui.hud.components;
 
 import java.text.DecimalFormat;
+
+import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Value;
+import me.ionar.salhack.module.ui.HudModule;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -65,7 +68,11 @@ public class RotationComponent extends HudComponentItem {
                 Pitch2 += 0;
         }
 
-        context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), GetTextColor());
+        if (HudModule.CustomFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), direction, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+        } else {
+            context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), GetTextColor());
+        }
 
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(direction));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);

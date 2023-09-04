@@ -1,5 +1,6 @@
 package me.ionar.salhack.gui.hud.components;
 
+import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
@@ -56,7 +57,11 @@ public class SpeedComponent extends HudComponentItem {
 
         }
 
-        context.drawTextWithShadow(mc.textRenderer, Text.of(speed), (int) GetX(), (int) GetY(), GetTextColor());
+        if (HudModule.CustomFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), speed, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+        } else {
+            context.drawTextWithShadow(mc.textRenderer, Text.of(speed), (int) GetX(), (int) GetY(), GetTextColor());
+        }
 
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(speed));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
