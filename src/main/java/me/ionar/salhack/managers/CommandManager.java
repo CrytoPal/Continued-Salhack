@@ -9,7 +9,6 @@ import me.ionar.salhack.command.Command;
 import me.ionar.salhack.command.impl.*;
 import me.ionar.salhack.command.util.ModuleCommandListener;
 import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.module.Module;
 
 public class CommandManager
 {
