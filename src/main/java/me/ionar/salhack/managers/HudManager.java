@@ -41,14 +41,14 @@ public class HudManager
         Add(new PingComponent());
         Add(new ResourcesComponent());
         Add(new SpeedComponent());
-        Add(new YawComponent());
+        Add(new RotationComponent());
+        Add(new TrueDurabilityComponent());
         /*
         Add(new ArrayListComponent());
         Add(new InventoryComponent());
         Add(new TabGUIComponent());
         Add(new TextRadar());
         Add(new NotificationComponent());
-        Add(new SpeedComponent());
         Add(new BiomeComponent());
         Add(new TimeComponent());
         Add(new TPSComponent());
@@ -65,7 +65,6 @@ public class HudManager
         Add(new TotemCountComponent());
         Add(new PingComponent());
         Add(new ChestCountComponent());
-        Add(new TrueDurabilityComponent());
         Add(new StopwatchComponent());
         Add(new PvPInfoComponent());
         Add(new SchematicaMaterialInfoComponent());
