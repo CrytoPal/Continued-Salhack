@@ -41,6 +41,7 @@ public class HudManager
         Add(new PingComponent());
         Add(new ResourcesComponent());
         Add(new SpeedComponent());
+        Add(new YawComponent());
         /*
         Add(new ArrayListComponent());
         Add(new InventoryComponent());
