@@ -16,6 +16,8 @@ public class SalHack
     private static FriendManager m_FriendManager = new FriendManager();
     //private static DiscordManager m_DiscordManager = new DiscordManager();
     private static DirectoryManager m_DirectoryManager = new DirectoryManager();
+
+    private static NotificationManager m_NotificationManager = new NotificationManager();
     private static CommandManager m_CommandManager = new CommandManager();
     private static TickRateManager m_TickRateManager = new TickRateManager();
     //private static NotificationManager m_NotificationManager = new NotificationManager();
@@ -100,12 +102,13 @@ public class SalHack
     {
         return m_TickRateManager;
     }
-    /*
 
     public static NotificationManager GetNotificationManager()
     {
         return m_NotificationManager;
     }
+
+    /*
 
     public static WaypointManager GetWaypointManager()
     {
