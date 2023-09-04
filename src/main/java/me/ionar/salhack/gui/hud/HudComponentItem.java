@@ -9,7 +9,6 @@ import java.util.Map;
 
 import com.google.gson.Gson;
 
-import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.CommandManager;
 import me.ionar.salhack.managers.HudManager;
@@ -418,11 +417,6 @@ public class HudComponentItem
             HudManager.Get().ScheduleSave(this);
             CommandManager.Get().Reload();
         }
-    }
-
-    private int GetColor()
-    {
-        return (HudModule.Red.getValue() << 16) & 0x00FF0000 | (HudModule.Green.getValue() << 8) & 0x0000FF00 | HudModule.Blue.getValue() & 0x000000FF;
     }
 
     public int GetTextColor()

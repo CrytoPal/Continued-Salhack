@@ -1,35 +1,20 @@
 package me.ionar.salhack.module;
 
 import me.ionar.salhack.SalHackMod;
-import me.ionar.salhack.events.client.EventClientTick;
-import me.ionar.salhack.events.player.EventPlayerTick;
 import me.ionar.salhack.events.salhack.EventSalHackModuleDisable;
 import me.ionar.salhack.events.salhack.EventSalHackModuleEnable;
-import me.ionar.salhack.friend.Friend;
-import me.ionar.salhack.gui.click.component.item.ComponentItem;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.CommandManager;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.managers.PresetsManager;
 import me.ionar.salhack.module.ui.Notifcation;
-import me.ionar.salhack.module.world.CoordsSpooferModule;
-import me.ionar.salhack.preset.Preset;
 import me.zero.alpine.fork.listener.Listenable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public abstract class Module implements Listenable
