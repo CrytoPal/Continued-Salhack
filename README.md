@@ -19,6 +19,9 @@ This project is still in Beta, there will be a lot of bugs and possibly crashes.
 ## What is Salhack?
 Salhack is a 1.12.2 open sourced client that got discontinued. This project is a continuation for the client for the latest version of minecraft and fabric.
 
+## Baritone
+Salhack does not include Baritone Integration as we do not want to wait for baritone to update for newer Minecraft versions everytime. You can download baritone separately [here](https://github.com/cabaletta/baritone/releases).
+
 ## Installation
 
 Salhack is a fabric mod for `1.20.1`. There are already pre build jar files on our [release page](https://github.com/CrytoPal/Continued-Salhack/releases). To use Salhack just download and drop the jar file in your mods folder with latest Fabric Api and start fabric. Have fun!
