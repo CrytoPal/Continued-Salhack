@@ -1,6 +1,6 @@
 <div align="center">
 
-![icon.png](src%2Fmain%2Fresources%2Fassets%2Fmodid%2Ficon.png)
+![icon.png](src%2Fmain%2Fresources%2Fassets%2Fsalhack%2Ficon.png)
 
 </div>
 <div align="center">
