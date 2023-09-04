@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 public class SalHackMod implements ClientModInitializer {
     public static final Logger log = LoggerFactory.getLogger("sal");
 	public static final String NAME = "SalHack";
-	public static final String VERSION = "v0.4 Beta";
+	public static final String VERSION = "v0.5 Beta";
 
 	public static final EventBus EVENT_BUS = new EventManager();
 
