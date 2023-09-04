@@ -7,20 +7,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 public class MathUtil {
-
-    public static float clamp(float val, float min, float max)
-    {
-        if (val <= min)
-        {
-            val = min;
-        }
-        if (val >= max)
-        {
-            val = max;
-        }
-        return val;
-    }
-
     public static Vec3d interpolateEntity(Entity e) {
         return e.getPos().subtract(getInterpolationOffset(e));
     }

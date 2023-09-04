@@ -20,6 +20,7 @@ import net.minecraft.item.*;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 
@@ -90,7 +91,7 @@ public class NametagsModule extends Module
             {
                 try
                 {
-                    responseTime = (int) MathUtil.clamp(
+                    responseTime = MathHelper.clamp(
                             Objects.requireNonNull(Wrapper.GetMC().getNetworkHandler().getPlayerListEntry(player.getUuid()).getLatency()), 0,
                             300);
                 }
