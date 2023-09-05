@@ -12,6 +12,8 @@ public final class HudModule extends Module
     public static final Value<Integer> ExtraTab = new Value<Integer>("ExtraTab", new String[]
             { "ET" }, "Max playerslots to show in the tab list", 80, 80, 1000, 10);
 
+    public static final Value<Boolean> Rainbow = new Value<Boolean>("Rainbow", new String[]{"RGB"}, "Give HUD items rainbow effect.", false);
+
     public static final Value<Boolean> CustomFont = new Value<Boolean>("Custom Font", new String[]{ "CF" }, "Custom Font for Hud", true);
 
     public static final Value<Integer> Red = new Value<Integer>("Red", new String[] {"bRed"}, "Red for rendering", 242, 0, 255, 11);
