@@ -1,18 +1,13 @@
 package me.ionar.salhack.gui.click.component;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.ionar.salhack.font.FontRenderers;
-import me.ionar.salhack.gui.click.ClickGuiScreen;
 import me.ionar.salhack.managers.ImageManager;
 import me.ionar.salhack.util.imgs.SalDynamicTexture;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.util.Window;
-import net.minecraft.text.Text;
 
 import me.ionar.salhack.gui.click.component.item.ComponentItem;
 import me.ionar.salhack.main.Wrapper;
