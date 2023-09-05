@@ -5,8 +5,10 @@ import java.text.DecimalFormat;
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
+import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ui.HudModule;
+import me.ionar.salhack.util.color.SalRainbowUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -14,12 +16,17 @@ import net.minecraft.util.math.MathHelper;
 
 public class RotationComponent extends HudComponentItem {
 
+    private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
+
+    private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
+
     public final Value<Boolean> Yaw = new Value<Boolean>("Yaw", new String[]{ "Y" }, "Include Yaw", true);
 
     public final Value<Boolean> Pitch = new Value<Boolean>("Pitch", new String[]{ "P" }, "Include Pitch", true);
     public RotationComponent()
     {
         super("Rotation", 2, 103);
+        SetHidden(false);
     }
 
     private String direction;
@@ -69,11 +76,11 @@ public class RotationComponent extends HudComponentItem {
         }
 
         if (HudModule.CustomFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), direction, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), direction, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
         } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), GetTextColor());
+            context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
-
+        Rainbow.OnRender();
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(direction));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
     }

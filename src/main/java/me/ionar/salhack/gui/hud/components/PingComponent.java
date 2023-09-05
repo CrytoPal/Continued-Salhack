@@ -6,6 +6,7 @@ import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.ui.HudModule;
+import me.ionar.salhack.util.color.SalRainbowUtil;
 import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.PlayerListEntry;
@@ -17,9 +18,12 @@ import java.util.Objects;
 
 public class PingComponent extends HudComponentItem {
     private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
+
+    private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
     private final int i = 0;
     public PingComponent() {
         super("Ping", 2, 43);
+        SetHidden(false);
     }
 
     @Override
@@ -32,10 +36,11 @@ public class PingComponent extends HudComponentItem {
             final String ping = "Ping " + Formatting.WHITE + playerListEntry.getLatency();
 
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), ping, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), ping, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) GetX(), (int) GetY(), GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
+            Rainbow.OnRender();
             SetWidth(mc.textRenderer.getWidth(ping));
             SetHeight(mc.textRenderer.fontHeight);
         }

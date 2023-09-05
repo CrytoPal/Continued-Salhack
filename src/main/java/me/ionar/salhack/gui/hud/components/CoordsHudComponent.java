@@ -5,14 +5,15 @@ import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Value;
-import me.ionar.salhack.module.ui.ColorsModule;
 import me.ionar.salhack.module.ui.HudModule;
 import me.ionar.salhack.module.world.CoordsSpooferModule;
+import me.ionar.salhack.util.color.SalRainbowUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.text.DecimalFormat;
+
 
 public class CoordsHudComponent extends HudComponentItem {
 
@@ -22,6 +23,8 @@ public class CoordsHudComponent extends HudComponentItem {
     public final Value<Boolean> NetherCords = new Value<Boolean>("Nether Cords", new String[]{ "NC" }, "Include Nether Cords", true);
     public final Value<Boolean> OverWorldCoords = new Value<Boolean>("Over World Cords", new String[]{ "NC" }, "Include Over World Cords (In nether)", true);
     private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
+
+    private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
 
     private boolean SpoofX = false;
 
@@ -37,7 +40,7 @@ public class CoordsHudComponent extends HudComponentItem {
     boolean SpoofZ = false;
     public CoordsHudComponent() {
         super("Coords", 3, 517);
-        SetHidden(true);
+        SetHidden(false);
     }
 
     public String format(double input) {
@@ -71,11 +74,11 @@ public class CoordsHudComponent extends HudComponentItem {
 
             case Inline:
                 if (HudModule.CustomFont.getValue()) {
-                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), coords, (int) (GetX()), (int) (GetY()), GetTextColor(), true);
+                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), coords, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
                 } else {
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(coords), (int) GetX(), (int) GetY(), GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, Text.of(coords), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
                 }
-
+                Rainbow.OnRender();
                 SetWidth(Wrapper.GetMC().textRenderer.getWidth(coords));
                 SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
 
