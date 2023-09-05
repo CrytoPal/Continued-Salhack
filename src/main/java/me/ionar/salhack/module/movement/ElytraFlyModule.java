@@ -12,7 +12,6 @@ import net.minecraft.util.Formatting;
 import me.ionar.salhack.events.network.EventNetworkPacketEvent;
 import me.ionar.salhack.events.player.EventPlayerTravel;
 import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.MathUtil;
