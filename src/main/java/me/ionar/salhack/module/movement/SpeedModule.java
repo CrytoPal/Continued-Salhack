@@ -4,7 +4,6 @@ import me.ionar.salhack.events.MinecraftEvent.Era;
 import me.ionar.salhack.events.player.EventPlayerJump;
 import me.ionar.salhack.events.player.EventPlayerMove;
 import me.ionar.salhack.events.player.EventPlayerTick;
-import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;

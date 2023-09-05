@@ -1,7 +1,5 @@
 package me.ionar.salhack.module.ui;
 
-
-import me.ionar.salhack.gui.click.ClickGuiScreen;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 

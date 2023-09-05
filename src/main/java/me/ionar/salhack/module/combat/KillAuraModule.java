@@ -3,7 +3,6 @@ package me.ionar.salhack.module.combat;
 import java.util.Comparator;
 
 import me.ionar.salhack.events.client.EventClientTick;
-import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.managers.TickRateManager;
 import me.ionar.salhack.module.Module;
