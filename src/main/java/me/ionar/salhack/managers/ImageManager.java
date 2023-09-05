@@ -9,8 +9,6 @@ import java.util.TreeMap;
 
 import javax.imageio.ImageIO;
 
-import me.ionar.salhack.main.Wrapper;
-import net.minecraft.util.Identifier;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.util.imgs.SalDynamicTexture;
 
