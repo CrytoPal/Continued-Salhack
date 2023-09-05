@@ -32,7 +32,7 @@ If you want the latest dev build click [here](https://github.com/CrytoPal/Contin
 
 ## Support
 
-If you have a bug, please open an issue on github and put the Bug tag or contact us via our [Discord](https://discord.gg/ASsgCW8Wng) server
+If you have a bug, please open an issue on github and put the Bug tag or contact us via our [Discord](https://discord.gg/XmXJSBgQbD) server
 
 If you want to suggest a feature, open an issue and put the Feature Tag.
 
