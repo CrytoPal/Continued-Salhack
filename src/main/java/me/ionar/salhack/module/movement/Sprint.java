@@ -10,7 +10,7 @@ import me.zero.alpine.fork.listener.Listener;
 public final class Sprint extends Module
 {
     public final Value<Modes> Mode = new Value<Modes>("Mode", new String[]
-            { "Mode", "M" }, "The sprint mode to use.", Modes.Rage);
+            { "Mode", "M" }, "The sprint mode to use.", Modes.Legit);
 
     private enum Modes
     {
@@ -58,7 +58,7 @@ public final class Sprint extends Module
             case Legit:
                 if (mc.player.forwardSpeed > 0 && !(mc.player.getHungerManager().getFoodLevel() <= 6f))
                 {
-                    mc.player.setSprinting(true);
+                    mc.options.sprintKey.setPressed(true);
                 }
                 break;
         }
