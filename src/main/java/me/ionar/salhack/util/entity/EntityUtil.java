@@ -19,7 +19,7 @@ public class EntityUtil {
 
     public static ArrayList<Entity> getEntities() {
         ArrayList<Entity> entities = new ArrayList<>();
-        if (mc.world != null) {
+        if (Wrapper.GetMC().world != null) {
             for (Entity entity : Wrapper.GetMC().world.getEntities()) {
                 entities.add(entity);
             }
