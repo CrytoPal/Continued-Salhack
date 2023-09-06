@@ -2,7 +2,6 @@ package me.ionar.salhack.mixin;
 
 import me.ionar.salhack.main.SalHack;
 import net.minecraft.client.render.RenderTickCounter;
-import net.minecraft.data.Main;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;

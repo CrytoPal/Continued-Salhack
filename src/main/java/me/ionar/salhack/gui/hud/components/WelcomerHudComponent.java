@@ -1,6 +1,5 @@
 package me.ionar.salhack.gui.hud.components;
 
-import me.ionar.salhack.events.MinecraftEvent;
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;

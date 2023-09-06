@@ -1,7 +1,6 @@
 package me.ionar.salhack.mixin;
 
 import me.ionar.salhack.SalHackMod;
-import me.ionar.salhack.events.player.EventPlayerJump;
 import me.ionar.salhack.events.render.EventRenderGameOverlay;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;

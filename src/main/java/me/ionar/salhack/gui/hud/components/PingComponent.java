@@ -1,13 +1,10 @@
 package me.ionar.salhack.gui.hud.components;
 
 import me.ionar.salhack.font.FontRenderers;
-import me.ionar.salhack.font.Renderer;
 import me.ionar.salhack.gui.hud.HudComponentItem;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.ui.HudModule;
 import me.ionar.salhack.util.color.SalRainbowUtil;
-import net.minecraft.client.RunArgs;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.Text;

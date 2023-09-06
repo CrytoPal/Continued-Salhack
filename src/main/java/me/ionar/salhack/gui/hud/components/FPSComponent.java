@@ -12,8 +12,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import java.text.DecimalFormat;
-
 public class FPSComponent extends HudComponentItem {
     private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
 

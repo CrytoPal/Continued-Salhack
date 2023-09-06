@@ -6,9 +6,6 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,11 +14,9 @@ import com.google.gson.reflect.TypeToken;
 
 import me.ionar.salhack.friend.Friend;
 import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.misc.FriendsModule;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import org.jetbrains.annotations.Nullable;
 
 public class FriendManager
 {

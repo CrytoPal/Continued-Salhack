@@ -1,6 +1,5 @@
 package me.ionar.salhack.command.impl;
 
-import java.util.HashMap;
 import java.util.List;
 
 import me.ionar.salhack.command.Command;

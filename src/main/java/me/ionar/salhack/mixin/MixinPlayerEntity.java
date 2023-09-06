@@ -1,13 +1,11 @@
 package me.ionar.salhack.mixin;
 
 import me.ionar.salhack.SalHackMod;
-import me.ionar.salhack.events.client.EventClientTick;
 import me.ionar.salhack.events.player.EventPlayerJump;
 import me.ionar.salhack.events.player.EventPlayerTravel;
 import me.ionar.salhack.main.Wrapper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.MovementType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;

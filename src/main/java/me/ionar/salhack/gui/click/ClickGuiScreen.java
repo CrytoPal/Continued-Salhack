@@ -6,12 +6,8 @@ import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ImageManager;
 import me.ionar.salhack.util.imgs.SalDynamicTexture;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.Window;
-import net.minecraft.text.Text;
 
-
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Reader;

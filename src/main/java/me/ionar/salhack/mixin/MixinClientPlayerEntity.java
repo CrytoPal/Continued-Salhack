@@ -2,7 +2,6 @@ package me.ionar.salhack.mixin;
 
 import com.mojang.authlib.GameProfile;
 import me.ionar.salhack.SalHackMod;
-import me.ionar.salhack.events.client.EventClientTick;
 import me.ionar.salhack.events.player.EventPlayerMove;
 import me.ionar.salhack.events.player.EventPlayerTick;
 import me.ionar.salhack.main.Wrapper;

@@ -1,4 +1,5 @@
 package me.ionar.salhack.gui.click.effects;
+
 import net.minecraft.client.util.Window;
 import java.util.Random;
 

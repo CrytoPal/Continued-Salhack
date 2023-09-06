@@ -1,9 +1,6 @@
 package me.ionar.salhack.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.ionar.salhack.SalHackMod;
-import me.ionar.salhack.events.client.EventClientTick;
-import me.ionar.salhack.module.ui.HudModule;
 import me.ionar.salhack.util.render.TransformPositionUtil;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
