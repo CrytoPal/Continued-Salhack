@@ -87,7 +87,7 @@ public class EventManager implements EventBus {
      * @see EventHandler
      *
      * @param field Field being checked
-     * @return Whether or not the Field is valid
+     * @return Whether the Field is valid
      */
     private static boolean isValidField(Field field) {
         return field.isAnnotationPresent(EventHandler.class) && Listener.class.isAssignableFrom(field.getType());
@@ -109,9 +109,6 @@ public class EventManager implements EventBus {
             field.setAccessible(true);
             Listener listener = (Listener) field.get(listenable);
             field.setAccessible(accessible);
-
-            if (listener == null)
-                return null;
 
             return listener;
         } catch (IllegalAccessException e) {

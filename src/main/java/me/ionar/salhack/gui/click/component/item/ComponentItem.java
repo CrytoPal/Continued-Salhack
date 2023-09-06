@@ -4,8 +4,7 @@ import java.util.ArrayList;
 
 import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
 
-public class ComponentItem
-{
+public class ComponentItem {
     /// Flags
     public static final int Clickable = 0x1;
     public static final int Hoverable = 0x2;
@@ -23,8 +22,8 @@ public class ComponentItem
     public static final int Hovered = 0x2;
     public static final int Extended = 0x4;
 
-    private String DisplayText;
-    private String Description;
+    private final String DisplayText;
+    private final String Description;
     protected int Flags;
     protected int State;
     protected ComponentItemListener Listener;
@@ -36,15 +35,14 @@ public class ComponentItem
 
     public ArrayList<ComponentItem> DropdownItems;
 
-    public ComponentItem(String displayText, String description, int flags, int state, ComponentItemListener listener, float width, float height)
-    {
+    public ComponentItem(String displayText, String description, int flags, int state, ComponentItemListener listener, float width, float height) {
         DisplayText = displayText;
         Description = description;
         Flags = flags;
         State = state;
         Listener = listener;
 
-        DropdownItems = new ArrayList<ComponentItem>();
+        DropdownItems = new ArrayList<>();
 
         X = 0;
         Y = 0;
@@ -53,123 +51,91 @@ public class ComponentItem
         currentWidth = Width;
     }
 
-    public String GetDisplayText()
-    {
+    public String GetDisplayText() {
         return DisplayText;
     }
 
-    public String GetDescription()
-    {
+    public String GetDescription() {
         return Description;
     }
 
-    public boolean HasFlag(int flag)
-    {
+    public boolean HasFlag(int flag) {
         return (Flags & flag) != 0;
     }
 
-    public boolean HasState(int state)
-    {
+    public boolean HasState(int state) {
         return (State & state) != 0;
     }
 
-    public void AddState(int state)
-    {
+    public void AddState(int state) {
         State |= state;
     }
 
-    public void RemoveState(int state)
-    {
+    public void RemoveState(int state) {
         State &= ~state;
     }
 
-    public float GetX()
-    {
+    public float GetX() {
         return X;
     }
 
-    public void SetX(float x)
-    {
+    public void SetX(float x) {
         X = x;
     }
 
-    public float GetY()
-    {
+    public float GetY() {
         return Y;
     }
 
-    public void SetY(float y)
-    {
+    public void SetY(float y) {
         Y = y;
     }
 
-    public float GetWidth()
-    {
+    public float GetWidth() {
         return Width;
     }
 
-    public void SetWidth(float width)
-    {
+    public void SetWidth(float width) {
         Width = width;
     }
 
-    public float GetHeight()
-    {
+    public float GetHeight() {
         return Height;
     }
 
-    public void SetHeight(float height)
-    {
+    public void SetHeight(float height) {
         Height = height;
     }
 
-    public float GetCurrentWidth()
-    {
+    public float GetCurrentWidth() {
         return currentWidth;
     }
 
-    public void OnMouseClick(int mouseX, int mouseY, int mouseButton)
-    {
-        if (mouseButton == 0)
-        {
-            if (Listener != null)
-                Listener.OnToggled();
-
-            if (HasState(Clicked))
-                RemoveState(Clicked);
-            else
-                AddState(Clicked);
-        }
-        else if (mouseButton == 1)
-        {
-            if (HasState(Extended))
-                RemoveState(Extended);
-            else
-                AddState(Extended);
+    public void OnMouseClick(int mouseX, int mouseY, int mouseButton) {
+        if (mouseButton == 0) {
+            if (Listener != null) Listener.OnToggled();
+            if (HasState(Clicked)) RemoveState(Clicked);
+            else AddState(Clicked);
+        } else if (mouseButton == 1) {
+            if (HasState(Extended)) RemoveState(Extended);
+            else AddState(Extended);
         }
     }
 
-    public void keyTyped(int keyCode, int scanCode, int modifiers)
-    {
+    public void keyTyped(int keyCode, int scanCode, int modifiers) {
     }
 
-    public void OnMouseMove(float mouseX, float mouseY, float x, float y)
-    {
+    public void OnMouseMove(float mouseX, float mouseY, float x, float y) {
     }
 
-    public void Update()
-    {
+    public void Update() {
     }
 
-    public void OnMouseRelease(int mouseX, int mouseY)
-    {
+    public void OnMouseRelease(int mouseX, int mouseY) {
         // TODO Auto-generated method stub
-
     }
 
-    public void OnMouseClickMove(int mouseX, int mouseY, int mouseButton)
-    {
+    public void OnMouseClickMove(int mouseX, int mouseY, int mouseButton) {
         // TODO Auto-generated method stub
-
     }
 }

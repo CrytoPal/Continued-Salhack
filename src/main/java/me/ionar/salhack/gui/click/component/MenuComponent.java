@@ -1,6 +1,7 @@
 package me.ionar.salhack.gui.click.component;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.ionar.salhack.font.FontRenderers;
@@ -15,16 +16,15 @@ import me.ionar.salhack.module.ui.ClickGuiModule;
 import me.ionar.salhack.module.ui.ColorsModule;
 import net.minecraft.util.Identifier;
 
-public class MenuComponent
-{
-    private String DisplayName;
-    protected ArrayList<ComponentItem> Items = new ArrayList<ComponentItem>();
-    private float DefaultX;
-    private float DefaultY;
-    private float X;
-    private float Y;
+public class MenuComponent {
+    private final String DisplayName;
+    protected ArrayList<ComponentItem> Items = new ArrayList<>();
+    private final float DefaultX;
+    private final float DefaultY;
+    private float y;
+    private float x;
     private float Height;
-    private float Width;
+    private final float Width;
     private boolean Dragging = false;
     private float DeltaX = 0;
     private float DeltaY = 0;
@@ -36,34 +36,29 @@ public class MenuComponent
     private float RemainingMaximizingY;
     private int MousePlayAnim;
     private SalDynamicTexture BarTexture = null;
-    private ColorsModule Colors;
-    private ClickGuiModule ClickGUI;
+    private final ColorsModule Colors;
+    private final ClickGuiModule ClickGUI;
 
-    public MenuComponent(String p_DisplayName, float p_X, float p_Y, float p_Height, float p_Width, String p_Image, ColorsModule p_Colors, ClickGuiModule p_ClickGui)
-    {
-        DisplayName = p_DisplayName;
-        DefaultX = p_X;
-        DefaultY = p_Y;
-        X = p_X;
-        Y = p_Y;
-        Height = p_Height;
-        Width = p_Width;
+    public MenuComponent(String displayName, float X, float Y, float height, float width, String image, ColorsModule colorsModule, ClickGuiModule clickGuiModule) {
+        DisplayName = displayName;
+        DefaultX = X;
+        DefaultY = Y;
+        x = X;
+        y = Y;
+        Height = height;
+        Width = width;
         RemainingMinimizingY = 0;
         RemainingMaximizingY = 0;
         MousePlayAnim = 0;
 
-        if (p_Image != null)
-        {
-            BarTexture = ImageManager.Get().GetDynamicTexture(p_Image);
-        }
+        if (image != null) BarTexture = ImageManager.Get().GetDynamicTexture(image);
 
-        Colors = p_Colors;
-        ClickGUI = p_ClickGui;
+        Colors = colorsModule;
+        ClickGUI = clickGuiModule;
     }
 
-    public void AddItem(ComponentItem p_Item)
-    {
-        Items.add(p_Item);
+    public void AddItem(ComponentItem componentItem) {
+        Items.add(componentItem);
     }
 
     final float BorderLength = 15.0f;
@@ -78,354 +73,241 @@ public class MenuComponent
         context.getMatrices().pop();
     }
 
-    public boolean Render(int p_MouseX, int p_MouseY, boolean p_CanHover, boolean p_AllowsOverflow, float p_OffsetY, DrawContext context)
-    {
-        if (Dragging)
-        {
-            X = p_MouseX - DeltaX;
-            Y = p_MouseY - DeltaY;
+    public boolean Render(int mouseX, int mouseY, boolean canHover, boolean allowsOverflow, float offsetY, DrawContext context) {
+        if (Dragging) {
+            x = mouseX - DeltaX;
+            y = mouseY - DeltaY;
         }
 
-        if (!p_AllowsOverflow)
-        {
-            Window l_Res = Wrapper.GetMC().getWindow();
-
+        if (!allowsOverflow) {
+            Window res = Wrapper.GetMC().getWindow();
             /// Don't allow too much to right, or left
-            if (X+GetWidth() >= l_Res.getScaledWidth())
-                X = l_Res.getScaledWidth() - GetWidth();
-            else if (X < 0)
-                X = 0;
-
-            if (Y+GetHeight() >= l_Res.getScaledHeight())
-                Y = l_Res.getScaledHeight() - GetHeight();
-            else if (Y < 0)
-                Y = 0;
+            if (x+GetWidth() >= res.getScaledWidth()) x = res.getScaledWidth() - GetWidth();
+            else if (x < 0) x = 0;
+            if (y+GetHeight() >= res.getScaledHeight()) y = res.getScaledHeight() - GetHeight();
+            else if (y < 0) y = 0;
         }
 
-        for (ComponentItem l_Item : Items)
-            l_Item.OnMouseMove(p_MouseX, p_MouseY, GetX(), GetY()-p_OffsetY);
+        for (ComponentItem componentItem : Items) componentItem.OnMouseMove(mouseX, mouseY, GetX(), GetY()-offsetY);
 
-        if (IsMinimizing)
-        {
-            if (RemainingMinimizingY > 0)
-            {
+        if (IsMinimizing) {
+            if (RemainingMinimizingY > 0) {
+
                 RemainingMinimizingY -= 20;
-
                 RemainingMinimizingY = Math.max(RemainingMinimizingY, 0);
 
-                if (RemainingMinimizingY == 0)
-                {
+                if (RemainingMinimizingY == 0) {
                     Minimized = true;
                     IsMinimizing = false;
                     Height = 17;
                 }
             }
-        }
-        else if (IsMaximizing)
-        {
-            if (RemainingMaximizingY < 500)
-            {
-                RemainingMaximizingY += 20;
+        } else if (IsMaximizing) {
+            if (RemainingMaximizingY < 500) {
 
+                RemainingMaximizingY += 20;
                 RemainingMaximizingY = Math.min(RemainingMaximizingY, 500);
 
-                if (RemainingMaximizingY == 500)
-                {
+                if (RemainingMaximizingY == 500) {
                     IsMaximizing = false;
                     Height = 17;
                 }
             }
         }
 
-        context.fill((int) GetX(), (int) (GetY()+17-p_OffsetY), (int) (GetX()+GetWidth()), (int) (GetY()+GetHeight()), 0x992A2A2A);
-
-        context.fill((int) GetX(), (int) (GetY()-p_OffsetY), (int) (GetX() + GetWidth()), (int) (GetY() + 17-p_OffsetY), 0x99000000);
-        FontRenderers.getTwCenMtStd28().drawString(context.getMatrices(), GetDisplayName(), (int) (GetX() + 2), (int) (GetY() + 2-p_OffsetY), GetTextColor(), false);
+        context.fill((int) GetX(), (int) (GetY()+17-offsetY), (int) (GetX()+GetWidth()), (int) (GetY()+GetHeight()), 0x992A2A2A);
+        context.fill((int) GetX(), (int) (GetY()-offsetY), (int) (GetX() + GetWidth()), (int) (GetY() + 17-offsetY), 0x99000000);
+        FontRenderers.getTwCenMtStd28().drawString(context.getMatrices(), GetDisplayName(), (int) (GetX() + 2), (int) (GetY() + 2-offsetY), GetTextColor(), false);
 
         if (BarTexture != null) {
-            float l_X = GetX()+GetWidth()-15;
-
-            drawTexture(new Identifier(BarTexture.GetResourceLocation()), (int) l_X, (int) (GetY()+3-p_OffsetY), BarTexture.getWidth()/3, BarTexture.getHeight()/3, context);
+            float x = GetX()+GetWidth()-15;
+            drawTexture(new Identifier(BarTexture.GetResourceLocation()), (int) x, (int) (GetY()+3-offsetY), BarTexture.getWidth()/3, BarTexture.getHeight()/3, context);
         }
+        if (!Minimized) {
 
-        if (!Minimized)
-        {
-            float l_Y = GetY() + 5-p_OffsetY;
-
+            float Y = GetY() + 5-offsetY;
             HoveredItem = null;
+            boolean Break = false;
 
-            boolean l_Break = false;
-
-            for (ComponentItem l_Item : Items)
-            {
-                l_Y = DisplayComponentItem(l_Item, l_Y, p_MouseX, p_MouseY, p_CanHover, false, IsMinimizing ? RemainingMinimizingY : (IsMaximizing ? RemainingMaximizingY : 0), context);
-
-                float l_MenuY = Math.abs(Y - l_Y - BorderLength);
-
-                if (IsMinimizing && l_MenuY >= RemainingMinimizingY)
-                    l_Break = true;
-                else if (IsMaximizing && l_MenuY >= RemainingMaximizingY)
-                    l_Break = true;
-
-                if (l_Break)
-                    break;
+            for (ComponentItem componentItem : Items) {
+                Y = DisplayComponentItem(componentItem, Y, mouseX, mouseY, canHover, false, IsMinimizing ? RemainingMinimizingY : (IsMaximizing ? RemainingMaximizingY : 0), context);
+                float menuY = Math.abs(y - Y - BorderLength);
+                if (IsMinimizing && menuY >= RemainingMinimizingY) Break = true;
+                else if (IsMaximizing && menuY >= RemainingMaximizingY) Break = true;
+                if (Break) break;
             }
 
-            if (!l_Break)
-            {
+            if (!Break) {
                 IsMinimizing = false;
                 IsMaximizing = false;
             }
 
-            if (HoveredItem != null && (ClickGUI != null ? ClickGUI.HoverDescriptions.getValue() : true))
-            {
-                if (HoveredItem.GetDescription() != null && HoveredItem.GetDescription() != "")
-                {
-                    context.fill(p_MouseX+15, p_MouseY, (int) (p_MouseX+19+FontRenderers.getTwCenMtStd22().getStringWidth(HoveredItem.GetDescription())), p_MouseY + Wrapper.GetMC().textRenderer.fontHeight+3, 0x90000000);
-                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), HoveredItem.GetDescription(), p_MouseX+17, p_MouseY, 0xFFFFFF);
+            if (HoveredItem != null && (ClickGUI != null ? ClickGUI.HoverDescriptions.getValue() : true)) {
+                if (HoveredItem.GetDescription() != null && !Objects.equals(HoveredItem.GetDescription(), "")) {
+                    context.fill(mouseX+15, mouseY, (int) (mouseX+19+FontRenderers.getTwCenMtStd22().getStringWidth(HoveredItem.GetDescription())), mouseY + Wrapper.GetMC().textRenderer.fontHeight+3, 0x90000000);
+                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), HoveredItem.GetDescription(), mouseX+17, mouseY, 0xFFFFFF);
                 }
             }
 
-            Height = Math.abs(Y - l_Y - 12);
+            Height = Math.abs(y - Y - 12);
         }
 
-        if (MousePlayAnim > 0)
-        {
+        if (MousePlayAnim > 0) {
             MousePlayAnim--;
-
             //RenderUtil.DrawPolygon(p_MouseX, p_MouseY, MousePlayAnim, 360, 0x99FFFFFF);
         }
 
-        return p_CanHover && p_MouseX > GetX() && p_MouseX < GetX() + GetWidth() && p_MouseY > GetY()-p_OffsetY && p_MouseY < GetY()+GetHeight()-p_OffsetY;
+        return canHover && mouseX > GetX() && mouseX < GetX() + GetWidth() && mouseY > GetY()-offsetY && mouseY < GetY()+GetHeight()-offsetY;
     }
 
-    public float DisplayComponentItem(ComponentItem p_Item, float p_Y, int p_MouseX, int p_MouseY, boolean p_CanHover, boolean p_DisplayExtendedLine, final float p_MaxY, DrawContext context)
-    {
-        p_Y += p_Item.GetHeight();
+    public float DisplayComponentItem(ComponentItem componentItem, float Y, int mouseX, int mouseY, boolean canHover, boolean displayExtendedLine, final float maxY, DrawContext context) {
 
-        p_Item.OnMouseMove(p_MouseX, p_MouseY, GetX(), GetY());
-        p_Item.Update();
+        Y += componentItem.GetHeight();
+        componentItem.OnMouseMove(mouseX, mouseY, GetX(), GetY());
+        componentItem.Update();
+        if (componentItem.HasState(ComponentItem.Extended)) context.fill((int) (x+1), (int) Y, (int) (x+componentItem.GetWidth()-3), (int) (Y + Wrapper.GetMC().textRenderer.fontHeight + 3),0x080808);
+        int color = 0xFFFFFF;
+        boolean hovered = canHover && mouseX > x && mouseX < x+componentItem.GetWidth() && mouseY > Y && mouseY < Y+componentItem.GetHeight();
+        boolean dropDown = componentItem.HasState(ComponentItem.Extended);
 
-        if (p_Item.HasState(ComponentItem.Extended))
-        {
-            context.fill((int) (X+1), (int) p_Y, (int) (X+p_Item.GetWidth()-3), (int) (p_Y + Wrapper.GetMC().textRenderer.fontHeight + 3),0x080808);
-        }
-
-        int l_Color = 0xFFFFFF;
-
-        boolean l_Hovered = p_CanHover && p_MouseX > X && p_MouseX < X+p_Item.GetWidth() && p_MouseY > p_Y && p_MouseY < p_Y+p_Item.GetHeight();
-
-        boolean l_DropDown = p_Item.HasState(ComponentItem.Extended);
-
-        if (l_Hovered)
-        {
-            if (!l_DropDown)
-                context.fill((int) GetX(), (int) p_Y, (int) (GetX()+p_Item.GetWidth()), (int) (p_Y+11), 0x99040404);
+        if (hovered) {
+            if (!dropDown) context.fill((int) GetX(), (int) Y, (int) (GetX()+componentItem.GetWidth()), (int) (Y+11), 0x99040404);
                 //RenderUtil.drawGradientRect(GetX(), p_Y, GetX()+p_Item.GetWidth(), p_Y+11, 0x99040404, 0x99000000);
-            l_Color = (p_Item.HasState(ComponentItem.Clicked) && !p_Item.HasFlag(ComponentItem.DontDisplayClickableHighlight)) ? GetTextColor() : l_Color;// - commented for issue #27
-            HoveredItem = p_Item;
-
-            p_Item.AddState(ComponentItem.Hovered);
-        }
-        else
-        {
-            if (p_Item.HasState(ComponentItem.Clicked) && !p_Item.HasFlag(ComponentItem.DontDisplayClickableHighlight))
-                l_Color = GetTextColor();
-
-            p_Item.RemoveState(ComponentItem.Hovered);
+            color = (componentItem.HasState(ComponentItem.Clicked) && !componentItem.HasFlag(ComponentItem.DontDisplayClickableHighlight)) ? GetTextColor() : color;// - commented for issue #27
+            HoveredItem = componentItem;
+            componentItem.AddState(ComponentItem.Hovered);
+        } else {
+            if (componentItem.HasState(ComponentItem.Clicked) && !componentItem.HasFlag(ComponentItem.DontDisplayClickableHighlight)) color = GetTextColor();
+            componentItem.RemoveState(ComponentItem.Hovered);
         }
 
-        if (l_DropDown)
-            context.fill((int) GetX(), (int) p_Y, (int) (GetX()+p_Item.GetWidth()), (int) (p_Y+11), 0x99040404);
+        if (dropDown) context.fill((int) GetX(), (int) Y, (int) (GetX()+componentItem.GetWidth()), (int) (Y+11), 0x99040404);
             //RenderUtil.drawGradientRect(GetX(), p_Y, GetX()+p_Item.GetWidth(), p_Y+11, 0x99040404, 0x99000000);
 
-        if (p_Item.HasFlag(ComponentItem.RectDisplayAlways) || (p_Item.HasFlag(ComponentItem.RectDisplayOnClicked) && p_Item.HasState(ComponentItem.Clicked)))
-            context.fill((int) GetX(), (int) p_Y, (int) (GetX()+p_Item.GetCurrentWidth()), (int) (p_Y+11), p_Item.HasState(ComponentItem.Clicked) || p_Item.HasFlag(ComponentItem.DontDisplayClickableHighlight) ? GetColor() : GetColor());
-        FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), p_Item.GetDisplayText(), X + Padding, p_Y, l_Color);
+        if (componentItem.HasFlag(ComponentItem.RectDisplayAlways) || (componentItem.HasFlag(ComponentItem.RectDisplayOnClicked) && componentItem.HasState(ComponentItem.Clicked))) context.fill((int) GetX(), (int) Y, (int) (GetX()+componentItem.GetCurrentWidth()), (int) (Y+11), GetColor());
+        FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), componentItem.GetDisplayText(), x + Padding, Y, color);
 
         /*if (p_Item.HasFlag(ComponentItem.HasValues))
         {
             RenderUtil.drawLine(X + p_Item.GetWidth() - 1, p_Y, X + p_Item.GetWidth() - 1, p_Y + 11, 5, 0x9945B5E4);
         }*/
 
-        if (p_Item.HasState(ComponentItem.Extended) || p_DisplayExtendedLine)
-        {
+        if (componentItem.HasState(ComponentItem.Extended) || displayExtendedLine) {
             //RenderUtil.drawLine(X + p_Item.GetWidth() - 1, p_Y, X + p_Item.GetWidth() - 1, p_Y + 11, 3, GetColor());
         }
 
-        if (p_Item.HasState(ComponentItem.Extended))
-        {
-            for (ComponentItem l_ValItem : p_Item.DropdownItems)
-            {
-                p_Y = DisplayComponentItem(l_ValItem, p_Y, p_MouseX, p_MouseY, p_CanHover, true, p_MaxY, context);
-
-                if (p_MaxY > 0)
-                {
-                    float l_MenuY = Math.abs(Y - p_Y - BorderLength);
-
-                    if (l_MenuY >= p_MaxY)
-                        break;
+        if (componentItem.HasState(ComponentItem.Extended)) {
+            for (ComponentItem component : componentItem.DropdownItems) {
+                Y = DisplayComponentItem(component, Y, mouseX, mouseY, canHover, true, maxY, context);
+                if (maxY > 0) {
+                    float menuY = Math.abs(y - Y - BorderLength);
+                    if (menuY >= maxY) break;
                 }
             }
         }
 
-        return p_Y;
+        return Y;
     }
 
-    public boolean MouseClicked(int p_MouseX, int p_MouseY, int p_MouseButton, float offsetY)
-    {
-        if (p_MouseX > GetX() && p_MouseX < GetX() + GetWidth() && p_MouseY > GetY()-offsetY && p_MouseY < GetY()+BorderLength-offsetY)
-        {
+    public boolean MouseClicked(int mouseX, int mouseY, int mouseButton, float offsetY) {
+        if (mouseX > GetX() && mouseX < GetX() + GetWidth() && mouseY > GetY()-offsetY && mouseY < GetY()+BorderLength-offsetY) {
             /// Dragging (Top border)
-            if (p_MouseButton == 0)
-            {
+            if (mouseButton == 0) {
                 Dragging = true;
-                DeltaX = p_MouseX-X;
-                DeltaY = p_MouseY-Y;
-            }
-            else if (p_MouseButton == 1)
-            {
+                DeltaX = mouseX-x;
+                DeltaY = mouseY-y;
+            } else if (mouseButton == 1) {
                 /// Right click
-                if (!Minimized)
-                {
+                if (!Minimized) {
                     IsMinimizing = true;
                     RemainingMinimizingY = Height;
-
                     IsMaximizing = false;
-                    RemainingMaximizingY = 0;
-                }
-                else
-                {
+                } else {
                     Minimized = false;
-
                     IsMinimizing = false;
                     RemainingMinimizingY = 0;
-
                     IsMaximizing = true;
-                    RemainingMaximizingY = 0;
                 }
+                RemainingMaximizingY = 0;
             }
         }
 
-        if (HoveredItem != null)
-        {
-            HoveredItem.OnMouseClick(p_MouseX, p_MouseY, p_MouseButton);
-
-            if (p_MouseButton == 0)
-                MousePlayAnim = 20;
+        if (HoveredItem != null) {
+            HoveredItem.OnMouseClick(mouseX, mouseY, mouseButton);
+            if (mouseButton == 0) MousePlayAnim = 20;
             return true;
         }
 
         return Dragging;
     }
 
-    public void MouseReleased(int p_MouseX, int p_MouseY)
-    {
-        if (Dragging)
-            Dragging = false;
-
-        for (ComponentItem l_Item : Items)
-        {
-            HandleMouseReleaseCompItem(l_Item, p_MouseX, p_MouseY);
-        }
+    public void MouseReleased(int mouseX, int mouseY) {
+        if (Dragging) Dragging = false;
+        for (ComponentItem componentItem : Items) HandleMouseReleaseCompItem(componentItem, mouseX, mouseY);
     }
 
-    public void HandleMouseReleaseCompItem(ComponentItem p_Item, int p_MouseX, int p_MouseY)
-    {
-        p_Item.OnMouseRelease(p_MouseX, p_MouseY);
-
-        for (ComponentItem l_Item : p_Item.DropdownItems)
-        {
-            l_Item.OnMouseRelease(p_MouseX, p_MouseY);
-        }
+    public void HandleMouseReleaseCompItem(ComponentItem componentItem, int mouseX, int mouseY) {
+        componentItem.OnMouseRelease(mouseX, mouseY);
+        for (ComponentItem component : componentItem.DropdownItems) component.OnMouseRelease(mouseX, mouseY);
     }
 
-    public void MouseClickMove(int p_MouseX, int p_MouseY, int p_ClickedMouseButton)
-    {
-        for (ComponentItem l_Item : Items)
-        {
-            HandleMouseClickMoveCompItem(l_Item, p_MouseX, p_MouseY, p_ClickedMouseButton);
-        }
+    public void MouseClickMove(int mouseX, int mouseY, int mouseButton) {
+        for (ComponentItem componentItem : Items) HandleMouseClickMoveCompItem(componentItem, mouseX, mouseY, mouseButton);
     }
 
-    private void HandleMouseClickMoveCompItem(ComponentItem l_Item, int p_MouseX, int p_MouseY, int p_ClickedMouseButton)
-    {
-        l_Item.OnMouseClickMove(p_MouseX, p_MouseY, p_ClickedMouseButton);
-
-        for (ComponentItem l_Item2 : l_Item.DropdownItems)
-        {
-            l_Item2.OnMouseClickMove(p_MouseX, p_MouseY, p_ClickedMouseButton);
-        }
+    private void HandleMouseClickMoveCompItem(ComponentItem componentItem, int mouseX, int mouseY, int mouseButton) {
+        componentItem.OnMouseClickMove(mouseX, mouseY, mouseButton);
+        for (ComponentItem component : componentItem.DropdownItems) component.OnMouseClickMove(mouseX, mouseY, mouseButton);
     }
 
-    public String GetDisplayName()
-    {
+    public String GetDisplayName() {
         return DisplayName;
     }
 
-    public float GetX()
-    {
-        return X;
+    public float GetX() {
+        return x;
     }
 
-    public float GetY()
-    {
-        return Y;
+    public float GetY() {
+        return y;
     }
 
-    public float GetWidth()
-    {
+    public float GetWidth() {
         return Width;
     }
 
-    public float GetHeight()
-    {
+    public float GetHeight() {
         return Height;
     }
 
-    public void SetX(float p_X)
-    {
-        X = p_X;
+    public void SetX(float X) {
+        x = X;
     }
 
-    public void SetY(float p_Y)
-    {
-        Y = p_Y;
+    public void SetY(float Y) {
+        y = Y;
     }
 
-    public void keyTyped(int keyCode, int scanCode, int modifiers)
-    {
-        for (ComponentItem l_Item : Items)
-            HandleKeyTypedForItem(l_Item, keyCode, scanCode, modifiers);
+    public void keyTyped(int keyCode, int scanCode, int modifiers) {
+        for (ComponentItem componentItem : Items) HandleKeyTypedForItem(componentItem, keyCode, scanCode, modifiers);
     }
 
-    public void HandleKeyTypedForItem(ComponentItem p_Item, int keyCode, int scanCode, int modifiers)
-    {
-        p_Item.keyTyped(keyCode, scanCode, modifiers);
-
-        for (ComponentItem l_Item : p_Item.DropdownItems)
-            HandleKeyTypedForItem(l_Item, keyCode, scanCode, modifiers);
+    public void HandleKeyTypedForItem(ComponentItem componentItem, int keyCode, int scanCode, int modifiers) {
+        componentItem.keyTyped(keyCode, scanCode, modifiers);
+        for (ComponentItem component : componentItem.DropdownItems) HandleKeyTypedForItem(component, keyCode, scanCode, modifiers);
     }
 
-    private int GetColor()
-    {
+    private int GetColor() {
         return (Colors.Alpha.getValue() << 24) & 0xFF000000 | (Colors.Red.getValue() << 16) & 0x00FF0000 | (Colors.Green.getValue() << 8) & 0x0000FF00 | Colors.Blue.getValue() & 0x000000FF;
     }
 
-    public int GetTextColor()
-    {
+    public int GetTextColor() {
         return (Colors.Red.getValue() << 16) & 0x00FF0000 | (Colors.Green.getValue() << 8) & 0x0000FF00 | Colors.Blue.getValue() & 0x000000FF;
     }
 
-    public void Default()
-    {
-        X = DefaultX;
-        Y = DefaultY;
-
-        Items.forEach(comp ->
-        {
-            if (comp.HasState(ComponentItem.Extended))
-                comp.RemoveState(ComponentItem.Extended);
-        });
+    public void Default() {
+        x = DefaultX;
+        y = DefaultY;
+        Items.forEach(comp -> {if (comp.HasState(ComponentItem.Extended)) comp.RemoveState(ComponentItem.Extended);});
     }
 }

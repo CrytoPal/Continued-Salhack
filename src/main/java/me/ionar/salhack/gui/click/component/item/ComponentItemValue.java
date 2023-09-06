@@ -48,9 +48,7 @@ public class ComponentItemValue extends ComponentItem {
     }
 
     @Override
-    public void Update() {
-        super.Update();
-    }
+    public void Update() {}
 
     @Override
     public boolean HasState(int state) {
@@ -190,9 +188,7 @@ public class ComponentItemValue extends ComponentItem {
             }
 
             String string = (String)value.getValue();
-
             if (string == null) return;
-
             String keyName = GLFW.glfwGetKeyName(keyCode, 0);
             if (keyCode == GLFW.GLFW_KEY_BACKSPACE && !string.isEmpty()) string = string.substring(0, string.length() - 1);
                 //if (Keyboard.isKeyDown(Keyboard.KEY_BACK)) {

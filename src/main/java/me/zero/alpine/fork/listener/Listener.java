@@ -88,11 +88,9 @@ public class Listener<T> implements EventHook<T> {
      */
     @Override
     public void invoke(T event) {
-        if (filters.length > 0) {
-            for (Predicate<T> filter : filters) {
-                if (!filter.test(event)) {
-                    return;
-                }
+        for (Predicate<T> filter : filters) {
+            if (!filter.test(event)) {
+                return;
             }
         }
         this.hook.invoke(event);

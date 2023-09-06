@@ -50,14 +50,14 @@ import sun.misc.Unsafe;
 public final class TypeResolver {
   /** Cache of type variable/argument pairs */
   private static final Map<Class<?>, Reference<Map<TypeVariable<?>, Type>>> TYPE_VARIABLE_CACHE = Collections
-      .synchronizedMap(new WeakHashMap<Class<?>, Reference<Map<TypeVariable<?>, Type>>>());
+      .synchronizedMap(new WeakHashMap<>());
   private static volatile boolean CACHE_ENABLED = true;
   private static boolean RESOLVES_LAMBDAS;
   private static Object JAVA_LANG_ACCESS;
   private static Method GET_CONSTANT_POOL;
   private static Method GET_CONSTANT_POOL_SIZE;
   private static Method GET_CONSTANT_POOL_METHOD_AT;
-  private static final Map<String, Method> OBJECT_METHODS = new HashMap<String, Method>();
+  private static final Map<String, Method> OBJECT_METHODS = new HashMap<>();
   private static final Map<Class<?>, Class<?>> PRIMITIVE_WRAPPERS;
   private static final Double JAVA_VERSION;
 
@@ -65,14 +65,11 @@ public final class TypeResolver {
     JAVA_VERSION = Double.parseDouble(System.getProperty("java.specification.version", "0"));
 
     try {
-      final Unsafe unsafe = AccessController.doPrivileged(new PrivilegedExceptionAction<Unsafe>() {
-        @Override
-        public Unsafe run() throws Exception {
-          final Field f = Unsafe.class.getDeclaredField("theUnsafe");
-          f.setAccessible(true);
+      final Unsafe unsafe = AccessController.doPrivileged((PrivilegedExceptionAction<Unsafe>) () -> {
+        final Field f = Unsafe.class.getDeclaredField("theUnsafe");
+        f.setAccessible(true);
 
-          return (Unsafe) f.get(null);
-        }
+        return (Unsafe) f.get(null);
       });
 
       Class<?> sharedSecretsClass;
@@ -80,12 +77,7 @@ public final class TypeResolver {
       if (JAVA_VERSION < 9) {
         sharedSecretsClass = Class.forName("sun.misc.SharedSecrets");
         // Java 8 and lower can simply call setAccessible
-        accessSetter = new AccessMaker() {
-          @Override
-          public void makeAccessible(AccessibleObject accessibleObject) {
-            accessibleObject.setAccessible(true);
-          }
-        };
+        accessSetter = accessibleObject -> accessibleObject.setAccessible(true);
       } else if (JAVA_VERSION < 12) {
           try {
             sharedSecretsClass = Class.forName("jdk.internal.misc.SharedSecrets");
@@ -93,15 +85,10 @@ public final class TypeResolver {
             // In Oracle JDK 11.0.6, SharedSecrets was moved from jdk.internal.misc to jdk.internal.access.
             sharedSecretsClass = Class.forName("jdk.internal.access.SharedSecrets");
           }
-          // access control got strengthed in Java 9, but can be circumvented with Unsafe.
+          // access control got strengthened in Java 9, but can be circumvented with Unsafe.
           Field overrideField = AccessibleObject.class.getDeclaredField("override");
           final long overrideFieldOffset = unsafe.objectFieldOffset(overrideField);
-          accessSetter = new AccessMaker() {
-            @Override
-            public void makeAccessible(AccessibleObject accessibleObject) {
-              unsafe.putBoolean(accessibleObject, overrideFieldOffset, true);
-            }
-        };
+          accessSetter = accessibleObject -> unsafe.putBoolean(accessibleObject, overrideFieldOffset, true);
       } else {
           sharedSecretsClass = Class.forName("jdk.internal.access.SharedSecrets");
           // In Java 12, AccessibleObject.override was added to the reflection blacklist.
@@ -111,12 +98,7 @@ public final class TypeResolver {
           Object lookupStaticFieldBase = unsafe.staticFieldBase(implLookupField);
           MethodHandles.Lookup implLookup = (MethodHandles.Lookup) unsafe.getObject(lookupStaticFieldBase, implLookupFieldOffset);
           final MethodHandle overrideSetter = implLookup.findSetter(AccessibleObject.class, "override", boolean.class);
-          accessSetter = new AccessMaker() {
-            @Override
-            public void makeAccessible(AccessibleObject object) throws Throwable {
-              overrideSetter.invokeWithArguments(new Object[] {object, true});
-            }
-        };
+          accessSetter = object -> overrideSetter.invokeWithArguments(new Object[] {object, true});
       }
       Method javaLangAccessGetter = sharedSecretsClass.getMethod("getJavaLangAccess");
       accessSetter.makeAccessible(javaLangAccessGetter);
@@ -145,17 +127,7 @@ public final class TypeResolver {
     } catch (Throwable ignore) {
     }
 
-    Map<Class<?>, Class<?>> types = new HashMap<Class<?>, Class<?>>();
-    types.put(boolean.class, Boolean.class);
-    types.put(byte.class, Byte.class);
-    types.put(char.class, Character.class);
-    types.put(double.class, Double.class);
-    types.put(float.class, Float.class);
-    types.put(int.class, Integer.class);
-    types.put(long.class, Long.class);
-    types.put(short.class, Short.class);
-    types.put(void.class, Void.class);
-    PRIMITIVE_WRAPPERS = Collections.unmodifiableMap(types);
+      PRIMITIVE_WRAPPERS = Map.of(boolean.class, Boolean.class, byte.class, Byte.class, char.class, Character.class, double.class, Double.class, float.class, Float.class, int.class, Integer.class, long.class, Long.class, short.class, Short.class, void.class, Void.class);
   }
   
   private interface AccessMaker {
@@ -260,10 +232,10 @@ public final class TypeResolver {
   /**
    * Traverses a generic type and replaces all type variables and wildcard types with concrete types (if possible),
    * by using the type information from given {@code context}.
-   *
+   * <p>
    * Generic types used as input to this method are commonly obtained using reflection, e.g. via
    * {@link Field#getGenericType()}, {@link Method#getGenericReturnType()}, {@link Method#getGenericParameterTypes()}.
-   *
+   * <p>
    * Example:
    * <blockquote><pre>{@code
    *   class A<T> {
@@ -281,7 +253,7 @@ public final class TypeResolver {
    * is returned, but the input type is reified recursively.
    * Reifying the generic type of the field {@code something} with {@code B.class} as {@code context} will yield
    * {@code Number.class}.
-   *
+   * <p>
    * Note that type variables with no explicit upper bound are reified to {@link Object}, and {@code Unknown.class} is
    * never returned.
    *
@@ -304,10 +276,10 @@ public final class TypeResolver {
   /**
    * Traverses a generic type and replaces all type variables and wildcard types with concrete types (if possible).
    * A convenience wrapper around {@link #reify(Type, Class)}, for when no context is needed/available.
-   *
+   * <p>
    * Generic types used as input to this method are commonly obtained using reflection, e.g. via
    * {@link Field#getGenericType()}, {@link Method#getGenericReturnType()}, {@link Method#getGenericParameterTypes()}.
-   *
+   * <p>
    * Example:
    * <blockquote><pre>{@code
    *   class X {
@@ -333,7 +305,7 @@ public final class TypeResolver {
    *         whose generic component type cannot be reified to an instance of {@link Class}.
    */
   public static Type reify(Type type) {
-    return reify(type, new HashMap<TypeVariable<?>, Type>(0));
+    return reify(type, new HashMap<>(0));
   }
 
   /**
@@ -360,8 +332,7 @@ public final class TypeResolver {
         functionalInterface = fi;
     }
 
-    if (genericType instanceof ParameterizedType) {
-      ParameterizedType paramType = (ParameterizedType) genericType;
+    if (genericType instanceof ParameterizedType paramType) {
       Type[] arguments = paramType.getActualTypeArguments();
       result = new Class[arguments.length];
       for (int i = 0; i < arguments.length; i++)
@@ -430,12 +401,10 @@ public final class TypeResolver {
       return (Class<?>) genericType;
     } else if (genericType instanceof ParameterizedType) {
       return resolveRawClass(((ParameterizedType) genericType).getRawType(), subType, functionalInterface);
-    } else if (genericType instanceof GenericArrayType) {
-      GenericArrayType arrayType = (GenericArrayType) genericType;
+    } else if (genericType instanceof GenericArrayType arrayType) {
       Class<?> component = resolveRawClass(arrayType.getGenericComponentType(), subType, functionalInterface);
       return Array.newInstance(component, 0).getClass();
-    } else if (genericType instanceof TypeVariable) {
-      TypeVariable<?> variable = (TypeVariable<?>) genericType;
+    } else if (genericType instanceof TypeVariable<?> variable) {
       genericType = getTypeVariableMap(subType, functionalInterface).get(variable);
       genericType = genericType == null ? resolveBound(variable)
           : resolveRawClass(genericType, subType, functionalInterface);
@@ -451,7 +420,7 @@ public final class TypeResolver {
     else if (genericType instanceof Class<?>)
       return genericType;
     else
-      return reify(genericType, typeVariableTypeMap, new HashMap<ParameterizedType, ReifiedParameterizedType>());
+      return reify(genericType, typeVariableTypeMap, new HashMap<>());
   }
 
   /**
@@ -467,9 +436,8 @@ public final class TypeResolver {
       return genericType;
 
     // Recursive cases.
-    if (genericType instanceof ParameterizedType) {
-      final ParameterizedType parameterizedType = (ParameterizedType) genericType;
-      // Self-referential type needs special attention. Otherwise we might accidentally overflow the stack.
+    if (genericType instanceof ParameterizedType parameterizedType) {
+      // Self-referential type needs special attention. Otherwise, we might accidentally overflow the stack.
       if (partial.containsKey(parameterizedType)) {
         ReifiedParameterizedType res = partial.get(genericType);
         res.addReifiedTypeArgument(res);
@@ -487,8 +455,7 @@ public final class TypeResolver {
         }
       }
       return result;
-    } else if (genericType instanceof GenericArrayType) {
-      final GenericArrayType genericArrayType = (GenericArrayType) genericType;
+    } else if (genericType instanceof GenericArrayType genericArrayType) {
       final Type genericComponentType = genericArrayType.getGenericComponentType();
       final Type reifiedComponentType = reify(genericArrayType.getGenericComponentType(), typeVariableMap, partial);
 
@@ -501,19 +468,17 @@ public final class TypeResolver {
       throw new UnsupportedOperationException(
           "Attempted to reify generic array type, whose generic component type " +
           "could not be reified to some Class<?>. Handling for this case is not implemented");
-    } else if (genericType instanceof TypeVariable<?>) {
-      final TypeVariable<?> typeVariable = (TypeVariable<?>) genericType;
+    } else if (genericType instanceof TypeVariable<?> typeVariable) {
       final Type mapping = typeVariableMap.get(typeVariable);
       if (mapping != null)
         return reify(mapping, typeVariableMap, partial);
       // NOTE: According to https://docs.oracle.com/javase/tutorial/java/generics/bounded.html
       // if there are multiple upper bounds where one bound is a class, then this must be the
-      // leftmost/first bound. Therefore we blindly take this one, hoping it is the most relevant.
+      // leftmost/first bound. Therefore, we blindly take this one, hoping it is the most relevant.
       // Hibernate does the same when erasing types, see also
       // https://github.com/hibernate/hibernate-validator/blob/6.0/engine/src/main/java/org/hibernate/validator/internal/util/TypeHelper.java#L181-L186
       return reify(typeVariable.getBounds()[0], typeVariableMap, partial);
-    } else if (genericType instanceof WildcardType) {
-      final WildcardType wildcardType = (WildcardType) genericType;
+    } else if (genericType instanceof WildcardType wildcardType) {
       final Type[] upperBounds = wildcardType.getUpperBounds();
       final Type[] lowerBounds = wildcardType.getLowerBounds();
       if (upperBounds.length == 1 && lowerBounds.length == 0)
@@ -536,7 +501,7 @@ public final class TypeResolver {
     Map<TypeVariable<?>, Type> map = ref != null ? ref.get() : null;
 
     if (map == null) {
-      map = new HashMap<TypeVariable<?>, Type>();
+      map = new HashMap<>();
 
       // Populate lambdas
       if (functionalInterface != null)
@@ -568,20 +533,19 @@ public final class TypeResolver {
       }
 
       if (CACHE_ENABLED)
-        TYPE_VARIABLE_CACHE.put(targetType, new WeakReference<Map<TypeVariable<?>, Type>>(map));
+        TYPE_VARIABLE_CACHE.put(targetType, new WeakReference<>(map));
     }
 
     return map;
   }
 
   /**
-   * Populates the {@code map} with with variable/argument pairs for the given {@code types}.
+   * Populates the {@code map} with variable/argument pairs for the given {@code types}.
    */
   private static void populateSuperTypeArgs(final Type[] types, final Map<TypeVariable<?>, Type> map,
       boolean depthFirst) {
     for (Type type : types) {
-      if (type instanceof ParameterizedType) {
-        ParameterizedType parameterizedType = (ParameterizedType) type;
+      if (type instanceof ParameterizedType parameterizedType) {
         if (!depthFirst)
           populateTypeArgs(parameterizedType, map, depthFirst);
         Type rawType = parameterizedType.getRawType();
@@ -619,8 +583,7 @@ public final class TypeResolver {
           map.put(variable, typeArgument);
         } else if (typeArgument instanceof ParameterizedType) {
           map.put(variable, typeArgument);
-        } else if (typeArgument instanceof TypeVariable) {
-          TypeVariable<?> typeVariableArgument = (TypeVariable<?>) typeArgument;
+        } else if (typeArgument instanceof TypeVariable<?> typeVariableArgument) {
           if (depthFirst) {
             Type existingType = map.get(variable);
             if (existingType != null) {
