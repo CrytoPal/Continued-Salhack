@@ -34,8 +34,8 @@ public class ItemUtil {
         return false;
     }
 
-    public static void Move(int from, int to) {
-        Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, from, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
-        Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, to, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
+    public static void Move(int slot_from, int slot_to) {
+        Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slot_from, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
+        Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slot_to, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
     }
 }

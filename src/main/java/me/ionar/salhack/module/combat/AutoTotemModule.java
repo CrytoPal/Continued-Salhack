@@ -21,8 +21,6 @@ import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
 
 public final class AutoTotemModule extends Module {
-
-    private boolean holding;
     public final Value<Float> health = new Value<Float>("Health", new String[]
             {"Hp"}, "The amount of health needed to acquire a totem.", 16.0f, 0.0f, 20.0f, 0.5f);
     public final Value<AutoTotemMode> Mode = new Value<AutoTotemMode>("Mode", new String[]{"Mode"}, "If you are above the required health for a totem, x will be used in offhand instead.", AutoTotemMode.Totem);
@@ -33,9 +31,11 @@ public final class AutoTotemModule extends Module {
     public final Value<Boolean> OffhandGapOnSword = new Value<Boolean>("SwordGap", new String[]{"SwordGap"}, "Will override all else, and try and use a gap in offhand when using a sword in main hand", false);
     public final Value<Boolean> OffhandStrNoStrSword = new Value<Boolean>("StrGap", new String[]{"Strength"}, "Will put a potion if offhand if you don't have strength and wearing a sword", false);
     public final Value<Boolean> Override = new Value<Boolean>("Override", new String[]{"O"}, "Replaces your current offhand with the item mode if there's another item", false);
+    public final Value<Boolean> NearPlayers = new Value<Boolean>("e",new String[]{"NP"},"hi", true);
 
     // public final Value<Boolean> InventorySwitch = new Value<Boolean>("Switch in Inv", new String[]{"Strength"}, "Puts the Item into your offhand while inventory gui is on.", true);
     // public final Value<Boolean> HotbarFirst = new Value<Boolean>("HotbarFirst", new String[]{"Recursive"}, "Prioritizes your hotbar before inventory slots", false);
+
     @EventHandler
     private final Listener<EventClientTick> OnPlayerUpdate = new Listener<>(event ->
     {
@@ -69,8 +69,8 @@ public final class AutoTotemModule extends Module {
     });
 
     public AutoTotemModule() {
-        super("AutoTotem", new String[]
-                {"Totem"}, "Automatically places a totem of undying in your offhand", 0, 0xDADB24, ModuleType.COMBAT);
+        super("Offhand", new String[]
+                {"OF"}, "Automatically puts an Item of your choice in your offhand", 0, 0xDADB24, ModuleType.COMBAT);
     }
 
     @Override
