@@ -43,6 +43,8 @@ public class HudManager
         Add(new SpeedComponent());
         Add(new RotationComponent());
         Add(new TrueDurabilityComponent());
+        Add(new InventoryComponent());
+        Add(new ArmorHudComponent());
         /*
         Add(new ArrayListComponent());
         Add(new InventoryComponent());
