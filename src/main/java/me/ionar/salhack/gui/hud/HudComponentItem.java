@@ -18,8 +18,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
 
-public class HudComponentItem
-{
+public class HudComponentItem {
     public ArrayList<Value> ValueList = new ArrayList<Value>();
     private String DisplayName;
     private float X;
@@ -44,8 +43,7 @@ public class HudComponentItem
 
     protected MinecraftClient mc = Wrapper.GetMC();
 
-    public HudComponentItem(String p_DisplayName, float p_X, float p_Y)
-    {
+    public HudComponentItem(String p_DisplayName, float p_X, float p_Y) {
         DisplayName = p_DisplayName;
         X = p_X;
         Y = p_Y;
@@ -53,55 +51,45 @@ public class HudComponentItem
         DefaultY = p_Y;
     }
 
-    public String GetDisplayName()
-    {
+    public String GetDisplayName() {
         return DisplayName;
     }
 
-    public void SetWidth(float p_Width)
-    {
+    public void SetWidth(float p_Width) {
         Width = p_Width;
     }
 
-    public void SetHeight(float p_Height)
-    {
+    public void SetHeight(float p_Height) {
         Height = p_Height;
     }
 
-    public float GetWidth()
-    {
+    public float GetWidth() {
         return Width;
     }
 
-    public float GetHeight()
-    {
+    public float GetHeight() {
         return Height;
     }
 
-    public boolean IsHidden()
-    {
+    public boolean IsHidden() {
         return Hidden;
     }
 
-    public void SetHidden(boolean p_Hide)
-    {
+    public void SetHidden(boolean p_Hide) {
         Hidden = p_Hide;
 
         HudManager.Get().ScheduleSave(this);
     }
 
-    public float GetX()
-    {
+    public float GetX() {
         return X;
     }
 
-    public float GetY()
-    {
+    public float GetY() {
         return Y;
     }
 
-    public void SetX(float p_X)
-    {
+    public void SetX(float p_X) {
         if (X == p_X)
             return;
 
@@ -111,8 +99,7 @@ public class HudComponentItem
             HudManager.Get().ScheduleSave(this);
     }
 
-    public void SetY(float p_Y)
-    {
+    public void SetY(float p_Y) {
         if (Y == p_Y)
             return;
 
@@ -122,39 +109,32 @@ public class HudComponentItem
             HudManager.Get().ScheduleSave(this);
     }
 
-    public boolean IsDragging()
-    {
+    public boolean IsDragging() {
         return Dragging;
     }
 
-    public void SetDragging(boolean p_Dragging)
-    {
+    public void SetDragging(boolean p_Dragging) {
         Dragging = p_Dragging;
     }
 
-    protected void SetClampPosition(float p_X, float p_Y)
-    {
+    protected void SetClampPosition(float p_X, float p_Y) {
         ClampX = p_X;
         ClampY = p_Y;
     }
 
-    protected void SetClampLevel(int p_ClampLevel)
-    {
+    protected void SetClampLevel(int p_ClampLevel) {
         ClampLevel = p_ClampLevel;
     }
 
     /// don't override unless you return this
-    public boolean Render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context)
-    {
+    public boolean Render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
         boolean l_Inside = p_MouseX >= GetX() && p_MouseX < GetX() + GetWidth() && p_MouseY >= GetY() && p_MouseY < GetY() + GetHeight();
 
-        if (l_Inside)
-        {
+        if (l_Inside) {
             context.fill((int) GetX(), (int) GetY(), (int) (GetX()+GetWidth()), (int) (GetY()+GetHeight()), 0x50384244);
         }
 
-        if (IsDragging())
-        {
+        if (IsDragging()) {
             Window l_Res = mc.getWindow();
 
             float l_X = p_MouseX - DeltaX;
@@ -171,8 +151,7 @@ public class HudComponentItem
 
         render(p_MouseX, p_MouseY, p_PartialTicks, context);
 
-        if (IsSelected())
-        {
+        if (IsSelected()) {
             context.fill((int) GetX(), (int) GetY(), (int) (GetX()+GetWidth()), (int) (GetY()+GetHeight()), 0x35DDDDDD);
         }
 
@@ -180,33 +159,26 @@ public class HudComponentItem
     }
 
     /// override for childs
-    public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context)
-    {
+    public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
 
     }
 
-    public boolean OnMouseClick(int p_MouseX, int p_MouseY, int p_MouseButton)
-    {
-        if (p_MouseX >= GetX() && p_MouseX < GetX() + GetWidth() && p_MouseY >= GetY() && p_MouseY < GetY() + GetHeight())
-        {
-            if (p_MouseButton == 0)
-            {
+    public boolean OnMouseClick(int p_MouseX, int p_MouseY, int p_MouseButton) {
+        if (p_MouseX >= GetX() && p_MouseX < GetX() + GetWidth() && p_MouseY >= GetY() && p_MouseY < GetY() + GetHeight()) {
+            if (p_MouseButton == 0) {
                 SetDragging(true);
                 DeltaX = p_MouseX - GetX();
                 DeltaY = p_MouseY - GetY();
 
-                HudManager.Get().Items.forEach(p_Item ->
-                {
-                    if (p_Item.IsMultiSelectedDragging())
-                    {
+                HudManager.Get().Items.forEach(p_Item -> {
+                    if (p_Item.IsMultiSelectedDragging()) {
                         p_Item.SetDragging(true);
                         p_Item.SetDeltaX(p_MouseX - p_Item.GetX());
                         p_Item.SetDeltaY(p_MouseY - p_Item.GetY());
                     }
                 });
             }
-            else if (p_MouseButton == 1)
-            {
+            else if (p_MouseButton == 1) {
                 ++Side;
 
                 if (Side > 3)
@@ -214,8 +186,7 @@ public class HudComponentItem
 
                 HudManager.Get().ScheduleSave(this);
             }
-            else if (p_MouseButton == 2)
-            {
+            else if (p_MouseButton == 2) {
                 ++ClampLevel;
 
                 if (ClampLevel > 2)
@@ -230,13 +201,11 @@ public class HudComponentItem
         return false;
     }
 
-    public void SetDeltaX(float p_X)
-    {
+    public void SetDeltaX(float p_X) {
         DeltaX = p_X;
     }
 
-    public void SetDeltaY(float p_Y)
-    {
+    public void SetDeltaY(float p_Y) {
         DeltaY = p_Y;
     }
 
@@ -245,14 +214,12 @@ public class HudComponentItem
         SetDragging(false);
     }
 
-    public void LoadSettings()
-    {
+    public void LoadSettings() {
         File l_Exists = new File("SalHack/HUD/" + GetDisplayName() + ".json");
         if (!l_Exists.exists())
             return;
 
-        try
-        {
+        try {
             // create Gson instance
             Gson gson = new Gson();
 
@@ -263,65 +230,53 @@ public class HudComponentItem
             Map<?, ?> map = gson.fromJson(reader, Map.class);
 
             // print map entries
-            for (Map.Entry<?, ?> entry : map.entrySet())
-            {
+            for (Map.Entry<?, ?> entry : map.entrySet()) {
                 String l_Key = (String)entry.getKey();
                 String l_Value = (String)entry.getValue();
 
-                if (l_Key.equalsIgnoreCase("displayname"))
-                {
+                if (l_Key.equalsIgnoreCase("displayname")) {
                     SetDisplayName(l_Value, false);
                     continue;
                 }
 
-                if (l_Key.equalsIgnoreCase("visible"))
-                {
+                if (l_Key.equalsIgnoreCase("visible")) {
                     SetHidden(l_Value.equalsIgnoreCase("false"));
                     continue;
                 }
 
-                if (l_Key.equalsIgnoreCase("PositionX"))
-                {
+                if (l_Key.equalsIgnoreCase("PositionX")) {
                     SetX(Float.parseFloat(l_Value));
                     continue;
                 }
 
-                if (l_Key.equalsIgnoreCase("PositionY"))
-                {
+                if (l_Key.equalsIgnoreCase("PositionY")) {
                     SetY(Float.parseFloat(l_Value));
                     continue;
                 }
 
-                if (l_Key.equalsIgnoreCase("ClampLevel"))
-                {
+                if (l_Key.equalsIgnoreCase("ClampLevel")) {
                     SetClampLevel(Integer.parseInt(l_Value));
                     continue;
                 }
 
-                if (l_Key.equalsIgnoreCase("ClampPositionX"))
-                {
+                if (l_Key.equalsIgnoreCase("ClampPositionX")) {
                     ClampX = (Float.parseFloat(l_Value));
                     continue;
                 }
 
-                if (l_Key.equalsIgnoreCase("ClampPositionY"))
-                {
+                if (l_Key.equalsIgnoreCase("ClampPositionY")) {
                     ClampY = (Float.parseFloat(l_Value));
                     continue;
                 }
 
-                if (l_Key.equalsIgnoreCase("Side"))
-                {
+                if (l_Key.equalsIgnoreCase("Side")) {
                     Side = Integer.parseInt(l_Value);
                     continue;
                 }
 
-                for (Value l_Val : ValueList)
-                {
-                    if (l_Val.getName().equalsIgnoreCase((String) entry.getKey()))
-                    {
-                        if (l_Val.getValue() instanceof Number && !(l_Val.getValue() instanceof Enum))
-                        {
+                for (Value l_Val : ValueList) {
+                    if (l_Val.getName().equalsIgnoreCase((String) entry.getKey())) {
+                        if (l_Val.getValue() instanceof Number && !(l_Val.getValue() instanceof Enum)) {
                             if (l_Val.getValue() instanceof Integer)
                                 l_Val.SetForcedValue(Integer.parseInt(l_Value));
                             else if (l_Val.getValue() instanceof Float)
@@ -329,12 +284,10 @@ public class HudComponentItem
                             else if (l_Val.getValue() instanceof Double)
                                 l_Val.SetForcedValue(Double.parseDouble(l_Value));
                         }
-                        else if (l_Val.getValue() instanceof Boolean)
-                        {
+                        else if (l_Val.getValue() instanceof Boolean) {
                             l_Val.SetForcedValue(l_Value.equalsIgnoreCase("true"));
                         }
-                        else if (l_Val.getValue() instanceof Enum)
-                        {
+                        else if (l_Val.getValue() instanceof Enum) {
                             l_Val.SetForcedValue(l_Val.GetEnumReal(l_Value));
                         }
                         else if (l_Val.getValue() instanceof String)
@@ -349,78 +302,64 @@ public class HudComponentItem
             reader.close();
 
         }
-        catch (Exception ex)
-        {
+        catch (Exception ex) {
             ex.printStackTrace();
         }
     }
 
-    public int GetSide()
-    {
+    public int GetSide() {
         return Side;
     }
 
-    public int GetClampLevel()
-    {
+    public int GetClampLevel() {
         return ClampLevel;
     }
 
-    public boolean HasFlag(int p_Flag)
-    {
+    public boolean HasFlag(int p_Flag) {
         return (Flags & p_Flag) != 0;
     }
 
-    public void AddFlag(int p_Flags)
-    {
+    public void AddFlag(int p_Flags) {
         Flags |= p_Flags;
     }
 
     public static int OnlyVisibleInHudEditor = 0x1;
 
-    public void ResetToDefaultPos()
-    {
+    public void ResetToDefaultPos() {
         SetX(DefaultX);
         SetY(DefaultY);
     }
 
-    public void SetSelected(boolean p_Selected)
-    {
+    public void SetSelected(boolean p_Selected) {
         Selected = p_Selected;
     }
 
-    public boolean IsInArea(float p_MouseX1, float p_MouseX2, float p_MouseY1, float p_MouseY2)
-    {
+    public boolean IsInArea(float p_MouseX1, float p_MouseX2, float p_MouseY1, float p_MouseY2) {
         return GetX() >= p_MouseX1 && GetX()+GetWidth() <= p_MouseX2 && GetY() >= p_MouseY1 && GetY()+GetHeight() <= p_MouseY2;
     }
 
-    public boolean IsSelected()
-    {
+    public boolean IsSelected() {
         return Selected;
     }
 
-    public void SetMultiSelectedDragging(boolean b)
-    {
+    public void SetMultiSelectedDragging(boolean b) {
         MultiSelectedDragging = b;
     }
 
-    public boolean IsMultiSelectedDragging()
-    {
+    public boolean IsMultiSelectedDragging() {
         return MultiSelectedDragging;
     }
 
-    public void SetDisplayName(String p_NewName, boolean p_Save)
-    {
+    public void SetDisplayName(String p_NewName, boolean p_Save) {
         DisplayName = p_NewName;
 
-        if (p_Save)
-        {
+        if (p_Save) {
             HudManager.Get().ScheduleSave(this);
             CommandManager.Get().Reload();
         }
     }
 
-    public int GetTextColor()
-    {
+    public int GetTextColor() {
         return (HudModule.Red.getValue() << 16) & 0x00FF0000 | (HudModule.Green.getValue() << 8) & 0x0000FF00 | HudModule.Blue.getValue() & 0x000000FF;
     }
 }

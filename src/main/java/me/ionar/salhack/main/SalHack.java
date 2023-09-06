@@ -4,8 +4,7 @@ import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.managers.*;
 import net.minecraft.text.Text;
 
-public class SalHack
-{
+public class SalHack {
 
     public static int TICK_TIMER = 1;
     private static ModuleManager m_ModuleManager = new ModuleManager();
@@ -27,8 +26,7 @@ public class SalHack
     //private static UUIDManager m_UUIDManager = new UUIDManager();
 
 
-    public static void Init()
-    {
+    public static void Init() {
         SalHackMod.log.info("Initalizing Salhack");
         m_DirectoryManager.Init();
         SalHackMod.log.info("Initalizing Directory Manager");
@@ -52,11 +50,12 @@ public class SalHack
         m_ImageManager.Load();
     }
 
-    public static ModuleManager GetModuleManager()
-    {
+    public static ModuleManager GetModuleManager() {
         return m_ModuleManager;
     }
-    public static ImageManager GetImageManager(){return m_ImageManager;}
+    public static ImageManager GetImageManager(){
+        return m_ImageManager;
+    }
 /*
     public static FontManager GetFontManager()
     {
@@ -67,18 +66,15 @@ public class SalHack
 
     /// Writes a message to ingame chat
     /// Player must be ingame for this
-    public static void SendMessage(String string)
-    {
+    public static void SendMessage(String string) {
         Wrapper.GetMC().player.sendMessage(Text.of(string));
     }
 
-    public static HudManager GetHudManager()
-    {
+    public static HudManager GetHudManager() {
         return m_HudManager;
     }
 
-    public static FriendManager GetFriendManager()
-    {
+    public static FriendManager GetFriendManager() {
         return m_FriendManager;
     }
 /*
@@ -88,23 +84,19 @@ public class SalHack
     }
  */
 
-    public static DirectoryManager GetDirectoryManager()
-    {
+    public static DirectoryManager GetDirectoryManager() {
         return m_DirectoryManager;
     }
 
-    public static CommandManager GetCommandManager()
-    {
+    public static CommandManager GetCommandManager() {
         return m_CommandManager;
     }
 
-    public static TickRateManager GetTickRateManager()
-    {
+    public static TickRateManager GetTickRateManager() {
         return m_TickRateManager;
     }
 
-    public static NotificationManager GetNotificationManager()
-    {
+    public static NotificationManager GetNotificationManager() {
         return m_NotificationManager;
     }
 
@@ -122,8 +114,7 @@ public class SalHack
 
  */
 
-    public static PresetsManager GetPresetsManager()
-    {
+    public static PresetsManager GetPresetsManager() {
         return m_PresetsManager;
     }
 /*

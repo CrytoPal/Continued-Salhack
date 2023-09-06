@@ -10,14 +10,11 @@ import me.ionar.salhack.command.impl.*;
 import me.ionar.salhack.command.util.ModuleCommandListener;
 import me.ionar.salhack.main.SalHack;
 
-public class CommandManager
-{
-    public CommandManager()
-    {
+public class CommandManager {
+    public CommandManager() {
     }
 
-    public void InitalizeCommands()
-    {
+    public void InitalizeCommands() {
         //Commands.add(new FriendCommand());
         Commands.add(new HelpCommand());
         /*
@@ -34,10 +31,8 @@ public class CommandManager
 
          */
 
-        ModuleManager.Get().GetModuleList().forEach(p_Mod ->
-        {
-            ModuleCommandListener l_Listener = new ModuleCommandListener()
-            {
+        ModuleManager.Get().GetModuleList().forEach(p_Mod -> {
+            ModuleCommandListener l_Listener = new ModuleCommandListener() {
                 @Override
                 public void OnHide()
                 {
@@ -60,10 +55,8 @@ public class CommandManager
             Commands.add(new ModuleCommand(p_Mod.getDisplayName(), p_Mod.getDesc(), l_Listener, p_Mod.getValueList()));
         });
 
-        HudManager.Get().Items.forEach(p_Item ->
-        {
-            ModuleCommandListener l_Listener = new ModuleCommandListener()
-            {
+        HudManager.Get().Items.forEach(p_Item -> {
+            ModuleCommandListener l_Listener = new ModuleCommandListener() {
                 @Override
                 public void OnHide()
                 {
@@ -77,8 +70,7 @@ public class CommandManager
                 }
 
                 @Override
-                public void OnRename(String p_NewName)
-                {
+                public void OnRename(String p_NewName) {
                     p_Item.SetDisplayName(p_NewName, true);
                 }
             };
@@ -92,27 +84,22 @@ public class CommandManager
 
     private ArrayList<Command> Commands = new ArrayList<Command>();
 
-    public final ArrayList<Command> GetCommands()
-    {
+    public final ArrayList<Command> GetCommands() {
         return Commands;
     }
 
-    public final List<Command> GetCommandsLike(String p_Like)
-    {
+    public final List<Command> GetCommandsLike(String p_Like) {
         return Commands.stream()
                 .filter(p_Command -> p_Command.GetName().toLowerCase().startsWith(p_Like.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
-    public static CommandManager Get()
-    {
+    public static CommandManager Get() {
         return SalHack.GetCommandManager();
     }
 
-    public Command GetCommandLike(String p_Like)
-    {
-        for (Command l_Command : Commands)
-        {
+    public Command GetCommandLike(String p_Like) {
+        for (Command l_Command : Commands) {
             if (l_Command.GetName().toLowerCase().startsWith(p_Like.toLowerCase()))
                 return l_Command;
         }
@@ -120,8 +107,7 @@ public class CommandManager
         return null;
     }
 
-    public void Reload()
-    {
+    public void Reload() {
         Commands.clear();
         InitalizeCommands();
     }

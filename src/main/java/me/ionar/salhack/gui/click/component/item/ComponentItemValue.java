@@ -2,12 +2,10 @@ package me.ionar.salhack.gui.click.component.item;
 
 import java.math.BigDecimal;
 
-import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
 import org.lwjgl.glfw.GLFW;
 
 import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
-import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.Timer;
 

@@ -5,17 +5,13 @@ import java.io.IOException;
 
 import me.ionar.salhack.main.SalHack;
 
-public class DirectoryManager
-{
-    public DirectoryManager()
-    {
+public class DirectoryManager {
+    public DirectoryManager() {
     }
 
-    public void Init()
-    {
+    public void Init() {
         /// Create directories as needed
-        try
-        {
+        try {
             CreateDirectory("SalHack");
             CreateDirectory("SalHack/Modules");
             CreateDirectory("SalHack/GUI");
@@ -35,27 +31,23 @@ public class DirectoryManager
             CreateDirectory("SalHack/Presets/Default");
             CreateDirectory("SalHack/Presets/Default/Modules");
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    public void CreateDirectory(String p_Path) throws IOException
-    {
+    public void CreateDirectory(String p_Path) throws IOException {
         new File(p_Path).mkdirs();
 
         //System.out.println("Created path at " + l_Path.get().toString());
     }
 
-    public static DirectoryManager Get()
-    {
+    public static DirectoryManager Get() {
         return SalHack.GetDirectoryManager();
     }
 
-    public String GetCurrentDirectory() throws IOException
-    {
+    public String GetCurrentDirectory() throws IOException {
         return new java.io.File(".").getCanonicalPath();
     }
 }

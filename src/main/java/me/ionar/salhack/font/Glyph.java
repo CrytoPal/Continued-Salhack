@@ -1,4 +1,5 @@
 package me.ionar.salhack.font;
+
 import me.ionar.salhack.main.Wrapper;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.client.texture.NativeImageBackedTexture;

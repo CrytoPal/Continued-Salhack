@@ -3,16 +3,11 @@ package me.ionar.salhack.gui.click.component.menus.mods;
 import me.ionar.salhack.gui.click.component.MenuComponent;
 import me.ionar.salhack.gui.click.component.item.ComponentItem;
 import me.ionar.salhack.gui.click.component.item.ComponentItemHUD;
-import me.ionar.salhack.gui.click.component.item.ComponentItemKeybind;
-import me.ionar.salhack.gui.click.component.item.ComponentItemMod;
 import me.ionar.salhack.gui.click.component.item.ComponentItemValue;
 import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
 import me.ionar.salhack.gui.hud.HudComponentItem;
-import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.managers.HudManager;
 import me.ionar.salhack.managers.ModuleManager;
-import me.ionar.salhack.module.Module;
-import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.ui.ColorsModule;
 import me.ionar.salhack.module.Value;
 

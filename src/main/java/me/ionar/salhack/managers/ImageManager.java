@@ -12,8 +12,7 @@ import javax.imageio.ImageIO;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.util.imgs.SalDynamicTexture;
 
-public class ImageManager
-{
+public class ImageManager {
     public NavigableMap<String, SalDynamicTexture> Pictures = new TreeMap<String, SalDynamicTexture>();
 
     public ImageManager() {}
@@ -34,24 +33,20 @@ public class ImageManager
         LoadImage("skull");
     }
 
-    public void LoadImage(String p_Img)
-    {
+    public void LoadImage(String p_Img) {
         BufferedImage l_Image = null;
 
         InputStream l_Stream = ImageManager.class.getResourceAsStream("/assets/minecraft/salhack/imgs/" + p_Img + ".png");
 
-        try
-        {
+        try {
             l_Image = ImageIO.read(l_Stream);
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        if (l_Image == null)
-        {
+        if (l_Image == null) {
             System.out.println("Couldn't load image: " + p_Img);
             return;
         }
@@ -60,8 +55,7 @@ public class ImageManager
         int l_Width = l_Image.getWidth();
 
         final SalDynamicTexture l_Texture = new SalDynamicTexture(l_Image, l_Height, l_Width);
-        if (l_Texture != null)
-        {
+        if (l_Texture != null) {
             System.out.println(l_Texture.GetResourceLocation());
             l_Texture.SetResourceLocation("salhack/imgs/" + p_Img + ".png");
 
@@ -71,32 +65,27 @@ public class ImageManager
         }
     }
 
-    public SalDynamicTexture GetDynamicTexture(String p_Image)
-    {
+    public SalDynamicTexture GetDynamicTexture(String p_Image) {
         if (Pictures.containsKey(p_Image))
             return Pictures.get(p_Image);
 
         return null;
     }
 
-    public String GetNextImage(String value, boolean p_Recursive)
-    {
+    public String GetNextImage(String value, boolean p_Recursive) {
         String l_String = null;
 
-        for (Map.Entry<String, SalDynamicTexture> l_Itr : Pictures.entrySet())
-        {
+        for (Map.Entry<String, SalDynamicTexture> l_Itr : Pictures.entrySet()) {
             if (!l_Itr.getKey().equalsIgnoreCase(value))
                 continue;
 
-            if (p_Recursive)
-            {
+            if (p_Recursive) {
                 l_String = Pictures.lowerKey(l_Itr.getKey());
 
                 if (l_String == null)
                     return Pictures.lastKey();
             }
-            else
-            {
+            else {
                 l_String = Pictures.higherKey(l_Itr.getKey());
 
                 if (l_String == null)
@@ -109,6 +98,8 @@ public class ImageManager
         return l_String;
     }
 
-    public static ImageManager Get() {return SalHack.GetImageManager();}
+    public static ImageManager Get() {
+        return SalHack.GetImageManager();
+    }
 
 }

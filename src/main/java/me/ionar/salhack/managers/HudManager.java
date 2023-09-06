@@ -23,14 +23,11 @@ import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ValueListeners;
 
-public class HudManager
-{
-    public HudManager()
-    {
+public class HudManager {
+    public HudManager() {
     }
 
-    public void Init()
-    {
+    public void Init() {
         Add(new WatermarkComponent());
 	    Add(new WelcomerHudComponent());
         Add(new CoordsHudComponent());
@@ -89,23 +86,17 @@ public class HudManager
     public ArrayList<HudComponentItem> Items = new ArrayList<HudComponentItem>();
     private boolean CanSave = false;
 
-    public void Add(HudComponentItem p_Item)
-    {
-        try
-        {
-            for (Field field : p_Item.getClass().getDeclaredFields())
-            {
-                if (Value.class.isAssignableFrom(field.getType()))
-                {
-                    if (!field.isAccessible())
-                    {
+    public void Add(HudComponentItem p_Item) {
+        try {
+            for (Field field : p_Item.getClass().getDeclaredFields()) {
+                if (Value.class.isAssignableFrom(field.getType())) {
+                    if (!field.isAccessible()) {
                         field.setAccessible(true);
                     }
 
                     final Value val = (Value) field.get(p_Item);
 
-                    ValueListeners listener = new ValueListeners()
-                    {
+                    ValueListeners listener = new ValueListeners() {
                         @Override
                         public void OnValueChange(Value p_Val)
                         {
@@ -119,36 +110,28 @@ public class HudManager
             }
             Items.add(p_Item);
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void OnRender(float p_PartialTicks, DrawContext context)
-    {
+    public void OnRender(float p_PartialTicks, DrawContext context) {
         Screen l_CurrScreen = Wrapper.GetMC().currentScreen;
 
-        if (l_CurrScreen != null)
-        {
-            if (l_CurrScreen instanceof GuiHudEditor)
-            {
+        if (l_CurrScreen != null) {
+            if (l_CurrScreen instanceof GuiHudEditor) {
                 return;
             }
         }
 
         context.getMatrices().push();
 
-        Items.forEach(p_Item ->
-        {
-            if (!p_Item.IsHidden() && !p_Item.HasFlag(HudComponentItem.OnlyVisibleInHudEditor))
-            {
-                try
-                {
+        Items.forEach(p_Item -> {
+            if (!p_Item.IsHidden() && !p_Item.HasFlag(HudComponentItem.OnlyVisibleInHudEditor)) {
+                try {
                     p_Item.render(0, 0, p_PartialTicks, context);
                 }
-                catch (Exception e)
-                {
+                catch (Exception e) {
                     System.out.println(e.toString());
                 }
             }
@@ -157,18 +140,15 @@ public class HudManager
         context.getMatrices().pop();
     }
 
-    public static HudManager Get()
-    {
+    public static HudManager Get() {
         return SalHack.GetHudManager();
     }
 
-    public void ScheduleSave(HudComponentItem p_Item)
-    {
+    public void ScheduleSave(HudComponentItem p_Item) {
         if (!CanSave)
             return;
 
-        try
-        {
+        try {
             GsonBuilder builder = new GsonBuilder();
 
             Gson gson = builder.setPrettyPrinting().create();
@@ -193,8 +173,7 @@ public class HudManager
             gson.toJson(map, writer);
             writer.close();
         }
-        catch (IOException e)
-        {
+        catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }

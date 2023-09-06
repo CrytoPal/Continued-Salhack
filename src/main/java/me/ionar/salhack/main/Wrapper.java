@@ -6,8 +6,7 @@ public class Wrapper {
 
     final static MinecraftClient mc = MinecraftClient.getInstance();
 
-    public static MinecraftClient GetMC()
-    {
+    public static MinecraftClient GetMC() {
         return mc;
     }
 

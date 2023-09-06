@@ -9,35 +9,29 @@ import me.zero.alpine.fork.listener.Listener;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.util.math.MathHelper;
 
-public class TickRateManager implements Listenable
-{
+public class TickRateManager implements Listenable {
     private long prevTime;
     private float[] ticks = new float[20];
     private int currentTick;
 
-    public TickRateManager()
-    {
+    public TickRateManager() {
         this.prevTime = -1;
 
-        for (int i = 0, len = this.ticks.length; i < len; i++)
-        {
+        for (int i = 0, len = this.ticks.length; i < len; i++) {
             this.ticks[i] = 0.0f;
         }
 
         SalHackMod.EVENT_BUS.subscribe(this);
     }
 
-    public float getTickRate()
-    {
+    public float getTickRate() {
         int tickCount = 0;
         float tickRate = 0.0f;
 
-        for (int i = 0; i < this.ticks.length; i++)
-        {
+        for (int i = 0; i < this.ticks.length; i++) {
             final float tick = this.ticks[i];
 
-            if (tick > 0.0f)
-            {
+            if (tick > 0.0f) {
                 tickRate += tick;
                 tickCount++;
             }
@@ -47,12 +41,9 @@ public class TickRateManager implements Listenable
     }
 
     @EventHandler
-    private Listener<EventNetworkPacketEvent> PacketEvent = new Listener<>(p_Event ->
-    {
-        if (p_Event.GetPacket() instanceof WorldTimeUpdateS2CPacket)
-        {
-            if (this.prevTime != -1)
-            {
+    private Listener<EventNetworkPacketEvent> PacketEvent = new Listener<>(p_Event -> {
+        if (p_Event.GetPacket() instanceof WorldTimeUpdateS2CPacket) {
+            if (this.prevTime != -1) {
                 this.ticks[this.currentTick % this.ticks.length] = MathHelper.clamp((20.0f / ((float) (System.currentTimeMillis() - this.prevTime) / 1000.0f)), 0.0f, 20.0f);
                 this.currentTick++;
             }
@@ -61,8 +52,7 @@ public class TickRateManager implements Listenable
         }
     });
 
-    public static TickRateManager Get()
-    {
+    public static TickRateManager Get() {
         return SalHack.GetTickRateManager();
     }
 }
