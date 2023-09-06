@@ -26,7 +26,7 @@ Salhack does not include Baritone Integration as we do not want to wait for bari
 
 Salhack is a fabric mod for `1.20.1` and `1.20`. There are already pre build jar files on our [release page](https://github.com/CrytoPal/Continued-Salhack/releases). To use Salhack just download and drop the jar file in your mods folder and start fabric. Have fun!
 
-If you want the latest dev build click [here](https://github.com/CrytoPal/Continued-Salhack/actions) and select the build, then download the artifact. Extract it from the zip and drop the jar file in your mods folder and start fabric. Have fun.
+If you want the latest dev build click [here](https://github.com/CrytoPal/Continued-Salhack/actions) and select the build, then download the artifact. Extract it from the zip and drop the jar file that doesn't have the `source` in it's name into your mods folder and start fabric. Have fun.
 
 **Tip:** You can open the GUI with Right Shift (You can change that later.)
 
