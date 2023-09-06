@@ -2,6 +2,7 @@ package me.ionar.salhack.gui.click.component.item;
 
 import java.math.BigDecimal;
 
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
 import org.lwjgl.glfw.GLFW;
 
@@ -201,7 +202,7 @@ public class ComponentItemValue extends ComponentItem
         if (IsDraggingSlider)
         {
             IsDraggingSlider = false;
-            // SalHack.INSTANCE.getNotificationManager().addNotification(Mod.getDisplayName(), "Changed the value of " + Val.getName() + " to " + Val.getValue().toString());
+            //SalHack.GetNotificationManager().AddNotification("hi", "Changed the value of " + Val.getName() + " to " + Val.getValue().toString());
         }
     }
 
