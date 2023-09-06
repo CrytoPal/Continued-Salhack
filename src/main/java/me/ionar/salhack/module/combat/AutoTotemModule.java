@@ -7,6 +7,7 @@ import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
+import me.ionar.salhack.util.entity.ItemUtil;
 import me.ionar.salhack.util.entity.PlayerUtil;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
@@ -84,8 +85,7 @@ public final class AutoTotemModule extends Module {
             if (mc.player.getOffHandStack().isEmpty()) {
                 for (int i = 9; i < 45; i++) {
                     if (mc.player.getInventory().getStack(i >= 36 ? i - 36 : i).getItem() == item) {
-                        mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, i, 0, SlotActionType.PICKUP, mc.player);
-                        mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, 45, 0, SlotActionType.PICKUP, mc.player);
+                        ItemUtil.Move(i,45);
                         return;
                     }
                 }
@@ -93,8 +93,7 @@ public final class AutoTotemModule extends Module {
             if (mc.player.getOffHandStack().getItem() != item && Override.getValue()) {
                 for (int i = 9; i < 45; i++) {
                     if (mc.player.getInventory().getStack(i >= 36 ? i - 36 : i).getItem() == item) {
-                        mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, i, 0, SlotActionType.PICKUP, mc.player);
-                        mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, 45, 0, SlotActionType.PICKUP, mc.player);
+                        ItemUtil.Move(i,45);
                         return;
                     }
                 }
