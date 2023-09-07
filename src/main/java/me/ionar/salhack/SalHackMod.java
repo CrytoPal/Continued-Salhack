@@ -19,6 +19,5 @@ public class SalHackMod implements ClientModInitializer {
 	public void onInitializeClient() {
 		log.info("Welcome to " + NAME);
 		SalHack.Init();
-		d
 	}
 }
