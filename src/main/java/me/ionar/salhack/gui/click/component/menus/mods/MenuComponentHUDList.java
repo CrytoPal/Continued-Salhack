@@ -59,7 +59,7 @@ public class MenuComponentHUDList extends MenuComponent {
                     public void OnMouseLeave() {}
                 };
 
-                ComponentItemValue valueItem = new ComponentItemValue(value, value.getName(), value.getDesc(), ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, listener, Width, Height);
+                ComponentItemValue valueItem = new ComponentItemValue(value, value.getName(), value.getDescription(), ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, listener, Width, Height);
                 componentItem.DropdownItems.add(valueItem);
             }
 

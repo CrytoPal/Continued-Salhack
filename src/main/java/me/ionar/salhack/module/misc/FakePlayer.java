@@ -33,7 +33,7 @@ public class FakePlayer extends Module
 
         if (mc.world == null)
         {
-            this.toggle();
+            this.toggle(true);
             return;
         }
 
@@ -55,15 +55,9 @@ public class FakePlayer extends Module
     }
 
     @Override
-    public void onDisable()
-    {
+    public void onDisable() {
         super.onDisable();
         mc.world.removeEntity(_fakePlayer.getId(), Entity.RemovalReason.UNLOADED_WITH_PLAYER);
-    }
-
-    @Override
-    public void toggleNoSave()
-    {
     }
 
     // Getting uuid from a name

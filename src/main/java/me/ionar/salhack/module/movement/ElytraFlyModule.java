@@ -19,41 +19,28 @@ import me.ionar.salhack.util.Timer;
 import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
 
-public final class ElytraFlyModule extends Module
-{
-    public final Value<Mode> mode = new Value<Mode>("Mode", new String[]
-            { "Mode", "M" }, "Mode to use for 2b2t flight.", Mode.Superior);
-    public final Value<Float> speed = new Value<Float>("Speed", new String[]
-            { "Spd" }, "Speed multiplier for flight, higher values equals more speed. - 2b speed recommended is 1.8~", 1.82f, 0.0f, 10.0f, 0.1f);
-    public final Value<Float> DownSpeed = new Value<Float>("DownSpeed", new String[]
-            { "DS" }, "DownSpeed multiplier for flight, higher values equals more speed.", 1.82f, 0.0f, 10.0f, 0.1f);
-    public final Value<Float> GlideSpeed = new Value<Float>("GlideSpeed", new String[]
-            { "GlideSpeed" }, "Glide value for acceleration, this is divided by 10000.", 1f, 0f, 10f, 1f);
-    public final Value<Float> UpSpeed = new Value<Float>("UpSpeed", new String[]
-            { "UpSpeed" }, "Up speed for elytra.", 2.0f, 0f, 10f, 1f);
-    public final Value<Boolean> Accelerate = new Value<Boolean>("Accelerate", new String[]
-            { "Accelerate", "Accelerate" }, "Auto accelerates when going up", true);
-    public final Value<Integer> vAccelerationTimer = new Value<Integer>("Timer", new String[]
-            { "AT" }, "Acceleration timer, default 1000", 1000, 0, 10000, 1000);
-    public final Value<Float> RotationPitch = new Value<Float>("RotationPitch", new String[]
-            { "RP" }, "RotationPitch default 0.0, this is for going up, -90 is lowest you can face, 90 is highest", 0.0f, -90f, 90f, 10.0f);
-    public final Value<Boolean> CancelInWater = new Value<Boolean>("CancelInWater", new String[]
-            { "CiW" }, "Cancel in water, anticheat will flag you if you try to go up in water, accelerating will still work.", true);
-    public final Value<Integer> CancelAtHeight = new Value<Integer>("CancelAtHeight", new String[]
-            { "CAH" }, "Doesn't allow flight Y is below, or if too close to bedrock. since 2b anticheat is wierd", 5, 0, 10, 1);
-    public final Value<Boolean> InstantFly = new Value<Boolean>("InstantFly", new String[]
-            { "IF" }, "Sends the fall flying packet when your off ground", true);
-    public final Value<Boolean> EquipElytra = new Value<Boolean>("EquipElytra", new String[] {"EE"}, "Equips your elytra when enabled if you're not already wearing one", false);
-    public final Value<Boolean> PitchSpoof = new Value<Boolean>("PitchSpoof", new String[] {"PS"}, "Spoofs your pitch for hauses new patch", false);
+public final class ElytraFlyModule extends Module {
+    public final Value<Mode> mode = new Value<>("Mode", new String[]{"Mode", "M"}, "Mode to use for 2b2t flight.", Mode.Superior);
+    public final Value<Float> speed = new Value<>("Speed", new String[]{"Spd"}, "Speed multiplier for flight, higher values equals more speed. - 2b speed recommended is 1.8~", 1.82f, 0.0f, 10.0f, 0.1f);
+    public final Value<Float> DownSpeed = new Value<>("DownSpeed", new String[]{"DS"}, "DownSpeed multiplier for flight, higher values equals more speed.", 1.82f, 0.0f, 10.0f, 0.1f);
+    public final Value<Float> GlideSpeed = new Value<>("GlideSpeed", new String[]{"GlideSpeed"}, "Glide value for acceleration, this is divided by 10000.", 1f, 0f, 10f, 1f);
+    public final Value<Float> UpSpeed = new Value<>("UpSpeed", new String[]{"UpSpeed"}, "Up speed for elytra.", 2.0f, 0f, 10f, 1f);
+    public final Value<Boolean> Accelerate = new Value<>("Accelerate", new String[]{"Accelerate", "Accelerate"}, "Auto accelerates when going up", true);
+    public final Value<Integer> vAccelerationTimer = new Value<>("Timer", new String[]{"AT"}, "Acceleration timer, default 1000", 1000, 0, 10000, 1000);
+    public final Value<Float> RotationPitch = new Value<>("RotationPitch", new String[]{"RP"}, "RotationPitch default 0.0, this is for going up, -90 is lowest you can face, 90 is highest", 0.0f, -90f, 90f, 10.0f);
+    public final Value<Boolean> CancelInWater = new Value<>("CancelInWater", new String[]{"CiW"}, "Cancel in water, anticheat will flag you if you try to go up in water, accelerating will still work.", true);
+    public final Value<Integer> CancelAtHeight = new Value<>("CancelAtHeight", new String[]{"CAH"}, "Doesn't allow flight Y is below, or if too close to bedrock. since 2b anticheat is wierd", 5, 0, 10, 1);
+    public final Value<Boolean> InstantFly = new Value<>("InstantFly", new String[]{"IF"}, "Sends the fall flying packet when your off ground", true);
+    public final Value<Boolean> EquipElytra = new Value<>("EquipElytra", new String[]{"EE"}, "Equips your elytra when enabled if you're not already wearing one", false);
+    public final Value<Boolean> PitchSpoof = new Value<>("PitchSpoof", new String[]{"PS"}, "Spoofs your pitch for hauses new patch", false);
 
-    private Timer PacketTimer = new Timer();
-    private Timer AccelerationTimer = new Timer();
-    private Timer AccelerationResetTimer = new Timer();
-    private Timer InstantFlyTimer = new Timer();
+    private final Timer PacketTimer = new Timer();
+    private final Timer AccelerationTimer = new Timer();
+    private final Timer AccelerationResetTimer = new Timer();
+    private final Timer InstantFlyTimer = new Timer();
     private boolean SendMessage = false;
 
-    private enum Mode
-    {
+    public enum Mode {
         Normal, Tarzan, Superior, Packet, Control
     }
 
@@ -89,8 +76,7 @@ public final class ElytraFlyModule extends Module
                     break;
                 }
 
-                if (ElytraSlot != -1)
-                {
+                if (ElytraSlot != -1) {
                     boolean l_HasArmorAtChest = mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() != Items.AIR;
 
                     mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, ElytraSlot, 0, SlotActionType.PICKUP, mc.player);

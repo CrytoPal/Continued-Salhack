@@ -28,7 +28,7 @@ public class MenuComponentModList extends MenuComponent {
                 public void OnEnabled() {}
                 @Override
                 public void OnToggled() {
-                    module.toggle();
+                    module.toggle(true);
                     //  SalHack.INSTANCE.getNotificationManager().addNotification("ClickGUI", "Toggled " + l_Mod.getDisplayName());
                 }
                 @Override
@@ -45,7 +45,7 @@ public class MenuComponentModList extends MenuComponent {
             if (!module.getValueList().isEmpty()) flags |= ComponentItem.HasValues;
             int state = 0;
             if (module.isEnabled()) state |= ComponentItem.Clicked;
-            ComponentItem componentItem = new ComponentItemMod(module, module.getDisplayName(), module.getDesc(), flags, state, listener, Width, Height);
+            ComponentItem componentItem = new ComponentItemMod(module, module.getDisplayName(), module.getDescription(), flags, state, listener, Width, Height);
 
             for (Value value : module.getValueList()) {
                 listener = new ComponentItemListener() {
@@ -62,7 +62,7 @@ public class MenuComponentModList extends MenuComponent {
                     @Override
                     public void OnMouseLeave() {}
                 };
-                ComponentItemValue componentItemValue = new ComponentItemValue(value, value.getName(), value.getDesc(), ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, listener, Width, Height);
+                ComponentItemValue componentItemValue = new ComponentItemValue(value, value.getName(), value.getDescription(), ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, listener, Width, Height);
                 componentItem.DropdownItems.add(componentItemValue);
             }
 
@@ -85,7 +85,7 @@ public class MenuComponentModList extends MenuComponent {
 
             ComponentItem hideButton = new ComponentItemHiddenMod(module, "Hidden", "Hides " + module.getDisplayName() + " from the arraylist",  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip | ComponentItem.RectDisplayOnClicked | ComponentItem.DontDisplayClickableHighlight, 0, listener, Width, Height);
             componentItem.DropdownItems.add(hideButton);
-            componentItem.DropdownItems.add(new ComponentItemKeybind(module, "Keybind:"+module.getDisplayName(), module.getDesc(),  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, null, Width, Height));
+            componentItem.DropdownItems.add(new ComponentItemKeybind(module, "Keybind:"+module.getDisplayName(), module.getDescription(),  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, null, Width, Height));
             AddItem(componentItem);
         }
     }

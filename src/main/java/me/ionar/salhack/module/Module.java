@@ -8,7 +8,7 @@ import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.CommandManager;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.managers.PresetsManager;
-import me.ionar.salhack.module.ui.Notifcation;
+import me.ionar.salhack.module.ui.Notification;
 import me.zero.alpine.fork.listener.Listenable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -17,299 +17,219 @@ import net.minecraft.util.Formatting;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Module implements Listenable
-{
-    public String displayName;
-    private String[] alias;
-    private String desc;
-    public int key;
-    private int color;
-    public boolean hidden = false;
-    private boolean enabled = false;
-    private ModuleType type;
-    private boolean m_NeedsClickGuiValueUpdate;
-    protected final MinecraftClient mc = MinecraftClient.getInstance();
-
-    public List<Value> valueList = new ArrayList<Value>();
+@SuppressWarnings("rawtypes")
+public abstract class Module implements Listenable {
+    public String DisplayName;
+    private String[] Alias;
+    private String Description;
+    public int Key;
+    private int Color;
+    public boolean Hidden = false;
+    private boolean Enabled = false;
+    private ModuleType ModuleType;
+    private boolean ClickGuiValueUpdate;
+    public List<Value> ValueList = new ArrayList<>();
     public float RemainingXAnimation = 0f;
+    protected final MinecraftClient mc = Wrapper.GetMC();
 
-    private Module(String displayName, String[] alias, int key, int color, ModuleType type)
-    {
-        this.displayName = displayName;
-        this.alias = alias;
-        this.key = key;
-        this.color = color;
-        this.type = type;
+    private Module(String displayName, String[] alias, int key, int color, ModuleType type) {
+        DisplayName = displayName;
+        Alias = alias;
+        Key = key;
+        Color = color;
+        ModuleType = type;
     }
 
-    public Module(String displayName, String[] alias, String desc, int key, int color, ModuleType type)
-    {
-        this(displayName, alias, key, color, type);
-        this.desc = desc;
+    public Module(String displayName, String[] alias, String description, int key, int color, ModuleType moduleType) {
+        this(displayName, alias, key, color, moduleType);
+        Description = description;
     }
 
-    public void onEnable()
-    {
-        Notifcation notifcation =  (Notifcation) ModuleManager.Get().GetMod(Notifcation.class);
+    public void onEnable() {
+        Notification notifcation =  (Notification) ModuleManager.Get().GetMod(Notification.class);
         /// allow events to be called
         SalHackMod.EVENT_BUS.subscribe(this);
-
-        if (mc.player != null) RemainingXAnimation = mc.textRenderer.getWidth(GetFullArrayListDisplayName())+10f;
-
         ModuleManager.Get().OnModEnable(this);
         if (mc.player != null) {
-            if (notifcation.isEnabled()) {
-                mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + displayName + Formatting.GREEN + " ON"));
-            }
+            RemainingXAnimation = mc.textRenderer.getWidth(GetFullArrayListDisplayName())+10f;
+            if (notifcation.isEnabled()) mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.GREEN + " ON"));
         }
         SalHackMod.EVENT_BUS.post(new EventSalHackModuleEnable(this));
     }
 
-    public void onDisable()
-    {
-        Notifcation notifcation =  (Notifcation) ModuleManager.Get().GetMod(Notifcation.class);
+    public void onDisable() {
+        Notification notifcation =  (Notification) ModuleManager.Get().GetMod(Notification.class);
         /// disallow events to be called
         SalHackMod.EVENT_BUS.unsubscribe(this);
         SalHackMod.EVENT_BUS.post(new EventSalHackModuleDisable(this));
-        if (mc.player != null) {
-            if (notifcation.isEnabled()) {
-                SalHack.SendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + displayName + Formatting.RED + " OFF");
-            }
-        }
+        if (mc.player != null && notifcation.isEnabled()) SalHack.SendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.RED + " OFF");
     }
 
-    public void onToggle()
-    {
+    public void onToggle() {}
 
+    public void toggle(boolean save) {
+        setEnabled(!isEnabled());
+        if (isEnabled()) onEnable();
+        else onDisable();
+        onToggle();
+        if (save) SaveSettings();
     }
 
-    public void toggle()
-    {
-        this.setEnabled(!this.isEnabled());
-        if (this.isEnabled())
-        {
-            this.onEnable();
-        }
-        else
-        {
-            this.onDisable();
-        }
-        this.onToggle();
-
-        SaveSettings();
+    public void ToggleOnlySuper() {
+        setEnabled(!isEnabled());
+        onToggle();
     }
 
-    public void toggleNoSave()
-    {
-        this.setEnabled(!this.isEnabled());
-        if (this.isEnabled())
-        {
-            this.onEnable();
-        }
-        else
-        {
-            this.onDisable();
-        }
-        this.onToggle();
-    }
-
-    public void ToggleOnlySuper()
-    {
-        this.setEnabled(!this.isEnabled());
-        this.onToggle();
-    }
-
-    public String getMetaData()
-    {
+    public String getMetaData() {
         return null;
     }
 
-    public Value find(String alias)
-    {
-        for (Value v : this.getValueList())
-        {
-            for (String s : v.getAlias())
-            {
-                if (alias.equalsIgnoreCase(s))
-                {
-                    return v;
+    public Value find(String alias) {
+        for (Value value : getValueList()) {
+            for (String string : value.getAlias()) {
+                if (alias.equalsIgnoreCase(string)) {
+                    return value;
                 }
             }
-
-            if (v.getName().equalsIgnoreCase(alias))
-            {
-                return v;
+            if (value.getName().equalsIgnoreCase(alias)) {
+                return value;
             }
         }
         return null;
     }
 
-    public void unload()
-    {
-        this.valueList.clear();
+    public void unload() {
+        ValueList.clear();
     }
 
-    public enum ModuleType
-    {
+    public enum ModuleType {
         COMBAT, EXPLOIT, MOVEMENT, RENDER, WORLD, MISC, HIDDEN, UI, BOT, LITEMATICA, HIGHWAY, DONATE
     }
 
-    public String getDisplayName()
-    {
-        return displayName;
+    public String getDisplayName() {
+        return DisplayName;
     }
 
-    public void setDisplayName(String displayName)
-    {
-        this.displayName = displayName;
+    public void setDisplayName(String displayName) {
+        DisplayName = displayName;
         CommandManager.Get().Reload();
         SaveSettings();
     }
 
-    public String[] getAlias()
-    {
-        return alias;
+    public String[] getAlias() {
+        return Alias;
     }
 
-    public void setAlias(String[] alias)
-    {
-        this.alias = alias;
+    public void setAlias(String[] alias) {
+        Alias = alias;
     }
 
-    public String getDesc()
-    {
-        return desc;
+    public String getDescription() {
+        return Description;
     }
 
-    public void setDesc(String desc)
-    {
-        this.desc = desc;
+    public void setDescription(String description) {
+        Description = description;
     }
 
-    public int getKey()
-    {
-        return key;
+    public int getKey() {
+        return Key;
     }
 
-    public boolean IsKeyPressed(int p_KeyCode) {
+    public boolean isKeyPressed(int KeyCode) {
         if (mc.currentScreen != null) return false;
-        return key == p_KeyCode;
+        return Key == KeyCode;
     }
 
-    public void setKey(int key)
-    {
-        this.key = key;
+    public void setKey(int key) {
+        Key = key;
         SaveSettings();
     }
 
-    public int getColor()
-    {
-        return color;
+    public int getColor() {
+        return Color;
     }
 
-    public void setColor(int color)
-    {
-        this.color = color;
+    public void setColor(int color) {
+        Color = color;
     }
 
-    public boolean isHidden()
-    {
-        return hidden;
+    public boolean isHidden() {
+        return Hidden;
     }
 
-    public void setHidden(boolean hidden)
-    {
-        this.hidden = hidden;
+    public void setHidden(boolean hidden) {
+        Hidden = hidden;
         SaveSettings();
     }
 
-    public boolean isEnabled()
-    {
-        return enabled;
+    public boolean isEnabled() {
+        return Enabled;
     }
 
-    public void setEnabled(boolean enabled)
-    {
-        this.enabled = enabled;
+    public void setEnabled(boolean enabled) {
+        Enabled = enabled;
     }
 
-    public ModuleType getType()
-    {
-        return type;
+    public ModuleType getModuleType() {
+        return ModuleType;
     }
 
-    public void setType(ModuleType type)
-    {
-        this.type = type;
+    public void setModuleType(ModuleType moduleType) {
+        ModuleType = moduleType;
     }
 
-    public List<Value> getValueList()
-    {
-        return valueList;
+    public List<Value> getValueList() {
+        return ValueList;
     }
 
-    public void setValueList(List<Value> valueList)
-    {
-        this.valueList = valueList;
+    public void setValueList(List<Value> valueList) {
+        ValueList = valueList;
     }
 
-    public float GetRemainingXArraylistOffset()
-    {
+    public float GetRemainingXOffset() {
         return RemainingXAnimation;
     }
 
-    public void SignalEnumChange()
-    {
-    }
+    public void SignalEnumChange() {}
 
-    public void SignalValueChange(Value p_Val)
-    {
+    public void signalValueChange(Value value) {
         SaveSettings();
     }
 
-    public List<Value> GetVisibleValueList()
-    {
-        return valueList;
+    public List<Value> getVisibleValues() {
+        return ValueList;
     }
 
     /// functions for updating value in an async way :)
-    public void SetClickGuiValueUpdate(boolean p_Val)
-    {
-        m_NeedsClickGuiValueUpdate = p_Val;
+    public void setClickGuiValueUpdate(boolean value) {
+        ClickGuiValueUpdate = value;
     }
 
-    public boolean NeedsClickGuiValueUpdate()
-    {
-        return m_NeedsClickGuiValueUpdate;
+    public boolean needsClickGuiValueUpdate() {
+        return ClickGuiValueUpdate;
     }
 
-    public String GetNextStringValue(final Value<String> p_Val, boolean p_Recursive)
-    {
+    public String GetNextStringValue(final Value<String> value, boolean recursive) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public String GetArrayListDisplayName()
-    {
+    public String GetArrayListDisplayName() {
         return getDisplayName();
     }
 
-    public String GetFullArrayListDisplayName()
-    {
+    public String GetFullArrayListDisplayName() {
         return getDisplayName() + (getMetaData() != null ? " " + Formatting.GRAY + getMetaData() : "");
     }
 
-    public void SendMessage(String p_Message)
-    {
-        if (mc.player != null) SalHack.SendMessage(Formatting.AQUA + "[" + GetArrayListDisplayName() + "]: " + Formatting.RESET + p_Message);
+    public void SendMessage(String message) {
+        if (mc.player != null) SalHack.SendMessage(Formatting.AQUA + "[" + GetArrayListDisplayName() + "]: " + Formatting.RESET + message);
     }
 
-    public void SaveSettings()
-    {
+    public void SaveSettings() {
         PresetsManager.Get().getActivePreset().addModuleSettings(this);
     }
 
-    public void init() {
-
-    }
+    public void init() {}
 }

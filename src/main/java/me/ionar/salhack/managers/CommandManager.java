@@ -42,7 +42,7 @@ public class CommandManager {
                 @Override
                 public void OnToggle()
                 {
-                    p_Mod.toggle();
+                    p_Mod.toggle(true);
                 }
 
                 @Override
@@ -52,7 +52,7 @@ public class CommandManager {
                 }
             };
 
-            Commands.add(new ModuleCommand(p_Mod.getDisplayName(), p_Mod.getDesc(), l_Listener, p_Mod.getValueList()));
+            Commands.add(new ModuleCommand(p_Mod.getDisplayName(), p_Mod.getDescription(), l_Listener, p_Mod.getValueList()));
         });
 
         HudManager.Get().Items.forEach(p_Item -> {
