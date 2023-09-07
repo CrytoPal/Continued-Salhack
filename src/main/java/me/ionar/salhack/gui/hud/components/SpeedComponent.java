@@ -26,7 +26,6 @@ public class SpeedComponent extends HudComponentItem {
     private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
 
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
-    private final int i = 0;
     public SpeedComponent() {
         super("Speed", 2, 93);
         SetHidden(false);

@@ -26,18 +26,11 @@ public class CoordsHudComponent extends HudComponentItem {
 
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
 
-    private boolean SpoofX = false;
-
     final DecimalFormat Formatter = new DecimalFormat("#.#");
 
     private final CoordsSpooferModule _getCoords = (CoordsSpooferModule) ModuleManager.Get().GetMod(CoordsSpooferModule.class);
 
     private static String coords;
-
-
-    private final int i = 0;
-
-    boolean SpoofZ = false;
     public CoordsHudComponent() {
         super("Coords", 3, 517);
         SetHidden(false);

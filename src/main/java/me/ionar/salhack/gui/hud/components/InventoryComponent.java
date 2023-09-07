@@ -7,12 +7,8 @@ import me.ionar.salhack.module.ui.HudModule;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.util.Identifier;
 
-public class InventoryComponent extends HudComponentItem
-{
-    private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
-
-    public InventoryComponent()
-    {
+public class InventoryComponent extends HudComponentItem {
+    public InventoryComponent() {
         super("Inventory", 2, 160);
         SetHidden(false);
     }

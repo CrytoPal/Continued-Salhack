@@ -18,9 +18,6 @@ public class FPSComponent extends HudComponentItem {
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
 
     MinecraftClient mc = MinecraftClient.getInstance();
-    private final int i = 0;
-
-    private int fps = mc.getCurrentFps();
     public FPSComponent() {
         super("FPS", 2, 23);
         SetHidden(false);

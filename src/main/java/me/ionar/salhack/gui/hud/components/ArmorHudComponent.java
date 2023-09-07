@@ -8,7 +8,6 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class ArmorHudComponent extends HudComponentItem {
-    private final int i = 0;
     private String durabilityHead;
     private String durabilityChest;
     private String durabilityLegging;
