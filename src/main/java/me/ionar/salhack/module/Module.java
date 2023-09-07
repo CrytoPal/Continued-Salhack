@@ -4,7 +4,6 @@ import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.events.salhack.EventSalHackModuleDisable;
 import me.ionar.salhack.events.salhack.EventSalHackModuleEnable;
 import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.CommandManager;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.managers.PresetsManager;

@@ -13,8 +13,7 @@ import net.minecraft.util.Formatting;
 
 import java.util.Calendar;
 
-public class WelcomerHudComponent extends HudComponentItem
-{
+public class WelcomerHudComponent extends HudComponentItem {
 
     private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
 
@@ -25,8 +24,7 @@ public class WelcomerHudComponent extends HudComponentItem
 
     Calendar c = Calendar.getInstance();
 
-    public WelcomerHudComponent()
-    {
+    public WelcomerHudComponent() {
         super("Welcomer", 415, 2);
         SetHidden(false);
     }
@@ -56,6 +54,5 @@ public class WelcomerHudComponent extends HudComponentItem
         Rainbow.OnRender();
         SetWidth(Wrapper.GetMC().textRenderer.getWidth(WatermarkString));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
-
     }
 }

@@ -41,6 +41,7 @@ If you want to suggest a feature, open an issue and put the Feature Tag.
 - [Ionar2](https://github.com/ionar2/spidermod) for Original Salhack
 - [CreepyOrb924](https://github.com/CreepyOrb924/creepy-salhack) for Creepy Salhack code
 - [MrZak360](https://github.com/MrZak360/salhack-1.20-client-base) for Client Base
+- [Meteor](https://github.com/MeteorDevelopment/starscript) for their Starscript
 
 ## Licensing
 This project is licensed under the [Creative Commons Zero v1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/legalcode).

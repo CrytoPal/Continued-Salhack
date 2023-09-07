@@ -1,16 +1,30 @@
 plugins {
 	id 'fabric-loom' version '1.1-SNAPSHOT'
+	id "maven-publish"
+	id "com.github.johnrengelman.shadow" version "7.1.2"
 }
 
 version = project.mod_version
 group = project.maven_group
 
 repositories {
+	maven {
+		name = "meteor-maven"
+		url = "https://maven.meteordev.org/releases"
+	}
+	maven {
+		name = "meteor-maven-snapshots"
+		url = "https://maven.meteordev.org/snapshots"
+	}
 }
 
 configurations {
 	include.extendsFrom(modInclude)
 	modImplementation.extendsFrom(modInclude)
+
+	// include libraries
+	implementation.extendsFrom(library)
+	shadow.extendsFrom(library)
 }
 
 dependencies {
@@ -19,6 +33,7 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
 	modInclude fabricApi.module("fabric-resource-loader-v0", project.fabric_version)
+	library "meteordevelopment:starscript:${project.starscript_version}"
 }
 
 base {

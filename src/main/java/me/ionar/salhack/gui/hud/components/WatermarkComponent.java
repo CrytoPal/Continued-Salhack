@@ -12,8 +12,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-public class WatermarkComponent extends HudComponentItem
-{
+public class WatermarkComponent extends HudComponentItem {
 
     private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
 
@@ -23,8 +22,7 @@ public class WatermarkComponent extends HudComponentItem
 
     private static String WatermarkString = SalHackMod.NAME + Formatting.WHITE + " " + SalHackMod.VERSION;
 
-    public WatermarkComponent()
-    {
+    public WatermarkComponent() {
         super("Watermark", 2, 2);
         SetHidden(false);
     }
@@ -33,8 +31,7 @@ public class WatermarkComponent extends HudComponentItem
     public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
         super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
 
-        if (Reliant.getValue())
-        {
+        if (Reliant.getValue()) {
             final String l_Text = "Reliant (rel-1.20.1-Fabric)";
 
             if (HudModule.CustomFont.getValue()) {
@@ -46,8 +43,7 @@ public class WatermarkComponent extends HudComponentItem
             SetWidth(Wrapper.GetMC().textRenderer.getWidth(l_Text));
             SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
         }
-        else
-        {
+        else {
             if (HudModule.CustomFont.getValue()) {
                 FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), WatermarkString, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {

@@ -11,6 +11,7 @@ import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.Value;
+import me.ionar.salhack.module.combat.OffhandModule;
 import me.ionar.salhack.module.combat.KillAuraModule;
 import me.ionar.salhack.module.exploit.BowbombModule;
 import me.ionar.salhack.module.misc.FakePlayer;
@@ -40,6 +41,7 @@ public class ModuleManager {
     public void Init() {
         /// Combat
         Add(new KillAuraModule());
+        Add(new OffhandModule());
 
         /// Exploit
         Add(new BowbombModule());

@@ -13,15 +13,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
-import java.util.Objects;
-
 public class EntityUtil {
 
     public static ArrayList<Entity> getEntities() {
         ArrayList<Entity> entities = new ArrayList<>();
-        assert Wrapper.GetMC().world != null;
-        for (Entity entity : Wrapper.GetMC().world.getEntities()) {
-            entities.add(entity);
+        if (Wrapper.GetMC().world != null) {
+            for (Entity entity : Wrapper.GetMC().world.getEntities()) {
+                entities.add(entity);
+            }
         }
         return entities;
     }
@@ -61,7 +60,6 @@ public class EntityUtil {
         for (int x = MathHelper.floor(entity.getX()); x < MathHelper.ceil(entity.getX()); x++)
             for (int z = MathHelper.floor(entity.getZ()); z < MathHelper.ceil(entity.getZ()); z++) {
                 BlockPos pos = new BlockPos(x, (int) y, z);
-                assert Wrapper.GetMC().world != null;
                 if (Wrapper.GetMC().world.getBlockState(pos).getFluidState() != null) return true;
             }
         return false;
@@ -86,7 +84,6 @@ public class EntityUtil {
         for (int x = MathHelper.floor(entity.getX()); x < MathHelper.ceil(entity.getX()); x++)
             for (int z = MathHelper.floor(entity.getZ()); z < MathHelper.ceil(entity.getZ()); z++) {
                 BlockPos pos = new BlockPos(x, MathHelper.floor(y), z);
-                assert Wrapper.GetMC().world != null;
                 if (Wrapper.GetMC().world.getBlockState(pos).getFluidState() != null) return true;
             }
         return false;
