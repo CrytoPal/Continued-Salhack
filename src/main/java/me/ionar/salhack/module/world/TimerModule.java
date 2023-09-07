@@ -17,7 +17,6 @@ public final class TimerModule extends Module {
     public final Value<Float> speed = new Value<>("Speed", new String[]{"Spd"}, "Tick-rate multiplier. [(20tps/second) * (this value)]", 4.0f, 0.1f, 20.0f, 0.1f);
     public final Value<Boolean> Accelerate = new Value<>("Accelerate", new String[]{"Acc"}, "Accelerates from 1.0 until the anti-cheat lags you back", false);
     public final Value<Boolean> TPSSync = new Value<>("TPSSync", new String[]{"TPS"}, "Syncs the game time to the current TPS", false);
-
     private final Timer timer = new Timer();
 
     public TimerModule() {
@@ -62,8 +61,8 @@ public final class TimerModule extends Module {
     });
 
     @EventHandler
-    private Listener<EventNetworkPacketEvent> PacketEvent = new Listener<>(p_Event -> {
-        if (p_Event.getPacket() instanceof PlayerPositionLookS2CPacket && Accelerate.getValue()) speed.setValue(1.0f);
+    private Listener<EventNetworkPacketEvent> PacketEvent = new Listener<>(Event -> {
+        if (Event.getPacket() instanceof PlayerPositionLookS2CPacket && Accelerate.getValue()) speed.setValue(1.0f);
     });
 
     private float GetSpeed() {

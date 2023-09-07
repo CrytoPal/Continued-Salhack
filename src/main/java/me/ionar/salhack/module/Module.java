@@ -4,6 +4,7 @@ import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.events.salhack.EventSalHackModuleDisable;
 import me.ionar.salhack.events.salhack.EventSalHackModuleEnable;
 import me.ionar.salhack.main.SalHack;
+import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.CommandManager;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.managers.PresetsManager;
@@ -45,23 +46,23 @@ public abstract class Module implements Listenable {
     }
 
     public void onEnable() {
-        Notification notifcation =  (Notification) ModuleManager.Get().GetMod(Notification.class);
+        Notification notification = (Notification) ModuleManager.Get().GetMod(Notification.class);
         /// allow events to be called
         SalHackMod.EVENT_BUS.subscribe(this);
         ModuleManager.Get().OnModEnable(this);
         if (mc.player != null) {
             RemainingXAnimation = mc.textRenderer.getWidth(GetFullArrayListDisplayName())+10f;
-            if (notifcation.isEnabled()) mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.GREEN + " ON"));
+            if (notification.isEnabled()) mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.GREEN + " ON"));
         }
         SalHackMod.EVENT_BUS.post(new EventSalHackModuleEnable(this));
     }
 
     public void onDisable() {
-        Notification notifcation =  (Notification) ModuleManager.Get().GetMod(Notification.class);
+        Notification notification = (Notification) ModuleManager.Get().GetMod(Notification.class);
         /// disallow events to be called
         SalHackMod.EVENT_BUS.unsubscribe(this);
         SalHackMod.EVENT_BUS.post(new EventSalHackModuleDisable(this));
-        if (mc.player != null && notifcation.isEnabled()) SalHack.SendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.RED + " OFF");
+        if (mc.player != null && notification.isEnabled()) SalHack.SendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.RED + " OFF");
     }
 
     public void onToggle() {}
@@ -86,13 +87,9 @@ public abstract class Module implements Listenable {
     public Value find(String alias) {
         for (Value value : getValueList()) {
             for (String string : value.getAlias()) {
-                if (alias.equalsIgnoreCase(string)) {
-                    return value;
-                }
+                if (alias.equalsIgnoreCase(string)) return value;
             }
-            if (value.getName().equalsIgnoreCase(alias)) {
-                return value;
-            }
+            if (value.getName().equalsIgnoreCase(alias)) return value;
         }
         return null;
     }

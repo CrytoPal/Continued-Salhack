@@ -67,7 +67,7 @@ public class NametagsModule extends Module {
         }
         if (position != null) {
             Vec2f renderer = new Vec2f((float) position.x, (float) position.y);
-            String name = entity.getName().getString();
+            String name = entity.getEntityName();
 
             int color = -1;
 

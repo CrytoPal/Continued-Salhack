@@ -131,7 +131,7 @@ public class ModuleManager {
         if (key == 0) return;
 
         Mods.forEach(p_Mod -> {
-            if (p_Mod.IsKeyPressed(key)) {
+            if (p_Mod.isKeyPressed(key)) {
                 p_Mod.toggle(true);
             }
         });

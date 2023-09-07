@@ -3,34 +3,34 @@ package me.ionar.salhack.module;
 @SuppressWarnings({"unchecked", "rawtypes"})
 public class Value<T> {
 
-    private String name;
-    private String[] alias;
-    private String description;
+    private String Name;
+    private String[] Alias;
+    private String Description;
     private Module Module;
     public ValueListeners Listener;
 
-    private T value;
+    private T Value;
 
-    private T min;
-    private T max;
-    private T increment;
+    private T Min;
+    private T Max;
+    private T Increment;
 
     public Value(String name, String[] alias, String description) {
-        this.name = name;
-        this.alias = alias;
-        this.description = description;
+        Name = name;
+        Alias = alias;
+        Description = description;
     }
 
     public Value(String name, String[] alias, String description, T value) {
         this(name, alias, description);
-        this.value = value;
+        Value = value;
     }
 
     public Value(String name, String[] alias, String description, T value, T min, T max, T increment) {
         this(name, alias, description, value);
-        this.min = min;
-        this.max = max;
-        this.increment = increment;
+        Min = min;
+        Max = max;
+        this.Increment = increment;
     }
 
     public <T> T clamp(T value, T min, T max) {
@@ -38,19 +38,11 @@ public class Value<T> {
     }
 
     public T getValue() {
-        return this.value;
+        return Value;
     }
 
     public void setValue(T value) {
-        if (min != null && max != null) {
-            final Number val = (Number) value;
-            /* final Number min = (Number) this.min;
-            final Number max = (Number) this.max;*/
-            this.value = (T) val;
-            // this.value = (T) this.clamp(val, min, max);
-        } else this.value = value;
-
-
+        Value = value;
         if (Module != null) Module.signalValueChange(this);
         if (Listener != null) Listener.OnValueChange(this);
     }
@@ -60,17 +52,17 @@ public class Value<T> {
 
         int i = 0;
 
-        for (; i < this.value.getClass().getEnumConstants().length; i++) {
-            final Enum e = (Enum) this.value.getClass().getEnumConstants()[i];
+        for (; i < Value.getClass().getEnumConstants().length; i++) {
+            final Enum e = (Enum) Value.getClass().getEnumConstants()[i];
             if (e.name().equalsIgnoreCase(currentEnum.name())) break;
         }
 
-        return this.value.getClass().getEnumConstants()[(reverse ? (i != 0 ? i - 1 : value.getClass().getEnumConstants().length - 1) : i + 1) % value.getClass().getEnumConstants().length].toString();
+        return Value.getClass().getEnumConstants()[(reverse ? (i != 0 ? i - 1 : Value.getClass().getEnumConstants().length - 1) : i + 1) % Value.getClass().getEnumConstants().length].toString();
     }
 
     public int getEnum(String input) {
-        for (int i = 0; i < this.value.getClass().getEnumConstants().length; i++) {
-            final Enum e = (Enum) this.value.getClass().getEnumConstants()[i];
+        for (int i = 0; i < Value.getClass().getEnumConstants().length; i++) {
+            final Enum e = (Enum) Value.getClass().getEnumConstants()[i];
             if (e.name().equalsIgnoreCase(input)) {
                 return i;
             }
@@ -79,8 +71,8 @@ public class Value<T> {
     }
 
     public Enum GetEnumReal(String input) {
-        for (int i = 0; i < this.value.getClass().getEnumConstants().length; i++) {
-            final Enum e = (Enum) this.value.getClass().getEnumConstants()[i];
+        for (int i = 0; i < Value.getClass().getEnumConstants().length; i++) {
+            final Enum e = (Enum) Value.getClass().getEnumConstants()[i];
             if (e.name().equalsIgnoreCase(input)) {
                 return e;
             }
@@ -89,7 +81,7 @@ public class Value<T> {
     }
 
     public void setEnumValue(String value) {
-        for (Enum e : ((Enum) this.value).getClass().getEnumConstants()) {
+        for (Enum e : ((Enum) Value).getClass().getEnumConstants()) {
             if (e.name().equalsIgnoreCase(value)) {
                 setValue((T)e);
                 break;
@@ -100,51 +92,51 @@ public class Value<T> {
     }
 
     public T getMin() {
-        return min;
+        return Min;
     }
 
     public void setMin(T min) {
-        this.min = min;
+        Min = min;
     }
 
     public T getMax() {
-        return max;
+        return Max;
     }
 
     public void setMax(T max) {
-        this.max = max;
+        Max = max;
     }
 
     public T getIncrement() {
-        return increment;
+        return Increment;
     }
 
     public void setIncrement(T increment) {
-        this.increment = increment;
+        this.Increment = increment;
     }
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        Name = name;
     }
 
     public String[] getAlias() {
-        return alias;
+        return Alias;
     }
 
     public void setAlias(String[] alias) {
-        this.alias = alias;
+        Alias = alias;
     }
 
     public String getDescription() {
-        return description;
+        return Description;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        Description = description;
     }
 
     public void setListener(ValueListeners listener) {
@@ -156,12 +148,6 @@ public class Value<T> {
     }
 
     public void SetForcedValue(T value) {
-        if (min != null && max != null) {
-            final Number val = (Number) value;
-            /*final Number min = (Number) this.min;
-            final Number max = (Number) this.max;*/
-            this.value = (T) val;
-            // this.value = (T) this.clamp(val, min, max);
-        } else this.value = value;
+        Value = value;
     }
 }

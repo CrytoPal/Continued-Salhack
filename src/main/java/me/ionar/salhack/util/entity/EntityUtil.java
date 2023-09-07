@@ -1,6 +1,8 @@
 package me.ionar.salhack.util.entity;
 
 import me.ionar.salhack.main.Wrapper;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.AmbientEntity;
@@ -27,7 +29,7 @@ public class EntityUtil {
 
     public static boolean isPassive(Entity entity) {
         if (entity instanceof WolfEntity && ((WolfEntity) entity).isUniversallyAngry(Wrapper.GetMC().world)) return false;
-        if (entity instanceof AnimalEntity || entity instanceof TameableEntity || entity instanceof AmbientEntity || entity instanceof SquidEntity) return true;
+        if (entity instanceof AnimalEntity || entity instanceof AmbientEntity || entity instanceof SquidEntity) return true;
         return entity instanceof IronGolemEntity && ((IronGolemEntity) entity).getTarget() == null;
     }
 
@@ -55,7 +57,7 @@ public class EntityUtil {
     }
 
     public static boolean isInWater(Entity entity) {
-        if (entity == null) return false;
+        if (entity == null || Wrapper.GetMC().world == null) return false;
         double y = entity.getY() + 0.01;
         for (int x = MathHelper.floor(entity.getX()); x < MathHelper.ceil(entity.getX()); x++)
             for (int z = MathHelper.floor(entity.getZ()); z < MathHelper.ceil(entity.getZ()); z++) {
@@ -74,7 +76,7 @@ public class EntityUtil {
     }
 
     public static boolean isAboveWater(Entity entity, boolean packet) {
-        if (entity == null) return false;
+        if (entity == null || Wrapper.GetMC().world == null) return false;
         double y = entity.getY() - (packet ? 0.03 : (EntityUtil.isPlayer(entity) ? 0.2 : 0.5));
         // increasing this seems
         // to flag more in NCP but
@@ -119,7 +121,13 @@ public class EntityUtil {
     }
 
     public static int GetPlayerMS(PlayerEntity player) {
-        if (player.getUuid() == null) return 0;
-        return Wrapper.GetMC().getNetworkHandler().getPlayerListEntry(player.getUuid()).getLatency();
+        if (player.getUuid() != null) {
+            ClientPlayNetworkHandler handler = Wrapper.GetMC().getNetworkHandler();
+            if (handler != null) {
+                PlayerListEntry entry = handler.getPlayerListEntry(player.getUuid());
+                if (entry != null) return entry.getLatency();
+            }
+        }
+        return 0;
     }
 }
