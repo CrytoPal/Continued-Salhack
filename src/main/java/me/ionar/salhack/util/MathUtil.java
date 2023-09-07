@@ -31,7 +31,6 @@ public class MathUtil {
 
     public static double[] directionSpeedNoForward(double speed) {
         final MinecraftClient mc = Wrapper.GetMC();
-        assert mc.player != null;
         float forward = 1f;
 
         if (mc.options.leftKey.isPressed() || mc.options.rightKey.isPressed() || mc.options.backKey.isPressed() || mc.options.forwardKey.isPressed()) forward = mc.player.input.movementForward;
