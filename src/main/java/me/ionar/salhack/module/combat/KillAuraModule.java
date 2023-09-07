@@ -78,12 +78,6 @@ public class KillAuraModule extends Module
         return Mode.getValue().toString();
     }
 
-    @Override
-    public void toggleNoSave()
-    {
-
-    }
-
     private boolean IsValidTarget(Entity p_Entity, Entity p_ToIgnore)
     {
         if (!(p_Entity instanceof LivingEntity))
