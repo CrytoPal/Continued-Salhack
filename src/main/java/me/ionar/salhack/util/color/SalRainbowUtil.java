@@ -6,13 +6,13 @@ import java.util.ArrayList;
 
 /// Object for rainbow handling
 public class SalRainbowUtil {
-    private final ArrayList<Integer> CurrentRainbowIndexes = new ArrayList<Integer>();
-    private final ArrayList<Integer> RainbowArrayList = new ArrayList<Integer>();
+    private final ArrayList<Integer> CurrentRainbowIndexes = new ArrayList<>();
+    private final ArrayList<Integer> RainbowArrayList = new ArrayList<>();
     private final Timer RainbowSpeed = new Timer();
-    private int m_Timer;
+    private int Timer;
     private int i = 0;
     public SalRainbowUtil(int timer) {
-        m_Timer = timer;
+        Timer = timer;
 
         /// Populate the RainbowArrayList
         for (int i = 0; i < 360; i++) {
@@ -22,34 +22,30 @@ public class SalRainbowUtil {
     }
 
     public int GetRainbowColorAt(int index) {
-        if (index > CurrentRainbowIndexes.size() - 1)
-            index = CurrentRainbowIndexes.size() - 1;
-
+        if (index > CurrentRainbowIndexes.size() - 1) index = CurrentRainbowIndexes.size() - 1;
         return RainbowArrayList.get(CurrentRainbowIndexes.get(index));
     }
 
     public void SetTimer(int newTimer) {
-        m_Timer = newTimer;
+        Timer = newTimer;
     }
 
     /// Call this function in your render/update function.
     public void OnRender() {
-        if (RainbowSpeed.passed(m_Timer)) {
+        if (RainbowSpeed.passed(Timer)) {
             RainbowSpeed.reset();
             MoveListToNextColor();
         }
     }
 
     private void MoveListToNextColor() {
-        if (CurrentRainbowIndexes.isEmpty())
-            return;
+        if (CurrentRainbowIndexes.isEmpty()) return;
 
         CurrentRainbowIndexes.remove(CurrentRainbowIndexes.get(0));
 
         int index = CurrentRainbowIndexes.get(CurrentRainbowIndexes.size() - 1) + 1;
 
-        if (index >= RainbowArrayList.size() - 1)
-            index = 0;
+        if (index >= RainbowArrayList.size() - 1) index = 0;
 
         CurrentRainbowIndexes.add(index);
     }

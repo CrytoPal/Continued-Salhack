@@ -20,7 +20,7 @@ public interface ICancellable {
 
     /**
      * @see #cancel()
-     * @return Whether or not the event has been cancelled
+     * @return Whether the event has been cancelled
      */
     boolean isCancelled();
 }

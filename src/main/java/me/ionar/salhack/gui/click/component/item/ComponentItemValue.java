@@ -1,6 +1,7 @@
 package me.ionar.salhack.gui.click.component.item;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 import me.ionar.salhack.main.Wrapper;
 import org.lwjgl.glfw.GLFW;
@@ -9,103 +10,78 @@ import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.Timer;
 
-public class ComponentItemValue extends ComponentItem
-{
-    final Value Val;
+@SuppressWarnings({"rawtypes", "unchecked"})
+public class ComponentItemValue extends ComponentItem {
+    final Value value;
     private boolean IsDraggingSlider = false;
-    private Timer timer = new Timer();
+    private final Timer timer = new Timer();
     private String DisplayString = "";
-    private boolean _isEditingString = false;
+    private boolean isEditingString = false;
 
-    public ComponentItemValue(final Value p_Val, String p_DisplayText, String p_Description, int p_Flags, int p_State, ComponentItemListener p_Listener, float p_Width,
-                              float p_Height)
-    {
-        super(p_DisplayText, p_Description, p_Flags, p_State, p_Listener, p_Width, p_Height);
-        Val = p_Val;
+    public ComponentItemValue(final Value valueObject, String displayText, String description, int flags, int state, ComponentItemListener listener, float width, float height) {
+        super(displayText, description, flags, state, listener, width, height);
+        value = valueObject;
 
-        if (p_Val.getValue() instanceof Number && !(p_Val.getValue() instanceof Enum))
-        {
+        if (valueObject.getValue() instanceof Number && !(valueObject.getValue() instanceof Enum)) {
             Flags |= ComponentItem.Slider;
             Flags |= ComponentItem.DontDisplayClickableHighlight;
             Flags |= ComponentItem.RectDisplayAlways;
 
-            this.SetCurrentWidth(CalculateXPositionFromValue(p_Val));
+            this.SetCurrentWidth(CalculateXPositionFromValue(valueObject));
         }
-        else if (p_Val.getValue() instanceof Boolean)
-        {
+        else if (valueObject.getValue() instanceof Boolean) {
             Flags |= ComponentItem.Boolean;
             Flags |= ComponentItem.RectDisplayOnClicked;
             Flags |= ComponentItem.DontDisplayClickableHighlight;
 
-            if ((Boolean) p_Val.getValue())
+            if ((Boolean) valueObject.getValue())
                 State |= ComponentItem.Clicked;
-        }
-        else if (p_Val.getValue() instanceof Enum)
-        {
+        } else if (valueObject.getValue() instanceof Enum) {
             Flags |= ComponentItem.Enum;
             Flags |= ComponentItem.DontDisplayClickableHighlight;
             Flags |= ComponentItem.RectDisplayAlways;
-        }
-        else if (p_Val.getValue() instanceof String)
-            Flags |= ComponentItem.Enum;
+        } else if (valueObject.getValue() instanceof String) Flags |= ComponentItem.Enum;
     }
 
-    private void SetCurrentWidth(float p_Width)
-    {
-        CurrentWidth = p_Width;
+    private void SetCurrentWidth(float width) {
+        currentWidth = width;
     }
 
     @Override
-    public void Update()
-    {
+    public void Update() {}
+
+    @Override
+    public boolean HasState(int state) {
+        if ((state & ComponentItem.Clicked) != 0) return value.getValue() instanceof Boolean ? (Boolean) value.getValue() : true;
+        return super.HasState(state);
+    }
+
+    public float CalculateXPositionFromValue(final Value valueObject) {
+        float minX = GetX();
+        float maxX = GetX() + GetWidth();
+        if (valueObject.getMax() == null) return minX;
+        Number value = (Number) valueObject.getValue();
+        Number max = (Number) valueObject.getMax();
+        return (maxX - minX) * (value.floatValue() / max.floatValue());
     }
 
     @Override
-    public boolean HasState(int p_State)
-    {
-        if ((p_State & ComponentItem.Clicked) != 0)
-            return Val.getValue() instanceof Boolean ? (Boolean) Val.getValue() : true;
+    public String GetDisplayText() {
+        if (value.getValue() instanceof Boolean) {
+            String displayText = value.getName();
 
-        return super.HasState(p_State);
-    }
+            if (HasState(ComponentItem.Hovered) && Wrapper.GetMC().textRenderer.getWidth(displayText) > GetWidth() - 3) {
+                if (DisplayString == null) DisplayString = value.getName();
 
-    public float CalculateXPositionFromValue(final Value p_Val)
-    {
-        float l_MinX = GetX();
-        float l_MaxX = GetX() + GetWidth();
+                displayText = DisplayString;
+                float width = Wrapper.GetMC().textRenderer.getWidth(displayText);
 
-        if (p_Val.getMax() == null)
-            return l_MinX;
-
-        Number l_Val = (Number) p_Val.getValue();
-        Number l_Max = (Number) p_Val.getMax();
-
-        return (l_MaxX - l_MinX) * (l_Val.floatValue() / l_Max.floatValue());
-    }
-
-    @Override
-    public String GetDisplayText()
-    {
-        if (Val.getValue() instanceof Boolean)
-        {
-            String l_DisplayText = Val.getName();
-
-            if (HasState(ComponentItem.Hovered) && Wrapper.GetMC().textRenderer.getWidth(l_DisplayText) > GetWidth() - 3)
-            {
-                if (DisplayString == null)
-                    DisplayString = Val.getName();
-
-                l_DisplayText = DisplayString;
-                float l_Width = Wrapper.GetMC().textRenderer.getWidth(l_DisplayText);
-
-                while (l_Width > GetWidth() - 3)
-                {
-                    l_Width = Wrapper.GetMC().textRenderer.getWidth(l_DisplayText);
-                    l_DisplayText = l_DisplayText.substring(0, l_DisplayText.length() - 1);
+                while (width > GetWidth() - 3) {
+                    width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+                    displayText = displayText.substring(0, displayText.length() - 1);
                 }
 
-                if (timer.passed(75) && DisplayString.length() > 0)
-                {
+                if (timer.passed(75) && !DisplayString.isEmpty()) {
                     String l_FirstChar = String.valueOf(DisplayString.charAt(0));
 
                     DisplayString = DisplayString.substring(1) + l_FirstChar;
@@ -113,170 +89,112 @@ public class ComponentItemValue extends ComponentItem
                     timer.reset();
                 }
 
-                return l_DisplayText;
-            }
-            else
-                DisplayString = null;
+                return displayText;
+            } else DisplayString = null;
 
-            float l_Width = Wrapper.GetMC().textRenderer.getWidth(l_DisplayText);
+            float width = Wrapper.GetMC().textRenderer.getWidth(displayText);
 
-            while (l_Width > GetWidth() - 3)
-            {
-                l_Width = Wrapper.GetMC().textRenderer.getWidth(l_DisplayText);
-                l_DisplayText = l_DisplayText.substring(0, l_DisplayText.length() - 1);
+            while (width > GetWidth() - 3) {
+                width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+                displayText = displayText.substring(0, displayText.length() - 1);
             }
 
-            return l_DisplayText;
+            return displayText;
         }
 
-        String l_DisplayText = Val.getName() + " " + (Val.getValue() == null ? "null" : Val.getValue().toString()) + " ";
+        String displayText = value.getName() + " " + (value.getValue() == null ? "null" : value.getValue().toString()) + " ";
 
-        if (HasState(ComponentItem.Hovered) && Wrapper.GetMC().textRenderer.getWidth(l_DisplayText) > GetWidth() - 3)
-        {
-            if (DisplayString == null)
-                DisplayString = Val.getName() + " " + Val.getValue().toString() + " ";
+        if (HasState(ComponentItem.Hovered) && Wrapper.GetMC().textRenderer.getWidth(displayText) > GetWidth() - 3) {
+            if (DisplayString == null) DisplayString = value.getName() + " " + value.getValue().toString() + " ";
 
-            l_DisplayText = DisplayString;
-            float l_Width = Wrapper.GetMC().textRenderer.getWidth(l_DisplayText);
+            displayText = DisplayString;
+            float width = Wrapper.GetMC().textRenderer.getWidth(displayText);
 
-            while (l_Width > GetWidth() - 3)
-            {
-                l_Width = Wrapper.GetMC().textRenderer.getWidth(l_DisplayText);
-                l_DisplayText = l_DisplayText.substring(0, l_DisplayText.length() - 1);
+            while (width > GetWidth() - 3) {
+                width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+                displayText = displayText.substring(0, displayText.length() - 1);
             }
 
-            if (timer.passed(75) && DisplayString.length() > 0)
-            {
-                String l_FirstChar = String.valueOf(DisplayString.charAt(0));
+            if (timer.passed(75) && !DisplayString.isEmpty()) {
+                String firstChar = String.valueOf(DisplayString.charAt(0));
 
-                DisplayString = DisplayString.substring(1) + l_FirstChar;
+                DisplayString = DisplayString.substring(1) + firstChar;
 
                 timer.reset();
             }
 
-            return l_DisplayText;
-        }
-        else
-            DisplayString = null;
+            return displayText;
+        } else DisplayString = null;
 
-        float l_Width = Wrapper.GetMC().textRenderer.getWidth(l_DisplayText);
+        float width = Wrapper.GetMC().textRenderer.getWidth(displayText);
 
-        while (l_Width > GetWidth() - 3)
-        {
-            l_Width = Wrapper.GetMC().textRenderer.getWidth(l_DisplayText);
-            l_DisplayText = l_DisplayText.substring(0, l_DisplayText.length() - 1);
+        while (width > GetWidth() - 3) {
+            width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+            displayText = displayText.substring(0, displayText.length() - 1);
         }
 
-        return l_DisplayText;
+        return displayText;
     }
 
     @Override
-    public void OnMouseClick(int p_MouseX, int p_MouseY, int p_MouseButton)
-    {
-        super.OnMouseClick(p_MouseX, p_MouseY, p_MouseButton);
-
-        if (Val.getValue() instanceof Enum)
-            Val.setEnumValue(Val.GetNextEnumValue(p_MouseButton == 1));
-        else if (Val.getValue() instanceof String)
-        {
-            _isEditingString = !_isEditingString;
-            Val.setValue("");
+    public void OnMouseClick(int mouseX, int mouseY, int mouseButton) {
+        super.OnMouseClick(mouseX, mouseY, mouseButton);
+        if (value.getValue() instanceof Enum) value.setEnumValue(value.GetNextEnumValue(mouseButton == 1));
+        else if (value.getValue() instanceof String) {
+            isEditingString = !isEditingString;
+            value.setValue("");
         }
-        else if (Val.getValue() instanceof Boolean)
-        {
-            Val.setValue(!(Boolean) Val.getValue());
-        }
-        else
-        {
-            IsDraggingSlider = !IsDraggingSlider;
-        }
-
-        // SalHack.INSTANCE.getNotificationManager().addNotification(Mod.getDisplayName(), "Changed the value of " + Val.getName() + " to " + Val.getValue().toString());
+        else if (value.getValue() instanceof Boolean) value.setValue(!(Boolean) value.getValue());
+        else IsDraggingSlider = !IsDraggingSlider;
+        // SalHack.INSTANCE.getNotificationManager().addNotification(Mod.getDisplayName(), "Changed the value of " + value.getName() + " to " + value.getValue().toString());
     }
 
     @Override
-    public void OnMouseRelease(int p_MouseX, int p_MouseY)
-    {
-        if (IsDraggingSlider)
-        {
-            IsDraggingSlider = false;
-            //SalHack.GetNotificationManager().AddNotification("hi", "Changed the value of " + Val.getName() + " to " + Val.getValue().toString());
-        }
+    public void OnMouseRelease(int mouseX, int mouseY) {
+        if (IsDraggingSlider) IsDraggingSlider = false;
+        //SalHack.GetNotificationManager().AddNotification("hi", "Changed the value of " + value.getName() + " to " + value.getValue().toString());
     }
 
     @Override
-    public void OnMouseMove(float p_MouseX, float p_MouseY, float p_X, float p_Y)
-    {
-        if (!HasFlag(ComponentItem.Slider))
-            return;
-
-        if (!IsDraggingSlider)
-            return;
-
-        float l_X = p_X + GetX();
-
-        if (p_MouseX >= l_X && p_MouseX <= p_X + GetX() + GetWidth())
-            l_X = p_MouseX;
-
-        if (p_MouseX > p_X + GetX() + GetWidth())
-            l_X = p_X + GetX() + GetWidth();
-
-        l_X -= p_X;
-
-        SetCurrentWidth(l_X - GetX());
+    public void OnMouseMove(float mouseX, float mouseY, float X, float Y) {
+        if (!HasFlag(ComponentItem.Slider)) return;
+        if (!IsDraggingSlider) return;
+        float x = X + GetX();
+        if (mouseX >= x && mouseX <= X + GetX() + GetWidth()) x = mouseX;
+        if (mouseX > X + GetX() + GetWidth()) x = X + GetX() + GetWidth();
+        x -= X;
+        SetCurrentWidth(x - GetX());
         // Slider.SetX(l_X - GetX());
-
-        float l_Pct = (l_X - GetX()) / GetWidth();
-
-        // stupid hacks below because java sux it shd rly static assert or make compile error instead of crash when it reach this point lol
-        // could also fix all values but meh..
-
-        if (Val.getValue().getClass() == Float.class)
-        {
-            BigDecimal l_Decimal = new BigDecimal(
-                    (this.Val.getMax().getClass() == Float.class ? (Float) this.Val.getMax() : this.Val.getMax().getClass() == Double.class ? (Double) this.Val.getMax() : (Integer) Val.getMax())
-                            * l_Pct);
-
-            this.Val.setValue(l_Decimal.setScale(2, BigDecimal.ROUND_HALF_EVEN).floatValue());
-        }
-        else if (Val.getValue().getClass() == Double.class)
-        {
-            BigDecimal l_Decimal = new BigDecimal(
-                    (this.Val.getMax().getClass() == Double.class ? (Double) this.Val.getMax() : this.Val.getMax().getClass() == Float.class ? (Float) this.Val.getMax() : (Integer) Val.getMax())
-                            * l_Pct);
-
-            this.Val.setValue(l_Decimal.setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue());
-        }
-        else if (Val.getValue().getClass() == Integer.class)
-            this.Val.setValue((int) ((int) this.Val.getMax() * l_Pct));
+        float pct = (x - GetX()) / GetWidth();
+        // stupid hacks below because java sux it shd rly static assert or make compile error instead of crash when it reaches this point lol
+        // could also fix all values but meh…
+        if (value.getValue().getClass() == Float.class) {
+            BigDecimal decimal = new BigDecimal((this.value.getMax().getClass() == Float.class ? (Float) this.value.getMax() : this.value.getMax().getClass() == Double.class ? (Double) this.value.getMax() : (Integer) value.getMax()) * pct);
+            this.value.setValue(decimal.setScale(2, RoundingMode.HALF_EVEN).floatValue());
+        } else if (value.getValue().getClass() == Double.class) {
+            BigDecimal decimal = new BigDecimal((this.value.getMax().getClass() == Double.class ? (Double) this.value.getMax() : this.value.getMax().getClass() == Float.class ? (Float) this.value.getMax() : (Integer) value.getMax()) * pct);
+            this.value.setValue(decimal.setScale(2, RoundingMode.HALF_EVEN).doubleValue());
+        } else if (value.getValue().getClass() == Integer.class) this.value.setValue((int) ((int) this.value.getMax() * pct));
         // salhack.INSTANCE.logChat("Calculated Pct is " + (l_X-GetX())/GetWidth());
     }
 
     @Override
-    public void keyTyped(int keyCode, int scanCode, int modifiers)
-    {
-        if (_isEditingString)
-        {
+    public void keyTyped(int keyCode, int scanCode, int modifiers) {
+        if (isEditingString) {
             if (keyCode == GLFW.GLFW_KEY_ESCAPE || keyCode == GLFW.GLFW_KEY_ENTER) {
-            //if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) || Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
-                _isEditingString = false;
+                //if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) || Keyboard.isKeyDown(Keyboard.KEY_RETURN)) {
+                isEditingString = false;
                 return;
             }
 
-            String string = (String)Val.getValue();
+            String string = (String)value.getValue();
+            if (string == null) return;
+            String keyName = GLFW.glfwGetKeyName(keyCode, 0);
+            if (keyCode == GLFW.GLFW_KEY_BACKSPACE && !string.isEmpty()) string = string.substring(0, string.length() - 1);
+                //if (Keyboard.isKeyDown(Keyboard.KEY_BACK)) {
+            else if (keyName != null && (Character.isDigit(keyName.charAt(0)) || Character.isLetter(keyName.charAt(0)))) string += keyName.charAt(0);
 
-            if (string == null)
-                return;
-
-            if (keyCode == GLFW.GLFW_KEY_BACKSPACE) {
-            //if (Keyboard.isKeyDown(Keyboard.KEY_BACK)) {
-                if (string.length() > 0)
-                    string = string.substring(0, string.length() - 1);
-            }
-            else if (Character.isDigit(GLFW.glfwGetKeyName(keyCode, 0).charAt(0)) || Character.isLetter(GLFW.glfwGetKeyName(keyCode, 0).charAt(0)))
-                string += GLFW.glfwGetKeyName(keyCode, 0).charAt(0);
-
-            Val.setValue(string);;
+            value.setValue(string);
         }
     }
 }

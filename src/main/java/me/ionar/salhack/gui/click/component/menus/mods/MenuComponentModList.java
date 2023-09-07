@@ -14,157 +14,79 @@ import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ui.ClickGuiModule;
 import me.ionar.salhack.module.ui.ColorsModule;
 
-public class MenuComponentModList extends MenuComponent
-{
+@SuppressWarnings("rawtypes")
+public class MenuComponentModList extends MenuComponent {
 
-    public MenuComponentModList(String p_DisplayName, ModuleType p_Type, float p_X, float p_Y, String p_Image, ColorsModule p_Colors, ClickGuiModule p_Click)
-    {
-        super(p_DisplayName, p_X, p_Y, 100f, 105f, p_Image, p_Colors, p_Click);
-
+    public MenuComponentModList(String displayName, ModuleType moduleType, float X, float Y, String image, ColorsModule colorsModule, ClickGuiModule clickGuiModule) {
+        super(displayName, X, Y, 100f, 105f, image, colorsModule, clickGuiModule);
         final float Width = 105f;
         final float Height = 11f;
 
-        for (Module l_Mod : ModuleManager.Get().GetModuleList(p_Type))
-        {
-            ComponentItemListener l_Listener = new ComponentItemListener()
-            {
+        for (Module module : ModuleManager.Get().GetModuleList(moduleType)) {
+            ComponentItemListener listener = new ComponentItemListener() {
                 @Override
-                public void OnEnabled()
-                {
-                }
-
+                public void OnEnabled() {}
                 @Override
-                public void OnToggled()
-                {
-                    l_Mod.toggle();
-
+                public void OnToggled() {
+                    module.toggle();
                     //  SalHack.INSTANCE.getNotificationManager().addNotification("ClickGUI", "Toggled " + l_Mod.getDisplayName());
                 }
-
                 @Override
-                public void OnDisabled()
-                {
-                }
-
+                public void OnDisabled() {}
                 @Override
-                public void OnHover()
-                {
-
-                }
-
+                public void OnHover() {}
                 @Override
-                public void OnMouseEnter()
-                {
-
-                }
-
+                public void OnMouseEnter() {}
                 @Override
-                public void OnMouseLeave()
-                {
-
-                }
+                public void OnMouseLeave() {}
             };
 
-            int l_Flags = ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip;
+            int flags = ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip;
+            if (!module.getValueList().isEmpty()) flags |= ComponentItem.HasValues;
+            int state = 0;
+            if (module.isEnabled()) state |= ComponentItem.Clicked;
+            ComponentItem componentItem = new ComponentItemMod(module, module.getDisplayName(), module.getDesc(), flags, state, listener, Width, Height);
 
-            if (!l_Mod.getValueList().isEmpty())
-                l_Flags |= ComponentItem.HasValues;
-
-            int l_State = 0;
-
-            if (l_Mod.isEnabled())
-                l_State |= ComponentItem.Clicked;
-
-            ComponentItem l_Item = new ComponentItemMod(l_Mod, l_Mod.getDisplayName(), l_Mod.getDesc(), l_Flags, l_State, l_Listener, Width, Height);
-
-            for (Value l_Val : l_Mod.getValueList())
-            {
-                l_Listener = new ComponentItemListener()
-                {
+            for (Value value : module.getValueList()) {
+                listener = new ComponentItemListener() {
                     @Override
-                    public void OnEnabled()
-                    {
-                    }
-
+                    public void OnEnabled() {}
                     @Override
-                    public void OnToggled()
-                    {
-                    }
-
+                    public void OnToggled() {}
                     @Override
-                    public void OnDisabled()
-                    {
-                    }
-
+                    public void OnDisabled() {}
                     @Override
-                    public void OnHover()
-                    {
-
-                    }
-
+                    public void OnHover() {}
                     @Override
-                    public void OnMouseEnter()
-                    {
-
-                    }
-
+                    public void OnMouseEnter() {}
                     @Override
-                    public void OnMouseLeave()
-                    {
-
-                    }
+                    public void OnMouseLeave() {}
                 };
-                ComponentItemValue l_ValItem = new ComponentItemValue(l_Val, l_Val.getName(), l_Val.getDesc(), ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, l_Listener, Width, Height);
-
-                l_Item.DropdownItems.add(l_ValItem);
+                ComponentItemValue componentItemValue = new ComponentItemValue(value, value.getName(), value.getDesc(), ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, listener, Width, Height);
+                componentItem.DropdownItems.add(componentItemValue);
             }
 
-            l_Listener = new ComponentItemListener()
-            {
+            listener = new ComponentItemListener() {
                 @Override
-                public void OnEnabled()
-                {
-                }
-
+                public void OnEnabled() {}
                 @Override
-                public void OnToggled()
-                {
-                    l_Mod.setHidden(!l_Mod.isHidden());
+                public void OnToggled() {
+                    module.setHidden(!module.isHidden());
                 }
-
                 @Override
-                public void OnDisabled()
-                {
-                }
-
+                public void OnDisabled() {}
                 @Override
-                public void OnHover()
-                {
-
-                }
-
+                public void OnHover() {}
                 @Override
-                public void OnMouseEnter()
-                {
-
-                }
-
+                public void OnMouseEnter() {}
                 @Override
-                public void OnMouseLeave()
-                {
-
-                }
+                public void OnMouseLeave() {}
             };
 
-            ComponentItem l_HideButton = new ComponentItemHiddenMod(l_Mod, "Hidden", "Hides " + l_Mod.getDisplayName() + " from the arraylist",  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip | ComponentItem.RectDisplayOnClicked | ComponentItem.DontDisplayClickableHighlight, 0, l_Listener, Width, Height);
-
-            l_Item.DropdownItems.add(l_HideButton);
-
-            l_Item.DropdownItems.add(new ComponentItemKeybind(l_Mod, "Keybind:"+l_Mod.getDisplayName(), l_Mod.getDesc(),  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, null, Width, Height));
-
-            AddItem(l_Item);
+            ComponentItem hideButton = new ComponentItemHiddenMod(module, "Hidden", "Hides " + module.getDisplayName() + " from the arraylist",  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip | ComponentItem.RectDisplayOnClicked | ComponentItem.DontDisplayClickableHighlight, 0, listener, Width, Height);
+            componentItem.DropdownItems.add(hideButton);
+            componentItem.DropdownItems.add(new ComponentItemKeybind(module, "Keybind:"+module.getDisplayName(), module.getDesc(),  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, null, Width, Height));
+            AddItem(componentItem);
         }
-
     }
-
 }

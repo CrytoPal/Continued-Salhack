@@ -15,44 +15,26 @@ import me.ionar.salhack.main.SalHack;
 /**
  * Author Seth 4/7/2019 @ 9:13 PM.
  */
-public final class ReflectionUtil
-{
-
-    public static List<Class<?>> getClassesEx(String path)
-    {
+public final class ReflectionUtil {
+    public static List<Class<?>> getClassesEx(String path) {
         final List<Class<?>> classes = new ArrayList<>();
-
-        try
-        {
+        try {
             final File dir = new File(path);
-
-            for (File file : dir.listFiles())
-            {
-                if (file.getName().endsWith(".jar") || file.getName().endsWith(".zip"))
-                {
-                    final ClassLoader classLoader = URLClassLoader.newInstance(new URL[]
-                            { file.toURI().toURL() }, SalHack.class.getClassLoader());
-
+            for (File file : dir.listFiles()) {
+                if (file.getName().endsWith(".jar") || file.getName().endsWith(".zip")) {
+                    final ClassLoader classLoader = URLClassLoader.newInstance(new URL[]{ file.toURI().toURL() }, SalHack.class.getClassLoader());
                     final ZipFile zip = new ZipFile(file);
-
-                    for (Enumeration list = zip.entries(); list.hasMoreElements();)
-                    {
+                    for (Enumeration list = zip.entries(); list.hasMoreElements();) {
                         final ZipEntry entry = (ZipEntry) list.nextElement();
-
-                        if (entry.getName().contains(".class") && !entry.getName().contains(".classpath"))
-                        {
-                            classes.add(classLoader.loadClass(
-                                    entry.getName().substring(0, entry.getName().length() - 6).replace('/', '.')));
+                        if (entry.getName().contains(".class") && !entry.getName().contains(".classpath")) {
+                            classes.add(classLoader.loadClass(entry.getName().substring(0, entry.getName().length() - 6).replace('/', '.')));
                         }
                     }
                 }
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
         return classes;
     }
-
 }

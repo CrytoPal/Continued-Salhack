@@ -2,22 +2,17 @@ package me.ionar.salhack.gui.click.component.item;
 
 import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
 import me.ionar.salhack.module.Module;
-public class ComponentItemHiddenMod extends ComponentItem
-{
-    final Module Mod;
+public class ComponentItemHiddenMod extends ComponentItem {
+    final Module Module;
 
-    public ComponentItemHiddenMod(Module p_Mod, String p_DisplayText, String p_Description, int p_Flags, int p_State, ComponentItemListener p_Listener, float p_Width, float p_Height)
-    {
-        super(p_DisplayText, p_Description, p_Flags, p_State, p_Listener, p_Width, p_Height);
-        Mod = p_Mod;
+    public ComponentItemHiddenMod(Module module, String displayText, String description, int flags, int state, ComponentItemListener listener, float width, float height) {
+        super(displayText, description, flags, state, listener, width, height);
+        Module = module;
     }
 
     @Override
-    public boolean HasState(int p_State)
-    {
-        if ((p_State & ComponentItem.Clicked) != 0)
-            return Mod.isHidden();
-
-        return super.HasState(p_State);
+    public boolean HasState(int state) {
+        if ((state & ComponentItem.Clicked) != 0) return Module.isHidden();
+        return super.HasState(state);
     }
 }

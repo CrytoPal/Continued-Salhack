@@ -16,7 +16,7 @@ import me.zero.alpine.fork.listener.Listener;
 public interface EventBus {
 
     /**
-     * Discovers all of the valid Listeners defined in the
+     * Discovers all the valid Listeners defined in the
      * specified Listenable and subscribes them to the event bus.
      *
      * @see Listener
@@ -27,7 +27,7 @@ public interface EventBus {
 
     /**
      * Subscribes an individual listener object, as opposed to subscribing
-     * all of the listener fields that are defined in a class.
+     * all the listener fields that are defined in a class.
      *
      * @see Listener
      *
@@ -36,7 +36,7 @@ public interface EventBus {
     void subscribe(Listener listener);
 
     /**
-     * Subscribes all of the specified Listenables
+     * Subscribes all the specified Listenables
      *
      * @see Listener
      * @see #subscribe(Listenable)
@@ -48,7 +48,7 @@ public interface EventBus {
     }
 
     /**
-     * Subscribes all of the specified Listenables
+     * Subscribes all the specified Listenables
      *
      * @see Listener
      * @see #subscribe(Listenable)
@@ -60,7 +60,7 @@ public interface EventBus {
     }
 
     /**
-     * Subscribes all of the specified Listeners
+     * Subscribes all the specified Listeners
      *
      * @see Listener
      * @see #subscribe(Listener)
@@ -72,7 +72,7 @@ public interface EventBus {
     }
 
     /**
-     * Unsubscribes all of the Listeners that are defined by the Listenable
+     * Unsubscribes all the Listeners that are defined by the Listenable
      *
      * @see #subscribe(Listenable)
      *
@@ -90,7 +90,7 @@ public interface EventBus {
     void unsubscribe(Listener listener);
 
     /**
-     * Unsubscribes all of the specified Listenables
+     * Unsubscribes all the specified Listenables
      *
      * @see Listener
      * @see #unsubscribe(Listenable)
@@ -102,7 +102,7 @@ public interface EventBus {
     }
 
     /**
-     * Unsubscribes all of the specified Listenables
+     * Unsubscribes all the specified Listenables
      *
      * @see Listener
      * @see #unsubscribe(Listenable)
@@ -114,7 +114,7 @@ public interface EventBus {
     }
 
     /**
-     * Unsubscribes all of the specified Listeners
+     * Unsubscribes all the specified Listeners
      *
      * @see Listener
      * @see #unsubscribe(Listener)

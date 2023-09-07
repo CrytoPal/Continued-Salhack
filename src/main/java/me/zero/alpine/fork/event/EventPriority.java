@@ -12,12 +12,10 @@ import me.zero.alpine.fork.listener.Listener;
  * @since 1/21/2017
  */
 public interface EventPriority {
-
     int HIGHEST =  200;
     int HIGH    =  100;
     int MEDIUM  =  0;
     int LOW     = -100;
     int LOWEST  = -200;
-
     int DEFAULT = MEDIUM;
 }

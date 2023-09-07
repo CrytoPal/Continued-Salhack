@@ -13,7 +13,6 @@ public class SalHackMod implements ClientModInitializer {
 	public static final String NAME = "SalHack";
 	public static final String MOD_ID = "sal-hack";
 	public static final String VERSION = "v0.5 Beta";
-
 	public static final EventBus EVENT_BUS = new EventManager();
 
 	@Override

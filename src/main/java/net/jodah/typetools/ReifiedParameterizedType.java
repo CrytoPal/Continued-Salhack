@@ -63,7 +63,7 @@ class ReifiedParameterizedType implements ParameterizedType {
         if (ownerType instanceof Class) {
           sb.append(((Class) ownerType).getName());
         } else {
-          sb.append(ownerType.toString());
+          sb.append(ownerType);
         }
 
         sb.append("$");

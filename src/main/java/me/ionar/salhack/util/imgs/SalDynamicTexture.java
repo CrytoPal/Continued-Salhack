@@ -1,60 +1,50 @@
 package me.ionar.salhack.util.imgs;
 
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.nio.file.Path;
-
 import net.minecraft.client.texture.DynamicTexture;
-import net.minecraft.util.Identifier;
+
+import java.awt.image.BufferedImage;
 
 public class SalDynamicTexture extends BufferedImage {
-    private int Height;
-    private int Width;
-    private BufferedImage m_BufferedImage;
-    private String m_TexturedLocation;
-    private ImageFrame m_Frame;
+    private final int Height;
+    private final int Width;
+    private final BufferedImage BufferedImage;
+    private String TexturedLocation;
+    private ImageFrame Frame;
 
-    public SalDynamicTexture(BufferedImage bufferedImage, int p_Height, int p_Width)  {
-        super(p_Width, p_Height, 1);
-        m_Frame = null;
-        m_BufferedImage = bufferedImage;
-        Height = p_Height;
-        Width = p_Width;
+    public SalDynamicTexture(BufferedImage bufferedImage, int height, int width)  {
+        super(width, height, 1);
+        Frame = null;
+        BufferedImage = bufferedImage;
+        Height = height;
+        Width = width;
     }
 
-    public int GetHeight()
-    {
+    public int GetHeight() {
         return Height;
     }
 
-    public int GetWidth()
-    {
+    public int GetWidth() {
         return Width;
     }
 
-    public final DynamicTexture GetDynamicTexture()
-    {
+    public final DynamicTexture GetDynamicTexture() {
         return (DynamicTexture)this;
     }
 
-    public void SetResourceLocation(String dynamicTextureLocation)
-    {
-        m_TexturedLocation = dynamicTextureLocation;
+    public void SetResourceLocation(String dynamicTextureLocation) {
+        TexturedLocation = dynamicTextureLocation;
     }
 
-    public final String GetResourceLocation()
-    {
-        return m_TexturedLocation;
+    public final String GetResourceLocation() {
+        return TexturedLocation;
     }
 
-    public void SetImageFrame(final ImageFrame p_Frame)
-    {
-        m_Frame = p_Frame;
+    public void SetImageFrame(final ImageFrame p_Frame) {
+        Frame = p_Frame;
     }
 
     /// used for gifs
-    public final ImageFrame GetFrame()
-    {
-        return m_Frame;
+    public final ImageFrame GetFrame() {
+        return Frame;
     }
 }

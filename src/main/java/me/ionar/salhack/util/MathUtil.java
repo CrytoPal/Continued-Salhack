@@ -17,8 +17,7 @@ public class MathUtil {
         return new Vec3d(e.getX() - MathHelper.lerp(tickDelta, e.lastRenderX, e.getX()), e.getY() - MathHelper.lerp(tickDelta, e.lastRenderY, e.getY()), e.getZ() - MathHelper.lerp(tickDelta, e.lastRenderZ, e.getZ()));
     }
 
-    public static float[] calcAngle(Vec3d from, Vec3d to)
-    {
+    public static float[] calcAngle(Vec3d from, Vec3d to) {
         final double difX = to.x - from.x;
         final double difY = (to.y - from.y) * -1.0F;
         final double difZ = to.z - from.z;
@@ -30,37 +29,27 @@ public class MathUtil {
                         (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist))) };
     }
 
-    public static double[] directionSpeedNoForward(double speed)
-    {
+    public static double[] directionSpeedNoForward(double speed) {
         final MinecraftClient mc = Wrapper.GetMC();
         float forward = 1f;
 
-        if (mc.options.leftKey.isPressed() || mc.options.rightKey.isPressed() || mc.options.backKey.isPressed() || mc.options.forwardKey.isPressed())
-            forward = mc.player.input.movementForward;
+        if (mc.options.leftKey.isPressed() || mc.options.rightKey.isPressed() || mc.options.backKey.isPressed() || mc.options.forwardKey.isPressed()) forward = mc.player.input.movementForward;
 
         float side = mc.player.input.movementSideways;
-        float yaw = mc.player.prevYaw
-                + (mc.player.getYaw() - mc.player.prevYaw) * mc.getTickDelta();
+        float yaw = mc.player.prevYaw + (mc.player.getYaw() - mc.player.prevYaw) * mc.getTickDelta();
 
-        if (forward != 0)
-        {
-            if (side > 0)
-            {
+        if (forward != 0) {
+            if (side > 0) {
                 yaw += (forward > 0 ? -45 : 45);
-            }
-            else if (side < 0)
-            {
+            } else if (side < 0) {
                 yaw += (forward > 0 ? 45 : -45);
             }
             side = 0;
 
             // forward = clamp(forward, 0, 1);
-            if (forward > 0)
-            {
+            if (forward > 0) {
                 forward = 1;
-            }
-            else if (forward < 0)
-            {
+            } else if (forward < 0) {
                 forward = -1;
             }
         }
@@ -69,37 +58,27 @@ public class MathUtil {
         final double cos = Math.cos(Math.toRadians(yaw + 90));
         final double posX = (forward * speed * cos + side * speed * sin);
         final double posZ = (forward * speed * sin - side * speed * cos);
-        return new double[]
-                { posX, posZ };
+        return new double[]{ posX, posZ };
     }
 
-    public static double[] directionSpeed(double speed)
-    {
+    public static double[] directionSpeed(double speed) {
         final MinecraftClient mc = Wrapper.GetMC();
         float forward = mc.player.input.movementForward;
         float side = mc.player.input.movementSideways;
-        float yaw = mc.player.prevYaw
-                + (mc.player.getYaw() - mc.player.prevYaw) * mc.getTickDelta();
+        float yaw = mc.player.prevYaw + (mc.player.getYaw() - mc.player.prevYaw) * mc.getTickDelta();
 
-        if (forward != 0)
-        {
-            if (side > 0)
-            {
+        if (forward != 0) {
+            if (side > 0) {
                 yaw += (forward > 0 ? -45 : 45);
-            }
-            else if (side < 0)
-            {
+            } else if (side < 0) {
                 yaw += (forward > 0 ? 45 : -45);
             }
             side = 0;
 
             // forward = clamp(forward, 0, 1);
-            if (forward > 0)
-            {
+            if (forward > 0) {
                 forward = 1;
-            }
-            else if (forward < 0)
-            {
+            } else if (forward < 0) {
                 forward = -1;
             }
         }
@@ -108,12 +87,10 @@ public class MathUtil {
         final double cos = Math.cos(Math.toRadians(yaw + 90));
         final double posX = (forward * speed * cos + side * speed * sin);
         final double posZ = (forward * speed * sin - side * speed * cos);
-        return new double[]
-                { posX, posZ };
+        return new double[]{ posX, posZ };
     }
 
-    public static double degToRad(double deg)
-    {
+    public static double degToRad(double deg) {
         return deg * (float) (Math.PI / 180.0f);
     }
 }

@@ -1,5 +1,6 @@
 package me.ionar.salhack.module;
 
+@SuppressWarnings({"unchecked", "rawtypes"})
 public class Value<T>
 {
 
