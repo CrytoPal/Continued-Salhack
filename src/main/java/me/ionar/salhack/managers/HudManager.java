@@ -42,6 +42,8 @@ public class HudManager {
         Add(new TrueDurabilityComponent());
         Add(new InventoryComponent());
         Add(new ArmorHudComponent());
+        Add(new BiomeComponent());
+        Add(new PlayerCountComponent());
         /*
         Add(new ArrayListComponent());
         Add(new InventoryComponent());
