@@ -1,9 +1,6 @@
 package me.ionar.salhack.module.combat;
 
 import me.ionar.salhack.events.client.EventClientTick;
-import me.ionar.salhack.events.player.EventPlayerTick;
-import me.ionar.salhack.gui.SalGuiScreen;
-import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
@@ -13,17 +10,14 @@ import me.zero.alpine.fork.listener.EventHandler;
 import me.zero.alpine.fork.listener.Listener;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.text.Text;
 
-public final class AutoTotemModule extends Module {
+public final class OffhandModule extends Module {
     public final Value<Float> health = new Value<Float>("Health", new String[]
             {"Hp"}, "The amount of health needed to acquire a totem.", 16.0f, 0.0f, 20.0f, 0.5f);
-    public final Value<AutoTotemMode> Mode = new Value<AutoTotemMode>("Mode", new String[]{"Mode"}, "If you are above the required health for a totem, x will be used in offhand instead.", AutoTotemMode.Totem);
+    public final Value<offhandMode> Mode = new Value<offhandMode>("Mode", new String[]{"Mode"}, "If you are above the required health for a totem, x will be used in offhand instead.", offhandMode.Totem);
     // Will fix later
     //public final Value<AutoTotemMode> FallbackMode = new Value<AutoTotemMode>("Fallback", new String[]{"FallbackMode"}, "If you don't have the required item for mode, this will be the fallback.", AutoTotemMode.Crystal);
     public final Value<Float> FallDistance = new Value<Float>("FallDistance", new String[]{"Fall"}, "If your fall distance exceeds this value, use a totem", 15.0f, 0.0f, 100.0f, 10.0f);
@@ -44,20 +38,20 @@ public final class AutoTotemModule extends Module {
 
             if (!mc.player.getMainHandStack().isEmpty()) {
                 if (health.getValue() <= PlayerUtil.GetHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandStrNoStrSword.getValue()) {
-                    SwitchOffHandIfNeed(AutoTotemMode.Strength);
+                    SwitchOffHandIfNeed(offhandMode.Strength);
                     return;
                 }
 
                 /// Sword override
                 if (health.getValue() <= PlayerUtil.GetHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandGapOnSword.getValue()) {
-                    SwitchOffHandIfNeed(AutoTotemMode.EGap);
+                    SwitchOffHandIfNeed(offhandMode.EGap);
                     return;
                 }
             }
 
             /// First check health, most important as we don't want to die for no reason.
-            if (health.getValue() > PlayerUtil.GetHealthWithAbsorption() || Mode.getValue() == AutoTotemMode.Totem || (TotemOnElytra.getValue() && elytra) || (mc.player.fallDistance >= FallDistance.getValue() && !elytra) || noNearbyPlayers()) {
-                SwitchOffHandIfNeed(AutoTotemMode.Totem);
+            if (health.getValue() > PlayerUtil.GetHealthWithAbsorption() || Mode.getValue() == offhandMode.Totem || (TotemOnElytra.getValue() && elytra) || (mc.player.fallDistance >= FallDistance.getValue() && !elytra) || noNearbyPlayers()) {
+                SwitchOffHandIfNeed(offhandMode.Totem);
                 return;
             }
 
@@ -68,7 +62,7 @@ public final class AutoTotemModule extends Module {
         }
     });
 
-    public AutoTotemModule() {
+    public OffhandModule() {
         super("Offhand", new String[]
                 {"OF"}, "Automatically puts an Item of your choice in your offhand", 0, 0xDADB24, ModuleType.COMBAT);
     }
@@ -78,7 +72,7 @@ public final class AutoTotemModule extends Module {
         return String.valueOf(Mode.getValue());
     }
 
-    private void SwitchOffHandIfNeed(AutoTotemMode val) {
+    private void SwitchOffHandIfNeed(offhandMode val) {
         Item item = GetItemFromModeVal(val);
 
         if (mc.player.playerScreenHandler == mc.player.currentScreenHandler) {
@@ -107,7 +101,7 @@ public final class AutoTotemModule extends Module {
 
     }
 
-    public Item GetItemFromModeVal(AutoTotemMode val) {
+    public Item GetItemFromModeVal(offhandMode val) {
         switch (val) {
             case Crystal:
                 return Items.END_CRYSTAL;
@@ -128,7 +122,7 @@ public final class AutoTotemModule extends Module {
         return Items.TOTEM_OF_UNDYING;
     }
 
-    private String GetItemNameFromModeVal(AutoTotemMode val) {
+    private String GetItemNameFromModeVal(offhandMode val) {
         switch (val) {
             case Crystal:
                 return "End Crystal";
@@ -150,7 +144,7 @@ public final class AutoTotemModule extends Module {
     }
 
     private boolean noNearbyPlayers() {
-        return AutoTotemMode.Crystal == Mode.getValue() && mc.world.getPlayers().stream().noneMatch(e -> e != mc.player && isValidTarget(e));
+        return offhandMode.Crystal == Mode.getValue() && mc.world.getPlayers().stream().noneMatch(e -> e != mc.player && isValidTarget(e));
     }
 
     private boolean isValidTarget(Entity entity) {
@@ -164,7 +158,7 @@ public final class AutoTotemModule extends Module {
         return !(mc.player.distanceTo(entity) > 15);
     }
 
-    public enum AutoTotemMode {
+    public enum offhandMode {
         Totem,
         EGap,
         Crystal,
