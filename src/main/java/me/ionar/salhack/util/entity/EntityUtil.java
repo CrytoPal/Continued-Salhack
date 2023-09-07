@@ -13,8 +13,6 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 import java.util.ArrayList;
-import java.util.Objects;
-
 public class EntityUtil {
 
     public static ArrayList<Entity> getEntities() {

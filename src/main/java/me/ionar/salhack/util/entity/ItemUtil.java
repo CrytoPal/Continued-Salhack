@@ -1,7 +1,6 @@
 package me.ionar.salhack.util.entity;
 
 import me.ionar.salhack.main.Wrapper;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
