@@ -8,14 +8,14 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Formatting;
 
 public class Command {
-    private String Name;
-    private String Description;
+    private final String Name;
+    private final String Description;
     protected final MinecraftClient mc = MinecraftClient.getInstance();
     protected final List<String> CommandChunks = new ArrayList<String>();
 
-    public Command(String p_Name, String p_Description) {
-        Name = p_Name;
-        Description = p_Description;
+    public Command(String CName, String CDescription) {
+        Name = CName;
+        Description = CDescription;
     }
 
     public String GetName() {
