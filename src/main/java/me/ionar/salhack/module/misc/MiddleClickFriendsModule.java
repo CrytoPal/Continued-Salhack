@@ -20,10 +20,10 @@ public class MiddleClickFriendsModule extends Module {
         if (Event.getAction() == 0 || Event.getButton() != GLFW_MOUSE_BUTTON_MIDDLE || mc.currentScreen != null || mc.targetedEntity == null || !(mc.targetedEntity instanceof PlayerEntity Entity)) return;
         if (FriendManager.Get().IsFriend(Entity)) {
             FriendManager.Get().RemoveFriend(Entity.getName().getString().toLowerCase());
-            SendMessage(String.format("%s has been removed.", Entity.getName().getString()));
+            SendMessage(Entity.getEntityName() + " has been removed.");
         } else {
             FriendManager.Get().AddFriend(Entity.getName().getString().toLowerCase());
-            SendMessage(String.format("%s has been added.", Entity.getName()));
+            SendMessage(Entity.getEntityName() + " has been added.");
         }
     });
 }
