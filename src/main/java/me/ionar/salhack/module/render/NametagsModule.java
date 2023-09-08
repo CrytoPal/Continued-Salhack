@@ -74,7 +74,7 @@ public class NametagsModule extends Module {
             final Friend friend = FriendManager.Get().GetFriend(entity);
 
             if (friend != null) {
-                name = friend.GetAlias();
+                name = entity.getEntityName();
                 color = 0x00C3EE;
             }
 
