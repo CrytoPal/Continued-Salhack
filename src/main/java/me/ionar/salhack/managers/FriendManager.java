@@ -75,13 +75,13 @@ public class FriendManager {
 
     public String GetFriendName(Entity p_Entity) {
         if (!FriendList.containsKey(p_Entity.getName().getString().toLowerCase()))
-            return p_Entity.getName().getString();
+            return p_Entity.getEntityName();
 
-        return FriendList.get(p_Entity.getName().getString().toLowerCase()).GetAlias();
+        return FriendList.get(p_Entity.getEntityName()).GetAlias();
     }
 
     public boolean IsFriend(Entity p_Entity) {
-        return p_Entity instanceof PlayerEntity && FriendList.containsKey(p_Entity.getName().getString().toLowerCase());
+        return p_Entity instanceof PlayerEntity && FriendList.containsKey(p_Entity.getEntityName());
     }
 
     public boolean AddFriend(String p_Name) {
@@ -112,17 +112,17 @@ public class FriendManager {
         if (!m_FriendsModule.isEnabled())
             return false;
 
-        return FriendList.containsKey(p_Name.toLowerCase());
+        return FriendList.containsKey(p_Name);
     }
 
     public Friend GetFriend(Entity e) {
         if (!m_FriendsModule.isEnabled())
             return null;
 
-        if (!FriendList.containsKey(e.getName().getString().toLowerCase()))
+        if (!FriendList.containsKey(e.getEntityName()))
             return null;
 
-        return FriendList.get(e.getName().getString().toLowerCase());
+        return FriendList.get(e.getEntityName());
     }
 
     public void Load() {
