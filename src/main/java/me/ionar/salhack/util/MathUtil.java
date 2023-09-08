@@ -21,16 +21,13 @@ public class MathUtil {
         final double difX = to.x - from.x;
         final double difY = (to.y - from.y) * -1.0F;
         final double difZ = to.z - from.z;
-
         final double dist = Math.sqrt(difX * difX + difZ * difZ);
-
-        return new float[]
-                { (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0f),
-                        (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist))) };
+        return new float[]{ (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difZ, difX)) - 90.0f), (float) MathHelper.wrapDegrees(Math.toDegrees(Math.atan2(difY, dist))) };
     }
 
     public static double[] directionSpeedNoForward(double speed) {
         final MinecraftClient mc = Wrapper.GetMC();
+        if (mc.player == null) return new double[0];
         float forward = 1f;
 
         if (mc.options.leftKey.isPressed() || mc.options.rightKey.isPressed() || mc.options.backKey.isPressed() || mc.options.forwardKey.isPressed()) forward = mc.player.input.movementForward;
@@ -39,19 +36,13 @@ public class MathUtil {
         float yaw = mc.player.prevYaw + (mc.player.getYaw() - mc.player.prevYaw) * mc.getTickDelta();
 
         if (forward != 0) {
-            if (side > 0) {
-                yaw += (forward > 0 ? -45 : 45);
-            } else if (side < 0) {
-                yaw += (forward > 0 ? 45 : -45);
-            }
+            if (side > 0) yaw += (forward > 0 ? -45 : 45);
+            else if (side < 0) yaw += (forward > 0 ? 45 : -45);
             side = 0;
 
             // forward = clamp(forward, 0, 1);
-            if (forward > 0) {
-                forward = 1;
-            } else if (forward < 0) {
-                forward = -1;
-            }
+            if (forward > 0) forward = 1;
+            else if (forward < 0) forward = -1;
         }
 
         final double sin = Math.sin(Math.toRadians(yaw + 90));
@@ -63,24 +54,20 @@ public class MathUtil {
 
     public static double[] directionSpeed(double speed) {
         final MinecraftClient mc = Wrapper.GetMC();
+        if (mc.player == null) return new double[0];
         float forward = mc.player.input.movementForward;
         float side = mc.player.input.movementSideways;
         float yaw = mc.player.prevYaw + (mc.player.getYaw() - mc.player.prevYaw) * mc.getTickDelta();
 
         if (forward != 0) {
-            if (side > 0) {
-                yaw += (forward > 0 ? -45 : 45);
-            } else if (side < 0) {
-                yaw += (forward > 0 ? 45 : -45);
-            }
+            if (side > 0) yaw += (forward > 0 ? -45 : 45);
+            else if (side < 0) yaw += (forward > 0 ? 45 : -45);
+
             side = 0;
 
             // forward = clamp(forward, 0, 1);
-            if (forward > 0) {
-                forward = 1;
-            } else if (forward < 0) {
-                forward = -1;
-            }
+            if (forward > 0) forward = 1;
+            else if (forward < 0) forward = -1;
         }
 
         final double sin = Math.sin(Math.toRadians(yaw + 90));

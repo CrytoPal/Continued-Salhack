@@ -28,7 +28,7 @@ public class ComponentItemMod extends ComponentItem {
 
     @Override
     public String GetDescription() {
-        return Module.getDesc();
+        return Module.getDescription();
     }
 
     @Override

@@ -1,93 +1,75 @@
 package me.ionar.salhack.module.misc;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.mojang.authlib.GameProfile;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.UUID;
-
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
-
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import org.apache.commons.io.IOUtils;
 
-public class FakePlayer extends Module
-{
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.UUID;
+
+public class FakePlayer extends Module {
     public static final Value<String> name = new Value<>("Name", new String[] {"name"}, "Name of the fake player", "bluegooon");
 
-    public FakePlayer()
-    {
+    public FakePlayer() {
         super("FakePlayer", new String[] {"Fake"}, "Summons a fake player", 0, 0xDADB25, ModuleType.MISC);
     }
 
-    private OtherClientPlayerEntity _fakePlayer;
+    private OtherClientPlayerEntity FakePlayer;
 
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         super.onEnable();
-        _fakePlayer = null;
+        FakePlayer = null;
 
-        if (mc.world == null)
-        {
-            this.toggle();
+        if (mc.world == null || mc.player == null) {
+            this.toggle(true);
             return;
         }
 
         // If getting uuid from mojang doesn't work we use another uuid
-        try
-        {
-            _fakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(name.getValue())), name.getValue()));
-        }
-        catch (Exception e)
-        {
-            _fakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString("20a81bb7-fba6-4185-bd81-4c827c9cd010"), name.getValue()));
+        try {
+            FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(name.getValue())), name.getValue()));
+        } catch (Exception e) {
+            FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(mc.player.getEntityName())), name.getValue()));
             SendMessage("Failed to load uuid, setting another one.");
         }
         SendMessage(String.format("%s has been spawned.", name.getValue()));
 
-        _fakePlayer.copyFrom(mc.player);
-        _fakePlayer.headYaw = mc.player.getHeadYaw();
-        mc.world.addEntity(-100, _fakePlayer);
+        FakePlayer.copyFrom(mc.player);
+        FakePlayer.headYaw = mc.player.getHeadYaw();
+        mc.world.addEntity(-100, FakePlayer);
     }
 
     @Override
-    public void onDisable()
-    {
+    public void onDisable() {
         super.onDisable();
-        mc.world.removeEntity(_fakePlayer.getId(), Entity.RemovalReason.UNLOADED_WITH_PLAYER);
-    }
-
-    @Override
-    public void toggleNoSave()
-    {
+        if (mc.world == null) return;
+        mc.world.removeEntity(FakePlayer.getId(), Entity.RemovalReason.UNLOADED_WITH_PLAYER);
     }
 
     // Getting uuid from a name
-    public static String getUuid(String name)
-    {
-        JsonParser parser = new JsonParser();
+    public static String getUuid(String name) {
+        Gson gson = new Gson();
         String url = "https://api.mojang.com/users/profiles/minecraft/" + name;
-        try
-        {
+        try {
             String UUIDJson = IOUtils.toString(new URL(url), StandardCharsets.UTF_8);
             if(UUIDJson.isEmpty()) return "invalid name";
-            JsonObject UUIDObject = (JsonObject) parser.parse(UUIDJson);
+            JsonObject UUIDObject = gson.fromJson(UUIDJson, JsonObject.class);
             return reformatUuid(UUIDObject.get("id").toString());
-        }
-        catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "error";
     }
 
     // Reformating a short uuid type into a long uuid type
-    private static String reformatUuid(String uuid)
-    {
+    private static String reformatUuid(String uuid) {
         String longUuid = "";
 
         longUuid += uuid.substring(1, 9) + "-";

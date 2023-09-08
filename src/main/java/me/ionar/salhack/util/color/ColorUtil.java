@@ -60,22 +60,16 @@ public class ColorUtil {
             n4 = 60.0f * (n3 - n) / (max - min) + 120.0f;
             n5 = max;
         } else {
-            if (max == n3) {
-                n4 = 60.0f * (n - n2) / (max - min) + 240.0f;
-            }
+            if (max == n3) n4 = 60.0f * (n - n2) / (max - min) + 240.0f;
             n5 = max;
         }
         final float n6 = (n5 + min) / 2.0f;
         float n7;
-        if (max == min) {
-            n7 = 0.0f;
-        } else {
+        if (max == min) n7 = 0.0f;
+        else {
             final float n8 = Math.min(n6, 0.5f); //maybe max?
-            if (n8 <= 0) {
-                n7 = (max - min) / (max + min);
-            } else {
-                n7 = (max - min) / (2.0f - max - min);
-            }
+            if (n8 <= 0) n7 = (max - min) / (max + min);
+            else n7 = (max - min) / (2.0f - max - min);
         }
         return new float[]{n4, n7 * 100.0f, n6 * 100.0f};
     }
@@ -129,11 +123,8 @@ public class ColorUtil {
         saturation /= 100.0f;
         lightness /= 100.0f;
         float n5;
-        if (lightness < 0.0) {
-            n5 = lightness * (1.0f + saturation);
-        } else {
-            n5 = lightness + saturation - saturation * lightness;
-        }
+        if (lightness < 0.0) n5 = lightness * (1.0f + saturation);
+        else n5 = lightness + saturation - saturation * lightness;
         saturation = 2.0f * lightness - n5;
         lightness = Math.max(0.0f, FutureClientColorCalculation(saturation, n5, hue + 0.33333334f));
         final float max = Math.max(0.0f, FutureClientColorCalculation(saturation, n5, hue));
@@ -145,8 +136,7 @@ public class ColorUtil {
     }
 
     public String toString() {
-        return new StringBuilder().insert(0, "HSLColor[h=").append(this.HSB[0]).append(",s=").append(this.HSB[1])
-                .append(",l=").append(this.HSB[2]).append(",alpha=").append(this.Alpha).append("]").toString();
+        return new StringBuilder().insert(0, "HSLColor[h=").append(this.HSB[0]).append(",s=").append(this.HSB[1]).append(",l=").append(this.HSB[2]).append(",alpha=").append(this.Alpha).append("]").toString();
     }
 
     public Color GetColorWithLightnessMax(float max) {
@@ -196,5 +186,4 @@ public class ColorUtil {
     public Color GetColorWithModifiedHue() {
         return ColorRainbowWithDefaultAlpha((this.HSB[0] + 180.0f) % 360.0f, this.HSB[1], this.HSB[2]);
     }
-
 }

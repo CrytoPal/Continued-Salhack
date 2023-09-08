@@ -4,32 +4,19 @@ import me.ionar.salhack.gui.hud.GuiHudEditor;
 import me.ionar.salhack.module.Module;
 import org.lwjgl.glfw.GLFW;
 
-public final class HudEditorModule extends Module
-{
-    private GuiHudEditor m_HudEditor;
+public final class HudEditorModule extends Module {
+    private GuiHudEditor HudEditor;
 
-    public HudEditorModule()
-    {
+    public HudEditorModule() {
         super("HudEditor", new String[]{"HudEditor"}, "Displays the HudEditor", GLFW.GLFW_KEY_GRAVE_ACCENT, 0xDBC824, ModuleType.UI);
     }
 
     @Override
-    public void toggleNoSave()
-    {
-
-    }
-
-    @Override
-    public void onToggle()
-    {
+    public void onToggle() {
         super.onToggle();
-
-        if (mc.world != null)
-        {
-            if (m_HudEditor == null)
-                m_HudEditor = new GuiHudEditor(this);
-
-            mc.setScreen(m_HudEditor);
+        if (mc.world != null) {
+            if (HudEditor == null) HudEditor = new GuiHudEditor(this);
+            mc.setScreen(HudEditor);
         }
     }
 }

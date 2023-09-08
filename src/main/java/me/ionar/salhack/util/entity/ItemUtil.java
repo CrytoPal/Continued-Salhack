@@ -27,6 +27,7 @@ public class ItemUtil {
     }
 
     public static void Move(int slot_from, int slot_to) {
+        if (Wrapper.GetMC().player == null || Wrapper.GetMC().interactionManager == null) return;
         Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slot_from, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
         Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slot_to, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
     }

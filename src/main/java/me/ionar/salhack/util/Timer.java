@@ -1,7 +1,6 @@
 package me.ionar.salhack.util;
 
-public final class Timer
-{
+public final class Timer {
     private long time;
 
     public Timer() {

@@ -141,19 +141,19 @@ public class TransformPositionUtil {
      * <p><strong>WARNING:</strong> This will wait for the main tick thread to register the texture, keep in mind that the texture will not be available instantly</p>
      * <p><strong>WARNING 2:</strong> This will throw an exception when called when the OpenGL context is not yet made</p>
      *
-     * @param i  The identifier to register the texture under
-     * @param bi The BufferedImage holding the texture
+     * @param identifier  The identifier to register the texture under
+     * @param bufferedImage The BufferedImage holding the texture
      */
-    public static void registerBufferedImageTexture( Identifier i,  BufferedImage bi) {
+    public static void registerBufferedImageTexture( Identifier identifier,  BufferedImage bufferedImage) {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
-            ImageIO.write(bi, "png", out);
+            ImageIO.write(bufferedImage, "png", out);
             byte[] bytes = out.toByteArray();
 
             ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
             data.flip();
             NativeImageBackedTexture tex = new NativeImageBackedTexture(NativeImage.read(data));
-            MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().getTextureManager().registerTexture(i, tex));
+            MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().getTextureManager().registerTexture(identifier, tex));
         } catch (Exception e) { // should never happen, but just in case
             e.printStackTrace();
         }
@@ -270,9 +270,7 @@ public class TransformPositionUtil {
         Matrix4f matrixProj = new Matrix4f(lastProjMat);
         Matrix4f matrixModel = new Matrix4f(lastModMat);
 
-        matrixProj.mul(matrixModel)
-                .mul(lastWorldSpaceMatrix)
-                .unproject((float) x / displayWidth * viewport[2], (float) (displayHeight - y) / displayHeight * viewport[3], (float) d, viewport, target);
+        matrixProj.mul(matrixModel).mul(lastWorldSpaceMatrix).unproject((float) x / displayWidth * viewport[2], (float) (displayHeight - y) / displayHeight * viewport[3], (float) d, viewport, target);
 
         return new Vec3d(target.x, target.y, target.z).add(camera.getPos());
     }

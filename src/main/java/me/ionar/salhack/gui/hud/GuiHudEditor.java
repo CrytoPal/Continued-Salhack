@@ -105,7 +105,7 @@ public class GuiHudEditor extends Screen {
     public void close() {
         super.close();
         if (HudEditor.isEnabled())
-            HudEditor.toggle();
+            HudEditor.toggle(true);
 
         Clicked = false;
         Dragging = false;

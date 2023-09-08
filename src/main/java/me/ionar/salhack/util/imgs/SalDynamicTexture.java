@@ -39,8 +39,8 @@ public class SalDynamicTexture extends BufferedImage {
         return TexturedLocation;
     }
 
-    public void SetImageFrame(final ImageFrame p_Frame) {
-        Frame = p_Frame;
+    public void SetImageFrame(final ImageFrame frame) {
+        Frame = frame;
     }
 
     /// used for gifs

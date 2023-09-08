@@ -38,7 +38,7 @@ public class PlayerUtil {
             return 0;
 
         for (int i = mc.player.getInventory().size() - 1; i > 0; --i) {
-            if (i == 0 || i == 5 || i == 6 || i == 7 || i == 8)
+            if (i == 5 || i == 6 || i == 7 || i == 8)
                 continue;
 
             ItemStack s = mc.player.getInventory().getStack(i);
@@ -88,6 +88,7 @@ public class PlayerUtil {
     }
 
     public static int GetItemInHotbar(Item item) {
+        if (mc.player == null) return -1;
         for (int i = 0; i < 9; ++i) {
             ItemStack stack = mc.player.getInventory().getStack(i);
 
@@ -102,6 +103,7 @@ public class PlayerUtil {
     }
 
     public static BlockPos GetLocalPlayerPosFloored() {
+        if (mc.player == null) return new BlockPos(-1, -1, -1);
         return new BlockPos((int) Math.floor(mc.player.getX()), (int) Math.floor(mc.player.getY()), (int) Math.floor(mc.player.getZ()));
     }
 
@@ -110,28 +112,22 @@ public class PlayerUtil {
     }
 
     public static float GetHealthWithAbsorption() {
+        if (mc.player == null) return -1;
         return mc.player.getHealth() + mc.player.getAbsorptionAmount();
     }
 
     public static FacingDirection GetFacing() {
-        switch (MathHelper.floor((double) (mc.player.getYaw() * 8.0F / 360.0F) + 0.5D) & 7) {
-            case 0:
-            case 1:
-                return FacingDirection.South;
-            case 2:
-            case 3:
-                return FacingDirection.West;
-            case 4:
-            case 5:
-                return FacingDirection.North;
-            case 6:
-            case 7:
-                return FacingDirection.East;
-        }
-        return FacingDirection.North;
+        if (mc.player == null) return FacingDirection.North;
+        return switch (MathHelper.floor((double) (mc.player.getYaw() * 8.0F / 360.0F) + 0.5D) & 7) {
+            case 0, 1 -> FacingDirection.South;
+            case 2, 3 -> FacingDirection.West;
+            case 6, 7 -> FacingDirection.East;
+            default -> FacingDirection.North;
+        };
     }
 
     public static float getSpeedInKM() {
+        if (mc.player == null) return 0f;
         final double deltaX = mc.player.getX() - mc.player.prevX;
         final double deltaZ = mc.player.getZ() - mc.player.prevZ;
 

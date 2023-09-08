@@ -65,7 +65,7 @@ public class ModuleManager {
         Add(new ClickGuiModule());
         Add(new HudEditorModule());
         Add(new HudModule());
-        Add(new Notifcation());
+        Add(new Notification());
 
         /// World
         Add(new TimerModule());
@@ -99,7 +99,7 @@ public class ModuleManager {
                         field.setAccessible(true);
                     }
                     final Value val = (Value) field.get(mod);
-                    val.InitalizeMod(mod);
+                    val.InitializeModule(mod);
                     mod.getValueList().add(val);
                 }
             }
@@ -113,7 +113,7 @@ public class ModuleManager {
     public final List<Module> GetModuleList(ModuleType p_Type) {
         List<Module> list = new ArrayList<>();
         for (Module module : Mods) {
-            if (module.getType().equals(p_Type)) {
+            if (module.getModuleType().equals(p_Type)) {
                 list.add(module);
             }
         }
@@ -131,8 +131,8 @@ public class ModuleManager {
         if (key == 0) return;
 
         Mods.forEach(p_Mod -> {
-            if (p_Mod.IsKeyPressed(key)) {
-                p_Mod.toggle();
+            if (p_Mod.isKeyPressed(key)) {
+                p_Mod.toggle(true);
             }
         });
     }

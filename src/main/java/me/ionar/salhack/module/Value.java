@@ -1,217 +1,153 @@
 package me.ionar.salhack.module;
 
 @SuppressWarnings({"unchecked", "rawtypes"})
-public class Value<T>
-{
+public class Value<T> {
 
-    private String name;
-    private String[] alias;
-    private String desc;
-    private Module Mod;
+    private String Name;
+    private String[] Alias;
+    private String Description;
+    private Module Module;
     public ValueListeners Listener;
 
-    private T value;
+    private T Value;
 
-    private T min;
-    private T max;
-    private T inc;
+    private T Min;
+    private T Max;
+    private T Increment;
 
-    public Value(String name, String[] alias, String desc)
-    {
-        this.name = name;
-        this.alias = alias;
-        this.desc = desc;
+    public Value(String name, String[] alias, String description) {
+        Name = name;
+        Alias = alias;
+        Description = description;
     }
 
-    public Value(String name, String[] alias, String desc, T value)
-    {
-        this(name, alias, desc);
-        this.value = value;
+    public Value(String name, String[] alias, String description, T value) {
+        this(name, alias, description);
+        Value = value;
     }
 
-    public Value(String name, String[] alias, String desc, T value, T min, T max, T inc)
-    {
-        this(name, alias, desc, value);
-        this.min = min;
-        this.max = max;
-        this.inc = inc;
+    public Value(String name, String[] alias, String description, T value, T min, T max, T increment) {
+        this(name, alias, description, value);
+        Min = min;
+        Max = max;
+        this.Increment = increment;
     }
 
-    public <T> T clamp(T value, T min, T max)
-    {
+    public <T> T clamp(T value, T min, T max) {
         return ((Comparable) value).compareTo(min) < 0 ? min : (((Comparable) value).compareTo(max) > 0 ? max : value);
     }
 
-    public T getValue()
-    {
-        return this.value;
+    public T getValue() {
+        return Value;
     }
 
-    public void setValue(T value)
-    {
-        if (min != null && max != null)
-        {
-            final Number val = (Number) value;
-            final Number min = (Number) this.min;
-            final Number max = (Number) this.max;
-            this.value = (T) val;
-            // this.value = (T) this.clamp(val, min, max);
-        }
-        else
-        {
-            this.value = value;
-        }
-
-        if (Mod != null)
-            Mod.SignalValueChange(this);
-        if (Listener != null)
-            Listener.OnValueChange(this);
+    public void setValue(T value) {
+        Value = value;
+        if (Module != null) Module.signalValueChange(this);
+        if (Listener != null) Listener.OnValueChange(this);
     }
 
-    public String GetNextEnumValue(boolean p_Reverse)
-    {
-        final Enum l_CurrEnum = (Enum) this.getValue();
+    public String GetNextEnumValue(boolean reverse) {
+        final Enum currentEnum = (Enum) this.getValue();
 
         int i = 0;
 
-        for (; i < this.value.getClass().getEnumConstants().length; i++)
-        {
-            final Enum e = (Enum) this.value.getClass().getEnumConstants()[i];
-            if (e.name().equalsIgnoreCase(l_CurrEnum.name()))
-            {
-                break;
-            }
+        for (; i < Value.getClass().getEnumConstants().length; i++) {
+            final Enum e = (Enum) Value.getClass().getEnumConstants()[i];
+            if (e.name().equalsIgnoreCase(currentEnum.name())) break;
         }
 
-        return this.value.getClass()
-                .getEnumConstants()[(p_Reverse ? (i != 0 ? i - 1 : value.getClass().getEnumConstants().length - 1)
-                : i + 1) % value.getClass().getEnumConstants().length].toString();
+        return Value.getClass().getEnumConstants()[(reverse ? (i != 0 ? i - 1 : Value.getClass().getEnumConstants().length - 1) : i + 1) % Value.getClass().getEnumConstants().length].toString();
     }
 
-    public int getEnum(String input)
-    {
-        for (int i = 0; i < this.value.getClass().getEnumConstants().length; i++)
-        {
-            final Enum e = (Enum) this.value.getClass().getEnumConstants()[i];
-            if (e.name().equalsIgnoreCase(input))
-            {
+    public int getEnum(String input) {
+        for (int i = 0; i < Value.getClass().getEnumConstants().length; i++) {
+            final Enum e = (Enum) Value.getClass().getEnumConstants()[i];
+            if (e.name().equalsIgnoreCase(input)) {
                 return i;
             }
         }
         return -1;
     }
 
-    public Enum GetEnumReal(String input)
-    {
-        for (int i = 0; i < this.value.getClass().getEnumConstants().length; i++)
-        {
-            final Enum e = (Enum) this.value.getClass().getEnumConstants()[i];
-            if (e.name().equalsIgnoreCase(input))
-            {
+    public Enum GetEnumReal(String input) {
+        for (int i = 0; i < Value.getClass().getEnumConstants().length; i++) {
+            final Enum e = (Enum) Value.getClass().getEnumConstants()[i];
+            if (e.name().equalsIgnoreCase(input)) {
                 return e;
             }
         }
         return null;
     }
 
-    public void setEnumValue(String value)
-    {
-        for (Enum e : ((Enum) this.value).getClass().getEnumConstants())
-        {
-            if (e.name().equalsIgnoreCase(value))
-            {
+    public void setEnumValue(String value) {
+        for (Enum e : ((Enum) Value).getClass().getEnumConstants()) {
+            if (e.name().equalsIgnoreCase(value)) {
                 setValue((T)e);
                 break;
             }
         }
 
-        if (Mod != null)
-            Mod.SignalEnumChange();
+        if (Module != null) Module.SignalEnumChange();
     }
 
-    public T getMin()
-    {
-        return min;
+    public T getMin() {
+        return Min;
     }
 
-    public void setMin(T min)
-    {
-        this.min = min;
+    public void setMin(T min) {
+        Min = min;
     }
 
-    public T getMax()
-    {
-        return max;
+    public T getMax() {
+        return Max;
     }
 
-    public void setMax(T max)
-    {
-        this.max = max;
+    public void setMax(T max) {
+        Max = max;
     }
 
-    public T getInc()
-    {
-        return inc;
+    public T getIncrement() {
+        return Increment;
     }
 
-    public void setInc(T inc)
-    {
-        this.inc = inc;
+    public void setIncrement(T increment) {
+        this.Increment = increment;
     }
 
-    public String getName()
-    {
-        return name;
+    public String getName() {
+        return Name;
     }
 
-    public void setName(String name)
-    {
-        this.name = name;
+    public void setName(String name) {
+        Name = name;
     }
 
-    public String[] getAlias()
-    {
-        return alias;
+    public String[] getAlias() {
+        return Alias;
     }
 
-    public void setAlias(String[] alias)
-    {
-        this.alias = alias;
+    public void setAlias(String[] alias) {
+        Alias = alias;
     }
 
-    public String getDesc()
-    {
-        return desc;
+    public String getDescription() {
+        return Description;
     }
 
-    public void setDesc(String desc)
-    {
-        this.desc = desc;
+    public void setDescription(String description) {
+        Description = description;
     }
 
-    public void SetListener(ValueListeners p_VListener)
-    {
-        Listener = p_VListener;
+    public void setListener(ValueListeners listener) {
+        Listener = listener;
     }
 
-    public void InitalizeMod(Module p_Mod)
-    {
-        Mod = p_Mod;
+    public void InitializeModule(Module module) {
+        Module = module;
     }
 
-    public void SetForcedValue(T value)
-    {
-        if (min != null && max != null)
-        {
-            final Number val = (Number) value;
-            final Number min = (Number) this.min;
-            final Number max = (Number) this.max;
-            this.value = (T) val;
-            // this.value = (T) this.clamp(val, min, max);
-        }
-        else
-        {
-            this.value = value;
-        }
+    public void SetForcedValue(T value) {
+        Value = value;
     }
 }

@@ -141,28 +141,27 @@ public class Preset {
                 String Value = value.getValue();
 
                 if (Key.equalsIgnoreCase("enabled")) {
-                    if (Value.equalsIgnoreCase("true")) {
-                        if (!module.isEnabled()) module.toggleNoSave();
-                    } else if (module.isEnabled()) module.toggle();
+                    if (Value.equalsIgnoreCase("true") && !module.isEnabled()) module.toggle(false);
+                    else if (module.isEnabled()) module.toggle(true);
                     continue;
                 }
 
                 if (Key.equalsIgnoreCase("display")) {
-                    module.displayName = Value;
+                    module.DisplayName = Value;
                     continue;
                 }
 
                 if (Key.equalsIgnoreCase("keybind")) {
-                    module.key = Integer.parseInt(Value);
+                    module.Key = Integer.parseInt(Value);
                     continue;
                 }
 
                 if (Key.equalsIgnoreCase("hidden")) {
-                    module.hidden = Value.equalsIgnoreCase("true");
+                    module.Hidden = Value.equalsIgnoreCase("true");
                     continue;
                 }
 
-                for (Value valueObj : module.valueList) {
+                for (Value valueObj : module.ValueList) {
                     if (valueObj.getName().equalsIgnoreCase(value.getKey())) {
                         if (valueObj.getValue() instanceof Number && !(valueObj.getValue() instanceof Enum)) {
                             if (valueObj.getValue() instanceof Integer) valueObj.SetForcedValue(Integer.parseInt(Value));

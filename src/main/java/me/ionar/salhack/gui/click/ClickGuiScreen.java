@@ -213,7 +213,7 @@ public class ClickGuiScreen extends SalGuiScreen
     public void close() {
         super.close();
         if (ClickGuiMod.isEnabled())
-            ClickGuiMod.toggle();
+            ClickGuiMod.toggle(true);
 
         /// Save Settings
 
