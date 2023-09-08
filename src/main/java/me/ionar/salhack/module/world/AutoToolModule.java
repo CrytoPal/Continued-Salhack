@@ -68,7 +68,7 @@ public class AutoToolModule extends Module {
     {
         if (mc.player != null)
         {
-            if (mc.crosshairTarget == null) return;
+            if (mc.crosshairTarget == null || !(mc.crosshairTarget instanceof BlockHitResult)) return;
             BlockHitResult Blockhit = (BlockHitResult) mc.crosshairTarget;
             BlockPos BlockPos = Blockhit.getBlockPos();
 
