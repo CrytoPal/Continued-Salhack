@@ -23,6 +23,7 @@ import me.ionar.salhack.module.movement.SpeedModule;
 import me.ionar.salhack.module.movement.Sprint;
 import me.ionar.salhack.module.render.NametagsModule;
 import me.ionar.salhack.module.ui.*;
+import me.ionar.salhack.module.world.AutoToolModule;
 import me.ionar.salhack.module.world.CoordsSpooferModule;
 import me.ionar.salhack.module.world.TimerModule;
 import me.ionar.salhack.preset.Preset;
@@ -70,6 +71,7 @@ public class ModuleManager {
         /// World
         Add(new TimerModule());
         Add(new CoordsSpooferModule());
+        Add(new AutoToolModule());
 
         /// Schematica
 
