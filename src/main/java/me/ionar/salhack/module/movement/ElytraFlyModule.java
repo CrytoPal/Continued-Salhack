@@ -1,6 +1,8 @@
 package me.ionar.salhack.module.movement;
 
 import me.ionar.salhack.util.entity.ItemUtil;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
@@ -17,8 +19,6 @@ import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.MathUtil;
 import me.ionar.salhack.util.Timer;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listener;
 
 public final class ElytraFlyModule extends Module {
     public final Value<Mode> mode = new Value<>("Mode", new String[]{"Mode", "M"}, "Mode to use for 2b2t flight.", Mode.Superior);
@@ -96,7 +96,7 @@ public final class ElytraFlyModule extends Module {
         return this.mode.getValue().name();
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventPlayerTravel> OnTravel = new Listener<>(Event -> {
         if (mc.player == null) return;
 
@@ -219,7 +219,7 @@ public final class ElytraFlyModule extends Module {
         //p_Event.cancel();
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventNetworkPacketEvent> PacketEvent = new Listener<>(Event -> {
         if (mc.player == null) return;
         if (Event.getPacket() instanceof PlayerMoveC2SPacket && PitchSpoof.getValue()) {

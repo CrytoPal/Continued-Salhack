@@ -6,8 +6,8 @@ import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.entity.ItemUtil;
 import me.ionar.salhack.util.entity.PlayerUtil;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listener;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.Item;
@@ -30,7 +30,7 @@ public final class OffhandModule extends Module {
     // public final Value<Boolean> InventorySwitch = new Value<Boolean>("Switch in Inv", new String[]{"Strength"}, "Puts the Item into your offhand while inventory gui is on.", true);
     // public final Value<Boolean> HotbarFirst = new Value<Boolean>("HotbarFirst", new String[]{"Recursive"}, "Prioritizes your hotbar before inventory slots", false);
 
-    @EventHandler
+    @Subscribe
     private final Listener<EventClientTick> OnPlayerUpdate = new Listener<>(event ->
     {
         if (mc.player != null) {

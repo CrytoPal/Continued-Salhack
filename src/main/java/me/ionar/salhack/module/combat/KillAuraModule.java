@@ -10,8 +10,8 @@ import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.Timer;
 import me.ionar.salhack.util.entity.EntityUtil;
 import me.ionar.salhack.util.entity.ItemUtil;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listener;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.HorseEntity;
@@ -142,7 +142,7 @@ public class KillAuraModule extends Module
         return l_HealthCheck && p_Entity.distanceTo(p_Entity) <= Distance.getValue();
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventClientTick> OnTick = new Listener<>(p_Event ->
     {
         if (!(mc.player.getMainHandStack().getItem() instanceof SwordItem))

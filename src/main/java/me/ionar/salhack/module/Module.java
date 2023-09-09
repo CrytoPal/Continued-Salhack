@@ -9,7 +9,7 @@ import me.ionar.salhack.managers.CommandManager;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.managers.PresetsManager;
 import me.ionar.salhack.module.ui.Notification;
-import me.zero.alpine.fork.listener.Listenable;
+import me.zero.alpine.listener.Subscriber;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("rawtypes")
-public abstract class Module implements Listenable {
+public abstract class Module implements Subscriber {
     public String DisplayName;
     private String[] Alias;
     private String Description;

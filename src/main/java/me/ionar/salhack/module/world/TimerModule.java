@@ -9,8 +9,8 @@ import me.ionar.salhack.managers.TickRateManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.Timer;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listener;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 
 public final class TimerModule extends Module {
@@ -44,7 +44,7 @@ public final class TimerModule extends Module {
         return Format.format(GetSpeed());
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventPlayerTick> OnPlayerUpdate = new Listener<>(Event -> {
         if (OverrideSpeed != 1.0f && OverrideSpeed > 0.1f) {
             SalHack.TICK_TIMER = (int) (1 * OverrideSpeed);
@@ -60,7 +60,7 @@ public final class TimerModule extends Module {
         }
     });
 
-    @EventHandler
+    @Subscribe
     private Listener<EventNetworkPacketEvent> PacketEvent = new Listener<>(Event -> {
         if (Event.getPacket() instanceof PlayerPositionLookS2CPacket && Accelerate.getValue()) speed.setValue(1.0f);
     });

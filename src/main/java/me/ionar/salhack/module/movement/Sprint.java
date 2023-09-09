@@ -4,8 +4,8 @@ import me.ionar.salhack.events.MinecraftEvent.Era;
 import me.ionar.salhack.events.player.EventPlayerMove;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listener;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
 
 public final class Sprint extends Module {
     public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode", "M"}, "The sprint mode to use.", Modes.Legit);
@@ -30,7 +30,7 @@ public final class Sprint extends Module {
         return String.valueOf(Mode.getValue());
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventPlayerMove> OnPlayerUpdate = new Listener<>(Event -> {
         if (Event.getEra() != Era.PRE || mc.player ==  null) return;
         switch (this.Mode.getValue()) {

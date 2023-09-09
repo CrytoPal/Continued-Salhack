@@ -8,8 +8,8 @@ import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.world.TimerModule;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listener;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -45,7 +45,7 @@ public class SpeedModule extends Module {
         Timer = (TimerModule) ModuleManager.Get().GetMod(TimerModule.class);
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventPlayerTick> OnPlayerTick = new Listener<>(p_Event -> {
         if (mc.player == null || mc.player.isRiding()) return;
 
@@ -86,12 +86,12 @@ public class SpeedModule extends Module {
         return rotationYaw * 0.017453292f;
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventPlayerJump> OnPlayerJump = new Listener<>(Event -> {
         if (Mode.getValue() == Modes.Strafe) Event.cancel();
     });
 
-    @EventHandler
+    @Subscribe
     private Listener<EventPlayerMove> OnPlayerMove = new Listener<>(Event -> {
         if (Event.getEra() != Era.PRE || Mode.getValue() == Modes.OnGround || mc.player == null || mc.player.isOnGround()) return;
         if ((mc.player.isTouchingWater() || mc.player.isInLava()) && !SpeedInWater.getValue()) return;

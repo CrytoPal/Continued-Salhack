@@ -3,8 +3,8 @@ package me.ionar.salhack.module.misc;
 import me.ionar.salhack.events.player.EventPlayerTick;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listener;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
 
 public final class Rotation extends Module {
     public final Value<Integer> yawLock = new Value<>("Yaw", new String[]{"Y"}, "Lock the player's rotation yaw at a point", 0, 0, 360, 11);
@@ -24,7 +24,7 @@ public final class Rotation extends Module {
         super.onDisable();
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventPlayerTick> OnPlayerUpdate = new Listener<>(Event -> {
         if (mc.player != null) {
             mc.player.setYaw((float) yawLock.getValue());

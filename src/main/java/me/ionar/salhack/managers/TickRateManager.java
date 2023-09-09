@@ -3,13 +3,13 @@ package me.ionar.salhack.managers;
 import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.events.network.EventNetworkPacketEvent;
 import me.ionar.salhack.main.SalHack;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listenable;
-import me.zero.alpine.fork.listener.Listener;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
+import me.zero.alpine.listener.Subscriber;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.util.math.MathHelper;
 
-public class TickRateManager implements Listenable {
+public class TickRateManager implements Subscriber {
     private long prevTime;
     private float[] ticks = new float[20];
     private int currentTick;
@@ -40,7 +40,7 @@ public class TickRateManager implements Listenable {
         return MathHelper.clamp((tickRate / tickCount), 0.0f, 20.0f);
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventNetworkPacketEvent> PacketEvent = new Listener<>(p_Event -> {
         if (p_Event.GetPacket() instanceof WorldTimeUpdateS2CPacket) {
             if (this.prevTime != -1) {

@@ -3,8 +3,8 @@ package me.ionar.salhack.module.world;
 import me.ionar.salhack.events.client.EventClientTick;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listener;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
 import net.minecraft.block.AirBlock;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -63,7 +63,7 @@ public class AutoToolModule extends Module {
         return hardness;
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventClientTick> onBlockHit = new Listener<>(p_Event ->
     {
         if (mc.player != null)

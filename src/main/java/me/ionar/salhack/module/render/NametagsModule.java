@@ -1,6 +1,5 @@
 package me.ionar.salhack.module.render;
 
-import me.ionar.salhack.events.render.EventRenderEntityName;
 import me.ionar.salhack.events.render.EventRenderGameOverlay;
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.friend.Friend;
@@ -11,9 +10,8 @@ import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.MathUtil;
 import me.ionar.salhack.util.entity.EntityUtil;
 import me.ionar.salhack.util.render.TransformPositionUtil;
-import me.zero.alpine.fork.event.type.Cancellable;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listener;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
@@ -48,7 +46,7 @@ public class NametagsModule extends Module {
         super("NameTags", new String[]{ "Nametag" }, "Improves nametags of players around you", 0, -1, ModuleType.RENDER);
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventRenderGameOverlay> OnRenderGameOverlay = new Listener<>(Event ->
             EntityUtil.getEntities().stream().filter(EntityUtil::isLiving).filter(entity -> !EntityUtil.isFakeLocalPlayer(entity))
                     .filter(entity -> (entity instanceof PlayerEntity && mc.player != entity)).forEach(e ->
@@ -174,7 +172,4 @@ public class NametagsModule extends Module {
 
 
     //private void RenderNameTagFor2(PlayerEntity e, EventRenderGameOverlay p_Event) {}
-
-    @EventHandler
-    private Listener<EventRenderEntityName> OnRenderEntityName = new Listener<>(Cancellable::cancel);
 }

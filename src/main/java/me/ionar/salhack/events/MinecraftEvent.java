@@ -1,9 +1,9 @@
 package me.ionar.salhack.events;
 
 import me.ionar.salhack.main.Wrapper;
-import me.zero.alpine.fork.event.type.Cancellable;
+import me.zero.alpine.event.CancellableEvent;
 
-public class MinecraftEvent extends Cancellable {
+public class MinecraftEvent extends CancellableEvent {
     private Era era = Era.PRE;
     private final float partialTicks;
 

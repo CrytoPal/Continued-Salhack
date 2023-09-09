@@ -1,12 +1,12 @@
 package me.ionar.salhack.module.misc;
 
 import me.ionar.salhack.events.client.EventMouseButton;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
 import net.minecraft.entity.player.PlayerEntity;
 
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.module.Module;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listener;
 
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_MIDDLE;
 
@@ -15,7 +15,7 @@ public class MiddleClickFriendsModule extends Module {
         super("MiddleClick", new String[] {"MCF", "MiddleClickF"}, "Middle click friends", 0, -1, ModuleType.MISC);
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventMouseButton> OnMouseButton = new Listener<>(Event -> {
         if (Event.getAction() == 0 || Event.getButton() != GLFW_MOUSE_BUTTON_MIDDLE || mc.currentScreen != null || mc.targetedEntity == null || !(mc.targetedEntity instanceof PlayerEntity Entity)) return;
         if (FriendManager.Get().IsFriend(Entity)) {

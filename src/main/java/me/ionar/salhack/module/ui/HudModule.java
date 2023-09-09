@@ -4,8 +4,8 @@ import me.ionar.salhack.events.render.EventRenderGameOverlay;
 import me.ionar.salhack.managers.HudManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
-import me.zero.alpine.fork.listener.EventHandler;
-import me.zero.alpine.fork.listener.Listener;
+import me.zero.alpine.listener.Listener;
+import me.zero.alpine.listener.Subscribe;
 
 public final class HudModule extends Module {
     public static final Value<Integer> ExtraTab = new Value<>("ExtraTab", new String[]{"ET"}, "Max player slots to show in the tab list", 80, 80, 1000, 10);
@@ -19,7 +19,7 @@ public final class HudModule extends Module {
         super("HUD", new String[]{ "HUD" }, "Displays the HUD", 0, 0xD1DB24, ModuleType.UI);
     }
 
-    @EventHandler
+    @Subscribe
     private Listener<EventRenderGameOverlay> OnRenderGameOverlay = new Listener<>(Event -> {
         if (!mc.options.debugEnabled) HudManager.Get().OnRender(Event.PartialTicks, Event.getContext());
     });
