@@ -1,6 +1,7 @@
 package me.ionar.salhack.module.movement;
 
 import io.github.racoondog.norbit.EventHandler;
+import me.ionar.salhack.events.MinecraftEvent.Era;
 import me.ionar.salhack.events.player.EventPlayerJump;
 import me.ionar.salhack.events.player.EventPlayerMove;
 import me.ionar.salhack.events.world.EventTickPost;
@@ -91,7 +92,7 @@ public class SpeedModule extends Module {
 
     @EventHandler
     private void OnPlayerMove(EventPlayerMove event) {
-        if (Mode.getValue() == Modes.OnGround || mc.player == null || mc.player.isOnGround()) return;
+        if (event.getEra() != Era.PRE || Mode.getValue() == Modes.OnGround || mc.player == null || mc.player.isOnGround()) return;
         if ((mc.player.isTouchingWater() || mc.player.isInLava()) && !SpeedInWater.getValue()) return;
         if (mc.player.getAbilities() != null && (mc.player.getAbilities().flying || mc.player.isFallFlying())) return;
 
