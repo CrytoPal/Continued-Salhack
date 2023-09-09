@@ -36,9 +36,9 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	library 'com.github.ZeroMemes:Alpine:3.1.0'
 
 	modInclude fabricApi.module("fabric-resource-loader-v0", project.fabric_version)
+	library files("libs\\norbit-1.0.0.jar")
 	library "meteordevelopment:starscript:${project.starscript_version}"
 }
 
