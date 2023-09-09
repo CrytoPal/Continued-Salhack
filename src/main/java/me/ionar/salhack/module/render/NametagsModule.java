@@ -1,7 +1,7 @@
 package me.ionar.salhack.module.render;
 
 import io.github.racoondog.norbit.EventHandler;
-import me.ionar.salhack.events.render.EventRenderGameOverlay;
+import me.ionar.salhack.events.render.RenderGameOverlayEvent;
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.friend.Friend;
 import me.ionar.salhack.main.Wrapper;
@@ -46,13 +46,13 @@ public class NametagsModule extends Module {
     }
 
     @EventHandler
-    private void OnRenderGameOverlay(EventRenderGameOverlay event) {
+    private void OnRenderGameOverlay(RenderGameOverlayEvent event) {
         EntityUtil.getEntities().stream().filter(EntityUtil::isLiving).filter(entity -> !EntityUtil.isFakeLocalPlayer(entity))
                 .filter(entity -> (entity instanceof PlayerEntity && mc.player != entity)).forEach(e ->
                         RenderNameTagFor((PlayerEntity) e, event));
     }
 
-    private void RenderNameTagFor(PlayerEntity entity, EventRenderGameOverlay Event) {
+    private void RenderNameTagFor(PlayerEntity entity, RenderGameOverlayEvent Event) {
         DrawContext context = Event.getContext();
         Vec3d pos = MathUtil.interpolateEntity(entity).add(0, entity.getHeight() + 0.5f, 0);
         pos = TransformPositionUtil.worldSpaceToScreenSpace(new Vec3d(pos.x, pos.y, pos.z));

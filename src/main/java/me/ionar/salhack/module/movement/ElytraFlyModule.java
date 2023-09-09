@@ -11,8 +11,8 @@ import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.util.Formatting;
 
-import me.ionar.salhack.events.network.EventNetworkPacketEvent;
-import me.ionar.salhack.events.player.EventPlayerTravel;
+import me.ionar.salhack.events.network.PacketEvent;
+import me.ionar.salhack.events.player.PlayerTravelEvent;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
@@ -96,7 +96,7 @@ public final class ElytraFlyModule extends Module {
     }
 
     @EventHandler
-    private void OnTravel(EventPlayerTravel event) {
+    private void OnTravel(PlayerTravelEvent event) {
         if (mc.player == null) return;
 
         /// Player must be wearing an elytra.
@@ -121,7 +121,7 @@ public final class ElytraFlyModule extends Module {
         }
     }
 
-    public void HandleNormalModeElytra(EventPlayerTravel Travel) {
+    public void HandleNormalModeElytra(PlayerTravelEvent Travel) {
         if (mc.player == null) return;
         double YHeight = mc.player.getY();
 
@@ -156,7 +156,7 @@ public final class ElytraFlyModule extends Module {
         Accelerate();
     }
 
-    public void HandleImmediateModeElytra(EventPlayerTravel Travel) {
+    public void HandleImmediateModeElytra(PlayerTravelEvent Travel) {
         if (mc.player == null) return;
         if (mc.player.input.jumping) {
             double MotionSquared = Math.sqrt(mc.player.getVelocity().x * mc.player.getVelocity().x + mc.player.getVelocity().z * mc.player.getVelocity().z);
@@ -204,7 +204,7 @@ public final class ElytraFlyModule extends Module {
     }
 
 
-    private void HandleControlMode(EventPlayerTravel Event) {
+    private void HandleControlMode(PlayerTravelEvent Event) {
         if (mc.player == null) return;
         final double[] dir = MathUtil.directionSpeed(speed.getValue());
 
@@ -219,7 +219,9 @@ public final class ElytraFlyModule extends Module {
     }
 
     @EventHandler
-    private void PacketEvent(EventNetworkPacketEvent event) {
+    private void PacketEvent(PacketEvent.Send event) {
+        if (!event.isPre()) return;
+
         if (mc.player == null) return;
         if (event.getPacket() instanceof PlayerMoveC2SPacket && PitchSpoof.getValue()) {
             if (!mc.player.isFallFlying()) return;

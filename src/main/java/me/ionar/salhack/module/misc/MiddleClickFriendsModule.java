@@ -1,7 +1,7 @@
 package me.ionar.salhack.module.misc;
 
 import io.github.racoondog.norbit.EventHandler;
-import me.ionar.salhack.events.client.EventMouseButton;
+import me.ionar.salhack.events.client.MouseButtonEvent;
 import net.minecraft.entity.player.PlayerEntity;
 
 import me.ionar.salhack.managers.FriendManager;
@@ -15,7 +15,7 @@ public class MiddleClickFriendsModule extends Module {
     }
 
     @EventHandler
-    private void OnMouseButton(EventMouseButton event) {
+    private void OnMouseButton(MouseButtonEvent event) {
         if (event.getAction() == 0 || event.getButton() != GLFW_MOUSE_BUTTON_MIDDLE || mc.currentScreen != null || mc.targetedEntity == null || !(mc.targetedEntity instanceof PlayerEntity Entity)) return;
         if (FriendManager.Get().IsFriend(Entity)) {
             FriendManager.Get().RemoveFriend(Entity.getDisplayName().getString().toLowerCase());

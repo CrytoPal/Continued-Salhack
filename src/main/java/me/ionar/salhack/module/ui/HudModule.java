@@ -1,7 +1,7 @@
 package me.ionar.salhack.module.ui;
 
 import io.github.racoondog.norbit.EventHandler;
-import me.ionar.salhack.events.render.EventRenderGameOverlay;
+import me.ionar.salhack.events.render.RenderGameOverlayEvent;
 import me.ionar.salhack.managers.HudManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
@@ -19,7 +19,7 @@ public final class HudModule extends Module {
     }
 
     @EventHandler
-    private void OnRenderGameOverlay(EventRenderGameOverlay event) {
-        if (!mc.options.debugEnabled) HudManager.Get().OnRender(event.PartialTicks, event.getContext());
+    private void OnRenderGameOverlay(RenderGameOverlayEvent event) {
+        if (!mc.options.debugEnabled) HudManager.Get().OnRender(event.tickDelta, event.getContext());
     }
 }

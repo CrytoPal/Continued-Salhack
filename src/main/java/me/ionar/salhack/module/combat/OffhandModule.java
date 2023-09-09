@@ -1,7 +1,7 @@
 package me.ionar.salhack.module.combat;
 
 import io.github.racoondog.norbit.EventHandler;
-import me.ionar.salhack.events.world.EventTickPost;
+import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
@@ -30,7 +30,9 @@ public final class OffhandModule extends Module {
     // public final Value<Boolean> HotbarFirst = new Value<Boolean>("HotbarFirst", new String[]{"Recursive"}, "Prioritizes your hotbar before inventory slots", false);
 
     @EventHandler
-    private void OnPlayerUpdate(EventTickPost event) {
+    private void OnPlayerUpdate(TickEvent event) {
+        if (event.isPre()) return;
+
         if (mc.player != null) {
             boolean elytra = mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA && mc.player.isFallFlying();
 

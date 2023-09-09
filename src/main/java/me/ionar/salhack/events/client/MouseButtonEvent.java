@@ -1,12 +1,12 @@
 package me.ionar.salhack.events.client;
 
-import me.ionar.salhack.events.MinecraftEvent;
+import me.ionar.salhack.events.Event;
 
-public class EventMouseButton extends MinecraftEvent {
-    int button;
-    int action;
+public class MouseButtonEvent extends Event {
+    private final int button;
+    private final int action;
 
-    public EventMouseButton(int button, int action) {
+    public MouseButtonEvent(int button, int action) {
         this.button = button;
         this.action = action;
     }
