@@ -24,7 +24,7 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     @Inject(method = {"travel"}, at = {@At("HEAD")}, cancellable = true)
     private void travel(Vec3d movement, CallbackInfo info) {
         EventPlayerTravel l_Event = new EventPlayerTravel(movement.getX(), movement.getY(), movement.getZ());
-        SalHackMod.EVENT_BUS.post(l_Event);
+        SalHackMod.NORBIT_EVENT_BUS.post(l_Event);
         if (l_Event.isCancelled()) info.cancel();
     }
 
@@ -32,6 +32,6 @@ public abstract class MixinPlayerEntity extends LivingEntity {
     private void jump(CallbackInfo callback) {
         if (Wrapper.GetMC().player == null) return;
 
-        SalHackMod.EVENT_BUS.post(new EventPlayerJump());
+        SalHackMod.NORBIT_EVENT_BUS.post(new EventPlayerJump());
     }
 }

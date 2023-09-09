@@ -1,15 +1,14 @@
 package me.ionar.salhack.module.movement;
 
+import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.events.MinecraftEvent.Era;
 import me.ionar.salhack.events.player.EventPlayerJump;
 import me.ionar.salhack.events.player.EventPlayerMove;
-import me.ionar.salhack.events.player.EventPlayerTick;
+import me.ionar.salhack.events.world.EventTickPost;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.world.TimerModule;
-import me.zero.alpine.listener.Listener;
-import me.zero.alpine.listener.Subscribe;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
@@ -45,8 +44,8 @@ public class SpeedModule extends Module {
         Timer = (TimerModule) ModuleManager.Get().GetMod(TimerModule.class);
     }
 
-    @Subscribe
-    private Listener<EventPlayerTick> OnPlayerTick = new Listener<>(p_Event -> {
+    @EventHandler
+    private void OnPlayerTick(EventTickPost event) {
         if (mc.player == null || mc.player.isRiding()) return;
 
         if ((mc.player.isTouchingWater() || mc.player.isInLava()) && !SpeedInWater.getValue()) return;
@@ -72,7 +71,7 @@ public class SpeedModule extends Module {
         }
 
         if (mc.options.jumpKey.isPressed() && mc.player.isOnGround()) mc.player.setVelocity(mc.player.getVelocity().x, 0.405f, mc.player.getVelocity().z);
-    });
+    }
 
     private float GetRotationYawForCalc() {
         if (mc.player == null) return 0;
@@ -86,14 +85,14 @@ public class SpeedModule extends Module {
         return rotationYaw * 0.017453292f;
     }
 
-    @Subscribe
-    private Listener<EventPlayerJump> OnPlayerJump = new Listener<>(Event -> {
-        if (Mode.getValue() == Modes.Strafe) Event.cancel();
-    });
+    @EventHandler
+    private void OnPlayerJump(EventPlayerJump event) {
+        if (Mode.getValue() == Modes.Strafe) event.cancel();
+    }
 
-    @Subscribe
-    private Listener<EventPlayerMove> OnPlayerMove = new Listener<>(Event -> {
-        if (Event.getEra() != Era.PRE || Mode.getValue() == Modes.OnGround || mc.player == null || mc.player.isOnGround()) return;
+    @EventHandler
+    private void OnPlayerMove(EventPlayerMove event) {
+        if (event.getEra() != Era.PRE || Mode.getValue() == Modes.OnGround || mc.player == null || mc.player.isOnGround()) return;
         if ((mc.player.isTouchingWater() || mc.player.isInLava()) && !SpeedInWater.getValue()) return;
         if (mc.player.getAbilities() != null && (mc.player.getAbilities().flying || mc.player.isFallFlying())) return;
 
@@ -116,8 +115,8 @@ public class SpeedModule extends Module {
 
         // not movement input, stop all motion
         if (moveForward == 0.0f && moveStrafe == 0.0f) {
-            Event.X = (0.0d);
-            Event.Z = (0.0d);
+            event.X = (0.0d);
+            event.Z = (0.0d);
         } else {
             if (moveForward != 0.0f) {
 
@@ -130,11 +129,11 @@ public class SpeedModule extends Module {
             }
             double cos = Math.cos(Math.toRadians((rotationYaw + 90.0f)));
             double sin = Math.sin(Math.toRadians((rotationYaw + 90.0f)));
-            Event.X = ((moveForward * playerSpeed) * cos + (moveStrafe * playerSpeed) * sin);
-            Event.Z = ((moveForward * playerSpeed) * sin - (moveStrafe * playerSpeed) * cos);
+            event.X = ((moveForward * playerSpeed) * cos + (moveStrafe * playerSpeed) * sin);
+            event.Z = ((moveForward * playerSpeed) * sin - (moveStrafe * playerSpeed) * cos);
         }
-        Event.cancel();
-    });
+        event.cancel();
+    }
 
     @Override
     public void onDisable() {

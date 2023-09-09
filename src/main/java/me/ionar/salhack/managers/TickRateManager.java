@@ -1,27 +1,27 @@
 package me.ionar.salhack.managers;
 
+import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.events.network.EventNetworkPacketEvent;
 import me.ionar.salhack.main.SalHack;
-import me.zero.alpine.listener.Listener;
-import me.zero.alpine.listener.Subscribe;
-import me.zero.alpine.listener.Subscriber;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.util.math.MathHelper;
 
-public class TickRateManager implements Subscriber {
+import java.lang.invoke.MethodHandles;
+
+public class TickRateManager {
     private long prevTime;
     private float[] ticks = new float[20];
     private int currentTick;
 
     public TickRateManager() {
+        SalHackMod.NORBIT_EVENT_BUS.registerLambdaFactory("me.ionar.salhack.managers.TickRateManager", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
         this.prevTime = -1;
 
         for (int i = 0, len = this.ticks.length; i < len; i++) {
             this.ticks[i] = 0.0f;
         }
-
-        SalHackMod.EVENT_BUS.subscribe(this);
+        SalHackMod.NORBIT_EVENT_BUS.subscribe(this);
     }
 
     public float getTickRate() {
@@ -40,9 +40,9 @@ public class TickRateManager implements Subscriber {
         return MathHelper.clamp((tickRate / tickCount), 0.0f, 20.0f);
     }
 
-    @Subscribe
-    private Listener<EventNetworkPacketEvent> PacketEvent = new Listener<>(p_Event -> {
-        if (p_Event.GetPacket() instanceof WorldTimeUpdateS2CPacket) {
+    @EventHandler
+    private void PacketEvent(EventNetworkPacketEvent event) {
+        if (event.GetPacket() instanceof WorldTimeUpdateS2CPacket) {
             if (this.prevTime != -1) {
                 this.ticks[this.currentTick % this.ticks.length] = MathHelper.clamp((20.0f / ((float) (System.currentTimeMillis() - this.prevTime) / 1000.0f)), 0.0f, 20.0f);
                 this.currentTick++;
@@ -50,7 +50,7 @@ public class TickRateManager implements Subscriber {
 
             this.prevTime = System.currentTimeMillis();
         }
-    });
+    }
 
     public static TickRateManager Get() {
         return SalHack.GetTickRateManager();

@@ -18,7 +18,7 @@ public class MixinEntityRenderer {
     @Inject(method = "renderLabelIfPresent", at = @At("HEAD"), cancellable = true)
     private void renderLabelIfPresent(Entity entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo p_Info) {
         EventRenderEntityName l_Event = new EventRenderEntityName();
-        SalHackMod.EVENT_BUS.post(l_Event);
+        SalHackMod.NORBIT_EVENT_BUS.post(l_Event);
         if (l_Event.isCancelled()) p_Info.cancel();
     }
 }

@@ -13,7 +13,7 @@ public class MixinMouse {
 
     @Inject(method = {"onMouseButton"}, at = {@At("HEAD")}, cancellable = true)
     private void onMouseButton(long window, int button, int action, int mods, CallbackInfo callback) {
-        SalHackMod.EVENT_BUS.post(new EventMouseButton(button, action));
+        SalHackMod.NORBIT_EVENT_BUS.post(new EventMouseButton(button, action));
     }
 
     @Inject(method = {"onMouseScroll"}, at = {@At("HEAD")})

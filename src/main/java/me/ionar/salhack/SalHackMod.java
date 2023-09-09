@@ -1,26 +1,28 @@
 package me.ionar.salhack;
 
+import io.github.racoondog.norbit.EventBus;
+import io.github.racoondog.norbit.IEventBus;
 import me.ionar.salhack.main.SalHack;
-import me.zero.alpine.bus.EventBus;
-import me.zero.alpine.bus.EventManager;
 import net.fabricmc.api.ClientModInitializer;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 public class SalHackMod implements ClientModInitializer {
     public static final Logger log = LoggerFactory.getLogger("sal");
 	public static final String NAME = "SalHack";
 	public static final String MOD_ID = "sal-hack";
 	public static final String VERSION = "v0.6 Beta";
-	public static final EventBus EVENT_BUS = EventManager.builder()
-			.setName("my_application/root") // Descriptive name for the bus
-			.setSuperListeners()            // Enable Listeners to receive subtypes of their target
-			.build();
+	public static final IEventBus NORBIT_EVENT_BUS = EventBus.threadSafe();
 
 	@Override
 	public void onInitializeClient() {
+		// Caller-sensitive, needs to be called from a class within the specified package
+		NORBIT_EVENT_BUS.registerLambdaFactory("me.ionar.salhack", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
 		log.info("Welcome to " + NAME);
 		SalHack.Init();
+		NORBIT_EVENT_BUS.subscribe(this);
 	}
 }

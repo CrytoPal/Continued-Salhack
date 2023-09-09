@@ -18,7 +18,7 @@ public class MixinClientConnection {
     private void onSendPacket(Packet<?> p_Packet, CallbackInfo callbackInfo)
     {
         EventNetworkPacketEvent l_Event = new EventNetworkPacketEvent(p_Packet);
-        SalHackMod.EVENT_BUS.post(l_Event);
+        SalHackMod.NORBIT_EVENT_BUS.post(l_Event);
 
         if (l_Event.isCancelled())
         {
@@ -30,7 +30,7 @@ public class MixinClientConnection {
     private static <T extends PacketListener> void onChannelRead(Packet<T> p_Packet, PacketListener listener, CallbackInfo callbackInfo)
     {
         EventNetworkPacketEvent l_Event = new EventNetworkPacketEvent(p_Packet);
-        SalHackMod.EVENT_BUS.post(l_Event);
+        SalHackMod.NORBIT_EVENT_BUS.post(l_Event);
 
         if (l_Event.isCancelled())
         {
@@ -41,12 +41,12 @@ public class MixinClientConnection {
     @Inject(method = "send(Lnet/minecraft/network/packet/Packet;)V", at = @At("RETURN"))
     private void onPostSendPacket(Packet<?> p_Packet, CallbackInfo callbackInfo)
     {
-        SalHackMod.EVENT_BUS.post(new EventNetworkPostPacketEvent(p_Packet));
+        SalHackMod.NORBIT_EVENT_BUS.post(new EventNetworkPostPacketEvent(p_Packet));
     }
 
     @Inject(method = "handlePacket", at = @At("RETURN"))
     private static <T extends PacketListener> void onPostChannelRead(Packet<?> p_Packet, PacketListener listener, CallbackInfo callbackInfo)
     {
-        SalHackMod.EVENT_BUS.post(new EventNetworkPostPacketEvent(p_Packet));
+        SalHackMod.NORBIT_EVENT_BUS.post(new EventNetworkPostPacketEvent(p_Packet));
     }
 }

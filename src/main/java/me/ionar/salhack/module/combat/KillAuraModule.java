@@ -2,7 +2,8 @@ package me.ionar.salhack.module.combat;
 
 import java.util.Comparator;
 
-import me.ionar.salhack.events.client.EventClientTick;
+import io.github.racoondog.norbit.EventHandler;
+import me.ionar.salhack.events.world.EventTickPost;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.managers.TickRateManager;
 import me.ionar.salhack.module.Module;
@@ -10,8 +11,6 @@ import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.Timer;
 import me.ionar.salhack.util.entity.EntityUtil;
 import me.ionar.salhack.util.entity.ItemUtil;
-import me.zero.alpine.listener.Listener;
-import me.zero.alpine.listener.Subscribe;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.HorseEntity;
@@ -142,9 +141,8 @@ public class KillAuraModule extends Module
         return l_HealthCheck && p_Entity.distanceTo(p_Entity) <= Distance.getValue();
     }
 
-    @Subscribe
-    private Listener<EventClientTick> OnTick = new Listener<>(p_Event ->
-    {
+    @EventHandler
+    private void OnTick(EventTickPost event) {
         if (!(mc.player.getMainHandStack().getItem() instanceof SwordItem))
         {
             if (mc.player.getMainHandStack().getItem() == Items.END_CRYSTAL && PauseIfCrystal.getValue())
@@ -249,5 +247,5 @@ public class KillAuraModule extends Module
             mc.interactionManager.attackEntity(mc.player, l_TargetToHit);
             mc.player.swingHand(Hand.MAIN_HAND);
         }
-    });
+    }
 }

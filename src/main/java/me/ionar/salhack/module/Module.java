@@ -9,7 +9,6 @@ import me.ionar.salhack.managers.CommandManager;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.managers.PresetsManager;
 import me.ionar.salhack.module.ui.Notification;
-import me.zero.alpine.listener.Subscriber;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("rawtypes")
-public abstract class Module implements Subscriber {
+public abstract class Module {
     public String DisplayName;
     private String[] Alias;
     private String Description;
@@ -48,20 +47,20 @@ public abstract class Module implements Subscriber {
     public void onEnable() {
         Notification notification = (Notification) ModuleManager.Get().GetMod(Notification.class);
         /// allow events to be called
-        SalHackMod.EVENT_BUS.subscribe(this);
+        SalHackMod.NORBIT_EVENT_BUS.subscribe(this);
         ModuleManager.Get().OnModEnable(this);
         if (mc.player != null) {
             RemainingXAnimation = mc.textRenderer.getWidth(GetFullArrayListDisplayName())+10f;
             if (notification.isEnabled()) mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.GREEN + " ON"));
         }
-        SalHackMod.EVENT_BUS.post(new EventSalHackModuleEnable(this));
+        SalHackMod.NORBIT_EVENT_BUS.post(new EventSalHackModuleEnable(this));
     }
 
     public void onDisable() {
         Notification notification = (Notification) ModuleManager.Get().GetMod(Notification.class);
         /// disallow events to be called
-        SalHackMod.EVENT_BUS.unsubscribe(this);
-        SalHackMod.EVENT_BUS.post(new EventSalHackModuleDisable(this));
+        SalHackMod.NORBIT_EVENT_BUS.unsubscribe(this);
+        SalHackMod.NORBIT_EVENT_BUS.post(new EventSalHackModuleDisable(this));
         if (mc.player != null && notification.isEnabled()) SalHack.SendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.RED + " OFF");
     }
 

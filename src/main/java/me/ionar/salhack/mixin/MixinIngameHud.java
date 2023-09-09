@@ -15,7 +15,7 @@ public abstract class MixinIngameHud {
     @Inject(at = @At(value = "RETURN"), method = "render", cancellable = true)
     public void render(DrawContext context, float tickDelta, CallbackInfo callback) {
         EventRenderGameOverlay event = new EventRenderGameOverlay(context, tickDelta);
-        SalHackMod.EVENT_BUS.post(event);
+        SalHackMod.NORBIT_EVENT_BUS.post(event);
         if (event.isCancelled()) callback.cancel();
     }
 }

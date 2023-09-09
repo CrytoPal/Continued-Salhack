@@ -1,10 +1,9 @@
 package me.ionar.salhack.module.world;
 
-import me.ionar.salhack.events.client.EventClientTick;
+import io.github.racoondog.norbit.EventHandler;
+import me.ionar.salhack.events.world.EventTickPost;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
-import me.zero.alpine.listener.Listener;
-import me.zero.alpine.listener.Subscribe;
 import net.minecraft.block.AirBlock;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.enchantment.Enchantments;
@@ -63,9 +62,8 @@ public class AutoToolModule extends Module {
         return hardness;
     }
 
-    @Subscribe
-    private Listener<EventClientTick> onBlockHit = new Listener<>(p_Event ->
-    {
+    @EventHandler
+    private void onBlockHit(EventTickPost event) {
         if (mc.player != null)
         {
             if (mc.crosshairTarget == null || !(mc.crosshairTarget instanceof BlockHitResult)) return;
@@ -92,5 +90,5 @@ public class AutoToolModule extends Module {
                 }
             }
         }
-    });
+    }
 }

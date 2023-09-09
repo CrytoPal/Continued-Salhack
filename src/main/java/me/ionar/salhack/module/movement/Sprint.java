@@ -1,11 +1,9 @@
 package me.ionar.salhack.module.movement;
 
-import me.ionar.salhack.events.MinecraftEvent.Era;
-import me.ionar.salhack.events.player.EventPlayerMove;
+import io.github.racoondog.norbit.EventHandler;
+import me.ionar.salhack.events.world.EventTickPost;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
-import me.zero.alpine.listener.Listener;
-import me.zero.alpine.listener.Subscribe;
 
 public final class Sprint extends Module {
     public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode", "M"}, "The sprint mode to use.", Modes.Legit);
@@ -30,9 +28,8 @@ public final class Sprint extends Module {
         return String.valueOf(Mode.getValue());
     }
 
-    @Subscribe
-    private Listener<EventPlayerMove> OnPlayerUpdate = new Listener<>(Event -> {
-        if (Event.getEra() != Era.PRE || mc.player ==  null) return;
+    @EventHandler
+    private void OnPlayerUpdate(EventTickPost event) {
         switch (this.Mode.getValue()) {
             case Rage -> {
                 if (!(mc.player.getHungerManager().getFoodLevel() <= 6)) mc.player.setSprinting(true);
@@ -41,5 +38,5 @@ public final class Sprint extends Module {
                 if (mc.player.forwardSpeed > 0 && !(mc.player.getHungerManager().getFoodLevel() <= 6f)) mc.options.sprintKey.setPressed(true);
             }
         }
-    });
+    }
 }

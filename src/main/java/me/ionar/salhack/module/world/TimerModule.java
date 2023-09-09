@@ -2,15 +2,14 @@ package me.ionar.salhack.module.world;
 
 import java.text.DecimalFormat;
 
+import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.events.network.EventNetworkPacketEvent;
-import me.ionar.salhack.events.player.EventPlayerTick;
+import me.ionar.salhack.events.world.EventTickPost;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.managers.TickRateManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.Timer;
-import me.zero.alpine.listener.Listener;
-import me.zero.alpine.listener.Subscribe;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 
 public final class TimerModule extends Module {
@@ -44,8 +43,8 @@ public final class TimerModule extends Module {
         return Format.format(GetSpeed());
     }
 
-    @Subscribe
-    private Listener<EventPlayerTick> OnPlayerUpdate = new Listener<>(Event -> {
+    @EventHandler
+    private void OnPlayerUpdate(EventTickPost event) {
         if (OverrideSpeed != 1.0f && OverrideSpeed > 0.1f) {
             SalHack.TICK_TIMER = (int) (1 * OverrideSpeed);
             return;
@@ -58,12 +57,12 @@ public final class TimerModule extends Module {
             timer.reset();
             speed.setValue(speed.getValue() + 0.1f);
         }
-    });
+    }
 
-    @Subscribe
-    private Listener<EventNetworkPacketEvent> PacketEvent = new Listener<>(Event -> {
-        if (Event.getPacket() instanceof PlayerPositionLookS2CPacket && Accelerate.getValue()) speed.setValue(1.0f);
-    });
+    @EventHandler
+    private void PacketEvent(EventNetworkPacketEvent event) {
+        if (event.getPacket() instanceof PlayerPositionLookS2CPacket && Accelerate.getValue()) speed.setValue(1.0f);
+    }
 
     private float GetSpeed() {
         return Math.max(speed.getValue(), 0.1f);

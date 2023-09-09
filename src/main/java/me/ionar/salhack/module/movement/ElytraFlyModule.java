@@ -1,8 +1,7 @@
 package me.ionar.salhack.module.movement;
 
+import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.util.entity.ItemUtil;
-import me.zero.alpine.listener.Listener;
-import me.zero.alpine.listener.Subscribe;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
@@ -96,8 +95,8 @@ public final class ElytraFlyModule extends Module {
         return this.mode.getValue().name();
     }
 
-    @Subscribe
-    private Listener<EventPlayerTravel> OnTravel = new Listener<>(Event -> {
+    @EventHandler
+    private void OnTravel(EventPlayerTravel event) {
         if (mc.player == null) return;
 
         /// Player must be wearing an elytra.
@@ -114,13 +113,13 @@ public final class ElytraFlyModule extends Module {
         }
 
         switch (mode.getValue()) {
-            case Normal, Tarzan, Packet -> HandleNormalModeElytra(Event);
-            case Superior -> HandleImmediateModeElytra(Event);
-            case Control -> HandleControlMode(Event);
+            case Normal, Tarzan, Packet -> HandleNormalModeElytra(event);
+            case Superior -> HandleImmediateModeElytra(event);
+            case Control -> HandleControlMode(event);
             default -> {
             }
         }
-    });
+    }
 
     public void HandleNormalModeElytra(EventPlayerTravel Travel) {
         if (mc.player == null) return;
@@ -219,16 +218,16 @@ public final class ElytraFlyModule extends Module {
         //p_Event.cancel();
     }
 
-    @Subscribe
-    private Listener<EventNetworkPacketEvent> PacketEvent = new Listener<>(Event -> {
+    @EventHandler
+    private void PacketEvent(EventNetworkPacketEvent event) {
         if (mc.player == null) return;
-        if (Event.getPacket() instanceof PlayerMoveC2SPacket && PitchSpoof.getValue()) {
+        if (event.getPacket() instanceof PlayerMoveC2SPacket && PitchSpoof.getValue()) {
             if (!mc.player.isFallFlying()) return;
-            if (Event.getPacket() instanceof PlayerMoveC2SPacket.Full rotation && PitchSpoof.getValue()) {
+            if (event.getPacket() instanceof PlayerMoveC2SPacket.Full rotation && PitchSpoof.getValue()) {
                 if (mc.getNetworkHandler() == null) return;
                 mc.getNetworkHandler().sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(rotation.getX(0), rotation.getY(0), rotation.getZ(0), rotation.isOnGround()));
-                Event.cancel();
-            } else if (Event.getPacket() instanceof PlayerMoveC2SPacket.LookAndOnGround && PitchSpoof.getValue()) Event.cancel();
+                event.cancel();
+            } else if (event.getPacket() instanceof PlayerMoveC2SPacket.LookAndOnGround && PitchSpoof.getValue()) event.cancel();
         }
-    });
+    }
 }

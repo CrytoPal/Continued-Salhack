@@ -1,9 +1,9 @@
 package me.ionar.salhack.events;
 
+import io.github.racoondog.norbit.ICancellable;
 import me.ionar.salhack.main.Wrapper;
-import me.zero.alpine.event.CancellableEvent;
 
-public class MinecraftEvent extends CancellableEvent {
+public class MinecraftEvent implements ICancellable {
     private Era era = Era.PRE;
     private final float partialTicks;
 
@@ -22,6 +22,16 @@ public class MinecraftEvent extends CancellableEvent {
 
     public float getPartialTicks() {
         return partialTicks;
+    }
+
+    @Override
+    public void setCancelled(boolean b) {
+
+    }
+
+    @Override
+    public boolean isCancelled() {
+        return false;
     }
 
     public enum Era {
