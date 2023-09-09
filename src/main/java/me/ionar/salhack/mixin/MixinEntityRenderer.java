@@ -1,7 +1,7 @@
 package me.ionar.salhack.mixin;
 
 import me.ionar.salhack.SalHackMod;
-import me.ionar.salhack.events.render.EventRenderEntityName;
+import me.ionar.salhack.events.render.NametagRenderEvent;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -17,7 +17,7 @@ public class MixinEntityRenderer {
 
     @Inject(method = "renderLabelIfPresent", at = @At("HEAD"), cancellable = true)
     private void renderLabelIfPresent(Entity entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo p_Info) {
-        EventRenderEntityName l_Event = new EventRenderEntityName();
+        NametagRenderEvent l_Event = new NametagRenderEvent();
         SalHackMod.NORBIT_EVENT_BUS.post(l_Event);
         if (l_Event.isCancelled()) p_Info.cancel();
     }

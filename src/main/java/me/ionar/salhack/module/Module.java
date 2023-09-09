@@ -1,8 +1,7 @@
 package me.ionar.salhack.module;
 
 import me.ionar.salhack.SalHackMod;
-import me.ionar.salhack.events.salhack.EventSalHackModuleDisable;
-import me.ionar.salhack.events.salhack.EventSalHackModuleEnable;
+import me.ionar.salhack.events.salhack.ModuleEvent;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.CommandManager;
@@ -53,14 +52,14 @@ public abstract class Module {
             RemainingXAnimation = mc.textRenderer.getWidth(GetFullArrayListDisplayName())+10f;
             if (notification.isEnabled()) mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.GREEN + " ON"));
         }
-        SalHackMod.NORBIT_EVENT_BUS.post(new EventSalHackModuleEnable(this));
+        SalHackMod.NORBIT_EVENT_BUS.post(new ModuleEvent.Enabled(this));
     }
 
     public void onDisable() {
         Notification notification = (Notification) ModuleManager.Get().GetMod(Notification.class);
         /// disallow events to be called
         SalHackMod.NORBIT_EVENT_BUS.unsubscribe(this);
-        SalHackMod.NORBIT_EVENT_BUS.post(new EventSalHackModuleDisable(this));
+        SalHackMod.NORBIT_EVENT_BUS.post(new ModuleEvent.Disabled(this));
         if (mc.player != null && notification.isEnabled()) SalHack.SendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.RED + " OFF");
     }
 

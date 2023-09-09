@@ -1,7 +1,7 @@
 package me.ionar.salhack.module.movement;
 
 import io.github.racoondog.norbit.EventHandler;
-import me.ionar.salhack.events.world.EventTickPost;
+import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 
@@ -29,7 +29,9 @@ public final class Sprint extends Module {
     }
 
     @EventHandler
-    private void OnPlayerUpdate(EventTickPost event) {
+    private void OnPlayerUpdate(TickEvent event) {
+        if (event.isPre()) return;
+
         switch (this.Mode.getValue()) {
             case Rage -> {
                 if (!(mc.player.getHungerManager().getFoodLevel() <= 6)) mc.player.setSprinting(true);

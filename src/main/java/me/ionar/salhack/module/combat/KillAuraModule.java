@@ -3,7 +3,7 @@ package me.ionar.salhack.module.combat;
 import java.util.Comparator;
 
 import io.github.racoondog.norbit.EventHandler;
-import me.ionar.salhack.events.world.EventTickPost;
+import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.managers.TickRateManager;
 import me.ionar.salhack.module.Module;
@@ -142,7 +142,9 @@ public class KillAuraModule extends Module
     }
 
     @EventHandler
-    private void OnTick(EventTickPost event) {
+    private void OnTick(TickEvent event) {
+        if (event.isPre()) return;
+
         if (!(mc.player.getMainHandStack().getItem() instanceof SwordItem))
         {
             if (mc.player.getMainHandStack().getItem() == Items.END_CRYSTAL && PauseIfCrystal.getValue())

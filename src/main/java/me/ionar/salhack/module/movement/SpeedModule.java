@@ -1,10 +1,9 @@
 package me.ionar.salhack.module.movement;
 
 import io.github.racoondog.norbit.EventHandler;
-import me.ionar.salhack.events.MinecraftEvent.Era;
-import me.ionar.salhack.events.player.EventPlayerJump;
-import me.ionar.salhack.events.player.EventPlayerMove;
-import me.ionar.salhack.events.world.EventTickPost;
+import me.ionar.salhack.events.player.PlayerJumpEvent;
+import me.ionar.salhack.events.player.PlayerMoveEvent;
+import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
@@ -45,7 +44,9 @@ public class SpeedModule extends Module {
     }
 
     @EventHandler
-    private void OnPlayerTick(EventTickPost event) {
+    private void OnPlayerTick(TickEvent event) {
+        if (event.isPre()) return;
+
         if (mc.player == null || mc.player.isRiding()) return;
 
         if ((mc.player.isTouchingWater() || mc.player.isInLava()) && !SpeedInWater.getValue()) return;
@@ -86,13 +87,13 @@ public class SpeedModule extends Module {
     }
 
     @EventHandler
-    private void OnPlayerJump(EventPlayerJump event) {
+    private void OnPlayerJump(PlayerJumpEvent event) {
         if (Mode.getValue() == Modes.Strafe) event.cancel();
     }
 
     @EventHandler
-    private void OnPlayerMove(EventPlayerMove event) {
-        if (event.getEra() != Era.PRE || Mode.getValue() == Modes.OnGround || mc.player == null || mc.player.isOnGround()) return;
+    private void OnPlayerMove(PlayerMoveEvent event) {
+        if (!event.isPre() || Mode.getValue() == Modes.OnGround || mc.player == null || mc.player.isOnGround()) return;
         if ((mc.player.isTouchingWater() || mc.player.isInLava()) && !SpeedInWater.getValue()) return;
         if (mc.player.getAbilities() != null && (mc.player.getAbilities().flying || mc.player.isFallFlying())) return;
 
@@ -115,8 +116,8 @@ public class SpeedModule extends Module {
 
         // not movement input, stop all motion
         if (moveForward == 0.0f && moveStrafe == 0.0f) {
-            event.X = (0.0d);
-            event.Z = (0.0d);
+            event.setX(0);
+            event.setZ(0);
         } else {
             if (moveForward != 0.0f) {
 
@@ -129,8 +130,8 @@ public class SpeedModule extends Module {
             }
             double cos = Math.cos(Math.toRadians((rotationYaw + 90.0f)));
             double sin = Math.sin(Math.toRadians((rotationYaw + 90.0f)));
-            event.X = ((moveForward * playerSpeed) * cos + (moveStrafe * playerSpeed) * sin);
-            event.Z = ((moveForward * playerSpeed) * sin - (moveStrafe * playerSpeed) * cos);
+            event.setX((moveForward * playerSpeed) * cos + (moveStrafe * playerSpeed) * sin);
+            event.setZ((moveForward * playerSpeed) * sin - (moveStrafe * playerSpeed) * cos);
         }
         event.cancel();
     }

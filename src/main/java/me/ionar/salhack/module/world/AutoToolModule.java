@@ -1,7 +1,7 @@
 package me.ionar.salhack.module.world;
 
 import io.github.racoondog.norbit.EventHandler;
-import me.ionar.salhack.events.world.EventTickPost;
+import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import net.minecraft.block.AirBlock;
@@ -63,7 +63,9 @@ public class AutoToolModule extends Module {
     }
 
     @EventHandler
-    private void onBlockHit(EventTickPost event) {
+    private void onBlockHit(TickEvent event) {
+        if (event.isPre()) return;
+
         if (mc.player != null)
         {
             if (mc.crosshairTarget == null || !(mc.crosshairTarget instanceof BlockHitResult)) return;

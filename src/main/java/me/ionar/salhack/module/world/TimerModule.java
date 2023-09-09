@@ -3,8 +3,8 @@ package me.ionar.salhack.module.world;
 import java.text.DecimalFormat;
 
 import io.github.racoondog.norbit.EventHandler;
-import me.ionar.salhack.events.network.EventNetworkPacketEvent;
-import me.ionar.salhack.events.world.EventTickPost;
+import me.ionar.salhack.events.network.PacketEvent;
+import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.managers.TickRateManager;
 import me.ionar.salhack.module.Module;
@@ -44,7 +44,9 @@ public final class TimerModule extends Module {
     }
 
     @EventHandler
-    private void OnPlayerUpdate(EventTickPost event) {
+    private void OnPlayerUpdate(TickEvent event) {
+        if (event.isPre()) return;
+
         if (OverrideSpeed != 1.0f && OverrideSpeed > 0.1f) {
             SalHack.TICK_TIMER = (int) (1 * OverrideSpeed);
             return;
@@ -60,7 +62,9 @@ public final class TimerModule extends Module {
     }
 
     @EventHandler
-    private void PacketEvent(EventNetworkPacketEvent event) {
+    private void PacketEvent(PacketEvent.Receive event) {
+        if (!event.isPre()) return;
+
         if (event.getPacket() instanceof PlayerPositionLookS2CPacket && Accelerate.getValue()) speed.setValue(1.0f);
     }
 

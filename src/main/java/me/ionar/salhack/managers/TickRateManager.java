@@ -2,7 +2,7 @@ package me.ionar.salhack.managers;
 
 import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.SalHackMod;
-import me.ionar.salhack.events.network.EventNetworkPacketEvent;
+import me.ionar.salhack.events.network.PacketEvent;
 import me.ionar.salhack.main.SalHack;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.util.math.MathHelper;
@@ -41,8 +41,10 @@ public class TickRateManager {
     }
 
     @EventHandler
-    private void PacketEvent(EventNetworkPacketEvent event) {
-        if (event.GetPacket() instanceof WorldTimeUpdateS2CPacket) {
+    private void PacketEvent(PacketEvent.Receive event) {
+        if (!event.isPre()) return;
+
+        if (event.getPacket() instanceof WorldTimeUpdateS2CPacket) {
             if (this.prevTime != -1) {
                 this.ticks[this.currentTick % this.ticks.length] = MathHelper.clamp((20.0f / ((float) (System.currentTimeMillis() - this.prevTime) / 1000.0f)), 0.0f, 20.0f);
                 this.currentTick++;

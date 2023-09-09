@@ -1,7 +1,7 @@
 package me.ionar.salhack.module.misc;
 
 import io.github.racoondog.norbit.EventHandler;
-import me.ionar.salhack.events.world.EventTickPost;
+import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 
@@ -24,7 +24,8 @@ public final class Rotation extends Module {
     }
 
     @EventHandler
-    private void OnPlayerUpdate(EventTickPost event) {
+    private void OnPlayerUpdate(TickEvent event) {
+        if (event.isPre()) return;
         if (mc.player != null) {
             mc.player.setYaw((float) yawLock.getValue());
             mc.player.setPitch((float) pitchLock.getValue());
