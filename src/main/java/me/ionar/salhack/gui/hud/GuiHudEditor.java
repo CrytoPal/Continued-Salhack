@@ -1,6 +1,6 @@
 package me.ionar.salhack.gui.hud;
 
-import me.ionar.salhack.managers.HudManager;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.ui.HudEditorModule;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -8,15 +8,15 @@ import net.minecraft.text.Text;
 
 public class GuiHudEditor extends Screen {
 
-    private final HudEditorModule HudEditor;
-    private boolean Clicked = false;
-    private boolean Dragging = false;
-    private int ClickMouseX = 0;
-    private int ClickMouseY = 0;
+    private final HudEditorModule hudEditor;
+    private boolean clicked = false;
+    private boolean dragging = false;
+    private int clickMouseX = 0;
+    private int clickMouseY = 0;
 
     public GuiHudEditor(HudEditorModule hudEditor) {
         super(Text.of("Hud Editor"));
-        HudEditor = hudEditor;
+        this.hudEditor = hudEditor;
     }
 
     @Override
@@ -25,21 +25,21 @@ public class GuiHudEditor extends Screen {
         this.renderBackground(context);
         context.getMatrices().push();
         HudComponentItem lastHovered = null;
-        for (HudComponentItem componentItem : HudManager.Get().ComponentItems) {
-            if (!componentItem.IsHidden() && componentItem.Render(mouseX, mouseY, delta, context)) lastHovered = componentItem;
+        for (HudComponentItem componentItem : SalHack.getHudManager().componentItems) {
+            if (!componentItem.isHidden() && componentItem.render(mouseX, mouseY, delta, context)) lastHovered = componentItem;
         }
         if (lastHovered != null) {
-            HudManager.Get().ComponentItems.remove(lastHovered);
-            HudManager.Get().ComponentItems.add(lastHovered);
+            SalHack.getHudManager().componentItems.remove(lastHovered);
+            SalHack.getHudManager().componentItems.add(lastHovered);
         }
-        if (Clicked) {
-            final float mouseX1 = Math.min(ClickMouseX, mouseX);
-            final float mouseX2 = Math.max(ClickMouseX, mouseX);
-            final float mouseY1 = Math.min(ClickMouseY, mouseY);
-            final float mouseY2 = Math.max(ClickMouseY, mouseY);
+        if (clicked) {
+            final float mouseX1 = Math.min(clickMouseX, mouseX);
+            final float mouseX2 = Math.max(clickMouseX, mouseX);
+            final float mouseY1 = Math.min(clickMouseY, mouseY);
+            final float mouseY2 = Math.max(clickMouseY, mouseY);
             context.fill((int) mouseX1, (int) mouseY1, (int) mouseX2, (int) mouseY2, 0x56EC6);//205
-            HudManager.Get().ComponentItems.forEach(componentItem -> {
-                if (!componentItem.IsHidden()) {
+            SalHack.getHudManager().componentItems.forEach(componentItem -> {
+                if (!componentItem.isHidden()) {
                     if (componentItem.IsInArea(mouseX1, mouseX2, mouseY1, mouseY2)) componentItem.SetSelected(true);
                     else if (componentItem.IsSelected()) componentItem.SetSelected(false);
                 }
@@ -50,34 +50,34 @@ public class GuiHudEditor extends Screen {
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        for (HudComponentItem componentItem : HudManager.Get().ComponentItems) {
-            if (!componentItem.IsHidden()) componentItem.OnMouseClick((int) mouseX, (int) mouseY, button);
+        for (HudComponentItem componentItem : SalHack.getHudManager().componentItems) {
+            if (!componentItem.isHidden()) componentItem.onMouseClick((int) mouseX, (int) mouseY, button);
         }
-        Clicked = true;
-        ClickMouseX = (int) mouseX;
-        ClickMouseY = (int) mouseY;
+        clicked = true;
+        clickMouseX = (int) mouseX;
+        clickMouseY = (int) mouseY;
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
     @Override
     public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        HudManager.Get().ComponentItems.forEach(componentItem -> {
-            if (!componentItem.IsHidden()) {
-                componentItem.OnMouseRelease((int) mouseX, (int) mouseY, 0);
+        SalHack.getHudManager().componentItems.forEach(componentItem -> {
+            if (!componentItem.isHidden()) {
+                componentItem.onMouseRelease((int) mouseX, (int) mouseY, 0);
                 componentItem.SetMultiSelectedDragging(componentItem.IsSelected());
             }
         });
-        Clicked = false;
+        clicked = false;
         return super.mouseReleased(mouseX, mouseY, button);
     }
 
     @Override
     public void close() {
         super.close();
-        if (HudEditor.isEnabled()) HudEditor.toggle(true);
-        Clicked = false;
-        Dragging = false;
-        ClickMouseX = 0;
-        ClickMouseY = 0;
+        if (hudEditor.isEnabled()) hudEditor.toggle(true);
+        clicked = false;
+        dragging = false;
+        clickMouseX = 0;
+        clickMouseY = 0;
     }
 }

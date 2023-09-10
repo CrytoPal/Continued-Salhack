@@ -8,55 +8,53 @@ import net.minecraft.text.Text;
 
 public class SalHack {
     public static int TICK_TIMER = 1;
-    private static final ModuleManager ModuleManager = new ModuleManager();
-    private static final ImageManager ImageManager = new ImageManager();
+    private static final ModuleManager moduleManager = new ModuleManager();
+    private static final ImageManager imageManager = new ImageManager();
     //private static FontManager m_FontManager = new FontManager();
-    private static final HudManager HudManager = new HudManager();
-    private static final FriendManager FriendManager = new FriendManager();
+    private static final HudManager hudManager = new HudManager();
+    private static final FriendManager friendManager = new FriendManager();
     //private static DiscordManager m_DiscordManager = new DiscordManager();
-    private static final FilesManager FilesManager = new FilesManager();
+    private static final FilesManager filesManager = new FilesManager();
 
-    private static final NotificationManager NotificationManager = new NotificationManager();
-    private static final CommandManager CommandManager = new CommandManager();
-    private static final TickRateManager TickRateManager = new TickRateManager();
+    private static final NotificationManager notificationManager = new NotificationManager();
+    private static final CommandManager commandManager = new CommandManager();
+    private static final TickRateManager tickRateManager = new TickRateManager();
     //private static NotificationManager m_NotificationManager = new NotificationManager();
     //private static WaypointManager m_WaypointManager = new WaypointManager();
     //private static CapeManager m_CapeManager = new CapeManager();
-    private static final PresetsManager PresetsManager = new PresetsManager();
+    private static final PresetsManager presetsManager = new PresetsManager();
     //private static UUIDManager UUIDManager = new UUIDManager();
-
     public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
 
     public static void Init() {
         SalHackMod.log.info("Initializing Salhack");
-        FilesManager.Init();
+        filesManager.init();
         SalHackMod.log.info("Initializing Files Manager");
-
         /// load before mods
         //m_FontManager.Load();
-        PresetsManager.LoadPresets(); // must be before module init
+        presetsManager.init(); // must be before module init
         SalHackMod.log.info("Loaded Presets");
-        ModuleManager.Init();
+        moduleManager.init();
         SalHackMod.log.info("Loaded Modules");
-        HudManager.Init();
+        hudManager.init();
         SalHackMod.log.info("Loaded Hud");
-        CommandManager.InitializeCommands();
+        commandManager.init();
         SalHackMod.log.info("Loaded Commands");
-        FriendManager.Load();
+        friendManager.init();
         SalHackMod.log.info("Loaded Friends");
         SalHackMod.log.info("Strange. There was no friends in your friend manager :)");
     }
 
     public static void postWindowInit() {
-        ImageManager.Load();
+        imageManager.init();
     }
 
-    public static ModuleManager GetModuleManager() {
-        return ModuleManager;
+    public static ModuleManager getModuleManager() {
+        return moduleManager;
     }
-    public static ImageManager GetImageManager(){
-        return ImageManager;
+    public static ImageManager getImageManager(){
+        return imageManager;
     }
 /*
     public static FontManager GetFontManager()
@@ -68,17 +66,17 @@ public class SalHack {
 
     /// Writes a message to ingame chat
     /// Player must be ingame for this
-    public static void SendMessage(String string) {
+    public static void sendMessage(String string) {
         if (Wrapper.GetMC().player == null) return;
         Wrapper.GetMC().player.sendMessage(Text.of(string));
     }
 
-    public static HudManager GetHudManager() {
-        return HudManager;
+    public static HudManager getHudManager() {
+        return hudManager;
     }
 
-    public static FriendManager GetFriendManager() {
-        return FriendManager;
+    public static FriendManager getFriendManager() {
+        return friendManager;
     }
 /*
     public static DiscordManager GetDiscordManager()
@@ -87,20 +85,20 @@ public class SalHack {
     }
  */
 
-    public static FilesManager GetFilesManager() {
-        return FilesManager;
+    public static FilesManager getFilesManager() {
+        return filesManager;
     }
 
-    public static CommandManager GetCommandManager() {
-        return CommandManager;
+    public static CommandManager getCommandManager() {
+        return commandManager;
     }
 
-    public static TickRateManager GetTickRateManager() {
-        return TickRateManager;
+    public static TickRateManager getTickRateManager() {
+        return tickRateManager;
     }
 
-    public static NotificationManager GetNotificationManager() {
-        return NotificationManager;
+    public static NotificationManager getNotificationManager() {
+        return notificationManager;
     }
 
     /*
@@ -117,8 +115,8 @@ public class SalHack {
 
  */
 
-    public static PresetsManager GetPresetsManager() {
-        return PresetsManager;
+    public static PresetsManager getPresetsManager() {
+        return presetsManager;
     }
 /*
     public static UUIDManager GetUUIDManager()

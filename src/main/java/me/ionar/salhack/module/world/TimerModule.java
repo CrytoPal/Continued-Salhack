@@ -37,7 +37,7 @@ public final class TimerModule extends Module {
     public String getMetaData() {
         if (OverrideSpeed != 1.0f) return String.valueOf(OverrideSpeed);
         if (TPSSync.getValue()) {
-            float TPS = TickRateManager.Get().getTickRate();
+            float TPS = SalHack.getTickRateManager().getTickRate();
             return Format.format((TPS/20));
         }
         return Format.format(GetSpeed());
@@ -51,7 +51,7 @@ public final class TimerModule extends Module {
             return;
         }
         if (TPSSync.getValue()) {
-            float TPS = TickRateManager.Get().getTickRate();
+            float TPS = SalHack.getTickRateManager().getTickRate();
             SalHack.TICK_TIMER = (int) Math.min(0.1,(20/TPS));
         } else SalHack.TICK_TIMER = (int) (1 * GetSpeed());
         if (Accelerate.getValue() && Timer.passed(2000)) {

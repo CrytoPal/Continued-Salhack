@@ -7,6 +7,7 @@ import me.ionar.salhack.gui.click.component.item.ComponentItemKeybind;
 import me.ionar.salhack.gui.click.component.item.ComponentItemMod;
 import me.ionar.salhack.gui.click.component.item.ComponentItemValue;
 import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Module.ModuleType;
@@ -22,7 +23,7 @@ public class MenuComponentModList extends MenuComponent {
         final float Width = 105f;
         final float Height = 11f;
 
-        for (Module module : ModuleManager.Get().GetModuleList(moduleType)) {
+        for (Module module : SalHack.getModuleManager().getModuleList(moduleType)) {
             ComponentItemListener listener = new ComponentItemListener() {
                 @Override
                 public void OnEnabled() {}

@@ -19,12 +19,12 @@ public class WelcomerHudComponent extends HudComponentItem {
 
     public WelcomerHudComponent() {
         super("Welcomer", 415, 2);
-        SetHidden(false);
+        setHidden(false);
     }
 
     @Override
-    public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
-        super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
+    public void onRender(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
+        super.onRender(p_MouseX, p_MouseY, p_PartialTicks, context);
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
         String watermarkString;
@@ -39,12 +39,12 @@ public class WelcomerHudComponent extends HudComponentItem {
         }
 
         if (HudModule.CustomFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), watermarkString, (int) (GetX()), (int) (GetY()), HudModule.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), watermarkString, (int) (getPositionX()), (int) (getPositionY()), HudModule.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
         } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(watermarkString), (int) GetX(), (int) GetY(), HudModule.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+            context.drawTextWithShadow(mc.textRenderer, Text.of(watermarkString), (int) getPositionX(), (int) getPositionY(), HudModule.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
-        Rainbow.OnRender();
-        SetWidth(Wrapper.GetMC().textRenderer.getWidth(watermarkString));
-        SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        Rainbow.onRender();
+        setWidth(Wrapper.GetMC().textRenderer.getWidth(watermarkString));
+        setHeight(Wrapper.GetMC().textRenderer.fontHeight);
     }
 }

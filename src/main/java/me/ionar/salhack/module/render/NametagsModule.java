@@ -4,8 +4,8 @@ import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.events.render.RenderGameOverlayEvent;
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.friend.Friend;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
-import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.MathUtil;
@@ -47,7 +47,7 @@ public class NametagsModule extends Module {
 
     @EventHandler
     private void OnRenderGameOverlay(RenderGameOverlayEvent event) {
-        EntityUtil.getEntities().stream().filter(EntityUtil::isLiving).filter(entity -> !EntityUtil.isFakeLocalPlayer(entity))
+        EntityUtil.getEntities().stream().filter(EntityUtil::isLiving).filter(entity -> !EntityUtil.isFakePlayer(entity))
                 .filter(entity -> (entity instanceof PlayerEntity && mc.player != entity)).forEach(e ->
                         RenderNameTagFor((PlayerEntity) e, event));
     }
@@ -67,7 +67,7 @@ public class NametagsModule extends Module {
             Vec2f renderer = new Vec2f((float) position.x, (float) position.y);
             String name = entity.getEntityName();
             int color = -1;
-            final Friend friend = FriendManager.Get().GetFriend(entity);
+            final Friend friend = SalHack.getFriendManager().getFriend(entity);
             if (friend != null) {
                 name = entity.getEntityName();
                 color = 0x00C3EE;

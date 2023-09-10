@@ -8,44 +8,49 @@ import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.util.math.MathHelper;
 
 import java.lang.invoke.MethodHandles;
-
+// DO NOT TOUCH THESE THEY MAY BREAK OPENING THE GUI
 public class TickRateManager {
-    private long PreviousTime;
-    private final float[] Ticks = new float[20];
-    private int CurrentTick;
+    private long prevTime;
+    private float[] ticks = new float[20];
+    private int currentTick;
 
     public TickRateManager() {
         SalHackMod.NORBIT_EVENT_BUS.registerLambdaFactory("me.ionar.salhack.managers.TickRateManager", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
-        PreviousTime = -1;
-        for (int i = 0, len = Ticks.length; i < len; i++) Ticks[i] = 0.0f;
+        this.prevTime = -1;
+
+        for (int i = 0, len = this.ticks.length; i < len; i++) {
+            this.ticks[i] = 0.0f;
+        }
         SalHackMod.NORBIT_EVENT_BUS.subscribe(this);
     }
 
     public float getTickRate() {
         int tickCount = 0;
         float tickRate = 0.0f;
-        for (final float tick : Ticks) {
+
+        for (int i = 0; i < this.ticks.length; i++) {
+            final float tick = this.ticks[i];
+
             if (tick > 0.0f) {
                 tickRate += tick;
                 tickCount++;
             }
         }
+
         return MathHelper.clamp((tickRate / tickCount), 0.0f, 20.0f);
     }
 
     @EventHandler
-    private void PacketEvent(PacketEvent.Receive event) {
+    private void onPacket(PacketEvent.Receive event) {
         if (!event.isPre()) return;
-        if (event.getPacket() instanceof WorldTimeUpdateS2CPacket) {
-            if (PreviousTime != -1) {
-                Ticks[CurrentTick % Ticks.length] = MathHelper.clamp((20.0f / ((float) (System.currentTimeMillis() - PreviousTime) / 1000.0f)), 0.0f, 20.0f);
-                CurrentTick++;
-            }
-            PreviousTime = System.currentTimeMillis();
-        }
-    }
 
-    public static TickRateManager Get() {
-        return SalHack.GetTickRateManager();
+        if (event.getPacket() instanceof WorldTimeUpdateS2CPacket) {
+            if (this.prevTime != -1) {
+                this.ticks[this.currentTick % this.ticks.length] = MathHelper.clamp((20.0f / ((float) (System.currentTimeMillis() - this.prevTime) / 1000.0f)), 0.0f, 20.0f);
+                this.currentTick++;
+            }
+
+            this.prevTime = System.currentTimeMillis();
+        }
     }
 }

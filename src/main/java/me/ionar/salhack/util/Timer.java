@@ -1,29 +1,29 @@
 package me.ionar.salhack.util;
 
 public final class Timer {
-    private long Time;
+    private long time;
 
     public Timer() {
-        Time = -1;
+        time = -1;
     }
 
     public boolean passed(double ms) {
-        return System.currentTimeMillis() - Time >= ms;
+        return System.currentTimeMillis() - time >= ms;
     }
 
     public void reset() {
-        Time = System.currentTimeMillis();
+        time = System.currentTimeMillis();
     }
 
     public void resetTimeSkipTo(long ms) {
-        Time = System.currentTimeMillis() + ms;
+        time = System.currentTimeMillis() + ms;
     }
 
     public long getTime() {
-        return Time;
+        return time;
     }
 
     public void setTime(long time) {
-        Time = time;
+        this.time = time;
     }
 }

@@ -2,8 +2,8 @@ package me.ionar.salhack.gui.hud.components;
 
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
-import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ui.HudModule;
 import me.ionar.salhack.module.world.CoordsSpooferModule;
@@ -22,18 +22,18 @@ public class CoordsHudComponent extends HudComponentItem {
 
     public final Value<Boolean> NetherCords = new Value<Boolean>("Nether Cords", new String[]{ "NC" }, "Include Nether Cords", true);
     public final Value<Boolean> OverWorldCoords = new Value<Boolean>("Over World Cords", new String[]{ "NC" }, "Include Over World Cords (In nether)", true);
-    private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
+    private final HudModule hud = (HudModule) SalHack.getModuleManager().getMod(HudModule.class);
 
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
 
     final DecimalFormat Formatter = new DecimalFormat("#.#");
 
-    private final CoordsSpooferModule _getCoords = (CoordsSpooferModule) ModuleManager.Get().GetMod(CoordsSpooferModule.class);
+    private final CoordsSpooferModule _getCoords = (CoordsSpooferModule) SalHack.getModuleManager().getMod(CoordsSpooferModule.class);
 
     private static String coords;
     public CoordsHudComponent() {
         super("Coords", 3, 517);
-        SetHidden(false);
+        setHidden(false);
     }
 
     public String format(double input) {
@@ -46,19 +46,19 @@ public class CoordsHudComponent extends HudComponentItem {
     }
 
     @Override
-    public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
-        super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
+    public void onRender(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
+        super.onRender(p_MouseX, p_MouseY, p_PartialTicks, context);
 
         if (NetherCords.getValue()) {
-            coords = "XYZ: " + Formatting.WHITE + format(getX()) + " , " + format(getY()) + " , " + format(getZ()) + " (" + format(NethergetX()) + ", " + format(NethergetZ()) + ")";
+            coords = "XYZ: " + Formatting.WHITE + format(getPositionX()) + " , " + format(getPositionY()) + " , " + format(getZ()) + " (" + format(NethergetX()) + ", " + format(NethergetZ()) + ")";
         } else {
-            coords = "XYZ: " + Formatting.WHITE + format(getX()) + " , " + format(getY()) + " , " + format(getZ());
+            coords = "XYZ: " + Formatting.WHITE + format(getPositionX()) + " , " + format(getPositionY()) + " , " + format(getZ());
         }
         if (mc.world.getDimension().respawnAnchorWorks()) {
             if (OverWorldCoords.getValue()) {
-                coords = "XYZ: " + Formatting.WHITE + format(NethergetX()) + " , " + format(getY()) + " , " + format(NethergetZ()) + " (" + format(getX()) + ", " + format(getZ()) + ")";
+                coords = "XYZ: " + Formatting.WHITE + format(NethergetX()) + " , " + format(getPositionY()) + " , " + format(NethergetZ()) + " (" + format(getPositionX()) + ", " + format(getZ()) + ")";
             } else {
-                coords = "XYZ: " + Formatting.WHITE + format(NethergetX()) + " , " + format(getY()) + " , " + format(NethergetZ());
+                coords = "XYZ: " + Formatting.WHITE + format(NethergetX()) + " , " + format(getPositionY()) + " , " + format(NethergetZ());
             }
 
         }
@@ -67,13 +67,13 @@ public class CoordsHudComponent extends HudComponentItem {
 
             case Inline:
                 if (HudModule.CustomFont.getValue()) {
-                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), coords, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), coords, (int) (this.getPositionX()), (int) (this.getPositionY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
                 } else {
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(coords), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, Text.of(coords), (int) this.getPositionX(), (int) this.getPositionY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
                 }
-                Rainbow.OnRender();
-                SetWidth(Wrapper.GetMC().textRenderer.getWidth(coords));
-                SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+                Rainbow.onRender();
+                setWidth(Wrapper.GetMC().textRenderer.getWidth(coords));
+                setHeight(Wrapper.GetMC().textRenderer.fontHeight);
 
                 break;
         }
@@ -81,10 +81,10 @@ public class CoordsHudComponent extends HudComponentItem {
     }
 
     private Boolean getCoordSpoofer() {
-        return _getCoords.isEnabled();
+        return _getCoords != null && _getCoords.isEnabled();
     }
     private Boolean GetRandom() {
-        return _getCoords.Random.getValue();
+        return _getCoords != null && _getCoords.Random.getValue();
     }
 
 
@@ -115,7 +115,7 @@ public class CoordsHudComponent extends HudComponentItem {
                 if (GetRandom()) {
                     return mc.player.getX() * 8 + randX() * 8;
                 }
-                if (!GetRandom()) {
+                if (!GetRandom() && _getCoords != null) {
                     return mc.player.getX() * 8 + _getCoords.CoordsX.getValue() * 8 + _getCoords.CoordsNegativeX.getValue() * 8;
                 }
             }
@@ -125,7 +125,7 @@ public class CoordsHudComponent extends HudComponentItem {
                 if (GetRandom()) {
                     return mc.player.getX() + randX();
                 }
-                if (!GetRandom()) {
+                if (!GetRandom() && _getCoords != null) {
                     return mc.player.getX() + _getCoords.CoordsX.getValue() + _getCoords.CoordsNegativeX.getValue();
                 }
             }
@@ -139,7 +139,7 @@ public class CoordsHudComponent extends HudComponentItem {
                 if (GetRandom()) {
                     return mc.player.getX() + randX();
                 }
-                if (!GetRandom()) {
+                if (!GetRandom() && _getCoords != null) {
                     return mc.player.getX() + _getCoords.CoordsX.getValue() + _getCoords.CoordsNegativeX.getValue();
                 }
             }
@@ -149,7 +149,7 @@ public class CoordsHudComponent extends HudComponentItem {
                 if (GetRandom()) {
                     return mc.player.getX() / 8 + randX() / 8;
                 }
-                if (!GetRandom()) {
+                if (!GetRandom() && _getCoords != null) {
                     return mc.player.getX() / 8 + _getCoords.CoordsX.getValue() / 8 + _getCoords.CoordsNegativeX.getValue() / 8;
                 }
             }
@@ -163,7 +163,7 @@ public class CoordsHudComponent extends HudComponentItem {
                 if (GetRandom()) {
                     return mc.player.getZ() + randZ();
                 }
-                if (!GetRandom()) {
+                if (!GetRandom() && _getCoords != null) {
                     return mc.player.getZ() + _getCoords.CoordsZ.getValue() + _getCoords.CoordsNegativeZ.getValue();
                 }
             }
@@ -173,7 +173,7 @@ public class CoordsHudComponent extends HudComponentItem {
                 if (GetRandom()) {
                     return mc.player.getZ() / 8 + randZ() / 8;
                 }
-                if (!GetRandom()) {
+                if (!GetRandom() && _getCoords != null) {
                     return mc.player.getZ() / 8 + _getCoords.CoordsZ.getValue() / 8 + _getCoords.CoordsNegativeZ.getValue() / 8;
                 }
             }
@@ -187,7 +187,7 @@ public class CoordsHudComponent extends HudComponentItem {
                 if (GetRandom()) {
                     return mc.player.getZ() * 8 + randZ() * 8;
                 }
-                if (!GetRandom()) {
+                if (!GetRandom() && _getCoords != null) {
                     return mc.player.getZ() * 8 + _getCoords.CoordsZ.getValue() * 8 + _getCoords.CoordsNegativeZ.getValue() * 8;
                 }
             }
@@ -197,7 +197,7 @@ public class CoordsHudComponent extends HudComponentItem {
                 if (GetRandom()) {
                     return mc.player.getZ() + randZ();
                 }
-                if (!GetRandom()) {
+                if (!GetRandom() && _getCoords != null) {
                     return mc.player.getZ() + _getCoords.CoordsZ.getValue() + _getCoords.CoordsNegativeZ.getValue();
                 }
             }

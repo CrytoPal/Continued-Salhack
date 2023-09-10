@@ -2,7 +2,7 @@ package me.ionar.salhack.gui.hud.components;
 
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
-import me.ionar.salhack.managers.ModuleManager;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ui.HudModule;
 import me.ionar.salhack.util.color.SalRainbowUtil;
@@ -14,7 +14,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class ResourcesComponent extends HudComponentItem {
-    private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
+    private final HudModule hud = (HudModule) SalHack.getModuleManager().getMod(HudModule.class);
 
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(2);
 
@@ -24,12 +24,12 @@ public class ResourcesComponent extends HudComponentItem {
     public final Value<Boolean> EGap = new Value<Boolean>("EGap", new String[]{ "EGap" }, "Include EGap", true);
     public ResourcesComponent() {
         super("Resources", 2, 53);
-        SetHidden(false);
+        setHidden(false);
     }
 
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, DrawContext context) {
-        super.render(mouseX, mouseY, partialTicks, context);
+    public void onRender(int mouseX, int mouseY, float partialTicks, DrawContext context) {
+        super.onRender(mouseX, mouseY, partialTicks, context);
 
         int EGapCount = getItemCount(Items.ENCHANTED_GOLDEN_APPLE);
         int totemCount = getItemCount(Items.TOTEM_OF_UNDYING);
@@ -43,33 +43,33 @@ public class ResourcesComponent extends HudComponentItem {
 
         if (EGap.getValue()) {
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), EGapCount1, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), EGapCount1, (int) (getPositionX()), (int) (getPositionY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) getPositionX(), (int) getPositionY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
-            Rainbow.OnRender();
-            SetWidth(mc.textRenderer.getWidth(EGapCount1));
-            SetHeight(mc.textRenderer.fontHeight + 30);
+            Rainbow.onRender();
+            setWidth(mc.textRenderer.getWidth(EGapCount1));
+            setHeight(mc.textRenderer.fontHeight + 30);
         }
         if (Totems.getValue()) {
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), totemCount1, (int) (GetX()), (int) (GetY()) + 30, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), totemCount1, (int) (getPositionX()), (int) (getPositionY()) + 30, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) GetX(), (int) GetY() + 30, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) getPositionX(), (int) getPositionY() + 30, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
         }
         if (Crystals.getValue()) {
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), crystals1, (int) (GetX()), (int) (GetY()) + 10, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), crystals1, (int) (getPositionX()), (int) (getPositionY()) + 10, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) GetX(), (int) GetY() + 10, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) getPositionX(), (int) getPositionY() + 10, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
         }
         if (EXP.getValue()) {
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), expCount1, (int) (GetX()), (int) (GetY()) + 20, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), expCount1, (int) (getPositionX()), (int) (getPositionY()) + 20, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) GetX(), (int) GetY() + 20, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) getPositionX(), (int) getPositionY() + 20, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
         }
     }

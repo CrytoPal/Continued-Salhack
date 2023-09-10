@@ -2,8 +2,6 @@ package me.ionar.salhack.gui.hud;
 
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
-import me.ionar.salhack.managers.CommandManager;
-import me.ionar.salhack.managers.HudManager;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ui.HudModule;
 import net.minecraft.client.MinecraftClient;
@@ -16,114 +14,114 @@ import java.util.Map;
 
 @SuppressWarnings({"rawtypes", "BooleanMethodIsAlwaysInverted", "unchecked"})
 public class HudComponentItem {
-    public ArrayList<Value> ValueList = new ArrayList<>();
-    private String DisplayName;
-    private float X;
-    private float Y;
-    private final float DefaultX;
-    private final float DefaultY;
-    private float Width;
-    private float Height;
+    public ArrayList<Value> values = new ArrayList<>();
+    private String displayName;
+    private float x;
+    private float y;
+    private final float defaultX;
+    private final float defaultY;
+    private float width;
+    private float height;
 
-    protected float DeltaX;
-    protected float DeltaY;
-    protected float ClampX;
-    protected float ClampY;
-    private int Flags;
+    protected float deltaX;
+    protected float deltaY;
+    protected float clampX;
+    protected float clampY;
+    private int flags;
 
-    private boolean Hidden = true;
-    private boolean Dragging = false;
-    protected int ClampLevel = 0;
-    protected int Side = 0;
-    private boolean Selected = false;
-    private boolean MultiSelectedDragging = false;
+    private boolean hidden = true;
+    private boolean dragging = false;
+    protected int clampLevel = 0;
+    protected int side = 0;
+    private boolean selected = false;
+    private boolean multiSelectedDragging = false;
 
     protected MinecraftClient mc = Wrapper.GetMC();
 
     public HudComponentItem(String displayName, float x, float y) {
-        DisplayName = displayName;
-        X = x;
-        Y = y;
-        DefaultX = x;
-        DefaultY = y;
+        this.displayName = displayName;
+        this.x = x;
+        this.y = y;
+        defaultX = x;
+        defaultY = y;
     }
 
-    public String GetDisplayName() {
-        return DisplayName;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void SetWidth(float width) {
-        Width = width;
+    public void setWidth(float width) {
+        this.width = width;
     }
 
-    public void SetHeight(float height) {
-        Height = height;
+    public void setHeight(float height) {
+        this.height = height;
     }
 
-    public float GetWidth() {
-        return Width;
+    public float getWidth() {
+        return width;
     }
 
-    public float GetHeight() {
-        return Height;
+    public float getHeight() {
+        return height;
     }
 
-    public boolean IsHidden() {
-        return Hidden;
+    public boolean isHidden() {
+        return hidden;
     }
 
-    public void SetHidden(boolean hide) {
-        Hidden = hide;
-        HudManager.Get().ScheduleSave(this);
+    public void setHidden(boolean hide) {
+        hidden = hide;
+        SalHack.getHudManager().scheduleSave(this);
     }
 
-    public float GetX() {
-        return X;
+    public float getPositionX() {
+        return x;
     }
 
-    public float GetY() {
-        return Y;
+    public float getPositionY() {
+        return y;
     }
 
-    public void SetX(float x) {
-        if (X == x) return;
-        X = x;
-        if (ClampLevel == 0) HudManager.Get().ScheduleSave(this);
+    public void setX(float x) {
+        if (this.x == x) return;
+        this.x = x;
+        if (clampLevel == 0) SalHack.getHudManager().scheduleSave(this);
     }
 
-    public void SetY(float y) {
-        if (Y == y) return;
-        Y = y;
-        if (ClampLevel == 0) HudManager.Get().ScheduleSave(this);
+    public void setY(float y) {
+        if (this.y == y) return;
+        this.y = y;
+        if (clampLevel == 0) SalHack.getHudManager().scheduleSave(this);
     }
 
-    public boolean IsDragging() {
-        return Dragging;
+    public boolean isDragging() {
+        return dragging;
     }
 
-    public void SetDragging(boolean dragging) {
-        Dragging = dragging;
+    public void setDragging(boolean dragging) {
+        this.dragging = dragging;
     }
 
-    protected void SetClampPosition(float x, float y) {
-        ClampX = x;
-        ClampY = y;
+    protected void setClampPosition(float x, float y) {
+        clampX = x;
+        clampY = y;
     }
 
-    protected void SetClampLevel(int clampLevel) {
-        ClampLevel = clampLevel;
+    protected void setClampLevel(int clampLevel) {
+        this.clampLevel = clampLevel;
     }
 
     /// don't override unless you return this
-    public boolean Render(int mouseX, int mouseY, float partialTicks, DrawContext context) {
-        boolean inside = mouseX >= GetX() && mouseX < GetX() + GetWidth() && mouseY >= GetY() && mouseY < GetY() + GetHeight();
-        if (inside) context.fill((int) GetX(), (int) GetY(), (int) (GetX()+GetWidth()), (int) (GetY()+GetHeight()), 0x50384244);
-        if (IsDragging()) {
+    public boolean render(int mouseX, int mouseY, float partialTicks, DrawContext context) {
+        boolean inside = mouseX >= getPositionX() && mouseX < getPositionX() + getWidth() && mouseY >= getPositionY() && mouseY < getPositionY() + getHeight();
+        if (inside) context.fill((int) getPositionX(), (int) getPositionY(), (int) (getPositionX()+ getWidth()), (int) (getPositionY()+ getHeight()), 0x50384244);
+        if (isDragging()) {
             Window res = mc.getWindow();
-            float x = mouseX - DeltaX;
-            float y = mouseY - DeltaY;
-            SetX(Math.min(Math.max(0, x), res.getScaledWidth()-GetWidth()));
-            SetY(Math.min(Math.max(0, y), res.getScaledHeight()-GetHeight()));
+            float x = mouseX - deltaX;
+            float y = mouseY - deltaY;
+            setX(Math.min(Math.max(0, x), res.getScaledWidth()- getWidth()));
+            setY(Math.min(Math.max(0, y), res.getScaledHeight()- getHeight()));
         }
         /*else if (Clamped)
         {
@@ -131,61 +129,61 @@ public class HudComponentItem {
             SetY(ClampY);
         }*/
 
-        render(mouseX, mouseY, partialTicks, context);
+        onRender(mouseX, mouseY, partialTicks, context);
 
-        if (IsSelected()) context.fill((int) GetX(), (int) GetY(), (int) (GetX()+GetWidth()), (int) (GetY()+GetHeight()), 0x35DDDDDD);
+        if (IsSelected()) context.fill((int) getPositionX(), (int) getPositionY(), (int) (getPositionX()+ getWidth()), (int) (getPositionY()+ getHeight()), 0x35DDDDDD);
 
         return inside;
     }
 
     /// override for childs
-    public void render(int mouseX, int mouseY, float partialTicks, DrawContext context) {}
+    public void onRender(int mouseX, int mouseY, float partialTicks, DrawContext context) {}
 
-    public boolean OnMouseClick(int mouseX, int mouseY, int mouseButton) {
-        if (mouseX >= GetX() && mouseX < GetX() + GetWidth() && mouseY >= GetY() && mouseY < GetY() + GetHeight()) {
+    public boolean onMouseClick(int mouseX, int mouseY, int mouseButton) {
+        if (mouseX >= getPositionX() && mouseX < getPositionX() + getWidth() && mouseY >= getPositionY() && mouseY < getPositionY() + getHeight()) {
             if (mouseButton == 0) {
-                SetDragging(true);
-                DeltaX = mouseX - GetX();
-                DeltaY = mouseY - GetY();
-                HudManager.Get().ComponentItems.forEach(componentItem -> {
+                setDragging(true);
+                deltaX = mouseX - getPositionX();
+                deltaY = mouseY - getPositionY();
+                SalHack.getHudManager().componentItems.forEach(componentItem -> {
                     if (componentItem.IsMultiSelectedDragging()) {
-                        componentItem.SetDragging(true);
-                        componentItem.SetDeltaX(mouseX - componentItem.GetX());
-                        componentItem.SetDeltaY(mouseY - componentItem.GetY());
+                        componentItem.setDragging(true);
+                        componentItem.setDeltaX(mouseX - componentItem.getPositionX());
+                        componentItem.setDeltaY(mouseY - componentItem.getPositionY());
                     }
                 });
             } else if (mouseButton == 1) {
-                ++Side;
-                if (Side > 3) Side = 0;
-                HudManager.Get().ScheduleSave(this);
+                ++side;
+                if (side > 3) side = 0;
+                SalHack.getHudManager().scheduleSave(this);
             }
             else if (mouseButton == 2) {
-                ++ClampLevel;
-                if (ClampLevel > 2) ClampLevel = 0;
-                SetClampPosition(GetX(), GetY());
-                HudManager.Get().ScheduleSave(this);
+                ++clampLevel;
+                if (clampLevel > 2) clampLevel = 0;
+                setClampPosition(getPositionX(), getPositionY());
+                SalHack.getHudManager().scheduleSave(this);
             }
             return true;
         }
         return false;
     }
 
-    public void SetDeltaX(float x) {
-        DeltaX = x;
+    public void setDeltaX(float x) {
+        deltaX = x;
     }
 
-    public void SetDeltaY(float y) {
-        DeltaY = y;
+    public void setDeltaY(float y) {
+        deltaY = y;
     }
 
-    public void OnMouseRelease(int mouseX, int mouseY, int state) {
-        SetDragging(false);
+    public void onMouseRelease(int mouseX, int mouseY, int state) {
+        setDragging(false);
     }
 
-    public void LoadSettings() {
-        File exists = new File("SalHack/HUD/"+GetDisplayName()+".json");
+    public void loadSettings() {
+        File exists = new File("SalHack/HUD/"+ getDisplayName()+".json");
         if (!exists.exists()) return;
-        String content = SalHack.GetFilesManager().read("SalHack/HUD/"+GetDisplayName()+".json");
+        String content = SalHack.getFilesManager().read("SalHack/HUD/"+ getDisplayName()+".json");
         Map<?, ?> map = SalHack.gson.fromJson(content, Map.class);
         for (Map.Entry<?, ?> entry : map.entrySet()) {
             String key = (String)entry.getKey();
@@ -195,34 +193,34 @@ public class HudComponentItem {
                 continue;
             }
             if (key.equalsIgnoreCase("visible")) {
-                SetHidden(value.equalsIgnoreCase("false"));
+                setHidden(value.equalsIgnoreCase("false"));
                 continue;
             }
             if (key.equalsIgnoreCase("PositionX")) {
-                SetX(Float.parseFloat(value));
+                setX(Float.parseFloat(value));
                 continue;
             }
             if (key.equalsIgnoreCase("PositionY")) {
-                SetY(Float.parseFloat(value));
+                setY(Float.parseFloat(value));
                 continue;
             }
             if (key.equalsIgnoreCase("ClampLevel")) {
-                SetClampLevel(Integer.parseInt(value));
+                setClampLevel(Integer.parseInt(value));
                 continue;
             }
             if (key.equalsIgnoreCase("ClampPositionX")) {
-                ClampX = (Float.parseFloat(value));
+                clampX = (Float.parseFloat(value));
                 continue;
             }
             if (key.equalsIgnoreCase("ClampPositionY")) {
-                ClampY = (Float.parseFloat(value));
+                clampY = (Float.parseFloat(value));
                 continue;
             }
             if (key.equalsIgnoreCase("Side")) {
-                Side = Integer.parseInt(value);
+                side = Integer.parseInt(value);
                 continue;
             }
-            for (Value value2 : ValueList) {
+            for (Value value2 : values) {
                 if (value2.getName().equalsIgnoreCase((String) entry.getKey())) {
                     if (value2.getValue() instanceof Number && !(value2.getValue() instanceof Enum)) {
                         if (value2.getValue() instanceof Integer) value2.SetForcedValue(Integer.parseInt(value));
@@ -239,53 +237,53 @@ public class HudComponentItem {
     }
 
     public int GetSide() {
-        return Side;
+        return side;
     }
 
     public int GetClampLevel() {
-        return ClampLevel;
+        return clampLevel;
     }
 
     public boolean HasFlag(int flag) {
-        return (Flags & flag) != 0;
+        return (flags & flag) != 0;
     }
 
     public void AddFlag(int flags) {
-        Flags |= flags;
+        this.flags |= flags;
     }
 
     public static int OnlyVisibleInHudEditor = 0x1;
 
     public void ResetToDefaultPos() {
-        SetX(DefaultX);
-        SetY(DefaultY);
+        setX(defaultX);
+        setY(defaultY);
     }
 
     public void SetSelected(boolean selected) {
-        Selected = selected;
+        this.selected = selected;
     }
 
     public boolean IsInArea(float mouseX1, float mouseX2, float mouseY1, float mouseY2) {
-        return GetX() >= mouseX1 && GetX()+GetWidth() <= mouseX2 && GetY() >= mouseY1 && GetY()+GetHeight() <= mouseY2;
+        return getPositionX() >= mouseX1 && getPositionX()+ getWidth() <= mouseX2 && getPositionY() >= mouseY1 && getPositionY()+ getHeight() <= mouseY2;
     }
 
     public boolean IsSelected() {
-        return Selected;
+        return selected;
     }
 
     public void SetMultiSelectedDragging(boolean multiDragging) {
-        MultiSelectedDragging = multiDragging;
+        multiSelectedDragging = multiDragging;
     }
 
     public boolean IsMultiSelectedDragging() {
-        return MultiSelectedDragging;
+        return multiSelectedDragging;
     }
 
     public void SetDisplayName(String newName, boolean save) {
-        DisplayName = newName;
+        displayName = newName;
         if (save) {
-            HudManager.Get().ScheduleSave(this);
-            CommandManager.Get().Reload();
+            SalHack.getHudManager().scheduleSave(this);
+            SalHack.getCommandManager().reload();
         }
     }
 

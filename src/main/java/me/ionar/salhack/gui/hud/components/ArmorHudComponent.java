@@ -30,68 +30,68 @@ public class ArmorHudComponent extends HudComponentItem {
         Under
     }
     @Override
-    public void render(int mouseX, int mouseY, float partialTicks, DrawContext context) {
-        super.render(mouseX, mouseY, partialTicks, context);
+    public void onRender(int mouseX, int mouseY, float partialTicks, DrawContext context) {
+        super.onRender(mouseX, mouseY, partialTicks, context);
         if (mc.player != null) {
             if (!mc.player.getInventory().getArmorStack(3).isEmpty()) {
                 // Gets the Armor from the player
                 Head = mc.player.getInventory().getArmorStack(3);
                 // Renders the Armor
-                context.drawItem(Head, (int) GetX() - 5, (int) GetY() - 5);
+                context.drawItem(Head, (int) getPositionX() - 5, (int) getPositionY() - 5);
                 if (mode.getValue() == Mode.Under) {
-                    context.drawItemInSlot(mc.textRenderer, Head, (int) GetX() - 5, (int) GetY() - 5);
+                    context.drawItemInSlot(mc.textRenderer, Head, (int) getPositionX() - 5, (int) getPositionY() - 5);
                 } else {
-                    context.drawItemInSlot(mc.textRenderer, Head, (int) GetX() - 5, (int) GetY() - 17);
+                    context.drawItemInSlot(mc.textRenderer, Head, (int) getPositionX() - 5, (int) getPositionY() - 17);
                 }
                 if (ArmorPercentage.getValue()) {
                     // Calculates the Health Percentage
                     durabilityHead = Formatting.GREEN + "" + ((Head.getMaxDamage() - Head.getDamage()) * 100 / Head.getMaxDamage());
                     // Renders the Health Percentage
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityHead), (int) GetX() - 3, (int) GetY() - 15, GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityHead), (int) getPositionX() - 3, (int) getPositionY() - 15, GetTextColor());
                 }
             }
             if (!mc.player.getInventory().getArmorStack(2).isEmpty()) {
                 Chest = mc.player.getInventory().getArmorStack(2);
-                context.drawItem(Chest, (int) GetX() + 15, (int) GetY() - 5);
+                context.drawItem(Chest, (int) getPositionX() + 15, (int) getPositionY() - 5);
                 if (mode.getValue() == Mode.Under) {
-                    context.drawItemInSlot(mc.textRenderer, Chest, (int) GetX() + 15, (int) GetY() - 5);
+                    context.drawItemInSlot(mc.textRenderer, Chest, (int) getPositionX() + 15, (int) getPositionY() - 5);
                 } else {
-                    context.drawItemInSlot(mc.textRenderer, Chest, (int) GetX() + 15, (int) GetY() - 17);
+                    context.drawItemInSlot(mc.textRenderer, Chest, (int) getPositionX() + 15, (int) getPositionY() - 17);
                 }
                 if (ArmorPercentage.getValue()) {
                     durabilityChest = Formatting.GREEN + "" + ((Chest.getMaxDamage() - Chest.getDamage()) * 100 / Chest.getMaxDamage());
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityChest), (int) GetX() + 17, (int) GetY() - 15, GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityChest), (int) getPositionX() + 17, (int) getPositionY() - 15, GetTextColor());
                 }
             }
             if (!mc.player.getInventory().getArmorStack(1).isEmpty()) {
                 Legging = mc.player.getInventory().getArmorStack(1);
-                context.drawItem(Legging, (int) GetX() + 35, (int) GetY() - 5);
+                context.drawItem(Legging, (int) getPositionX() + 35, (int) getPositionY() - 5);
                 if (mode.getValue() == Mode.Under) {
-                    context.drawItemInSlot(mc.textRenderer, Legging, (int) GetX() + 35, (int) GetY() - 5);
+                    context.drawItemInSlot(mc.textRenderer, Legging, (int) getPositionX() + 35, (int) getPositionY() - 5);
                 } else {
-                    context.drawItemInSlot(mc.textRenderer, Legging, (int) GetX() + 35, (int) GetY() - 17);
+                    context.drawItemInSlot(mc.textRenderer, Legging, (int) getPositionX() + 35, (int) getPositionY() - 17);
                 }
                 if (ArmorPercentage.getValue()) {
                     durabilityLegging = Formatting.GREEN + "" + ((Legging.getMaxDamage() - Legging.getDamage()) * 100 / Legging.getMaxDamage());
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityLegging), (int) GetX() + 37, (int) GetY() - 15, GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityLegging), (int) getPositionX() + 37, (int) getPositionY() - 15, GetTextColor());
                 }
             }
             if (!mc.player.getInventory().getArmorStack(0).isEmpty()) {
                 Boots = mc.player.getInventory().getArmorStack(0);
-                context.drawItem(Boots, (int) GetX() + 55, (int) GetY() - 5);
+                context.drawItem(Boots, (int) getPositionX() + 55, (int) getPositionY() - 5);
                 if (mode.getValue() == Mode.Under) {
-                    context.drawItemInSlot(mc.textRenderer, Boots, (int) GetX() + 55, (int) GetY() - 5);
+                    context.drawItemInSlot(mc.textRenderer, Boots, (int) getPositionX() + 55, (int) getPositionY() - 5);
                 } else {
-                    context.drawItemInSlot(mc.textRenderer, Boots, (int) GetX() + 55, (int) GetY() - 17);
+                    context.drawItemInSlot(mc.textRenderer, Boots, (int) getPositionX() + 55, (int) getPositionY() - 17);
                 }
                 if (ArmorPercentage.getValue()) {
                     durabilityBoot = Formatting.GREEN + "" + ((Boots.getMaxDamage() - Boots.getDamage()) * 100 / Boots.getMaxDamage());
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityBoot), (int) GetX() + 57, (int) GetY() - 15, GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityBoot), (int) getPositionX() + 57, (int) getPositionY() - 15, GetTextColor());
                 }
             }
 
-            SetWidth(60);
-            SetHeight(8);
+            setWidth(60);
+            setHeight(8);
         }
     }
 }

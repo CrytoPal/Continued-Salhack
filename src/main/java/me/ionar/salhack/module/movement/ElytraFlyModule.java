@@ -68,7 +68,7 @@ public final class ElytraFlyModule extends Module {
 
                 if (ElytraSlot != -1) {
                     boolean HasArmorAtChest = mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() != Items.AIR;
-                    ItemUtil.Move(ElytraSlot, 6);
+                    ItemUtil.move(ElytraSlot, 6);
                     if (HasArmorAtChest) mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, ElytraSlot, 0, SlotActionType.PICKUP, mc.player);
                 }
             }
@@ -82,7 +82,7 @@ public final class ElytraFlyModule extends Module {
 
         if (ElytraSlot != -1) {
             boolean HasItem = !mc.player.getInventory().getStack(ElytraSlot).isEmpty() || mc.player.getInventory().getStack(ElytraSlot).getItem() != Items.AIR;
-            ItemUtil.Move(6, ElytraSlot);
+            ItemUtil.move(6, ElytraSlot);
             if (HasItem) mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, 6, 0, SlotActionType.PICKUP, mc.player);
         }
     }
@@ -118,7 +118,7 @@ public final class ElytraFlyModule extends Module {
         double YHeight = mc.player.getY();
         if (YHeight <= CancelAtHeight.getValue()) {
             if (!SendMessage) {
-                SalHack.SendMessage(Formatting.RED + "WARNING, you must scaffold up or use fireworks, as YHeight <= CancelAtHeight!");
+                SalHack.sendMessage(Formatting.RED + "WARNING, you must scaffold up or use fireworks, as YHeight <= CancelAtHeight!");
                 SendMessage = true;
             }
             return;

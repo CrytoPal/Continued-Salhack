@@ -28,117 +28,140 @@ import me.ionar.salhack.module.world.CoordsSpooferModule;
 import me.ionar.salhack.module.world.TimerModule;
 import me.ionar.salhack.preset.Preset;
 import me.ionar.salhack.util.ReflectionUtil;
-
-@SuppressWarnings("rawtypes")
+// DO NOT TOUCH THESE THEY MAY BREAK OPENING THE GUI
 public class ModuleManager {
-    public static ModuleManager Get() {
-        return SalHack.GetModuleManager();
+
+    public ModuleManager() {
     }
 
-    public ModuleManager() {}
-
-    public static ArrayList<Module> Modules = new ArrayList<>();
-    private ArrayList<Module> ArrayListAnimations = new ArrayList<>();
-    public void Init() {
+    public static ArrayList<Module> modules = new ArrayList<Module>();
+    private ArrayList<Module> arrayListAnimations = new ArrayList<Module>();
+    public void init() {
         /// Combat
-        Add(new KillAuraModule());
-        Add(new OffhandModule());
+        add(new KillAuraModule());
+        add(new OffhandModule());
 
         /// Exploit
-        Add(new BowbombModule());
+        add(new BowbombModule());
 
         /// Misc
-        Add(new FakePlayer());
-        Add(new FriendsModule());
-        Add(new MiddleClickFriendsModule());
+        add(new FakePlayer());
+        add(new FriendsModule());
+        add(new MiddleClickFriendsModule());
 
         /// Movement
-        Add(new ElytraFlyModule());
-        Add(new SpeedModule());
-        Add(new Sprint());
-        Add(new Rotation());
+        add(new ElytraFlyModule());
+        add(new SpeedModule());
+        add(new Sprint());
+        add(new Rotation());
 
         /// Render
-        Add(new NametagsModule());
+        add(new NametagsModule());
 
         /// UI
-        Add(new ColorsModule());
-        Add(new ClickGuiModule());
-        Add(new HudEditorModule());
-        Add(new HudModule());
-        Add(new Notification());
+        add(new ColorsModule());
+        add(new ClickGuiModule());
+        add(new HudEditorModule());
+        add(new HudModule());
+        add(new Notification());
 
         /// World
-        Add(new TimerModule());
-        Add(new CoordsSpooferModule());
-        Add(new AutoToolModule());
+        add(new TimerModule());
+        add(new CoordsSpooferModule());
+        add(new AutoToolModule());
 
         /// Schematica
 
 
-        LoadExternalModules();
-        Modules.sort(Comparator.comparing(Module::getDisplayName));
-        final Preset preset = PresetsManager.Get().getActivePreset();
-        Modules.forEach(preset::initValuesForMod);
-        Modules.forEach(Module::init);
+
+        loadExternalModules();
+
+        modules.sort((p_Mod1, p_Mod2) -> p_Mod1.getDisplayName().compareTo(p_Mod2.getDisplayName()));
+
+        final Preset preset = SalHack.getPresetsManager().getActivePreset();
+
+        modules.forEach(mod -> {
+            preset.initValuesForModule(mod);
+        });
+
+        modules.forEach(mod -> {
+            mod.init();
+        });
     }
 
 
-    public void Add(Module mod) {
+    public void add(Module mod) {
         try {
             for (Field field : mod.getClass().getDeclaredFields()) {
                 if (Value.class.isAssignableFrom(field.getType())) {
-                    if (!field.canAccess(null)) field.setAccessible(true);
+                    if (!field.isAccessible()) {
+                        field.setAccessible(true);
+                    }
                     final Value val = (Value) field.get(mod);
                     val.InitializeModule(mod);
                     mod.getValueList().add(val);
                 }
             }
-            Modules.add(mod);
-        } catch (Exception ignored) {}
+            modules.add(mod);
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public final List<Module> GetModuleList(ModuleType moduleType) {
+    public final List<Module> getModuleList(ModuleType p_Type) {
         List<Module> list = new ArrayList<>();
-        for (Module module : Modules) {
-            if (module.getModuleType().equals(moduleType)) list.add(module);
+        for (Module module : modules) {
+            if (module.getModuleType().equals(p_Type)) {
+                list.add(module);
+            }
         }
         // Organize alphabetically
         list.sort(Comparator.comparing(Module::getDisplayName));
+
         return list;
     }
 
-    public final List<Module> GetModuleList() {
-        return Modules;
+    public final List<Module> getModuleList() {
+        return modules;
     }
 
-    public static void OnKeyPress(int key) {
+    public static void onKeyPress(int key) {
         if (key == 0) return;
-        Modules.forEach(module -> {
-            if (module.isKeyPressed(key)) module.toggle(true);
+
+        modules.forEach(p_Mod -> {
+            if (p_Mod.isKeyPressed(key)) {
+                p_Mod.toggle(true);
+            }
         });
     }
 
-    public Module GetMod(Class clazz) {
-        for (Module module : Modules) {
-            if (module.getClass() == clazz) return module;
+    public Module getMod(Class p_Class) {
+        for (Module l_Mod : modules) {
+            if (l_Mod.getClass() == p_Class)
+                return l_Mod;
         }
-        SalHackMod.log.error("Could not find the class " + clazz.getName() + " in Mods list");
+
+        SalHackMod.log.error("Could not find the class " + p_Class.getName() + " in Mods list");
         return null;
     }
 
-    public Module GetModLike(String name) {
-        for (Module module : Modules) {
-            if (module.getArrayListDisplayName().toLowerCase().startsWith(name.toLowerCase())) return module;
+    public Module getModLike(String p_String) {
+        for (Module l_Mod : modules) {
+            if (l_Mod.getArrayListDisplayName().toLowerCase().startsWith(p_String.toLowerCase()))
+                return l_Mod;
         }
+
         return null;
     }
 
-    public void OnModEnable(Module module) {
-        ArrayListAnimations.remove(module);
-        ArrayListAnimations.add(module);
+    public void onModEnable(Module p_Mod) {
+        arrayListAnimations.remove(p_Mod);
+        arrayListAnimations.add(p_Mod);
+
         final Comparator<Module> comparator = (first, second) -> {
-            if (Wrapper.GetMC().textRenderer != null) {
+            if (Wrapper.GetMC().textRenderer == null) {
+            } else {
                 final String firstName = first.getFullArrayListDisplayName();
                 final String secondName = second.getFullArrayListDisplayName();
                 final float dif = Wrapper.GetMC().textRenderer.getWidth(secondName) - Wrapper.GetMC().textRenderer.getWidth(firstName);
@@ -146,30 +169,47 @@ public class ModuleManager {
             }
             return 0;
         };
-        ArrayListAnimations = (ArrayList<Module>) ArrayListAnimations.stream().sorted(comparator).collect(Collectors.toList());
+
+        arrayListAnimations = (ArrayList<Module>) arrayListAnimations.stream()
+                .sorted(comparator)
+                .collect(Collectors.toList());
     }
 
-    public void Update() {
-        if (ArrayListAnimations.isEmpty()) return;
-        Module module = ArrayListAnimations.get(0);
-        if ((module.RemainingXAnimation -= ((float) Wrapper.GetMC().textRenderer.getWidth(module.getFullArrayListDisplayName()) / 10)) <= 0) {
-            ArrayListAnimations.remove(module);
-            module.RemainingXAnimation = 0;
+    public void update() {
+        if (arrayListAnimations.isEmpty())
+            return;
+
+        Module l_Mod = arrayListAnimations.get(0);
+
+        if ((l_Mod.RemainingXAnimation -= (Wrapper.GetMC().textRenderer.getWidth(l_Mod.getFullArrayListDisplayName()) / 10)) <= 0) {
+            arrayListAnimations.remove(l_Mod);
+            l_Mod.RemainingXAnimation = 0;
         }
     }
 
-    public void LoadExternalModules() {
+    public void loadExternalModules() {
         try {
             final File dir = new File("SalHack/CustomMods");
-            for (Class<?> newClass : ReflectionUtil.getClassesEx(dir.getPath())) {
-                if (newClass == null) continue;
+
+            for (Class newClass : ReflectionUtil.getClassesEx(dir.getPath())) {
+                if (newClass == null)
+                    continue;
+
                 // if we have found a class and the class inherits "Module"
                 if (Module.class.isAssignableFrom(newClass)) {
                     //create a new instance of the class
-                    final Module module = (Module) newClass.getDeclaredConstructor().newInstance();
-                    Add(module);
+                    final Module module = (Module) newClass.newInstance();
+
+                    if (module != null) {
+                        // initialize the modules
+                        add(module);
+                    }
                 }
+
             }
-        } catch (Exception ignored) {}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 }

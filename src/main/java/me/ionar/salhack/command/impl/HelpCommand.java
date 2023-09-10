@@ -3,7 +3,7 @@ package me.ionar.salhack.command.impl;
 import java.util.List;
 
 import me.ionar.salhack.command.Command;
-import me.ionar.salhack.managers.CommandManager;
+import me.ionar.salhack.main.SalHack;
 import net.minecraft.util.Formatting;
 
 public class HelpCommand extends Command {
@@ -11,26 +11,25 @@ public class HelpCommand extends Command {
         super("Help", "Gives you help for commands");
     }
 
-    @Override
-    public void ProcessCommand(String p_Args) {
+    public void processCommand(String p_Args) {
         String[] l_Split = p_Args.split(" ");
 
         if (l_Split == null || l_Split.length <= 1) {
-            SendToChat(GetHelp());
+            SendToChat(getHelp());
             return;
         }
 
-        Command l_Command = CommandManager.Get().GetCommandLike(l_Split[1]);
+        Command l_Command = SalHack.getCommandManager().getCommandLike(l_Split[1]);
 
         if (l_Command == null)
             SendToChat(String.format("Couldn't find any command named like %s", l_Split[1]));
         else
-            SendToChat(l_Command.GetHelp());
+            SendToChat(l_Command.getHelp());
     }
 
     @Override
-    public String GetHelp() {
-        final List<Command> l_Commands = CommandManager.Get().GetCommands();
+    public String getHelp() {
+        final List<Command> l_Commands = SalHack.getCommandManager().getCommands();
 
         String l_CommandString = "Available commands: (" + l_Commands.size() + ")" + Formatting.WHITE + " [";
 

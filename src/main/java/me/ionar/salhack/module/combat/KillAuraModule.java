@@ -2,8 +2,7 @@ package me.ionar.salhack.module.combat;
 
 import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.events.world.TickEvent;
-import me.ionar.salhack.managers.FriendManager;
-import me.ionar.salhack.managers.TickRateManager;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.Timer;
@@ -76,7 +75,7 @@ public class KillAuraModule extends Module {
             if (!isProjectile || !Projectiles.getValue()) return false;
         }
         if (toIgnore != null && entity == toIgnore) return false;
-        if (entity instanceof PlayerEntity && (entity == mc.player || !Players.getValue() || FriendManager.Get().IsFriend(entity))) return false;
+        if (entity instanceof PlayerEntity && (entity == mc.player || !Players.getValue() || SalHack.getFriendManager().isFriend(entity))) return false;
         if (EntityUtil.isHostileMob(entity) && !Monsters.getValue()) return false;
         if (EntityUtil.isPassive(entity)) {
             if (entity instanceof HorseEntity horse && horse.isTame() && !Tamed.getValue()) return false;
@@ -111,7 +110,7 @@ public class KillAuraModule extends Module {
             if (SwordOnly.getValue() && slot == -1) return;
         }
 
-        if (Only32k.getValue() && !ItemUtil.Is32k(mc.player.getMainHandStack())) return;
+        if (Only32k.getValue() && !ItemUtil.is32K(mc.player.getMainHandStack())) return;
         if (AimbotResetTimer.passed(5000)) AimbotResetTimer.reset();
         if (RemainingTicks > 0) --RemainingTicks;
         /// Chose target based on current mode
@@ -130,7 +129,7 @@ public class KillAuraModule extends Module {
             CurrentTarget = null;
             return;
         }
-        final float ticks = 20.0f - TickRateManager.Get().getTickRate();
+        final float ticks = 20.0f - SalHack.getTickRateManager().getTickRate();
         final boolean isAttackReady = !HitDelay.getValue() || (mc.player.getAttackCooldownProgress(TPSSync.getValue() ? -ticks : 0.0f) >= 1);
         if (!isAttackReady) return;
         if (!HitDelay.getValue() && RemainingTicks > 0) return;

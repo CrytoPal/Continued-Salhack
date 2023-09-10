@@ -4,8 +4,8 @@ import java.text.DecimalFormat;
 
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
-import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ui.HudModule;
 import me.ionar.salhack.util.color.SalRainbowUtil;
@@ -16,7 +16,7 @@ import net.minecraft.util.math.MathHelper;
 
 public class RotationComponent extends HudComponentItem {
 
-    private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
+    private final HudModule hud = (HudModule) SalHack.getModuleManager().getMod(HudModule.class);
 
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
 
@@ -26,15 +26,15 @@ public class RotationComponent extends HudComponentItem {
     public RotationComponent()
     {
         super("Rotation", 2, 103);
-        SetHidden(false);
+        setHidden(false);
     }
 
     private String direction;
 
     @Override
-    public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context)
+    public void onRender(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context)
     {
-        super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
+        super.onRender(p_MouseX, p_MouseY, p_PartialTicks, context);
 
         DecimalFormat l_Format = new DecimalFormat("#.##");
         float l_Yaw = MathHelper.wrapDegrees(mc.player.getBodyYaw());
@@ -76,13 +76,13 @@ public class RotationComponent extends HudComponentItem {
         }
 
         if (HudModule.CustomFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), direction, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), direction, (int) (getPositionX()), (int) (getPositionY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
         } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+            context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) getPositionX(), (int) getPositionY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
-        Rainbow.OnRender();
-        SetWidth(Wrapper.GetMC().textRenderer.getWidth(direction));
-        SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        Rainbow.onRender();
+        setWidth(Wrapper.GetMC().textRenderer.getWidth(direction));
+        setHeight(Wrapper.GetMC().textRenderer.fontHeight);
     }
 
 }

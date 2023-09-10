@@ -1,7 +1,7 @@
 package me.ionar.salhack.module.ui;
 
 import me.ionar.salhack.gui.click.ClickGuiScreen;
-import me.ionar.salhack.managers.ModuleManager;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import org.lwjgl.glfw.GLFW;
@@ -20,7 +20,7 @@ public final class ClickGuiModule extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
-        if (ClickGui == null) ClickGui = new ClickGuiScreen(this, (ColorsModule)ModuleManager.Get().GetMod(ColorsModule.class));
+        if (ClickGui == null) ClickGui = new ClickGuiScreen(this, (ColorsModule) SalHack.getModuleManager().getMod(ColorsModule.class));
         if (mc.world != null && mc.mouse != null) {
             System.out.println("open clickgui");
             mc.setScreen(ClickGui);

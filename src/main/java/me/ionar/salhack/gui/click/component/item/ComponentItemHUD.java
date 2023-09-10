@@ -14,7 +14,7 @@ public class ComponentItemHUD extends ComponentItem {
 
     @Override
     public String GetDisplayText() {
-        String displayText = HudComponent.GetDisplayName();
+        String displayText = HudComponent.getDisplayName();
         float width = FontRenderers.getTwCenMtStd22().getStringWidth(displayText);
         while (width > GetWidth()) {
             width = FontRenderers.getTwCenMtStd22().getStringWidth(displayText);
@@ -35,7 +35,7 @@ public class ComponentItemHUD extends ComponentItem {
 
     @Override
     public boolean HasState(int p_State) {
-        if ((p_State & ComponentItem.Clicked) != 0) return !HudComponent.IsHidden();
+        if ((p_State & ComponentItem.Clicked) != 0) return !HudComponent.isHidden();
         return super.HasState(p_State);
     }
 }

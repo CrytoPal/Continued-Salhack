@@ -31,14 +31,14 @@ import java.util.stream.IntStream;
  */
 @SuppressWarnings("unused")
 public class TransformPositionUtil {
-    public static final Matrix4f LastProjMat = new Matrix4f();
-    public static final Matrix4f LastModMat = new Matrix4f();
-    public static final Matrix4f LastWorldSpaceMatrix = new Matrix4f();
-    private static final MatrixStack Empty = new MatrixStack();
-    private static final MinecraftClient Client = Wrapper.GetMC();
-    private static final char RND_START = 'a';
-    private static final char RND_END = 'z';
-    private static final Random RND = new Random();
+    public static final Matrix4f lastProjMat = new Matrix4f();
+    public static final Matrix4f lastModMat = new Matrix4f();
+    public static final Matrix4f lastWorldSpaceMatrix = new Matrix4f();
+    private static final MatrixStack empty = new MatrixStack();
+    private static final MinecraftClient mc = Wrapper.GetMC();
+    private static final char randomStart = 'a';
+    private static final char randomEnd = 'z';
+    private static final Random random = new Random();
 
     /**
      * <p>Sets up rendering and resets everything that should be reset</p>
@@ -166,8 +166,8 @@ public class TransformPositionUtil {
      * @return An empty matrix stack
      */
     public static MatrixStack getEmptyMatrixStack() {
-        Empty.loadIdentity(); // essentially clear the stack
-        return Empty;
+        empty.loadIdentity(); // essentially clear the stack
+        return empty;
     }
 
     /**
@@ -177,7 +177,7 @@ public class TransformPositionUtil {
      */
     @Contract("-> new")
     public static Vec3d getCrosshairVector() {
-        Camera camera = Client.gameRenderer.getCamera();
+        Camera camera = mc.gameRenderer.getCamera();
 
         float pi = (float) Math.PI;
         float yawRad = (float) Math.toRadians(-camera.getYaw());
@@ -211,8 +211,8 @@ public class TransformPositionUtil {
      */
     @Contract(value = "_ -> new", pure = true)
     public static Vec3d worldSpaceToScreenSpace( Vec3d pos) {
-        Camera camera = Client.getEntityRenderDispatcher().camera;
-        int displayHeight = Client.getWindow().getHeight();
+        Camera camera = mc.getEntityRenderDispatcher().camera;
+        int displayHeight = mc.getWindow().getHeight();
         int[] viewport = new int[4];
         GL11.glGetIntegerv(GL11.GL_VIEWPORT, viewport);
         Vector3f target = new Vector3f();
@@ -221,14 +221,14 @@ public class TransformPositionUtil {
         double deltaY = pos.y - camera.getPos().y;
         double deltaZ = pos.z - camera.getPos().z;
 
-        Vector4f transformedCoordinates = new Vector4f((float) deltaX, (float) deltaY, (float) deltaZ, 1.f).mul(LastWorldSpaceMatrix);
+        Vector4f transformedCoordinates = new Vector4f((float) deltaX, (float) deltaY, (float) deltaZ, 1.f).mul(lastWorldSpaceMatrix);
 
-        Matrix4f matrixProj = new Matrix4f(LastProjMat);
-        Matrix4f matrixModel = new Matrix4f(LastModMat);
+        Matrix4f matrixProj = new Matrix4f(lastProjMat);
+        Matrix4f matrixModel = new Matrix4f(lastModMat);
 
         matrixProj.mul(matrixModel).project(transformedCoordinates.x(), transformedCoordinates.y(), transformedCoordinates.z(), viewport, target);
 
-        return new Vec3d(target.x / Client.getWindow().getScaleFactor(), (displayHeight - target.y) / Client.getWindow().getScaleFactor(), target.z);
+        return new Vec3d(target.x / mc.getWindow().getScaleFactor(), (displayHeight - target.y) / mc.getWindow().getScaleFactor(), target.z);
     }
 
     /**
@@ -261,17 +261,17 @@ public class TransformPositionUtil {
      */
     @Contract(value = "_,_,_ -> new", pure = true)
     public static Vec3d screenSpaceToWorldSpace(double x, double y, double d) {
-        Camera camera = Client.getEntityRenderDispatcher().camera;
-        int displayHeight = Client.getWindow().getScaledHeight();
-        int displayWidth = Client.getWindow().getScaledWidth();
+        Camera camera = mc.getEntityRenderDispatcher().camera;
+        int displayHeight = mc.getWindow().getScaledHeight();
+        int displayWidth = mc.getWindow().getScaledWidth();
         int[] viewport = new int[4];
         GL11.glGetIntegerv(GL11.GL_VIEWPORT, viewport);
         Vector3f target = new Vector3f();
 
-        Matrix4f matrixProj = new Matrix4f(LastProjMat);
-        Matrix4f matrixModel = new Matrix4f(LastModMat);
+        Matrix4f matrixProj = new Matrix4f(lastProjMat);
+        Matrix4f matrixModel = new Matrix4f(lastModMat);
 
-        matrixProj.mul(matrixModel).mul(LastWorldSpaceMatrix).unproject((float) x / displayWidth * viewport[2], (float) (displayHeight - y) / displayHeight * viewport[3], (float) d, viewport, target);
+        matrixProj.mul(matrixModel).mul(lastWorldSpaceMatrix).unproject((float) x / displayWidth * viewport[2], (float) (displayHeight - y) / displayHeight * viewport[3], (float) d, viewport, target);
 
         return new Vec3d(target.x, target.y, target.z).add(camera.getPos());
     }
@@ -286,7 +286,7 @@ public class TransformPositionUtil {
     }
 
     private static String randomString(int length) {
-        return IntStream.range(0, length).mapToObj(operand -> String.valueOf((char) RND.nextInt(RND_START))).collect(Collectors.joining());
+        return IntStream.range(0, length).mapToObj(operand -> String.valueOf((char) random.nextInt(randomStart))).collect(Collectors.joining());
     }
 
     /**

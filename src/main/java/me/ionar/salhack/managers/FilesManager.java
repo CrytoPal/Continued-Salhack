@@ -1,18 +1,17 @@
 package me.ionar.salhack.managers;
 
-import me.ionar.salhack.main.SalHack;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.nio.file.Paths;
-
+// DO NOT TOUCH THESE THEY MAY BREAK OPENING THE GUI
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public class FilesManager {
 
-    public File Presets = new File(GetCurrentDirectory() + "/SalHack/Presets/");
+    public File presets = new File(getCurrentDirectory() + "/SalHack/Presets/");
     public FilesManager() {}
 
-    public void Init() {
+    public void init() {
         /// Create directories as needed
         createDirectory("SalHack");
         createDirectory("SalHack/Modules");
@@ -46,11 +45,7 @@ public class FilesManager {
         } catch(Exception ignored) {}
     }
 
-    public static FilesManager Get() {
-        return SalHack.GetFilesManager();
-    }
-
-    public String GetCurrentDirectory() {
+    public String getCurrentDirectory() {
         return Paths.get("").toAbsolutePath().toString();
     }
 

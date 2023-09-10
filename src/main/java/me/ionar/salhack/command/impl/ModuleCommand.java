@@ -86,7 +86,7 @@ public class ModuleCommand extends Command {
     }
 
     @Override
-    public String GetHelp() {
+    public String getHelp() {
         return GetDescription();
     }
 }

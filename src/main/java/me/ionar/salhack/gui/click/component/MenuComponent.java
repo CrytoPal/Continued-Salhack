@@ -5,7 +5,7 @@ import java.util.Objects;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.ionar.salhack.font.FontRenderers;
-import me.ionar.salhack.managers.ImageManager;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.util.imgs.SalDynamicTexture;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
@@ -51,7 +51,7 @@ public class MenuComponent {
         RemainingMaximizingY = 0;
         MousePlayAnim = 0;
 
-        if (image != null) BarTexture = ImageManager.Get().GetDynamicTexture(image);
+        if (image != null) BarTexture = SalHack.getImageManager().getDynamicTexture(image);
 
         Colors = colorsModule;
         ClickGUI = clickGuiModule;
@@ -121,7 +121,7 @@ public class MenuComponent {
 
         if (BarTexture != null) {
             float x = GetX()+GetWidth()-15;
-            drawTexture(new Identifier(BarTexture.GetResourceLocation()), (int) x, (int) (GetY()+3-offsetY), BarTexture.getWidth()/3, BarTexture.getHeight()/3, context);
+            drawTexture(new Identifier(BarTexture.getResourceLocation()), (int) x, (int) (GetY()+3-offsetY), BarTexture.getWidth()/3, BarTexture.getHeight()/3, context);
         }
         if (!Minimized) {
 

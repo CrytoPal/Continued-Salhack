@@ -20,34 +20,34 @@ public class WatermarkComponent extends HudComponentItem {
 
     public WatermarkComponent() {
         super("Watermark", 2, 2);
-        SetHidden(false);
+        setHidden(false);
     }
 
     @Override
-    public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
-        super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
+    public void onRender(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
+        super.onRender(p_MouseX, p_MouseY, p_PartialTicks, context);
 
         if (Reliant.getValue()) {
             final String l_Text = "Reliant (rel-1.20.1-Fabric)";
 
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), l_Text, (int) (GetX()), (int) (GetY()), HudModule.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), l_Text, (int) (getPositionX()), (int) (getPositionY()), HudModule.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(l_Text), (int) GetX(), (int) GetY(), HudModule.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(l_Text), (int) getPositionX(), (int) getPositionY(), HudModule.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
-            Rainbow.OnRender();
-            SetWidth(Wrapper.GetMC().textRenderer.getWidth(l_Text));
-            SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+            Rainbow.onRender();
+            setWidth(Wrapper.GetMC().textRenderer.getWidth(l_Text));
+            setHeight(Wrapper.GetMC().textRenderer.fontHeight);
         }
         else {
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), WatermarkString, (int) (GetX()), (int) (GetY()), HudModule.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), WatermarkString, (int) (getPositionX()), (int) (getPositionY()), HudModule.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), HudModule.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) getPositionX(), (int) getPositionY(), HudModule.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
-            Rainbow.OnRender();
-            SetWidth(Wrapper.GetMC().textRenderer.getWidth(WatermarkString));
-            SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+            Rainbow.onRender();
+            setWidth(Wrapper.GetMC().textRenderer.getWidth(WatermarkString));
+            setHeight(Wrapper.GetMC().textRenderer.fontHeight);
         }
     }
 }

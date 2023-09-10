@@ -2,7 +2,7 @@ package me.ionar.salhack.module.combat;
 
 import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.events.world.TickEvent;
-import me.ionar.salhack.managers.FriendManager;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.entity.ItemUtil;
@@ -34,18 +34,18 @@ public final class OffhandModule extends Module {
         if (mc.player != null) {
             boolean elytra = mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA && mc.player.isFallFlying();
             if (!mc.player.getMainHandStack().isEmpty()) {
-                if (Health.getValue() <= PlayerUtil.GetHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandStrNoStrSword.getValue()) {
+                if (Health.getValue() <= PlayerUtil.getHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandStrNoStrSword.getValue()) {
                     SwitchOffHandIfNeed(offhandModes.Strength);
                     return;
                 }
                 /// Sword override
-                if (Health.getValue() <= PlayerUtil.GetHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandGapOnSword.getValue()) {
+                if (Health.getValue() <= PlayerUtil.getHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandGapOnSword.getValue()) {
                     SwitchOffHandIfNeed(offhandModes.EGap);
                     return;
                 }
             }
             /// First check health, most important as we don't want to die for no reason.
-            if (Health.getValue() > PlayerUtil.GetHealthWithAbsorption() || Mode.getValue() == offhandModes.Totem || (TotemOnElytra.getValue() && elytra) || (mc.player.fallDistance >= FallDistance.getValue() && !elytra) || noNearbyPlayers()) {
+            if (Health.getValue() > PlayerUtil.getHealthWithAbsorption() || Mode.getValue() == offhandModes.Totem || (TotemOnElytra.getValue() && elytra) || (mc.player.fallDistance >= FallDistance.getValue() && !elytra) || noNearbyPlayers()) {
                 SwitchOffHandIfNeed(offhandModes.Totem);
                 return;
             }
@@ -70,7 +70,7 @@ public final class OffhandModule extends Module {
             if (mc.player.getOffHandStack().isEmpty()) {
                 for (int i = 9; i < 45; i++) {
                     if (mc.player.getInventory().getStack(i >= 36 ? i - 36 : i).getItem() == item) {
-                        ItemUtil.Move(i,45);
+                        ItemUtil.move(i,45);
                         return;
                     }
                 }
@@ -78,7 +78,7 @@ public final class OffhandModule extends Module {
             if (mc.player.getOffHandStack().getItem() != item && Override.getValue()) {
                 for (int i = 9; i < 45; i++) {
                     if (mc.player.getInventory().getStack(i >= 36 ? i - 36 : i).getItem() == item) {
-                        ItemUtil.Move(i,45);
+                        ItemUtil.move(i,45);
                         return;
                     }
                 }
@@ -135,7 +135,7 @@ public final class OffhandModule extends Module {
     }
 
     private boolean isValidTarget(Entity entity) {
-        if (mc.player == null || FriendManager.Get().IsFriend(entity) || entity == mc.player) return false;
+        if (mc.player == null || SalHack.getFriendManager().isFriend(entity) || entity == mc.player) return false;
         return !(mc.player.distanceTo(entity) > 15);
     }
 

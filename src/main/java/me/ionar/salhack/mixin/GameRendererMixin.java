@@ -18,8 +18,8 @@ public abstract class GameRendererMixin {
 
     @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = Opcodes.GETFIELD, ordinal = 0), method = "renderWorld")
     void renderer_postWorldRender(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
-        TransformPositionUtil.LastProjMat.set(RenderSystem.getProjectionMatrix());
-        TransformPositionUtil.LastModMat.set(RenderSystem.getModelViewMatrix());
-        TransformPositionUtil.LastWorldSpaceMatrix.set(matrix.peek().getPositionMatrix());
+        TransformPositionUtil.lastProjMat.set(RenderSystem.getProjectionMatrix());
+        TransformPositionUtil.lastModMat.set(RenderSystem.getModelViewMatrix());
+        TransformPositionUtil.lastWorldSpaceMatrix.set(matrix.peek().getPositionMatrix());
     }
 }

@@ -5,8 +5,6 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
-import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
@@ -36,7 +34,7 @@ public class EntityUtil {
         return entity instanceof LivingEntity;
     }
 
-    public static boolean isFakeLocalPlayer(Entity entity) {
+    public static boolean isFakePlayer(Entity entity) {
         return entity != null && entity.getId() == -100 && Wrapper.GetMC().player != entity;
     }
 
@@ -119,7 +117,7 @@ public class EntityUtil {
         return MathHelper.cos(yaw * 0.017453292F);
     }
 
-    public static int GetPlayerMS(PlayerEntity player) {
+    public static int getPlayerMS(PlayerEntity player) {
         if (player.getUuid() != null) {
             ClientPlayNetworkHandler handler = Wrapper.GetMC().getNetworkHandler();
             if (handler != null) {

@@ -4,6 +4,7 @@ import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.events.player.PlayerJumpEvent;
 import me.ionar.salhack.events.player.PlayerMoveEvent;
 import me.ionar.salhack.events.world.TickEvent;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
@@ -40,7 +41,7 @@ public class SpeedModule extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
-        Timer = (TimerModule) ModuleManager.Get().GetMod(TimerModule.class);
+        Timer = (TimerModule) SalHack.getModuleManager().getMod(TimerModule.class);
     }
 
     @EventHandler

@@ -2,8 +2,8 @@ package me.ionar.salhack.gui.click;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.ionar.salhack.gui.click.component.MenuComponent;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
-import me.ionar.salhack.managers.ImageManager;
 import me.ionar.salhack.util.imgs.SalDynamicTexture;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
@@ -26,7 +26,6 @@ import me.ionar.salhack.gui.SalGuiScreen;
 import me.ionar.salhack.gui.click.component.menus.mods.MenuComponentModList;
 import me.ionar.salhack.gui.click.component.menus.mods.MenuComponentPresetsList;
 import me.ionar.salhack.gui.click.effects.Snow;
-import me.ionar.salhack.managers.PresetsManager;
 import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.ui.ClickGuiModule;
 import me.ionar.salhack.module.ui.ColorsModule;
@@ -35,7 +34,7 @@ import net.minecraft.util.Identifier;
 public class ClickGuiScreen extends SalGuiScreen
 {
     private ArrayList<MenuComponent> MenuComponents = new ArrayList<MenuComponent>();
-    private SalDynamicTexture Watermark = ImageManager.Get().GetDynamicTexture("watermark");
+    private SalDynamicTexture Watermark = SalHack.getImageManager().getDynamicTexture("watermark");
     //private SalDynamicTexture BlueBlur = ImageManager.Get().GetDynamicTexture("BlueBlur");
     private ArrayList<Snow> _snowList = new ArrayList<Snow>();
 
@@ -60,7 +59,7 @@ public class ClickGuiScreen extends SalGuiScreen
 
         MenuComponents.add(presetList = new MenuComponentPresetsList("Presets", ModuleType.LITEMATICA, 120, 203, "robotimg", p_Colors, p_Mod));
 
-        PresetsManager.Get().InitializeGUIComponent(presetList);
+        SalHack.getPresetsManager().initializeGUIComponent(presetList);
 
         ClickGuiMod = p_Mod;
 
@@ -168,7 +167,7 @@ public class ClickGuiScreen extends SalGuiScreen
         }
 
         if (Watermark != null && ClickGuiMod.Watermark.getValue()) {
-            drawTexture(new Identifier(Watermark.GetResourceLocation()), 0, res.getScaledHeight() - Watermark.GetHeight() - 5, Watermark.GetWidth() / 2, Watermark.GetHeight() / 2, context);
+            drawTexture(new Identifier(Watermark.getResourceLocation()), 0, res.getScaledHeight() - Watermark.getHeight() - 5, Watermark.getWidth() / 2, Watermark.getHeight() / 2, context);
         }
 
         MenuComponent l_LastHovered = null;

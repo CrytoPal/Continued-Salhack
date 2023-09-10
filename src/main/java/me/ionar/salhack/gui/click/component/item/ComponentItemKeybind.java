@@ -75,7 +75,7 @@ public class ComponentItemKeybind extends ComponentItem {
         else if (mouseButton == 1) Listening = false;
         else if (mouseButton == 2) {
             Module.setKey(GLFW.GLFW_KEY_UNKNOWN);
-            SalHack.SendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + "Unbinded the module: " + Formatting.GOLD + Module.getDisplayName());
+            SalHack.sendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + "Unbinded the module: " + Formatting.GOLD + Module.getDisplayName());
             Listening = false;
         }
     }
@@ -95,7 +95,7 @@ public class ComponentItemKeybind extends ComponentItem {
     public void Update() {
         if (Listening && LastKey != GLFW.GLFW_KEY_UNKNOWN) {
             Module.setKey(LastKey);
-            SalHack.SendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + "Set the key of " + Formatting.GOLD + Module.getDisplayName() +  Formatting.WHITE + " to " + Formatting.GREEN + KeyUtil.getKeyName(LastKey));
+            SalHack.sendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + "Set the key of " + Formatting.GOLD + Module.getDisplayName() +  Formatting.WHITE + " to " + Formatting.GREEN + KeyUtil.getKeyName(LastKey));
             Listening = false;
         }
     }

@@ -4,6 +4,7 @@ import me.ionar.salhack.gui.click.component.MenuComponent;
 import me.ionar.salhack.gui.click.component.item.ComponentItem;
 import me.ionar.salhack.gui.click.component.item.ComponentPresetItem;
 import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.managers.PresetsManager;
 import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.ui.ClickGuiModule;
@@ -16,7 +17,7 @@ public class MenuComponentPresetsList extends MenuComponent {
 
     public MenuComponentPresetsList(String displayName, ModuleType moduleType, float X, float Y, String image, ColorsModule colorsModule, ClickGuiModule clickGuiModule) {
         super(displayName, X, Y, 100f, 105f, image, colorsModule, clickGuiModule);
-        PresetsManager.Get().GetItems().forEach(this::AddPreset);
+        SalHack.getPresetsManager().getItems().forEach(this::AddPreset);
     }
 
     public void AddPreset(Preset preset) {
@@ -25,7 +26,7 @@ public class MenuComponentPresetsList extends MenuComponent {
             public void OnEnabled() {}
             @Override
             public void OnToggled() {
-                PresetsManager.Get().SetPresetActive(preset);
+                SalHack.getPresetsManager().setPresetActive(preset);
             }
             @Override
             public void OnDisabled() {}

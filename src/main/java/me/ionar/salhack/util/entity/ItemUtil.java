@@ -8,7 +8,7 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.slot.SlotActionType;
 
 public class ItemUtil {
-    public static boolean Is32k(ItemStack item) {
+    public static boolean is32K(ItemStack item) {
         if (item.getEnchantments() != null) {
             final NbtList tags = item.getEnchantments();
             for (int i = 0; i < tags.size(); i++) {
@@ -26,7 +26,7 @@ public class ItemUtil {
         return false;
     }
 
-    public static void Move(int slotFrom, int slotTo) {
+    public static void move(int slotFrom, int slotTo) {
         if (Wrapper.GetMC().player == null || Wrapper.GetMC().interactionManager == null) return;
         Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slotFrom, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
         Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slotTo, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);

@@ -4,9 +4,6 @@ import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.events.salhack.ModuleEvent;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
-import me.ionar.salhack.managers.CommandManager;
-import me.ionar.salhack.managers.ModuleManager;
-import me.ionar.salhack.managers.PresetsManager;
 import me.ionar.salhack.module.ui.Notification;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
@@ -44,10 +41,10 @@ public abstract class Module {
     }
 
     public void onEnable() {
-        Notification notification = (Notification) ModuleManager.Get().GetMod(Notification.class);
+        Notification notification = (Notification) SalHack.getModuleManager().getMod(Notification.class);
         /// allow events to be called
         SalHackMod.NORBIT_EVENT_BUS.subscribe(this);
-        ModuleManager.Get().OnModEnable(this);
+        SalHack.getModuleManager().onModEnable(this);
         if (mc.player != null) {
             RemainingXAnimation = mc.textRenderer.getWidth(getFullArrayListDisplayName())+10f;
             if (notification.isEnabled()) mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.GREEN + " ON"));
@@ -56,11 +53,11 @@ public abstract class Module {
     }
 
     public void onDisable() {
-        Notification notification = (Notification) ModuleManager.Get().GetMod(Notification.class);
+        Notification notification = (Notification) SalHack.getModuleManager().getMod(Notification.class);
         /// disallow events to be called
         SalHackMod.NORBIT_EVENT_BUS.unsubscribe(this);
         SalHackMod.NORBIT_EVENT_BUS.post(new ModuleEvent.Disabled(this));
-        if (mc.player != null && notification.isEnabled()) SalHack.SendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.RED + " OFF");
+        if (mc.player != null && notification.isEnabled()) SalHack.sendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.RED + " OFF");
     }
 
     public void onToggle() {}
@@ -106,7 +103,7 @@ public abstract class Module {
 
     public void setDisplayName(String displayName) {
         DisplayName = displayName;
-        CommandManager.Get().Reload();
+        SalHack.getCommandManager().reload();
         saveSettings();
     }
 
@@ -185,7 +182,7 @@ public abstract class Module {
         return RemainingXAnimation;
     }
 
-    public void signalEnumChange() {}
+    public void SignalEnumChange() {}
 
     public void signalValueChange(Value value) {
         saveSettings();
@@ -218,11 +215,11 @@ public abstract class Module {
     }
 
     public void sendMessage(String message) {
-        if (mc.player != null) SalHack.SendMessage(Formatting.AQUA + "[" + getArrayListDisplayName() + "]: " + Formatting.RESET + message);
+        if (mc.player != null) SalHack.sendMessage(Formatting.AQUA + "[" + getArrayListDisplayName() + "]: " + Formatting.RESET + message);
     }
 
     public void saveSettings() {
-        PresetsManager.Get().getActivePreset().addModuleSettings(this);
+        SalHack.getPresetsManager().getActivePreset().addModuleSettings(this);
     }
 
     public void init() {}
