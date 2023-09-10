@@ -9,36 +9,34 @@ import me.ionar.salhack.util.Timer;
 public class NotificationManager {
     public final List<Notification> Notifications = new CopyOnWriteArrayList<>();
 
-    public void AddNotification(String p_Title, String p_Description) {
-        Notifications.add(new Notification(p_Title, p_Description));
+    public void AddNotification(String title, String description) {
+        Notifications.add(new Notification(title, description));
     }
 
     public static NotificationManager Get() {
         return SalHack.GetNotificationManager();
     }
 
-    public class Notification {
-        public Notification(String p_Title, String p_Description) {
-            Title = p_Title;
-            Description = p_Description;
+    public static class Notification {
+        public Notification(String title, String description) {
+            Title = title;
+            Description = description;
             DecayTime = 2500;
-
-            timer.reset();
+            Timer.reset();
             DecayTimer.reset();
         }
 
-        private String Title;
-        private String Description;
-        private Timer timer = new Timer();
-        private Timer DecayTimer = new Timer();
-        private int DecayTime;
+        private final String Title;
+        private final String Description;
+        private final Timer Timer = new Timer();
+        private final Timer DecayTimer = new Timer();
+        private final int DecayTime;
 
         private int X;
         private int Y;
 
         public void OnRender() {
-            if (timer.passed(DecayTime-500))
-                --Y;
+            if (Timer.passed(DecayTime-500)) --Y;
         }
 
         public boolean IsDecayed() {

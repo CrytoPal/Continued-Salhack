@@ -3,7 +3,6 @@ package me.ionar.salhack.gui.hud.components;
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.Wrapper;
-import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.ui.HudModule;
 import me.ionar.salhack.util.color.SalRainbowUtil;
 import net.minecraft.client.MinecraftClient;
@@ -14,14 +13,8 @@ import net.minecraft.util.Formatting;
 import java.util.Calendar;
 
 public class WelcomerHudComponent extends HudComponentItem {
-
-    private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
-
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
-
-    MinecraftClient mc = MinecraftClient.getInstance();
-    private static String WatermarkString = "";
-
+    MinecraftClient mc = Wrapper.GetMC();
     Calendar c = Calendar.getInstance();
 
     public WelcomerHudComponent() {
@@ -34,25 +27,24 @@ public class WelcomerHudComponent extends HudComponentItem {
         super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
         int timeOfDay = c.get(Calendar.HOUR_OF_DAY);
 
+        String watermarkString;
         if (timeOfDay >= 6 && timeOfDay < 12) {
-            WatermarkString = "Good Morning, " + Formatting.WHITE + mc.getSession().getUsername() + Formatting.AQUA + " :)";
+            watermarkString = "Good Morning, " + Formatting.WHITE + mc.getSession().getUsername() + Formatting.AQUA + " :)";
         } else if (timeOfDay >= 12 && timeOfDay < 17) {
-            WatermarkString = "Good Afternoon, " + Formatting.WHITE + mc.getSession().getUsername() + Formatting.AQUA + " :)";
+            watermarkString = "Good Afternoon, " + Formatting.WHITE + mc.getSession().getUsername() + Formatting.AQUA + " :)";
         } else if (timeOfDay >= 17 && timeOfDay < 22) {
-            WatermarkString = "Good Evening, " + Formatting.WHITE + mc.getSession().getUsername() + Formatting.AQUA + " :)";
-        } else if (timeOfDay >= 22 || timeOfDay < 6) {
-            WatermarkString = "Good Night, " + Formatting.WHITE + mc.getSession().getUsername() + Formatting.AQUA + " :)";
+            watermarkString = "Good Evening, " + Formatting.WHITE + mc.getSession().getUsername() + Formatting.AQUA + " :)";
         } else {
-            WatermarkString = "Hello, " + Formatting.WHITE + mc.getSession().getUsername() + ".. psst! something went wrong!" + Formatting.AQUA + " :(";
+            watermarkString = "Good Night, " + Formatting.WHITE + mc.getSession().getUsername() + Formatting.AQUA + " :)";
         }
 
         if (HudModule.CustomFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), WatermarkString, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), watermarkString, (int) (GetX()), (int) (GetY()), HudModule.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
         } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+            context.drawTextWithShadow(mc.textRenderer, Text.of(watermarkString), (int) GetX(), (int) GetY(), HudModule.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
         Rainbow.OnRender();
-        SetWidth(Wrapper.GetMC().textRenderer.getWidth(WatermarkString));
+        SetWidth(Wrapper.GetMC().textRenderer.getWidth(watermarkString));
         SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
     }
 }

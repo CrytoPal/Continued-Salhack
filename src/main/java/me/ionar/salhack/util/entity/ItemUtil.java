@@ -26,9 +26,9 @@ public class ItemUtil {
         return false;
     }
 
-    public static void Move(int slot_from, int slot_to) {
+    public static void Move(int slotFrom, int slotTo) {
         if (Wrapper.GetMC().player == null || Wrapper.GetMC().interactionManager == null) return;
-        Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slot_from, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
-        Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slot_to, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
+        Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slotFrom, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
+        Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slotTo, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
     }
 }

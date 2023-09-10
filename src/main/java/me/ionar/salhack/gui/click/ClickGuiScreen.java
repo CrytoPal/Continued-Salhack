@@ -60,7 +60,7 @@ public class ClickGuiScreen extends SalGuiScreen
 
         MenuComponents.add(presetList = new MenuComponentPresetsList("Presets", ModuleType.LITEMATICA, 120, 203, "robotimg", p_Colors, p_Mod));
 
-        PresetsManager.Get().InitalizeGUIComponent(presetList);
+        PresetsManager.Get().InitializeGUIComponent(presetList);
 
         ClickGuiMod = p_Mod;
 

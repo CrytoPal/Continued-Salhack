@@ -1,10 +1,13 @@
 package me.ionar.salhack.preset;
 
 
+import me.ionar.salhack.main.SalHack;
+import me.ionar.salhack.managers.ModuleManager;
+import me.ionar.salhack.module.Module;
+import me.ionar.salhack.module.Value;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -14,14 +17,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import me.ionar.salhack.managers.ModuleManager;
-import me.ionar.salhack.module.Module;
-import me.ionar.salhack.module.Value;
-
-@SuppressWarnings({"CallToPrintStackTrace", "rawtypes", "unchecked"})
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class Preset {
     private String DisplayName;
     private final ConcurrentHashMap<String, ConcurrentHashMap<String, String>> ValueListMods = new ConcurrentHashMap<>();
@@ -50,75 +46,43 @@ public class Preset {
     public void load(File directory) {
         File exists = new File("SalHack/Presets/" + directory.getName() + "/" + directory.getName() + ".json");
         if (!exists.exists()) return;
-
-        try {
-            Gson gson = new Gson();
-            Reader reader = Files.newBufferedReader(Paths.get("SalHack/Presets/" + directory.getName() + "/" + directory.getName() + ".json"));
-            Map<?, ?> map = gson.fromJson(reader, Map.class);
-            for (Map.Entry<?, ?> entry : map.entrySet()) {
-                String key = (String) entry.getKey();
-                String val = (String) entry.getValue();
-                if (key.equals("displayName")) {
-                    DisplayName = val;
-                }
+        String content = SalHack.GetFilesManager().read(exists.getPath());
+        Map<?, ?> map = SalHack.gson.fromJson(content, Map.class);
+        for (Map.Entry<?, ?> entry : map.entrySet()) {
+            String key = (String) entry.getKey();
+            String val = (String) entry.getValue();
+            if (key.equals("displayName")) {
+                DisplayName = val;
             }
-            reader.close();
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
 
         try (Stream<Path> paths = Files.walk(Paths.get("SalHack/Presets/" + directory.getName() + "/Modules/"))) {
             paths.filter(Files::isRegularFile).forEach(path -> {
-                try {
-                    Gson gson = new Gson();
-                    Reader reader = Files.newBufferedReader(Paths.get("SalHack/Presets/" + directory.getName() + "/Modules/" + path.getFileName().toString()));
-                    Map<?, ?> map = gson.fromJson(reader, Map.class);
-                    ConcurrentHashMap<String, String> valsMap = new ConcurrentHashMap<>();
-                    for (Map.Entry<?, ?> entry : map.entrySet()) {
-                        String key = (String) entry.getKey();
-                        String val = (String) entry.getValue();
-                        valsMap.put(key, val);
-                    }
-                    ValueListMods.put(path.getFileName().toString().substring(0, path.getFileName().toString().indexOf(".json")), valsMap);
-                    reader.close();
-                } catch (Exception ex) {
-                    ex.printStackTrace();
+                String content2 = SalHack.GetFilesManager().read("SalHack/Presets/"+directory.getName()+"/Modules/"+path.getFileName().toString());
+                Map<?, ?> map2 = SalHack.gson.fromJson(content2, Map.class);
+                ConcurrentHashMap<String, String> valsMap = new ConcurrentHashMap<>();
+                for (Map.Entry<?, ?> entry : map2.entrySet()) {
+                    String key = (String) entry.getKey();
+                    String val = (String) entry.getValue();
+                    valsMap.put(key, val);
                 }
+                ValueListMods.put(path.getFileName().toString().substring(0, path.getFileName().toString().indexOf(".json")), valsMap);
             });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException ignored) {}
     }
 
     public void save() {
-        try {
-            GsonBuilder builder = new GsonBuilder();
-            Gson gson = builder.setPrettyPrinting().create();
-            Writer writer = Files.newBufferedWriter(Paths.get("SalHack/Presets/" + DisplayName + "/" + DisplayName + ".json"));
-            Map<String, String> map = new HashMap<>();
-            map.put("displayName", DisplayName);
-            gson.toJson(map, writer);
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            for (Entry<String, ConcurrentHashMap<String, String>> entry : ValueListMods.entrySet()) {
-                GsonBuilder builder = new GsonBuilder();
-                Gson gson = builder.setPrettyPrinting().create();
-                Writer writer = Files.newBufferedWriter(Paths.get("SalHack/Presets/" + DisplayName + "/Modules/" + entry.getKey() + ".json"));
-                Map<String, String> map = new HashMap<>();
-                for (Entry<String, String> value : entry.getValue().entrySet()) {
-                    String key = value.getKey();
-                    String val = value.getValue();
-                    map.put(key, val);
-                }
-                gson.toJson(map, writer);
-                writer.close();
+        Map<String, String> map = new HashMap<>();
+        map.put("displayName", DisplayName);
+        SalHack.GetFilesManager().write("SalHack/Presets/" + DisplayName + "/" + DisplayName + ".json", SalHack.gson.toJson(map, Map.class));
+        for (Entry<String, ConcurrentHashMap<String, String>> entry : ValueListMods.entrySet()) {
+            map = new HashMap<>();
+            for (Entry<String, String> value : entry.getValue().entrySet()) {
+                String key = value.getKey();
+                String val = value.getValue();
+                map.put(key, val);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            SalHack.GetFilesManager().write("SalHack/Presets/"+DisplayName+"/Modules/"+entry.getKey()+".json", SalHack.gson.toJson(map, Map.class));
         }
     }
 
@@ -139,13 +103,11 @@ public class Preset {
             for (Entry<String, String> value : ValueListMods.get(module.getDisplayName()).entrySet()) {
                 String Key = value.getKey();
                 String Value = value.getValue();
-
                 if (Key.equalsIgnoreCase("enabled")) {
                     if (Value.equalsIgnoreCase("true") && !module.isEnabled()) module.toggle(false);
                     else if (module.isEnabled()) module.toggle(true);
                     continue;
                 }
-
                 if (Key.equalsIgnoreCase("display")) {
                     module.DisplayName = Value;
                     continue;

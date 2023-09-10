@@ -18,11 +18,11 @@ public class MiddleClickFriendsModule extends Module {
     private void OnMouseButton(MouseButtonEvent event) {
         if (event.getAction() == 0 || event.getButton() != GLFW_MOUSE_BUTTON_MIDDLE || mc.currentScreen != null || mc.targetedEntity == null || !(mc.targetedEntity instanceof PlayerEntity Entity)) return;
         if (FriendManager.Get().IsFriend(Entity)) {
-            FriendManager.Get().RemoveFriend(Entity.getDisplayName().getString().toLowerCase());
-            SendMessage(Entity.getEntityName() + " has been removed.");
+            FriendManager.Get().RemoveFriend(Entity.getEntityName());
+            sendMessage(Entity.getEntityName() + " has been removed.");
         } else {
-            FriendManager.Get().AddFriend(Entity.getDisplayName().getString().toLowerCase());
-            SendMessage(Entity.getEntityName() + " has been added.");
+            FriendManager.Get().AddFriend(Entity.getEntityName());
+            sendMessage(Entity.getEntityName() + " has been added.");
         }
     }
 }

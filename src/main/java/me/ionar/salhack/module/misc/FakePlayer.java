@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class FakePlayer extends Module {
-    public static final Value<String> name = new Value<>("Name", new String[] {"name"}, "Name of the fake player", "bluegooon");
+    public static final Value<String> Name = new Value<>("Name", new String[] {"Name"}, "Name of the fake player", "bluegooon");
 
     public FakePlayer() {
         super("FakePlayer", new String[] {"Fake"}, "Summons a fake player", 0, 0xDADB25, ModuleType.MISC);
@@ -34,12 +34,12 @@ public class FakePlayer extends Module {
 
         // If getting uuid from mojang doesn't work we use another uuid
         try {
-            FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(name.getValue())), name.getValue()));
+            FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(Name.getValue())), Name.getValue()));
         } catch (Exception e) {
-            FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(mc.player.getEntityName())), name.getValue()));
-            SendMessage("Failed to load uuid, setting another one.");
+            FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(mc.player.getEntityName())), Name.getValue()));
+            sendMessage("Failed to load uuid, setting another one.");
         }
-        SendMessage(String.format("%s has been spawned.", name.getValue()));
+        sendMessage(String.format("%s has been spawned.", Name.getValue()));
 
         FakePlayer.copyFrom(mc.player);
         FakePlayer.headYaw = mc.player.getHeadYaw();
@@ -53,7 +53,7 @@ public class FakePlayer extends Module {
         mc.world.removeEntity(FakePlayer.getId(), Entity.RemovalReason.UNLOADED_WITH_PLAYER);
     }
 
-    // Getting uuid from a name
+    // Getting uuid from a Name
     public static String getUuid(String name) {
         Gson gson = new Gson();
         String url = "https://api.mojang.com/users/profiles/minecraft/" + name;
@@ -62,9 +62,7 @@ public class FakePlayer extends Module {
             if(UUIDJson.isEmpty()) return "invalid name";
             JsonObject UUIDObject = gson.fromJson(UUIDJson, JsonObject.class);
             return reformatUuid(UUIDObject.get("id").toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
         return "error";
     }
 

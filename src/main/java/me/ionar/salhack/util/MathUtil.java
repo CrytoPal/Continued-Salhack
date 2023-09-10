@@ -7,14 +7,14 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
 public class MathUtil {
-    public static Vec3d interpolateEntity(Entity e) {
-        return e.getPos().subtract(getInterpolationOffset(e));
+    public static Vec3d interpolateEntity(Entity entity) {
+        return entity.getPos().subtract(getInterpolationOffset(entity));
     }
 
-    public static Vec3d getInterpolationOffset(Entity e) {
+    public static Vec3d getInterpolationOffset(Entity entity) {
         if (MinecraftClient.getInstance().isPaused()) return Vec3d.ZERO;
         double tickDelta = MinecraftClient.getInstance().getTickDelta();
-        return new Vec3d(e.getX() - MathHelper.lerp(tickDelta, e.lastRenderX, e.getX()), e.getY() - MathHelper.lerp(tickDelta, e.lastRenderY, e.getY()), e.getZ() - MathHelper.lerp(tickDelta, e.lastRenderZ, e.getZ()));
+        return new Vec3d(entity.getX() - MathHelper.lerp(tickDelta, entity.lastRenderX, entity.getX()), entity.getY() - MathHelper.lerp(tickDelta, entity.lastRenderY, entity.getY()), entity.getZ() - MathHelper.lerp(tickDelta, entity.lastRenderZ, entity.getZ()));
     }
 
     public static float[] calcAngle(Vec3d from, Vec3d to) {

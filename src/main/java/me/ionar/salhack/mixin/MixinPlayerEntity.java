@@ -16,22 +16,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin({PlayerEntity.class})
 public abstract class MixinPlayerEntity extends LivingEntity {
-
     public MixinPlayerEntity(World worldIn) {
         super(EntityType.PLAYER, worldIn);
     }
 
     @Inject(method = {"travel"}, at = {@At("HEAD")}, cancellable = true)
     private void travel(Vec3d movement, CallbackInfo info) {
-        PlayerTravelEvent l_Event = new PlayerTravelEvent(movement.getX(), movement.getY(), movement.getZ());
-        SalHackMod.NORBIT_EVENT_BUS.post(l_Event);
-        if (l_Event.isCancelled()) info.cancel();
+        PlayerTravelEvent event = new PlayerTravelEvent(movement.getX(), movement.getY(), movement.getZ());
+        SalHackMod.NORBIT_EVENT_BUS.post(event);
+        if (event.isCancelled()) info.cancel();
     }
 
     @Inject(method = {"jump"}, at = {@At("HEAD")}, cancellable = true)
-    private void jump(CallbackInfo callback) {
+    private void jump(CallbackInfo info) {
         if (Wrapper.GetMC().player == null) return;
-
-        SalHackMod.NORBIT_EVENT_BUS.post(new PlayerJumpEvent());
+        PlayerJumpEvent event = new PlayerJumpEvent();
+        SalHackMod.NORBIT_EVENT_BUS.post(event);
+        if (event.isCancelled()) info.cancel();
     }
 }

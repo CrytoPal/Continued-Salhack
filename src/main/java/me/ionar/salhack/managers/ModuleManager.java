@@ -18,7 +18,7 @@ import me.ionar.salhack.module.misc.FakePlayer;
 import me.ionar.salhack.module.misc.FriendsModule;
 import me.ionar.salhack.module.misc.MiddleClickFriendsModule;
 import me.ionar.salhack.module.movement.ElytraFlyModule;
-import me.ionar.salhack.module.misc.Rotation;
+import me.ionar.salhack.module.movement.Rotation;
 import me.ionar.salhack.module.movement.SpeedModule;
 import me.ionar.salhack.module.movement.Sprint;
 import me.ionar.salhack.module.render.NametagsModule;
@@ -29,16 +29,16 @@ import me.ionar.salhack.module.world.TimerModule;
 import me.ionar.salhack.preset.Preset;
 import me.ionar.salhack.util.ReflectionUtil;
 
+@SuppressWarnings("rawtypes")
 public class ModuleManager {
     public static ModuleManager Get() {
         return SalHack.GetModuleManager();
     }
 
-    public ModuleManager() {
-    }
+    public ModuleManager() {}
 
-    public static ArrayList<Module> Mods = new ArrayList<Module>();
-    private ArrayList<Module> ArrayListAnimations = new ArrayList<Module>();
+    public static ArrayList<Module> Modules = new ArrayList<>();
+    private ArrayList<Module> ArrayListAnimations = new ArrayList<>();
     public void Init() {
         /// Combat
         Add(new KillAuraModule());
@@ -76,20 +76,11 @@ public class ModuleManager {
         /// Schematica
 
 
-
         LoadExternalModules();
-
-        Mods.sort((p_Mod1, p_Mod2) -> p_Mod1.getDisplayName().compareTo(p_Mod2.getDisplayName()));
-
+        Modules.sort(Comparator.comparing(Module::getDisplayName));
         final Preset preset = PresetsManager.Get().getActivePreset();
-
-        Mods.forEach(mod -> {
-            preset.initValuesForMod(mod);
-        });
-
-        Mods.forEach(mod -> {
-            mod.init();
-        });
+        Modules.forEach(preset::initValuesForMod);
+        Modules.forEach(Module::init);
     }
 
 
@@ -97,122 +88,88 @@ public class ModuleManager {
         try {
             for (Field field : mod.getClass().getDeclaredFields()) {
                 if (Value.class.isAssignableFrom(field.getType())) {
-                    if (!field.isAccessible()) {
-                        field.setAccessible(true);
-                    }
+                    if (!field.canAccess(null)) field.setAccessible(true);
                     final Value val = (Value) field.get(mod);
                     val.InitializeModule(mod);
                     mod.getValueList().add(val);
                 }
             }
-            Mods.add(mod);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
+            Modules.add(mod);
+        } catch (Exception ignored) {}
     }
 
-    public final List<Module> GetModuleList(ModuleType p_Type) {
+    public final List<Module> GetModuleList(ModuleType moduleType) {
         List<Module> list = new ArrayList<>();
-        for (Module module : Mods) {
-            if (module.getModuleType().equals(p_Type)) {
-                list.add(module);
-            }
+        for (Module module : Modules) {
+            if (module.getModuleType().equals(moduleType)) list.add(module);
         }
         // Organize alphabetically
         list.sort(Comparator.comparing(Module::getDisplayName));
-
         return list;
     }
 
     public final List<Module> GetModuleList() {
-        return Mods;
+        return Modules;
     }
 
     public static void OnKeyPress(int key) {
         if (key == 0) return;
-
-        Mods.forEach(p_Mod -> {
-            if (p_Mod.isKeyPressed(key)) {
-                p_Mod.toggle(true);
-            }
+        Modules.forEach(module -> {
+            if (module.isKeyPressed(key)) module.toggle(true);
         });
     }
 
-    public Module GetMod(Class p_Class) {
-        for (Module l_Mod : Mods) {
-            if (l_Mod.getClass() == p_Class)
-                return l_Mod;
+    public Module GetMod(Class clazz) {
+        for (Module module : Modules) {
+            if (module.getClass() == clazz) return module;
         }
-
-        SalHackMod.log.error("Could not find the class " + p_Class.getName() + " in Mods list");
+        SalHackMod.log.error("Could not find the class " + clazz.getName() + " in Mods list");
         return null;
     }
 
-    public Module GetModLike(String p_String) {
-        for (Module l_Mod : Mods) {
-            if (l_Mod.GetArrayListDisplayName().toLowerCase().startsWith(p_String.toLowerCase()))
-                return l_Mod;
+    public Module GetModLike(String name) {
+        for (Module module : Modules) {
+            if (module.getArrayListDisplayName().toLowerCase().startsWith(name.toLowerCase())) return module;
         }
-
         return null;
     }
 
-    public void OnModEnable(Module p_Mod) {
-        ArrayListAnimations.remove(p_Mod);
-        ArrayListAnimations.add(p_Mod);
-
+    public void OnModEnable(Module module) {
+        ArrayListAnimations.remove(module);
+        ArrayListAnimations.add(module);
         final Comparator<Module> comparator = (first, second) -> {
-            if (Wrapper.GetMC().textRenderer == null) {
-            } else {
-                final String firstName = first.GetFullArrayListDisplayName();
-                final String secondName = second.GetFullArrayListDisplayName();
+            if (Wrapper.GetMC().textRenderer != null) {
+                final String firstName = first.getFullArrayListDisplayName();
+                final String secondName = second.getFullArrayListDisplayName();
                 final float dif = Wrapper.GetMC().textRenderer.getWidth(secondName) - Wrapper.GetMC().textRenderer.getWidth(firstName);
                 return dif != 0 ? (int) dif : secondName.compareTo(firstName);
             }
             return 0;
         };
-
-        ArrayListAnimations = (ArrayList<Module>) ArrayListAnimations.stream()
-                .sorted(comparator)
-                .collect(Collectors.toList());
+        ArrayListAnimations = (ArrayList<Module>) ArrayListAnimations.stream().sorted(comparator).collect(Collectors.toList());
     }
 
     public void Update() {
-        if (ArrayListAnimations.isEmpty())
-            return;
-
-        Module l_Mod = ArrayListAnimations.get(0);
-
-        if ((l_Mod.RemainingXAnimation -= (Wrapper.GetMC().textRenderer.getWidth(l_Mod.GetFullArrayListDisplayName()) / 10)) <= 0) {
-            ArrayListAnimations.remove(l_Mod);
-            l_Mod.RemainingXAnimation = 0;
+        if (ArrayListAnimations.isEmpty()) return;
+        Module module = ArrayListAnimations.get(0);
+        if ((module.RemainingXAnimation -= ((float) Wrapper.GetMC().textRenderer.getWidth(module.getFullArrayListDisplayName()) / 10)) <= 0) {
+            ArrayListAnimations.remove(module);
+            module.RemainingXAnimation = 0;
         }
     }
 
     public void LoadExternalModules() {
         try {
             final File dir = new File("SalHack/CustomMods");
-
-            for (Class newClass : ReflectionUtil.getClassesEx(dir.getPath())) {
-                if (newClass == null)
-                    continue;
-
+            for (Class<?> newClass : ReflectionUtil.getClassesEx(dir.getPath())) {
+                if (newClass == null) continue;
                 // if we have found a class and the class inherits "Module"
                 if (Module.class.isAssignableFrom(newClass)) {
                     //create a new instance of the class
-                    final Module module = (Module) newClass.newInstance();
-
-                    if (module != null) {
-                        // initialize the modules
-                        Add(module);
-                    }
+                    final Module module = (Module) newClass.getDeclaredConstructor().newInstance();
+                    Add(module);
                 }
-
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
     }
-
 }

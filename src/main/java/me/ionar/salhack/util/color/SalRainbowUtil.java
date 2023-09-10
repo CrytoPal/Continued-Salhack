@@ -10,10 +10,9 @@ public class SalRainbowUtil {
     private final ArrayList<Integer> RainbowArrayList = new ArrayList<>();
     private final Timer RainbowSpeed = new Timer();
     private int Timer;
-    private int i = 0;
+    private int Index = 0;
     public SalRainbowUtil(int timer) {
         Timer = timer;
-
         /// Populate the RainbowArrayList
         for (int i = 0; i < 360; i++) {
             RainbowArrayList.add(ColorUtil.GetRainbowColor(i, 90.0f, 50.0f, 1.0f).getRGB());
@@ -40,22 +39,16 @@ public class SalRainbowUtil {
 
     private void MoveListToNextColor() {
         if (CurrentRainbowIndexes.isEmpty()) return;
-
         CurrentRainbowIndexes.remove(CurrentRainbowIndexes.get(0));
-
         int index = CurrentRainbowIndexes.get(CurrentRainbowIndexes.size() - 1) + 1;
-
         if (index >= RainbowArrayList.size() - 1) index = 0;
-
         CurrentRainbowIndexes.add(index);
     }
 
     public int getRainbowColorNumber() {
-        i += 1;
-        if (i >= 355) {
-            i = 0;
-        }
-        return i;
+        Index += 1;
+        if (Index >= 355) Index = 0;
+        return Index;
     }
 
 }

@@ -20,13 +20,12 @@ public class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
     }
 
     @Inject(method = "move", at = @At("HEAD"), cancellable = true)
-    public void move$Inject$HEAD(MovementType type, Vec3d movement, CallbackInfo p_Info) {
+    public void onMove(MovementType type, Vec3d movement, CallbackInfo info) {
         PlayerMoveEvent event = new PlayerMoveEvent(type, movement.x, movement.y, movement.z);
         SalHackMod.NORBIT_EVENT_BUS.post(event);
-        if (event.isCancelled())
-        {
+        if (event.isCancelled()) {
             super.move(type, new Vec3d(event.getX(), event.getY(), event.getZ()));
-            p_Info.cancel();
+            info.cancel();
         }
     }
 }

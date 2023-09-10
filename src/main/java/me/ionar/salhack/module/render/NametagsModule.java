@@ -66,41 +66,29 @@ public class NametagsModule extends Module {
         if (position != null) {
             Vec2f renderer = new Vec2f((float) position.x, (float) position.y);
             String name = entity.getEntityName();
-
             int color = -1;
-
             final Friend friend = FriendManager.Get().GetFriend(entity);
-
             if (friend != null) {
                 name = entity.getEntityName();
                 color = 0x00C3EE;
             }
-
             String Name = getName(entity, name);
-
             FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), Name, renderer.x - FontRenderers.getTwCenMtStd22().getStringWidth(Name) / 2, renderer.y - 8 - 1, color);
-
             if (Armor.getValue()) {
                 final Iterator<ItemStack> items = entity.getArmorItems().iterator();
                 final ArrayList<ItemStack> stacks = new ArrayList<>();
-
                 stacks.add(entity.getOffHandStack());
-
                 while (items.hasNext()) {
                     final ItemStack stack = items.next();
                     if (stack != null && stack.getItem() != Items.AIR) stacks.add(stack);
                 }
                 stacks.add(entity.getMainHandStack());
-
                 Collections.reverse(stacks);
-
                 int x = 0;
-
                 if (!entity.getMainHandStack().isEmpty() && entity.getMainHandStack().hasCustomName()) {
                     Name = entity.getMainHandStack().getName().getString();
                     FontRenderers.getTwCenMtStd15().drawString(context.getMatrices(), Name, renderer.x - FontRenderers.getTwCenMtStd15().getStringWidth(Name) / 2, renderer.y - mc.textRenderer.fontHeight - 35, -1);
                 }
-
                 for (ItemStack stack : stacks) {
                     if (stack != null) {
                         final Item item = stack.getItem();
@@ -111,45 +99,40 @@ public class NametagsModule extends Module {
                             context.drawItemInSlot(mc.textRenderer,stack, 0, 0);
                             context.getMatrices().pop();
                             x += 16;
+                            final List<String> stringsToDraw = Lists.newArrayList();
 
-                            //if (this.enchants.getValue())
-                            {
-                                final List<String> stringsToDraw = Lists.newArrayList();
-
-                                if (stack.isDamaged()) {
-                                    float ArmorPercent = ((float)(stack.getMaxDamage()-stack.getDamage()) /  (float)stack.getMaxDamage())*100.0f;
-                                    float ArmorBarPercent = Math.min(ArmorPercent, 100.0f);
-                                    stringsToDraw.add(String.format("%s", (int)ArmorBarPercent + "%"));
-                                }
-                                int y = 0;
-                                if (stack.getEnchantments() != null) {
-                                    final NbtList tags = stack.getEnchantments();
-                                    for (int i = 0; i < tags.size(); i++) {
-                                        final NbtCompound tagCompound = tags.getCompound(i);
-                                        if (tagCompound != null && Enchantment.byRawId(tagCompound.getByte("id")) != null) {
-                                            final Enchantment enchantment = Enchantment.byRawId(tagCompound.getShort("id"));
-                                            final short lvl = tagCompound.getShort("lvl");
-                                            if (enchantment != null) {
-                                                String enchant;
-                                                if (enchantment.isCursed()) enchant = Formatting.RED + enchantment.getName(lvl).getString().substring(11).substring(0, 2) + Formatting.GRAY + lvl;
-                                                else enchant = enchantment.getName(lvl).getString().substring(0, 2) + lvl;
-                                                stringsToDraw.add(enchant);
-                                            }
+                            if (stack.isDamaged()) {
+                                float ArmorPercent = ((float)(stack.getMaxDamage()-stack.getDamage()) /  (float)stack.getMaxDamage())*100.0f;
+                                float ArmorBarPercent = Math.min(ArmorPercent, 100.0f);
+                                stringsToDraw.add(String.format("%s", (int)ArmorBarPercent + "%"));
+                            }
+                            int y = 0;
+                            if (stack.getEnchantments() != null) {
+                                final NbtList tags = stack.getEnchantments();
+                                for (int i = 0; i < tags.size(); i++) {
+                                    final NbtCompound tagCompound = tags.getCompound(i);
+                                    if (tagCompound != null && Enchantment.byRawId(tagCompound.getByte("id")) != null) {
+                                        final Enchantment enchantment = Enchantment.byRawId(tagCompound.getShort("id"));
+                                        final short lvl = tagCompound.getShort("lvl");
+                                        if (enchantment != null) {
+                                            String enchant;
+                                            if (enchantment.isCursed()) enchant = Formatting.RED + enchantment.getName(lvl).getString().substring(11).substring(0, 2) + Formatting.GRAY + lvl;
+                                            else enchant = enchantment.getName(lvl).getString().substring(0, 2) + lvl;
+                                            stringsToDraw.add(enchant);
                                         }
                                     }
                                 }
-
-                                // Enchanted gapple
-                                if (item == Items.GOLDEN_APPLE && stack.getDamage() == 1) stringsToDraw.add(Formatting.DARK_RED + "God");
-                                for (String string : stringsToDraw) {
-                                    context.getMatrices().push();
-                                    context.getMatrices().translate(renderer.x + x - ((16.0f * stacks.size()) / 2.0f) - (16.0f / 2.0f) - (FontRenderers.getTwCenMtStd22().getStringWidth(string) / 4.0f), renderer.y - mc.textRenderer.fontHeight - 23 - y, 0);
-                                    context.getMatrices().scale(0.5f, 0.5f, 0.5f);
-                                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), string, 0, 0, -1);
-                                    context.getMatrices().scale(2, 2, 2);
-                                    context.getMatrices().pop();
-                                    y += 4;
-                                }
+                            }
+                            // Enchanted gapple
+                            if (item == Items.GOLDEN_APPLE && stack.getDamage() == 1) stringsToDraw.add(Formatting.DARK_RED + "God");
+                            for (String string : stringsToDraw) {
+                                context.getMatrices().push();
+                                context.getMatrices().translate(renderer.x + x - ((16.0f * stacks.size()) / 2.0f) - (16.0f / 2.0f) - (FontRenderers.getTwCenMtStd22().getStringWidth(string) / 4.0f), renderer.y - mc.textRenderer.fontHeight - 23 - y, 0);
+                                context.getMatrices().scale(0.5f, 0.5f, 0.5f);
+                                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), string, 0, 0, -1);
+                                context.getMatrices().scale(2, 2, 2);
+                                context.getMatrices().pop();
+                                y += 4;
                             }
                         }
                     }
@@ -160,16 +143,11 @@ public class NametagsModule extends Module {
 
     private String getName(PlayerEntity entity, String name) {
         int responseTime = -1;
-
         ClientPlayNetworkHandler handler = Wrapper.GetMC().getNetworkHandler();
         if (Ping.getValue() && handler != null) {
             PlayerListEntry entry = handler.getPlayerListEntry(entity.getUuid());
             if (entry != null) responseTime = MathHelper.clamp(entry.getLatency(), 0, 300);
         }
-
         return String.format("%s %sms %s", name, responseTime, Formatting.GREEN + String.valueOf(Math.floor(entity.getHealth()+ entity.getAbsorptionAmount())));
     }
-
-
-    //private void RenderNameTagFor2(PlayerEntity e, EventRenderGameOverlay p_Event) {}
 }

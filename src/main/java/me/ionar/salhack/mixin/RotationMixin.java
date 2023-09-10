@@ -16,11 +16,7 @@ public class RotationMixin {
     private void SeedRender(BlockState state, BlockPos pos, CallbackInfoReturnable<Long> cir) {
         if (ModuleManager.Get().GetMod(CoordsSpooferModule.class) != null) {
             CoordsSpooferModule coordspoof =  (CoordsSpooferModule) ModuleManager.Get().GetMod(CoordsSpooferModule.class);
-            if (coordspoof.isEnabled()) {
-                if (coordspoof.TextureSpoof.getValue()) {
-                    cir.setReturnValue((long) coordspoof.CoordsX.getValue() + (long) coordspoof.CoordsZ.getValue());
-                }
-            }
+            if (coordspoof.isEnabled() && coordspoof.TextureSpoof.getValue()) cir.setReturnValue((long) coordspoof.CoordsX.getValue() + (long) coordspoof.CoordsZ.getValue());
         }
     }
 }

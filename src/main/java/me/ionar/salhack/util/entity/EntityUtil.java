@@ -5,10 +5,9 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.AmbientEntity;
-import net.minecraft.entity.mob.EndermanEntity;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.ZombifiedPiglinEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -46,7 +45,7 @@ public class EntityUtil {
      * it
      */
     public static boolean isNeutralMob(Entity entity) {
-        return entity instanceof ZombifiedPiglinEntity || entity instanceof WolfEntity || entity instanceof EndermanEntity;
+        return entity instanceof Angerable;
     }
 
     /**

@@ -16,19 +16,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinMinecraftClient {
 
     @Inject(method = "tick", at = @At("TAIL"))
-    public void onPreTick(CallbackInfo ci){
+    public void onPreTick(CallbackInfo info){
         if (Wrapper.GetMC().player == null) return;
         SalHackMod.NORBIT_EVENT_BUS.post(new TickEvent(EventEra.PRE));
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
-    public void onTick(CallbackInfo ci){
+    public void onTick(CallbackInfo info){
         if (Wrapper.GetMC().player == null) return;
         SalHackMod.NORBIT_EVENT_BUS.post(new TickEvent(EventEra.POST));
     }
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    void postWindowInit(RunArgs args, CallbackInfo ci) {
+    void postWindowInit(RunArgs args, CallbackInfo info) {
         SalHack.postWindowInit();
     }
 }

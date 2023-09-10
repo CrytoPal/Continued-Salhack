@@ -49,7 +49,7 @@ public abstract class Module {
         SalHackMod.NORBIT_EVENT_BUS.subscribe(this);
         ModuleManager.Get().OnModEnable(this);
         if (mc.player != null) {
-            RemainingXAnimation = mc.textRenderer.getWidth(GetFullArrayListDisplayName())+10f;
+            RemainingXAnimation = mc.textRenderer.getWidth(getFullArrayListDisplayName())+10f;
             if (notification.isEnabled()) mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.GREEN + " ON"));
         }
         SalHackMod.NORBIT_EVENT_BUS.post(new ModuleEvent.Enabled(this));
@@ -70,10 +70,10 @@ public abstract class Module {
         if (isEnabled()) onEnable();
         else onDisable();
         onToggle();
-        if (save) SaveSettings();
+        if (save) saveSettings();
     }
 
-    public void ToggleOnlySuper() {
+    public void toggleOnlySuper() {
         setEnabled(!isEnabled());
         onToggle();
     }
@@ -107,7 +107,7 @@ public abstract class Module {
     public void setDisplayName(String displayName) {
         DisplayName = displayName;
         CommandManager.Get().Reload();
-        SaveSettings();
+        saveSettings();
     }
 
     public String[] getAlias() {
@@ -137,7 +137,7 @@ public abstract class Module {
 
     public void setKey(int key) {
         Key = key;
-        SaveSettings();
+        saveSettings();
     }
 
     public int getColor() {
@@ -154,7 +154,7 @@ public abstract class Module {
 
     public void setHidden(boolean hidden) {
         Hidden = hidden;
-        SaveSettings();
+        saveSettings();
     }
 
     public boolean isEnabled() {
@@ -181,14 +181,14 @@ public abstract class Module {
         ValueList = valueList;
     }
 
-    public float GetRemainingXOffset() {
+    public float setRemainingXOffset() {
         return RemainingXAnimation;
     }
 
-    public void SignalEnumChange() {}
+    public void signalEnumChange() {}
 
     public void signalValueChange(Value value) {
-        SaveSettings();
+        saveSettings();
     }
 
     public List<Value> getVisibleValues() {
@@ -204,24 +204,24 @@ public abstract class Module {
         return ClickGuiValueUpdate;
     }
 
-    public String GetNextStringValue(final Value<String> value, boolean recursive) {
+    public String getNextStringValue(final Value<String> value, boolean recursive) {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public String GetArrayListDisplayName() {
+    public String getArrayListDisplayName() {
         return getDisplayName();
     }
 
-    public String GetFullArrayListDisplayName() {
+    public String getFullArrayListDisplayName() {
         return getDisplayName() + (getMetaData() != null ? " " + Formatting.GRAY + getMetaData() : "");
     }
 
-    public void SendMessage(String message) {
-        if (mc.player != null) SalHack.SendMessage(Formatting.AQUA + "[" + GetArrayListDisplayName() + "]: " + Formatting.RESET + message);
+    public void sendMessage(String message) {
+        if (mc.player != null) SalHack.SendMessage(Formatting.AQUA + "[" + getArrayListDisplayName() + "]: " + Formatting.RESET + message);
     }
 
-    public void SaveSettings() {
+    public void saveSettings() {
         PresetsManager.Get().getActivePreset().addModuleSettings(this);
     }
 

@@ -3,44 +3,44 @@ package me.ionar.salhack.util.imgs;
 import net.minecraft.util.Identifier;
 
 public class ImageFrame {
-    private final int delay;
-    private final Identifier image;
-    private final String disposal;
-    private final int width, height;
+    private final int Delay;
+    private final Identifier Image;
+    private final String Disposal;
+    private final int Width, Height;
 
     public ImageFrame(Identifier image, int delay, String disposal, int width, int height) {
-        this.image = image;
-        this.delay = delay;
-        this.disposal = disposal;
-        this.width = width;
-        this.height = height;
+        Image = image;
+        Delay = delay;
+        Disposal = disposal;
+        Width = width;
+        Height = height;
     }
 
     public ImageFrame(Identifier image) {
-        this.image = image;
-        this.delay = -1;
-        this.disposal = null;
-        this.width = -1;
-        this.height = -1;
+        Image = image;
+        Delay = -1;
+        Disposal = null;
+        Width = -1;
+        Height = -1;
     }
 
     public Identifier getImage() {
-        return image;
+        return Image;
     }
 
     public int getDelay() {
-        return delay;
+        return Delay;
     }
 
     public String getDisposal() {
-        return disposal;
+        return Disposal;
     }
 
     public int getWidth() {
-        return width;
+        return Width;
     }
 
     public int getHeight() {
-        return height;
+        return Height;
     }
 }

@@ -12,12 +12,8 @@ public class CoordsModifyPosMixin {
     @ModifyVariable(method = "getModelOffset", at = @At("HEAD"), argsOnly = true)
     private BlockPos modifyPos(BlockPos pos) {
         if (ModuleManager.Get().GetMod(CoordsSpooferModule.class) != null) {
-            CoordsSpooferModule coordspoof =  (CoordsSpooferModule) ModuleManager.Get().GetMod(CoordsSpooferModule.class);
-            if (coordspoof.isEnabled()) {
-                if (coordspoof.TextureSpoof.getValue()) {
-                    return pos.multiply(coordspoof.CoordsX.getValue() + coordspoof.CoordsZ.getValue());
-                }
-            }
+            CoordsSpooferModule coordspoof = (CoordsSpooferModule) ModuleManager.Get().GetMod(CoordsSpooferModule.class);
+            if (coordspoof.isEnabled() && coordspoof.TextureSpoof.getValue()) return pos.multiply(coordspoof.CoordsX.getValue() + coordspoof.CoordsZ.getValue());
         }
         return pos;
     }
