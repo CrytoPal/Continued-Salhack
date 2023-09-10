@@ -21,6 +21,7 @@ import me.ionar.salhack.module.movement.ElytraFlyModule;
 import me.ionar.salhack.module.misc.Rotation;
 import me.ionar.salhack.module.movement.SpeedModule;
 import me.ionar.salhack.module.movement.Sprint;
+import me.ionar.salhack.module.render.Fullbright;
 import me.ionar.salhack.module.render.NametagsModule;
 import me.ionar.salhack.module.ui.*;
 import me.ionar.salhack.module.world.AutoToolModule;
@@ -60,6 +61,7 @@ public class ModuleManager {
 
         /// Render
         Add(new NametagsModule());
+        Add(new Fullbright());
 
         /// UI
         Add(new ColorsModule());
