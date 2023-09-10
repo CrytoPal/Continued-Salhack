@@ -8,24 +8,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 public class ArmorHudComponent extends HudComponentItem {
-    private String durabilityHead;
-    private String durabilityChest;
-    private String durabilityLegging;
-    private String durabilityBoot;
-
-    private ItemStack Head;
-    private ItemStack Chest;
-    private ItemStack Legging;
-    private ItemStack Boots;
-
-    public final Value<Mode> mode = new Value<Mode>("Mode", new String[]
-            {"Mode"}, "Mode of displaying coordinates", Mode.Under);
-    public final Value<Boolean> ArmorPercentage = new Value<Boolean>("Armor Percentage", new String[]{ "AP" }, "Shows Armor Percentage", false);
+    public final Value<modes> mode = new Value<>("Mode", new String[]{"Mode"}, "Mode of displaying coordinates", modes.Under);
+    public final Value<Boolean> ArmorPercentage = new Value<>("Armor Percentage", new String[]{"AP"}, "Shows Armor Percentage", false);
     public ArmorHudComponent() {
         super("ArmorHud", 2, 160);
     }
-
-    private enum Mode {
+    public enum modes {
         Above,
         Under
     }
@@ -33,65 +21,25 @@ public class ArmorHudComponent extends HudComponentItem {
     public void render(int mouseX, int mouseY, float partialTicks, DrawContext context) {
         super.render(mouseX, mouseY, partialTicks, context);
         if (mc.player != null) {
-            if (!mc.player.getInventory().getArmorStack(3).isEmpty()) {
-                // Gets the Armor from the player
-                Head = mc.player.getInventory().getArmorStack(3);
-                // Renders the Armor
-                context.drawItem(Head, (int) GetX() - 5, (int) GetY() - 5);
-                if (mode.getValue() == Mode.Under) {
-                    context.drawItemInSlot(mc.textRenderer, Head, (int) GetX() - 5, (int) GetY() - 5);
-                } else {
-                    context.drawItemInSlot(mc.textRenderer, Head, (int) GetX() - 5, (int) GetY() - 17);
-                }
-                if (ArmorPercentage.getValue()) {
-                    // Calculates the Health Percentage
-                    durabilityHead = Formatting.GREEN + "" + ((Head.getMaxDamage() - Head.getDamage()) * 100 / Head.getMaxDamage());
-                    // Renders the Health Percentage
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityHead), (int) GetX() - 3, (int) GetY() - 15, GetTextColor());
+            for (int slot = 0; slot<4; slot++) {
+                if (!mc.player.getInventory().getArmorStack(slot).isEmpty()) {
+                    ItemStack armor = mc.player.getInventory().getArmorStack(slot);
+                    int offset = getXOffSetFromSlot(slot, false);
+                    context.drawItem(armor, (int) getPositionX() - offset, (int) getPositionY() - 5);
+                    if (mode.getValue() == modes.Under) context.drawItemInSlot(mc.textRenderer, armor, (int) getPositionX() - offset, (int) getPositionY() - 5);
+                    else context.drawItemInSlot(mc.textRenderer, armor, (int) getPositionX() - offset, (int) getPositionY() - 17);
+                    if (ArmorPercentage.getValue()) {
+                        String durability = Formatting.GREEN + "" + ((armor.getMaxDamage() - armor.getDamage()) * 100 / armor.getMaxDamage());
+                        context.drawTextWithShadow(mc.textRenderer, Text.of(durability), (int) getPositionX() - getXOffSetFromSlot(slot, true), (int) getPositionY() - 15, getTextColor());
+                    }
                 }
             }
-            if (!mc.player.getInventory().getArmorStack(2).isEmpty()) {
-                Chest = mc.player.getInventory().getArmorStack(2);
-                context.drawItem(Chest, (int) GetX() + 15, (int) GetY() - 5);
-                if (mode.getValue() == Mode.Under) {
-                    context.drawItemInSlot(mc.textRenderer, Chest, (int) GetX() + 15, (int) GetY() - 5);
-                } else {
-                    context.drawItemInSlot(mc.textRenderer, Chest, (int) GetX() + 15, (int) GetY() - 17);
-                }
-                if (ArmorPercentage.getValue()) {
-                    durabilityChest = Formatting.GREEN + "" + ((Chest.getMaxDamage() - Chest.getDamage()) * 100 / Chest.getMaxDamage());
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityChest), (int) GetX() + 17, (int) GetY() - 15, GetTextColor());
-                }
-            }
-            if (!mc.player.getInventory().getArmorStack(1).isEmpty()) {
-                Legging = mc.player.getInventory().getArmorStack(1);
-                context.drawItem(Legging, (int) GetX() + 35, (int) GetY() - 5);
-                if (mode.getValue() == Mode.Under) {
-                    context.drawItemInSlot(mc.textRenderer, Legging, (int) GetX() + 35, (int) GetY() - 5);
-                } else {
-                    context.drawItemInSlot(mc.textRenderer, Legging, (int) GetX() + 35, (int) GetY() - 17);
-                }
-                if (ArmorPercentage.getValue()) {
-                    durabilityLegging = Formatting.GREEN + "" + ((Legging.getMaxDamage() - Legging.getDamage()) * 100 / Legging.getMaxDamage());
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityLegging), (int) GetX() + 37, (int) GetY() - 15, GetTextColor());
-                }
-            }
-            if (!mc.player.getInventory().getArmorStack(0).isEmpty()) {
-                Boots = mc.player.getInventory().getArmorStack(0);
-                context.drawItem(Boots, (int) GetX() + 55, (int) GetY() - 5);
-                if (mode.getValue() == Mode.Under) {
-                    context.drawItemInSlot(mc.textRenderer, Boots, (int) GetX() + 55, (int) GetY() - 5);
-                } else {
-                    context.drawItemInSlot(mc.textRenderer, Boots, (int) GetX() + 55, (int) GetY() - 17);
-                }
-                if (ArmorPercentage.getValue()) {
-                    durabilityBoot = Formatting.GREEN + "" + ((Boots.getMaxDamage() - Boots.getDamage()) * 100 / Boots.getMaxDamage());
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityBoot), (int) GetX() + 57, (int) GetY() - 15, GetTextColor());
-                }
-            }
-
-            SetWidth(60);
-            SetHeight(8);
+            setWidth(60);
+            setHeight(8);
         }
+    }
+    private int getXOffSetFromSlot(int slot, boolean armorPercentage) {
+        if (armorPercentage) return slot == 0 ? 3 : (20 * slot) - 3;
+        else return slot == 0? 5 : (20 * slot) - 5;
     }
 }
