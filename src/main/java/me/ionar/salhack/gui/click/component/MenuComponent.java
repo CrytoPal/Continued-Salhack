@@ -142,7 +142,7 @@ public class MenuComponent {
                 IsMaximizing = false;
             }
 
-            if (HoveredItem != null && (ClickGUI != null ? ClickGUI.HoverDescriptions.getValue() : true)) {
+            if (HoveredItem != null && (ClickGUI != null ? ClickGUI.hoverDescriptions.getValue() : true)) {
                 if (HoveredItem.GetDescription() != null && !Objects.equals(HoveredItem.GetDescription(), "")) {
                     context.fill(mouseX+15, mouseY, (int) (mouseX+19+FontRenderers.getTwCenMtStd22().getStringWidth(HoveredItem.GetDescription())), mouseY + Wrapper.GetMC().textRenderer.fontHeight+3, 0x90000000);
                     FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), HoveredItem.GetDescription(), mouseX+17, mouseY, 0xFFFFFF);
@@ -298,11 +298,11 @@ public class MenuComponent {
     }
 
     private int GetColor() {
-        return (Colors.Alpha.getValue() << 24) & 0xFF000000 | (Colors.Red.getValue() << 16) & 0x00FF0000 | (Colors.Green.getValue() << 8) & 0x0000FF00 | Colors.Blue.getValue() & 0x000000FF;
+        return (Colors.alpha.getValue() << 24) & 0xFF000000 | (Colors.red.getValue() << 16) & 0x00FF0000 | (Colors.green.getValue() << 8) & 0x0000FF00 | Colors.blue.getValue() & 0x000000FF;
     }
 
     public int GetTextColor() {
-        return (Colors.Red.getValue() << 16) & 0x00FF0000 | (Colors.Green.getValue() << 8) & 0x0000FF00 | Colors.Blue.getValue() & 0x000000FF;
+        return (Colors.red.getValue() << 16) & 0x00FF0000 | (Colors.green.getValue() << 8) & 0x0000FF00 | Colors.blue.getValue() & 0x000000FF;
     }
 
     public void Default() {

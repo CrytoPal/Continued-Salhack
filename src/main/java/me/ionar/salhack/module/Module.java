@@ -14,30 +14,30 @@ import java.util.List;
 
 @SuppressWarnings("rawtypes")
 public abstract class Module {
-    public String DisplayName;
-    private String[] Alias;
-    private String Description;
-    public int Key;
-    private int Color;
-    public boolean Hidden = false;
-    private boolean Enabled = false;
-    private ModuleType ModuleType;
-    private boolean ClickGuiValueUpdate;
-    public List<Value> ValueList = new ArrayList<>();
-    public float RemainingXAnimation = 0f;
+    public String displayName;
+    private String[] alias;
+    private String description;
+    public int key;
+    private int color;
+    public boolean hidden = false;
+    private boolean enabled = false;
+    private ModuleType moduleType;
+    private boolean clickGuiValueUpdate;
+    public List<Value> values = new ArrayList<>();
+    public float remainingXAnimation = 0f;
     protected final MinecraftClient mc = Wrapper.GetMC();
 
     private Module(String displayName, String[] alias, int key, int color, ModuleType type) {
-        DisplayName = displayName;
-        Alias = alias;
-        Key = key;
-        Color = color;
-        ModuleType = type;
+        this.displayName = displayName;
+        this.alias = alias;
+        this.key = key;
+        this.color = color;
+        moduleType = type;
     }
 
     public Module(String displayName, String[] alias, String description, int key, int color, ModuleType moduleType) {
         this(displayName, alias, key, color, moduleType);
-        Description = description;
+        this.description = description;
     }
 
     public void onEnable() {
@@ -46,8 +46,8 @@ public abstract class Module {
         SalHackMod.NORBIT_EVENT_BUS.subscribe(this);
         SalHack.getModuleManager().onModEnable(this);
         if (mc.player != null) {
-            RemainingXAnimation = mc.textRenderer.getWidth(getFullArrayListDisplayName())+10f;
-            if (notification.isEnabled()) mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.GREEN + " ON"));
+            remainingXAnimation = mc.textRenderer.getWidth(getFullArrayListDisplayName())+10f;
+            if (notification.isEnabled()) mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + displayName + Formatting.GREEN + " ON"));
         }
         SalHackMod.NORBIT_EVENT_BUS.post(new ModuleEvent.Enabled(this));
     }
@@ -57,7 +57,7 @@ public abstract class Module {
         /// disallow events to be called
         SalHackMod.NORBIT_EVENT_BUS.unsubscribe(this);
         SalHackMod.NORBIT_EVENT_BUS.post(new ModuleEvent.Disabled(this));
-        if (mc.player != null && notification.isEnabled()) SalHack.sendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.RED + " OFF");
+        if (mc.player != null && notification.isEnabled()) SalHack.sendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + displayName + Formatting.RED + " OFF");
     }
 
     public void onToggle() {}
@@ -80,7 +80,7 @@ public abstract class Module {
     }
 
     public Value find(String alias) {
-        for (Value value : getValueList()) {
+        for (Value value : getValues()) {
             for (String string : value.getAlias()) {
                 if (alias.equalsIgnoreCase(string)) return value;
             }
@@ -90,7 +90,7 @@ public abstract class Module {
     }
 
     public void unload() {
-        ValueList.clear();
+        values.clear();
     }
 
     public enum ModuleType {
@@ -98,107 +98,107 @@ public abstract class Module {
     }
 
     public String getDisplayName() {
-        return DisplayName;
+        return displayName;
     }
 
     public void setDisplayName(String displayName) {
-        DisplayName = displayName;
+        this.displayName = displayName;
         SalHack.getCommandManager().reload();
         saveSettings();
     }
 
     public String[] getAlias() {
-        return Alias;
+        return alias;
     }
 
     public void setAlias(String[] alias) {
-        Alias = alias;
+        this.alias = alias;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public int getKey() {
-        return Key;
+        return key;
     }
 
     public boolean isKeyPressed(int KeyCode) {
         if (mc.currentScreen != null) return false;
-        return Key == KeyCode;
+        return key == KeyCode;
     }
 
     public void setKey(int key) {
-        Key = key;
+        this.key = key;
         saveSettings();
     }
 
     public int getColor() {
-        return Color;
+        return color;
     }
 
     public void setColor(int color) {
-        Color = color;
+        this.color = color;
     }
 
     public boolean isHidden() {
-        return Hidden;
+        return hidden;
     }
 
     public void setHidden(boolean hidden) {
-        Hidden = hidden;
+        this.hidden = hidden;
         saveSettings();
     }
 
     public boolean isEnabled() {
-        return Enabled;
+        return enabled;
     }
 
     public void setEnabled(boolean enabled) {
-        Enabled = enabled;
+        this.enabled = enabled;
     }
 
     public ModuleType getModuleType() {
-        return ModuleType;
+        return moduleType;
     }
 
     public void setModuleType(ModuleType moduleType) {
-        ModuleType = moduleType;
+        this.moduleType = moduleType;
     }
 
-    public List<Value> getValueList() {
-        return ValueList;
+    public List<Value> getValues() {
+        return values;
     }
 
-    public void setValueList(List<Value> valueList) {
-        ValueList = valueList;
+    public void setValues(List<Value> values) {
+        this.values = values;
     }
 
     public float setRemainingXOffset() {
-        return RemainingXAnimation;
+        return remainingXAnimation;
     }
 
-    public void SignalEnumChange() {}
+    public void signalEnumChange() {}
 
     public void signalValueChange(Value value) {
         saveSettings();
     }
 
     public List<Value> getVisibleValues() {
-        return ValueList;
+        return values;
     }
 
     /// functions for updating value in an async way :)
     public void setClickGuiValueUpdate(boolean value) {
-        ClickGuiValueUpdate = value;
+        clickGuiValueUpdate = value;
     }
 
-    public boolean needsClickGuiValueUpdate() {
-        return ClickGuiValueUpdate;
+    public boolean isClickGuiValueUpdate() {
+        return clickGuiValueUpdate;
     }
 
     public String getNextStringValue(final Value<String> value, boolean recursive) {

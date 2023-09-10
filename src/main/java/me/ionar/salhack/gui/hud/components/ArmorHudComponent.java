@@ -47,7 +47,7 @@ public class ArmorHudComponent extends HudComponentItem {
                     // Calculates the Health Percentage
                     durabilityHead = Formatting.GREEN + "" + ((Head.getMaxDamage() - Head.getDamage()) * 100 / Head.getMaxDamage());
                     // Renders the Health Percentage
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityHead), (int) getPositionX() - 3, (int) getPositionY() - 15, GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityHead), (int) getPositionX() - 3, (int) getPositionY() - 15, getTextColor());
                 }
             }
             if (!mc.player.getInventory().getArmorStack(2).isEmpty()) {
@@ -60,7 +60,7 @@ public class ArmorHudComponent extends HudComponentItem {
                 }
                 if (ArmorPercentage.getValue()) {
                     durabilityChest = Formatting.GREEN + "" + ((Chest.getMaxDamage() - Chest.getDamage()) * 100 / Chest.getMaxDamage());
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityChest), (int) getPositionX() + 17, (int) getPositionY() - 15, GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityChest), (int) getPositionX() + 17, (int) getPositionY() - 15, getTextColor());
                 }
             }
             if (!mc.player.getInventory().getArmorStack(1).isEmpty()) {
@@ -73,7 +73,7 @@ public class ArmorHudComponent extends HudComponentItem {
                 }
                 if (ArmorPercentage.getValue()) {
                     durabilityLegging = Formatting.GREEN + "" + ((Legging.getMaxDamage() - Legging.getDamage()) * 100 / Legging.getMaxDamage());
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityLegging), (int) getPositionX() + 37, (int) getPositionY() - 15, GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityLegging), (int) getPositionX() + 37, (int) getPositionY() - 15, getTextColor());
                 }
             }
             if (!mc.player.getInventory().getArmorStack(0).isEmpty()) {
@@ -86,7 +86,7 @@ public class ArmorHudComponent extends HudComponentItem {
                 }
                 if (ArmorPercentage.getValue()) {
                     durabilityBoot = Formatting.GREEN + "" + ((Boots.getMaxDamage() - Boots.getDamage()) * 100 / Boots.getMaxDamage());
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityBoot), (int) getPositionX() + 57, (int) getPositionY() - 15, GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityBoot), (int) getPositionX() + 57, (int) getPositionY() - 15, getTextColor());
                 }
             }
 

@@ -139,7 +139,7 @@ public class ComponentItemValue extends ComponentItem {
     @Override
     public void OnMouseClick(int mouseX, int mouseY, int mouseButton) {
         super.OnMouseClick(mouseX, mouseY, mouseButton);
-        if (value.getValue() instanceof Enum) value.setEnumValue(value.GetNextEnumValue(mouseButton == 1));
+        if (value.getValue() instanceof Enum) value.setEnumValue(value.getNextEnum(mouseButton == 1));
         else if (value.getValue() instanceof String) {
             isEditingString = !isEditingString;
             value.setValue("");

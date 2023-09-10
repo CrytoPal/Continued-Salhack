@@ -14,43 +14,40 @@ import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 public class FakePlayer extends Module {
-    public static final Value<String> Name = new Value<>("Name", new String[] {"Name"}, "Name of the fake player", "bluegooon");
+    public static final Value<String> name = new Value<>("Name", new String[] {"Name"}, "Name of the fake player", "bluegooon");
 
     public FakePlayer() {
         super("FakePlayer", new String[] {"Fake"}, "Summons a fake player", 0, 0xDADB25, ModuleType.MISC);
     }
 
-    private OtherClientPlayerEntity FakePlayer;
+    private OtherClientPlayerEntity fakePlayer;
 
     @Override
     public void onEnable() {
         super.onEnable();
-        FakePlayer = null;
-
+        fakePlayer = null;
         if (mc.world == null || mc.player == null) {
             this.toggle(true);
             return;
         }
-
         // If getting uuid from mojang doesn't work we use another uuid
         try {
-            FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(Name.getValue())), Name.getValue()));
+            fakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(name.getValue())), name.getValue()));
         } catch (Exception e) {
-            FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(mc.player.getEntityName())), Name.getValue()));
+            fakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(mc.player.getEntityName())), name.getValue()));
             sendMessage("Failed to load uuid, setting another one.");
         }
-        sendMessage(String.format("%s has been spawned.", Name.getValue()));
-
-        FakePlayer.copyFrom(mc.player);
-        FakePlayer.headYaw = mc.player.getHeadYaw();
-        mc.world.addEntity(-100, FakePlayer);
+        sendMessage(String.format("%s has been spawned.", name.getValue()));
+        fakePlayer.copyFrom(mc.player);
+        fakePlayer.headYaw = mc.player.getHeadYaw();
+        mc.world.addEntity(-100, fakePlayer);
     }
 
     @Override
     public void onDisable() {
         super.onDisable();
         if (mc.world == null) return;
-        mc.world.removeEntity(FakePlayer.getId(), Entity.RemovalReason.UNLOADED_WITH_PLAYER);
+        mc.world.removeEntity(fakePlayer.getId(), Entity.RemovalReason.UNLOADED_WITH_PLAYER);
     }
 
     // Getting uuid from a Name

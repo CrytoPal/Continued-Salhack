@@ -22,20 +22,18 @@ public class HudComponentItem {
     private final float defaultY;
     private float width;
     private float height;
-
     protected float deltaX;
     protected float deltaY;
     protected float clampX;
     protected float clampY;
     private int flags;
-
     private boolean hidden = true;
     private boolean dragging = false;
     protected int clampLevel = 0;
     protected int side = 0;
     private boolean selected = false;
     private boolean multiSelectedDragging = false;
-
+    public static int onlyVisibleInHudEditor = 0x1;
     protected MinecraftClient mc = Wrapper.GetMC();
 
     public HudComponentItem(String displayName, float x, float y) {
@@ -131,7 +129,7 @@ public class HudComponentItem {
 
         onRender(mouseX, mouseY, partialTicks, context);
 
-        if (IsSelected()) context.fill((int) getPositionX(), (int) getPositionY(), (int) (getPositionX()+ getWidth()), (int) (getPositionY()+ getHeight()), 0x35DDDDDD);
+        if (isSelected()) context.fill((int) getPositionX(), (int) getPositionY(), (int) (getPositionX()+ getWidth()), (int) (getPositionY()+ getHeight()), 0x35DDDDDD);
 
         return inside;
     }
@@ -146,7 +144,7 @@ public class HudComponentItem {
                 deltaX = mouseX - getPositionX();
                 deltaY = mouseY - getPositionY();
                 SalHack.getHudManager().componentItems.forEach(componentItem -> {
-                    if (componentItem.IsMultiSelectedDragging()) {
+                    if (componentItem.isMultiSelectedDragging()) {
                         componentItem.setDragging(true);
                         componentItem.setDeltaX(mouseX - componentItem.getPositionX());
                         componentItem.setDeltaY(mouseY - componentItem.getPositionY());
@@ -189,7 +187,7 @@ public class HudComponentItem {
             String key = (String)entry.getKey();
             String value = (String)entry.getValue();
             if (key.equalsIgnoreCase("displayname")) {
-                SetDisplayName(value, false);
+                setDisplayName(value, false);
                 continue;
             }
             if (key.equalsIgnoreCase("visible")) {
@@ -223,13 +221,13 @@ public class HudComponentItem {
             for (Value value2 : values) {
                 if (value2.getName().equalsIgnoreCase((String) entry.getKey())) {
                     if (value2.getValue() instanceof Number && !(value2.getValue() instanceof Enum)) {
-                        if (value2.getValue() instanceof Integer) value2.SetForcedValue(Integer.parseInt(value));
-                        else if (value2.getValue() instanceof Float) value2.SetForcedValue(Float.parseFloat(value));
-                        else if (value2.getValue() instanceof Double) value2.SetForcedValue(Double.parseDouble(value));
+                        if (value2.getValue() instanceof Integer) value2.setForcedValue(Integer.parseInt(value));
+                        else if (value2.getValue() instanceof Float) value2.setForcedValue(Float.parseFloat(value));
+                        else if (value2.getValue() instanceof Double) value2.setForcedValue(Double.parseDouble(value));
                     }
-                    else if (value2.getValue() instanceof Boolean) value2.SetForcedValue(value.equalsIgnoreCase("true"));
-                    else if (value2.getValue() instanceof Enum) value2.SetForcedValue(value2.GetEnumReal(value));
-                    else if (value2.getValue() instanceof String) value2.SetForcedValue(value);
+                    else if (value2.getValue() instanceof Boolean) value2.setForcedValue(value.equalsIgnoreCase("true"));
+                    else if (value2.getValue() instanceof Enum) value2.setForcedValue(value2.getEnumReal(value));
+                    else if (value2.getValue() instanceof String) value2.setForcedValue(value);
                     break;
                 }
             }
@@ -252,34 +250,32 @@ public class HudComponentItem {
         this.flags |= flags;
     }
 
-    public static int OnlyVisibleInHudEditor = 0x1;
-
-    public void ResetToDefaultPos() {
+    public void resetToDefaultPos() {
         setX(defaultX);
         setY(defaultY);
     }
 
-    public void SetSelected(boolean selected) {
+    public void setSelected(boolean selected) {
         this.selected = selected;
     }
 
-    public boolean IsInArea(float mouseX1, float mouseX2, float mouseY1, float mouseY2) {
+    public boolean isInArea(float mouseX1, float mouseX2, float mouseY1, float mouseY2) {
         return getPositionX() >= mouseX1 && getPositionX()+ getWidth() <= mouseX2 && getPositionY() >= mouseY1 && getPositionY()+ getHeight() <= mouseY2;
     }
 
-    public boolean IsSelected() {
+    public boolean isSelected() {
         return selected;
     }
 
-    public void SetMultiSelectedDragging(boolean multiDragging) {
+    public void setMultiSelectedDragging(boolean multiDragging) {
         multiSelectedDragging = multiDragging;
     }
 
-    public boolean IsMultiSelectedDragging() {
+    public boolean isMultiSelectedDragging() {
         return multiSelectedDragging;
     }
 
-    public void SetDisplayName(String newName, boolean save) {
+    public void setDisplayName(String newName, boolean save) {
         displayName = newName;
         if (save) {
             SalHack.getHudManager().scheduleSave(this);
@@ -287,7 +283,7 @@ public class HudComponentItem {
         }
     }
 
-    public int GetTextColor() {
-        return (HudModule.Red.getValue() << 16) & 0x00FF0000 | (HudModule.Green.getValue() << 8) & 0x0000FF00 | HudModule.Blue.getValue() & 0x000000FF;
+    public int getTextColor() {
+        return (HudModule.red.getValue() << 16) & 0x00FF0000 | (HudModule.green.getValue() << 8) & 0x0000FF00 | HudModule.blue.getValue() & 0x000000FF;
     }
 }

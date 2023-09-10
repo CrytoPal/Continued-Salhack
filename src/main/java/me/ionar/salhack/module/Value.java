@@ -1,36 +1,36 @@
 package me.ionar.salhack.module;
 
-@SuppressWarnings({"unchecked", "rawtypes"})
+@SuppressWarnings({"unchecked", "rawtypes", "TypeParameterHidesVisibleType"})
 public class Value<T> {
 
-    private String Name;
-    private String[] Alias;
-    private String Description;
-    private Module Module;
-    public ValueListeners Listener;
+    private String name;
+    private String[] alias;
+    private String description;
+    private Module module;
+    public ValueListeners listener;
 
-    private T Value;
+    private T value;
 
-    private T Min;
-    private T Max;
-    private T Increment;
+    private T min;
+    private T max;
+    private T increment;
 
     public Value(String name, String[] alias, String description) {
-        Name = name;
-        Alias = alias;
-        Description = description;
+        this.name = name;
+        this.alias = alias;
+        this.description = description;
     }
 
     public Value(String name, String[] alias, String description, T value) {
         this(name, alias, description);
-        Value = value;
+        this.value = value;
     }
 
     public Value(String name, String[] alias, String description, T value, T min, T max, T increment) {
         this(name, alias, description, value);
-        Min = min;
-        Max = max;
-        this.Increment = increment;
+        this.min = min;
+        this.max = max;
+        this.increment = increment;
     }
 
     public <T> T clamp(T value, T min, T max) {
@@ -38,31 +38,31 @@ public class Value<T> {
     }
 
     public T getValue() {
-        return Value;
+        return value;
     }
 
     public void setValue(T value) {
-        Value = value;
-        if (Module != null) Module.signalValueChange(this);
-        if (Listener != null) Listener.OnValueChange(this);
+        this.value = value;
+        if (module != null) module.signalValueChange(this);
+        if (listener != null) listener.onValueChange(this);
     }
 
-    public String GetNextEnumValue(boolean reverse) {
+    public String getNextEnum(boolean reverse) {
         final Enum currentEnum = (Enum) this.getValue();
 
         int i = 0;
 
-        for (; i < Value.getClass().getEnumConstants().length; i++) {
-            final Enum e = (Enum) Value.getClass().getEnumConstants()[i];
+        for (; i < value.getClass().getEnumConstants().length; i++) {
+            final Enum e = (Enum) value.getClass().getEnumConstants()[i];
             if (e.name().equalsIgnoreCase(currentEnum.name())) break;
         }
 
-        return Value.getClass().getEnumConstants()[(reverse ? (i != 0 ? i - 1 : Value.getClass().getEnumConstants().length - 1) : i + 1) % Value.getClass().getEnumConstants().length].toString();
+        return value.getClass().getEnumConstants()[(reverse ? (i != 0 ? i - 1 : value.getClass().getEnumConstants().length - 1) : i + 1) % value.getClass().getEnumConstants().length].toString();
     }
 
     public int getEnum(String input) {
-        for (int i = 0; i < Value.getClass().getEnumConstants().length; i++) {
-            final Enum e = (Enum) Value.getClass().getEnumConstants()[i];
+        for (int i = 0; i < value.getClass().getEnumConstants().length; i++) {
+            final Enum e = (Enum) value.getClass().getEnumConstants()[i];
             if (e.name().equalsIgnoreCase(input)) {
                 return i;
             }
@@ -70,9 +70,9 @@ public class Value<T> {
         return -1;
     }
 
-    public Enum GetEnumReal(String input) {
-        for (int i = 0; i < Value.getClass().getEnumConstants().length; i++) {
-            final Enum e = (Enum) Value.getClass().getEnumConstants()[i];
+    public Enum getEnumReal(String input) {
+        for (int i = 0; i < value.getClass().getEnumConstants().length; i++) {
+            final Enum e = (Enum) value.getClass().getEnumConstants()[i];
             if (e.name().equalsIgnoreCase(input)) {
                 return e;
             }
@@ -81,73 +81,73 @@ public class Value<T> {
     }
 
     public void setEnumValue(String value) {
-        for (Enum e : ((Enum) Value).getClass().getEnumConstants()) {
+        for (Enum e : ((Enum) this.value).getClass().getEnumConstants()) {
             if (e.name().equalsIgnoreCase(value)) {
                 setValue((T)e);
                 break;
             }
         }
 
-        if (Module != null) Module.SignalEnumChange();
+        if (module != null) module.signalEnumChange();
     }
 
     public T getMin() {
-        return Min;
+        return min;
     }
 
     public void setMin(T min) {
-        Min = min;
+        this.min = min;
     }
 
     public T getMax() {
-        return Max;
+        return max;
     }
 
     public void setMax(T max) {
-        Max = max;
+        this.max = max;
     }
 
     public T getIncrement() {
-        return Increment;
+        return increment;
     }
 
     public void setIncrement(T increment) {
-        this.Increment = increment;
+        this.increment = increment;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
     public String[] getAlias() {
-        return Alias;
+        return alias;
     }
 
     public void setAlias(String[] alias) {
-        Alias = alias;
+        this.alias = alias;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
     }
 
     public void setListener(ValueListeners listener) {
-        Listener = listener;
+        this.listener = listener;
     }
 
-    public void InitializeModule(Module module) {
-        Module = module;
+    public void initializeModule(Module module) {
+        this.module = module;
     }
 
-    public void SetForcedValue(T value) {
-        Value = value;
+    public void setForcedValue(T value) {
+        this.value = value;
     }
 }

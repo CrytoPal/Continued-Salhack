@@ -32,27 +32,27 @@ import com.google.common.collect.Lists;
 import org.joml.Vector4d;
 
 public class NametagsModule extends Module {
-    public final Value<Boolean> Armor = new Value<>("Armor", new String[]{""}, "", true);
-    public final Value<Boolean> Durability = new Value<>("Durability", new String[]{""}, "", true);
-    public final Value<Boolean> ItemName = new Value<>("ItemName", new String[]{""}, "", true);
-    public final Value<Boolean> Health = new Value<>("Health", new String[]{""}, "", true);
-    public final Value<Boolean> Invisibles = new Value<>("Invisibles", new String[]{""}, "", false);
-    public final Value<Boolean> EntityID = new Value<>("EntityID", new String[]{""}, "", false);
-    public final Value<Boolean> GameMode = new Value<>("GameMode", new String[]{""}, "", false);
-    public final Value<Boolean> Ping = new Value<>("Ping", new String[]{""}, "", true);
+    public final Value<Boolean> armor = new Value<>("Armor", new String[]{""}, "", true);
+    public final Value<Boolean> durability = new Value<>("Durability", new String[]{""}, "", true);
+    public final Value<Boolean> itemName = new Value<>("ItemName", new String[]{""}, "", true);
+    public final Value<Boolean> health = new Value<>("Health", new String[]{""}, "", true);
+    public final Value<Boolean> invisibles = new Value<>("Invisibles", new String[]{""}, "", false);
+    public final Value<Boolean> entityID = new Value<>("EntityID", new String[]{""}, "", false);
+    public final Value<Boolean> gameMode = new Value<>("GameMode", new String[]{""}, "", false);
+    public final Value<Boolean> ping = new Value<>("Ping", new String[]{""}, "", true);
     Entity camera = mc.getCameraEntity();
     public NametagsModule() {
         super("NameTags", new String[]{ "Nametag" }, "Improves nametags of players around you", 0, -1, ModuleType.RENDER);
     }
 
     @EventHandler
-    private void OnRenderGameOverlay(RenderGameOverlayEvent event) {
+    private void onRenderGameOverlay(RenderGameOverlayEvent event) {
         EntityUtil.getEntities().stream().filter(EntityUtil::isLiving).filter(entity -> !EntityUtil.isFakePlayer(entity))
                 .filter(entity -> (entity instanceof PlayerEntity && mc.player != entity)).forEach(e ->
-                        RenderNameTagFor((PlayerEntity) e, event));
+                        renderNameTagFor((PlayerEntity) e, event));
     }
 
-    private void RenderNameTagFor(PlayerEntity entity, RenderGameOverlayEvent Event) {
+    private void renderNameTagFor(PlayerEntity entity, RenderGameOverlayEvent Event) {
         DrawContext context = Event.getContext();
         Vec3d pos = MathUtil.interpolateEntity(entity).add(0, entity.getHeight() + 0.5f, 0);
         pos = TransformPositionUtil.worldSpaceToScreenSpace(new Vec3d(pos.x, pos.y, pos.z));
@@ -74,7 +74,7 @@ public class NametagsModule extends Module {
             }
             String Name = getName(entity, name);
             FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), Name, renderer.x - FontRenderers.getTwCenMtStd22().getStringWidth(Name) / 2, renderer.y - 8 - 1, color);
-            if (Armor.getValue()) {
+            if (armor.getValue()) {
                 final Iterator<ItemStack> items = entity.getArmorItems().iterator();
                 final ArrayList<ItemStack> stacks = new ArrayList<>();
                 stacks.add(entity.getOffHandStack());
@@ -144,7 +144,7 @@ public class NametagsModule extends Module {
     private String getName(PlayerEntity entity, String name) {
         int responseTime = -1;
         ClientPlayNetworkHandler handler = Wrapper.GetMC().getNetworkHandler();
-        if (Ping.getValue() && handler != null) {
+        if (ping.getValue() && handler != null) {
             PlayerListEntry entry = handler.getPlayerListEntry(entity.getUuid());
             if (entry != null) responseTime = MathHelper.clamp(entry.getLatency(), 0, 300);
         }

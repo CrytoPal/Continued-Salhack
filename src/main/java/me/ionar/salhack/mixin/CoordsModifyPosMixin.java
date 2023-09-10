@@ -11,8 +11,10 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 public class CoordsModifyPosMixin {
     @ModifyVariable(method = "getModelOffset", at = @At("HEAD"), argsOnly = true)
     private BlockPos modifyPos(BlockPos pos) {
-        //CoordsSpooferModule coordspoof = (CoordsSpooferModule) SalHack.getModuleManager().getMod(CoordsSpooferModule.class);
-        //if (coordspoof.isEnabled() && coordspoof.TextureSpoof.getValue()) return pos.multiply(coordspoof.CoordsX.getValue() + coordspoof.CoordsZ.getValue());
+        CoordsSpooferModule coordspoof = (CoordsSpooferModule) SalHack.getModuleManager().getMod(CoordsSpooferModule.class);
+        if (coordspoof != null) {
+            if (coordspoof.isEnabled() && coordspoof.textureSpoof.getValue()) return pos.multiply(coordspoof.coordsX.getValue() + coordspoof.coordsZ.getValue());
+        }
         return pos;
     }
 }

@@ -22,7 +22,7 @@ public class PlayerListHudMixin {
     @Inject(method = "collectPlayerEntries", at = @At("HEAD"), cancellable = true)
     private void collectPlayerEntriesHook(CallbackInfoReturnable<List<PlayerListEntry>> cir) {
         if (Wrapper.GetMC().player != null) {
-            cir.setReturnValue(Wrapper.GetMC().player.networkHandler.getListedPlayerListEntries().stream().sorted(ENTRY_ORDERING).limit(HudModule.ExtraTab.getValue()).toList());
+            cir.setReturnValue(Wrapper.GetMC().player.networkHandler.getListedPlayerListEntries().stream().sorted(ENTRY_ORDERING).limit(HudModule.extraTab.getValue()).toList());
         }
     }
 }

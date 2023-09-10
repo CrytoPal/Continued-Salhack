@@ -67,7 +67,7 @@ public class MenuComponentHUDList extends MenuComponent {
                 public void OnEnabled() {}
                 @Override
                 public void OnToggled() {
-                    item.ResetToDefaultPos();
+                    item.resetToDefaultPos();
                 }
                 @Override
                 public void OnDisabled() {}

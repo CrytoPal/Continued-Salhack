@@ -63,20 +63,20 @@ public class ModuleCommand extends Command {
 
                 if (l_Val.getValue() instanceof Number && !(l_Val.getValue() instanceof Enum)) {
                     if (l_Val.getValue() instanceof Integer)
-                        l_Val.SetForcedValue(Integer.parseInt(l_Value));
+                        l_Val.setForcedValue(Integer.parseInt(l_Value));
                     else if (l_Val.getValue() instanceof Float)
-                        l_Val.SetForcedValue(Float.parseFloat(l_Value));
+                        l_Val.setForcedValue(Float.parseFloat(l_Value));
                     else if (l_Val.getValue() instanceof Double)
-                        l_Val.SetForcedValue(Double.parseDouble(l_Value));
+                        l_Val.setForcedValue(Double.parseDouble(l_Value));
                 }
                 else if (l_Val.getValue() instanceof Boolean) {
-                    l_Val.SetForcedValue(l_Value.equalsIgnoreCase("true"));
+                    l_Val.setForcedValue(l_Value.equalsIgnoreCase("true"));
                 }
                 else if (l_Val.getValue() instanceof Enum) {
-                    l_Val.SetForcedValue(l_Val.GetEnumReal(l_Value));
+                    l_Val.setForcedValue(l_Val.getEnumReal(l_Value));
                 }
                 else if (l_Val.getValue() instanceof String)
-                    l_Val.SetForcedValue(l_Value);
+                    l_Val.setForcedValue(l_Value);
 
                 SendToChat(String.format("Set the value of %s to %s", l_Val.getName(), l_Val.getValue()));
 

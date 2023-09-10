@@ -66,10 +66,10 @@ public class CoordsHudComponent extends HudComponentItem {
         switch (Mode.getValue()) {
 
             case Inline:
-                if (HudModule.CustomFont.getValue()) {
-                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), coords, (int) (this.getPositionX()), (int) (this.getPositionY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                if (HudModule.customFont.getValue()) {
+                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), coords, (int) (this.getPositionX()), (int) (this.getPositionY()), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
                 } else {
-                    context.drawTextWithShadow(mc.textRenderer, Text.of(coords), (int) this.getPositionX(), (int) this.getPositionY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, Text.of(coords), (int) this.getPositionX(), (int) this.getPositionY(), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
                 }
                 Rainbow.onRender();
                 setWidth(Wrapper.GetMC().textRenderer.getWidth(coords));
@@ -84,7 +84,7 @@ public class CoordsHudComponent extends HudComponentItem {
         return _getCoords != null && _getCoords.isEnabled();
     }
     private Boolean GetRandom() {
-        return _getCoords != null && _getCoords.Random.getValue();
+        return _getCoords != null && _getCoords.random.getValue();
     }
 
 
@@ -116,7 +116,7 @@ public class CoordsHudComponent extends HudComponentItem {
                     return mc.player.getX() * 8 + randX() * 8;
                 }
                 if (!GetRandom() && _getCoords != null) {
-                    return mc.player.getX() * 8 + _getCoords.CoordsX.getValue() * 8 + _getCoords.CoordsNegativeX.getValue() * 8;
+                    return mc.player.getX() * 8 + _getCoords.coordsX.getValue() * 8 + _getCoords.coordsNegativeX.getValue() * 8;
                 }
             }
             return mc.player.getX() * 8;
@@ -126,7 +126,7 @@ public class CoordsHudComponent extends HudComponentItem {
                     return mc.player.getX() + randX();
                 }
                 if (!GetRandom() && _getCoords != null) {
-                    return mc.player.getX() + _getCoords.CoordsX.getValue() + _getCoords.CoordsNegativeX.getValue();
+                    return mc.player.getX() + _getCoords.coordsX.getValue() + _getCoords.coordsNegativeX.getValue();
                 }
             }
             return mc.player.getX();
@@ -140,7 +140,7 @@ public class CoordsHudComponent extends HudComponentItem {
                     return mc.player.getX() + randX();
                 }
                 if (!GetRandom() && _getCoords != null) {
-                    return mc.player.getX() + _getCoords.CoordsX.getValue() + _getCoords.CoordsNegativeX.getValue();
+                    return mc.player.getX() + _getCoords.coordsX.getValue() + _getCoords.coordsNegativeX.getValue();
                 }
             }
             return mc.player.getX();
@@ -150,7 +150,7 @@ public class CoordsHudComponent extends HudComponentItem {
                     return mc.player.getX() / 8 + randX() / 8;
                 }
                 if (!GetRandom() && _getCoords != null) {
-                    return mc.player.getX() / 8 + _getCoords.CoordsX.getValue() / 8 + _getCoords.CoordsNegativeX.getValue() / 8;
+                    return mc.player.getX() / 8 + _getCoords.coordsX.getValue() / 8 + _getCoords.coordsNegativeX.getValue() / 8;
                 }
             }
             return mc.player.getX() / 8;
@@ -164,7 +164,7 @@ public class CoordsHudComponent extends HudComponentItem {
                     return mc.player.getZ() + randZ();
                 }
                 if (!GetRandom() && _getCoords != null) {
-                    return mc.player.getZ() + _getCoords.CoordsZ.getValue() + _getCoords.CoordsNegativeZ.getValue();
+                    return mc.player.getZ() + _getCoords.coordsZ.getValue() + _getCoords.coordsNegativeZ.getValue();
                 }
             }
             return mc.player.getZ();
@@ -174,7 +174,7 @@ public class CoordsHudComponent extends HudComponentItem {
                     return mc.player.getZ() / 8 + randZ() / 8;
                 }
                 if (!GetRandom() && _getCoords != null) {
-                    return mc.player.getZ() / 8 + _getCoords.CoordsZ.getValue() / 8 + _getCoords.CoordsNegativeZ.getValue() / 8;
+                    return mc.player.getZ() / 8 + _getCoords.coordsZ.getValue() / 8 + _getCoords.coordsNegativeZ.getValue() / 8;
                 }
             }
             return mc.player.getZ() / 8;
@@ -188,7 +188,7 @@ public class CoordsHudComponent extends HudComponentItem {
                     return mc.player.getZ() * 8 + randZ() * 8;
                 }
                 if (!GetRandom() && _getCoords != null) {
-                    return mc.player.getZ() * 8 + _getCoords.CoordsZ.getValue() * 8 + _getCoords.CoordsNegativeZ.getValue() * 8;
+                    return mc.player.getZ() * 8 + _getCoords.coordsZ.getValue() * 8 + _getCoords.coordsNegativeZ.getValue() * 8;
                 }
             }
             return mc.player.getZ() * 8;
@@ -198,7 +198,7 @@ public class CoordsHudComponent extends HudComponentItem {
                     return mc.player.getZ() + randZ();
                 }
                 if (!GetRandom() && _getCoords != null) {
-                    return mc.player.getZ() + _getCoords.CoordsZ.getValue() + _getCoords.CoordsNegativeZ.getValue();
+                    return mc.player.getZ() + _getCoords.coordsZ.getValue() + _getCoords.coordsNegativeZ.getValue();
                 }
             }
             return mc.player.getZ();

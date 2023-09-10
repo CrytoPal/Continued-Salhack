@@ -38,10 +38,10 @@ public class WelcomerHudComponent extends HudComponentItem {
             watermarkString = "Good Night, " + Formatting.WHITE + mc.getSession().getUsername() + Formatting.AQUA + " :)";
         }
 
-        if (HudModule.CustomFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), watermarkString, (int) (getPositionX()), (int) (getPositionY()), HudModule.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+        if (HudModule.customFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), watermarkString, (int) (getPositionX()), (int) (getPositionY()), HudModule.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
         } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(watermarkString), (int) getPositionX(), (int) getPositionY(), HudModule.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+            context.drawTextWithShadow(mc.textRenderer, Text.of(watermarkString), (int) getPositionX(), (int) getPositionY(), HudModule.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
         }
         Rainbow.onRender();
         setWidth(Wrapper.GetMC().textRenderer.getWidth(watermarkString));

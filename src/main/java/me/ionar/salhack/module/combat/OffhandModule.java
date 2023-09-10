@@ -14,43 +14,43 @@ import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 
 public final class OffhandModule extends Module {
-    public final Value<Float> Health = new Value<>("Health", new String[]{"Hp"}, "The amount of health needed to acquire a totem.", 16.0f, 0.0f, 20.0f, 0.5f);
-    public final Value<offhandModes> Mode = new Value<>("Mode", new String[]{"Mode"}, "If you are above the required health for a totem, x will be used in offhand instead.", offhandModes.Totem);
+    public final Value<Float> health = new Value<>("Health", new String[]{"Hp"}, "The amount of health needed to acquire a totem.", 16.0f, 0.0f, 20.0f, 0.5f);
+    public final Value<offhandModes> mode = new Value<>("Mode", new String[]{"Mode"}, "If you are above the required health for a totem, x will be used in offhand instead.", offhandModes.Totem);
     // Will fix later
     //public final Value<AutoTotemMode> FallbackMode = new Value<AutoTotemMode>("Fallback", new String[]{"FallbackMode"}, "If you don't have the required item for mode, this will be the fallback.", AutoTotemMode.Crystal);
-    public final Value<Float> FallDistance = new Value<>("FallDistance", new String[]{"Fall"}, "If your fall distance exceeds this value, use a totem", 15.0f, 0.0f, 100.0f, 10.0f);
-    public final Value<Boolean> TotemOnElytra = new Value<>("TotemOnElytra", new String[]{"Elytra"}, "Will automatically switch to a totem if you're elytra flying", true);
-    public final Value<Boolean> OffhandGapOnSword = new Value<>("SwordGap", new String[]{"SwordGap"}, "Will override all else, and try and use a gap in offhand when using a sword in main hand", false);
-    public final Value<Boolean> OffhandStrNoStrSword = new Value<>("StrGap", new String[]{"Strength"}, "Will put a potion if offhand if you don't have strength and wearing a sword", false);
-    public final Value<Boolean> Override = new Value<>("Override", new String[]{"O"}, "Replaces your current offhand with the item mode if there's another item", false);
-    public final Value<Boolean> NearPlayers = new Value<>("e", new String[]{"NP"}, "hi", true);
+    public final Value<Float> fallDistance = new Value<>("FallDistance", new String[]{"Fall"}, "If your fall distance exceeds this value, use a totem", 15.0f, 0.0f, 100.0f, 10.0f);
+    public final Value<Boolean> totemOnElytra = new Value<>("TotemOnElytra", new String[]{"Elytra"}, "Will automatically switch to a totem if you're elytra flying", true);
+    public final Value<Boolean> offhandGapOnSword = new Value<>("SwordGap", new String[]{"SwordGap"}, "Will override all else, and try and use a gap in offhand when using a sword in main hand", false);
+    public final Value<Boolean> offhandStrNoStrSword = new Value<>("StrGap", new String[]{"Strength"}, "Will put a potion if offhand if you don't have strength and wearing a sword", false);
+    public final Value<Boolean> override = new Value<>("Override", new String[]{"O"}, "Replaces your current offhand with the item mode if there's another item", false);
+    public final Value<Boolean> nearPlayers = new Value<>("e", new String[]{"NP"}, "hi", true);
 
     // public final Value<Boolean> InventorySwitch = new Value<Boolean>("Switch in Inv", new String[]{"Strength"}, "Puts the Item into your offhand while inventory gui is on.", true);
     // public final Value<Boolean> HotbarFirst = new Value<Boolean>("HotbarFirst", new String[]{"Recursive"}, "Prioritizes your hotbar before inventory slots", false);
 
     @EventHandler
-    private void OnPlayerUpdate(TickEvent event) {
+    private void onTick(TickEvent event) {
         if (event.isPre()) return;
         if (mc.player != null) {
             boolean elytra = mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA && mc.player.isFallFlying();
             if (!mc.player.getMainHandStack().isEmpty()) {
-                if (Health.getValue() <= PlayerUtil.getHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandStrNoStrSword.getValue()) {
-                    SwitchOffHandIfNeed(offhandModes.Strength);
+                if (health.getValue() <= PlayerUtil.getHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && offhandStrNoStrSword.getValue()) {
+                    switchOffHandIfNeed(offhandModes.Strength);
                     return;
                 }
                 /// Sword override
-                if (Health.getValue() <= PlayerUtil.getHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandGapOnSword.getValue()) {
-                    SwitchOffHandIfNeed(offhandModes.EGap);
+                if (health.getValue() <= PlayerUtil.getHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && offhandGapOnSword.getValue()) {
+                    switchOffHandIfNeed(offhandModes.EGap);
                     return;
                 }
             }
             /// First check health, most important as we don't want to die for no reason.
-            if (Health.getValue() > PlayerUtil.getHealthWithAbsorption() || Mode.getValue() == offhandModes.Totem || (TotemOnElytra.getValue() && elytra) || (mc.player.fallDistance >= FallDistance.getValue() && !elytra) || noNearbyPlayers()) {
-                SwitchOffHandIfNeed(offhandModes.Totem);
+            if (health.getValue() > PlayerUtil.getHealthWithAbsorption() || mode.getValue() == offhandModes.Totem || (totemOnElytra.getValue() && elytra) || (mc.player.fallDistance >= fallDistance.getValue() && !elytra) || noNearbyPlayers()) {
+                switchOffHandIfNeed(offhandModes.Totem);
                 return;
             }
             /// If we meet the required health
-            SwitchOffHandIfNeed(Mode.getValue());
+            switchOffHandIfNeed(mode.getValue());
         }
     }
 
@@ -60,12 +60,12 @@ public final class OffhandModule extends Module {
 
     @Override
     public String getMetaData() {
-        return String.valueOf(Mode.getValue());
+        return String.valueOf(mode.getValue());
     }
 
-    private void SwitchOffHandIfNeed(offhandModes val) {
+    private void switchOffHandIfNeed(offhandModes val) {
         if (mc.player == null) return;
-        Item item = GetItemFromModeVal(val);
+        Item item = getItemFromMode(val);
         if (mc.player.playerScreenHandler == mc.player.currentScreenHandler) {
             if (mc.player.getOffHandStack().isEmpty()) {
                 for (int i = 9; i < 45; i++) {
@@ -75,7 +75,7 @@ public final class OffhandModule extends Module {
                     }
                 }
             }
-            if (mc.player.getOffHandStack().getItem() != item && Override.getValue()) {
+            if (mc.player.getOffHandStack().getItem() != item && override.getValue()) {
                 for (int i = 9; i < 45; i++) {
                     if (mc.player.getInventory().getStack(i >= 36 ? i - 36 : i).getItem() == item) {
                         ItemUtil.move(i,45);
@@ -91,7 +91,7 @@ public final class OffhandModule extends Module {
         super.onEnable();
     }
 
-    public Item GetItemFromModeVal(offhandModes val) {
+    public Item getItemFromMode(offhandModes val) {
         switch (val) {
             case Crystal -> {
                 return Items.END_CRYSTAL;
@@ -110,7 +110,7 @@ public final class OffhandModule extends Module {
         return Items.TOTEM_OF_UNDYING;
     }
 
-    private String GetItemNameFromModeVal(offhandModes val) {
+    private String getItemNameFromMode(offhandModes val) {
         switch (val) {
             case Crystal -> {
                 return "End Crystal";
@@ -131,7 +131,7 @@ public final class OffhandModule extends Module {
 
     private boolean noNearbyPlayers() {
         if (mc.world == null) return true;
-        return offhandModes.Crystal == Mode.getValue() && mc.world.getPlayers().stream().noneMatch(e -> e != mc.player && isValidTarget(e));
+        return offhandModes.Crystal == mode.getValue() && mc.world.getPlayers().stream().noneMatch(e -> e != mc.player && isValidTarget(e));
     }
 
     private boolean isValidTarget(Entity entity) {

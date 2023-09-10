@@ -40,8 +40,8 @@ public class GuiHudEditor extends Screen {
             context.fill((int) mouseX1, (int) mouseY1, (int) mouseX2, (int) mouseY2, 0x56EC6);//205
             SalHack.getHudManager().componentItems.forEach(componentItem -> {
                 if (!componentItem.isHidden()) {
-                    if (componentItem.IsInArea(mouseX1, mouseX2, mouseY1, mouseY2)) componentItem.SetSelected(true);
-                    else if (componentItem.IsSelected()) componentItem.SetSelected(false);
+                    if (componentItem.isInArea(mouseX1, mouseX2, mouseY1, mouseY2)) componentItem.setSelected(true);
+                    else if (componentItem.isSelected()) componentItem.setSelected(false);
                 }
             });
         }
@@ -64,7 +64,7 @@ public class GuiHudEditor extends Screen {
         SalHack.getHudManager().componentItems.forEach(componentItem -> {
             if (!componentItem.isHidden()) {
                 componentItem.onMouseRelease((int) mouseX, (int) mouseY, 0);
-                componentItem.SetMultiSelectedDragging(componentItem.IsSelected());
+                componentItem.setMultiSelectedDragging(componentItem.isSelected());
             }
         });
         clicked = false;

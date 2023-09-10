@@ -10,7 +10,7 @@ public class SelectorMenuComponent extends HudComponentItem {
     public SelectorMenuComponent() {
         super("Selector", 300, 300);
         setHidden(false);
-        AddFlag(HudComponentItem.OnlyVisibleInHudEditor);
+        AddFlag(HudComponentItem.onlyVisibleInHudEditor);
     }
 
     @Override

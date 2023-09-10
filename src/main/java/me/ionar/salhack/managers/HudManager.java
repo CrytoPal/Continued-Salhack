@@ -99,13 +99,13 @@ public class HudManager {
 
                     ValueListeners listener = new ValueListeners() {
                         @Override
-                        public void OnValueChange(Value p_Val)
+                        public void onValueChange(Value p_Val)
                         {
                             scheduleSave(p_Item);
                         }
                     };
 
-                    val.Listener = listener;
+                    val.listener = listener;
                     p_Item.values.add(val);
                 }
             }
@@ -128,7 +128,7 @@ public class HudManager {
         context.getMatrices().push();
 
         componentItems.forEach(p_Item -> {
-            if (!p_Item.isHidden() && !p_Item.HasFlag(HudComponentItem.OnlyVisibleInHudEditor)) {
+            if (!p_Item.isHidden() && !p_Item.HasFlag(HudComponentItem.onlyVisibleInHudEditor)) {
                 try {
                     p_Item.onRender(0, 0, p_PartialTicks, context);
                 }

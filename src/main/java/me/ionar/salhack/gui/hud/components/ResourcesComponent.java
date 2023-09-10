@@ -42,34 +42,34 @@ public class ResourcesComponent extends HudComponentItem {
         final String expCount1 = "Exp: " + Formatting.WHITE + expCount;
 
         if (EGap.getValue()) {
-            if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), EGapCount1, (int) (getPositionX()), (int) (getPositionY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+            if (HudModule.customFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), EGapCount1, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) getPositionX(), (int) getPositionY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
             }
             Rainbow.onRender();
             setWidth(mc.textRenderer.getWidth(EGapCount1));
             setHeight(mc.textRenderer.fontHeight + 30);
         }
         if (Totems.getValue()) {
-            if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), totemCount1, (int) (getPositionX()), (int) (getPositionY()) + 30, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+            if (HudModule.customFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), totemCount1, (int) (getPositionX()), (int) (getPositionY()) + 30, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) getPositionX(), (int) getPositionY() + 30, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) getPositionX(), (int) getPositionY() + 30, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
             }
         }
         if (Crystals.getValue()) {
-            if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), crystals1, (int) (getPositionX()), (int) (getPositionY()) + 10, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+            if (HudModule.customFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), crystals1, (int) (getPositionX()), (int) (getPositionY()) + 10, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) getPositionX(), (int) getPositionY() + 10, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) getPositionX(), (int) getPositionY() + 10, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
             }
         }
         if (EXP.getValue()) {
-            if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), expCount1, (int) (getPositionX()), (int) (getPositionY()) + 20, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+            if (HudModule.customFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), expCount1, (int) (getPositionX()), (int) (getPositionY()) + 20, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) getPositionX(), (int) getPositionY() + 20, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) getPositionX(), (int) getPositionY() + 20, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
             }
         }
     }

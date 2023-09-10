@@ -51,19 +51,19 @@ public class SpeedComponent extends HudComponentItem {
         if (SpeedUnit.getValue() == UnitList.BPS) {
             String formatterBPS = FormatterBPS.format(bPS);
 
-            speed = hud.Rainbow.getValue() ? "Speed: " + Formatting.WHITE + formatterBPS + " BPS" : "Speed: " + Formatting.WHITE + formatterBPS + " BPS";
+            speed = hud.rainbow.getValue() ? "Speed: " + Formatting.WHITE + formatterBPS + " BPS" : "Speed: " + Formatting.WHITE + formatterBPS + " BPS";
 
         } else if (SpeedUnit.getValue() == UnitList.KMH) {
             String formatterKMH = FormatterKMH.format(kMH);
 
-            speed = hud.Rainbow.getValue() ? "Speed: " + Formatting.WHITE + formatterKMH + "km/h" : "Speed " + Formatting.WHITE + formatterKMH + "km/h";
+            speed = hud.rainbow.getValue() ? "Speed: " + Formatting.WHITE + formatterKMH + "km/h" : "Speed " + Formatting.WHITE + formatterKMH + "km/h";
 
         }
 
-        if (HudModule.CustomFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), speed, (int) (getPositionX()), (int) (getPositionY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+        if (HudModule.customFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), speed, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
         } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(speed), (int) getPositionX(), (int) getPositionY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+            context.drawTextWithShadow(mc.textRenderer, Text.of(speed), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
         }
 
         Rainbow.onRender();

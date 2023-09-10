@@ -81,7 +81,7 @@ public class ModuleManager {
         final Preset preset = SalHack.getPresetsManager().getActivePreset();
 
         modules.forEach(mod -> {
-            preset.initValuesForModule(mod);
+            preset.init(mod);
         });
 
         modules.forEach(mod -> {
@@ -98,8 +98,8 @@ public class ModuleManager {
                         field.setAccessible(true);
                     }
                     final Value val = (Value) field.get(mod);
-                    val.InitializeModule(mod);
-                    mod.getValueList().add(val);
+                    val.initializeModule(mod);
+                    mod.getValues().add(val);
                 }
             }
             modules.add(mod);
@@ -181,9 +181,9 @@ public class ModuleManager {
 
         Module l_Mod = arrayListAnimations.get(0);
 
-        if ((l_Mod.RemainingXAnimation -= (Wrapper.GetMC().textRenderer.getWidth(l_Mod.getFullArrayListDisplayName()) / 10)) <= 0) {
+        if ((l_Mod.remainingXAnimation -= (Wrapper.GetMC().textRenderer.getWidth(l_Mod.getFullArrayListDisplayName()) / 10)) <= 0) {
             arrayListAnimations.remove(l_Mod);
-            l_Mod.RemainingXAnimation = 0;
+            l_Mod.remainingXAnimation = 0;
         }
     }
 

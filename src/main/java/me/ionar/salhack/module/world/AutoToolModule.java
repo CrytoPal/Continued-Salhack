@@ -15,16 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AutoToolModule extends Module {
-    public final Value<Boolean> SwapBack = new Value<>("SwapBack", new String[]{ "" }, "Swaps to the item you originally had.", true);
-    public static int ItemSlot;
-    int Index = -1;
-    private boolean Send;
+    public final Value<Boolean> swapBack = new Value<>("SwapBack", new String[]{ "" }, "Swaps to the item you originally had.", true);
+    public static int itemSlot;
+    List<Integer> previousSlot = new ArrayList<>();
+    int index = -1;
+    private boolean send;
 
     public AutoToolModule() {
         super("AutoTool", new String[]{"S"} ,"yes",0,-1 ,ModuleType.WORLD);
     }
-
-    List<Integer> PreviousSlot = new ArrayList<>();
     private int getToolHotbar(BlockPos pos) {
         float Speed = 1.0f;
         if (mc.player != null && mc.world != null) {
@@ -36,12 +35,12 @@ public class AutoToolModule extends Module {
                     if (mc.world.getBlockState(pos).getBlock() instanceof AirBlock) return 0;
                     if (digSpeed + destroySpeed > Speed) {
                         Speed = digSpeed + destroySpeed;
-                        Index = i;
+                        index = i;
                     }
                 }
             }
         }
-        return Index;
+        return index;
     }
 
     private float blockStrength(BlockPos pos) {
@@ -58,15 +57,15 @@ public class AutoToolModule extends Module {
             BlockPos BlockPos = BlockHit.getBlockPos();
             if (mc.crosshairTarget instanceof BlockHitResult) {
                 if (getToolHotbar(BlockPos) != -1 && mc.options.attackKey.isPressed()) {
-                    PreviousSlot.add(mc.player.getInventory().selectedSlot);
+                    previousSlot.add(mc.player.getInventory().selectedSlot);
                     mc.player.getInventory().selectedSlot = getToolHotbar(BlockPos);
-                    ItemSlot = getToolHotbar(BlockPos);
-                    Send = true;
-                } else if (!PreviousSlot.isEmpty() && SwapBack.getValue() && Send) {
-                    mc.player.getInventory().selectedSlot = PreviousSlot.get(0);
-                    ItemSlot = PreviousSlot.get(0);
-                    PreviousSlot.clear();
-                    Send = false;
+                    itemSlot = getToolHotbar(BlockPos);
+                    send = true;
+                } else if (!previousSlot.isEmpty() && swapBack.getValue() && send) {
+                    mc.player.getInventory().selectedSlot = previousSlot.get(0);
+                    itemSlot = previousSlot.get(0);
+                    previousSlot.clear();
+                    send = false;
                 }
             }
         }

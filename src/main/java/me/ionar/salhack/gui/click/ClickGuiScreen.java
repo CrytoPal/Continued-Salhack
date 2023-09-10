@@ -161,12 +161,12 @@ public class ClickGuiScreen extends SalGuiScreen
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         final Window res = Wrapper.GetMC().getWindow();
 
-        if (!_snowList.isEmpty() && ClickGuiMod.Snowing.getValue())
+        if (!_snowList.isEmpty() && ClickGuiMod.snowing.getValue())
         {
             _snowList.forEach(snow -> snow.Update(res, context));
         }
 
-        if (Watermark != null && ClickGuiMod.Watermark.getValue()) {
+        if (Watermark != null && ClickGuiMod.watermark.getValue()) {
             drawTexture(new Identifier(Watermark.getResourceLocation()), 0, res.getScaledHeight() - Watermark.getHeight() - 5, Watermark.getWidth() / 2, Watermark.getHeight() / 2, context);
         }
 
@@ -243,7 +243,7 @@ public class ClickGuiScreen extends SalGuiScreen
 
     public boolean AllowsOverflow()
     {
-        return ClickGuiMod.AllowOverflow.getValue();
+        return ClickGuiMod.allowOverflow.getValue();
     }
 
     public void ResetToDefaults()

@@ -29,10 +29,10 @@ public class TimeComponent extends HudComponentItem {
 
         final String time = "Time " + Formatting.WHITE + new SimpleDateFormat("h:mm a").format(new Date());
 
-        if (HudModule.CustomFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), time, (int) (getPositionX()), (int) (getPositionY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+        if (HudModule.customFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), time, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
         } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(time), (int) getPositionX(), (int) getPositionY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+            context.drawTextWithShadow(mc.textRenderer, Text.of(time), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
         }
         Rainbow.onRender();
         setWidth(Wrapper.GetMC().textRenderer.getWidth(time));

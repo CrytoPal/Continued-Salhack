@@ -103,7 +103,7 @@ public class PresetsManager {
 
         preset.setActive(true);
 
-        ModuleManager.modules.forEach(preset::initValuesForModule);
+        ModuleManager.modules.forEach(preset::init);
     }
 
     public final List<Preset> getItems() {

@@ -33,10 +33,10 @@ public class FPSComponent extends HudComponentItem {
 
         final String fPS = "FPS " + Formatting.WHITE + MinecraftClientAccessor.getCurrentFps();
 
-        if (HudModule.CustomFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), fPS, (int) (getPositionX()), (int) (getPositionY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+        if (HudModule.customFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), fPS, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
         } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(fPS), (int) getPositionX(), (int) getPositionY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+            context.drawTextWithShadow(mc.textRenderer, Text.of(fPS), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
         }
         Rainbow.onRender();
         setWidth(Wrapper.GetMC().textRenderer.getWidth(fPS));

@@ -15,7 +15,7 @@ public class MiddleClickFriendsModule extends Module {
     }
 
     @EventHandler
-    private void OnMouseButton(MouseButtonEvent event) {
+    private void onMouseButton(MouseButtonEvent event) {
         if (event.getAction() == 0 || event.getButton() != GLFW_MOUSE_BUTTON_MIDDLE || mc.currentScreen != null || mc.targetedEntity == null || !(mc.targetedEntity instanceof PlayerEntity Entity)) return;
         if (SalHack.getFriendManager().isFriend(Entity)) {
             SalHack.getFriendManager().removeFriend(Entity.getEntityName());

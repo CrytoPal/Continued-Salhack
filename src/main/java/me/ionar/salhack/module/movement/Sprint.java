@@ -6,9 +6,8 @@ import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 
 public final class Sprint extends Module {
-    public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode", "M"}, "The sprint mode to use.", Modes.Legit);
-
-    public enum Modes {
+    public final Value<modes> mode = new Value<>("Mode", new String[]{"Mode", "M"}, "The sprint mode to use.", modes.Legit);
+    public enum modes {
         Rage,
         Legit
     }
@@ -25,13 +24,13 @@ public final class Sprint extends Module {
 
     @Override
     public String getMetaData() {
-        return String.valueOf(Mode.getValue());
+        return String.valueOf(mode.getValue());
     }
 
     @EventHandler
-    private void OnPlayerUpdate(TickEvent event) {
+    private void onPlayerUpdate(TickEvent event) {
         if (event.isPre() || mc.player == null) return;
-        switch (Mode.getValue()) {
+        switch (mode.getValue()) {
             case Rage -> {
                 if (!(mc.player.getHungerManager().getFoodLevel() <= 6)) mc.player.setSprinting(true);
             } case Legit -> {

@@ -31,10 +31,10 @@ public class PingComponent extends HudComponentItem {
 
             final String ping = "Ping " + Formatting.WHITE + playerListEntry.getLatency();
 
-            if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), ping, (int) (getPositionX()), (int) (getPositionY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+            if (HudModule.customFont.getValue()) {
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), ping, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) getPositionX(), (int) getPositionY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
             }
             Rainbow.onRender();
             setWidth(mc.textRenderer.getWidth(ping));

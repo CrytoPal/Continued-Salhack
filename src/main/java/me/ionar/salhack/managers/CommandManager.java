@@ -52,7 +52,7 @@ public class CommandManager {
                 }
             };
 
-            commands.add(new ModuleCommand(p_Mod.getDisplayName(), p_Mod.getDescription(), l_Listener, p_Mod.getValueList()));
+            commands.add(new ModuleCommand(p_Mod.getDisplayName(), p_Mod.getDescription(), l_Listener, p_Mod.getValues()));
         });
 
         SalHack.getHudManager().componentItems.forEach(p_Item -> {
@@ -71,7 +71,7 @@ public class CommandManager {
 
                 @Override
                 public void OnRename(String p_NewName) {
-                    p_Item.SetDisplayName(p_NewName, true);
+                    p_Item.setDisplayName(p_NewName, true);
                 }
             };
 

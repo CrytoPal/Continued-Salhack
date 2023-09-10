@@ -8,7 +8,6 @@ import me.ionar.salhack.gui.click.component.item.ComponentItemMod;
 import me.ionar.salhack.gui.click.component.item.ComponentItemValue;
 import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
 import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.Value;
@@ -43,12 +42,12 @@ public class MenuComponentModList extends MenuComponent {
             };
 
             int flags = ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip;
-            if (!module.getValueList().isEmpty()) flags |= ComponentItem.HasValues;
+            if (!module.getValues().isEmpty()) flags |= ComponentItem.HasValues;
             int state = 0;
             if (module.isEnabled()) state |= ComponentItem.Clicked;
             ComponentItem componentItem = new ComponentItemMod(module, module.getDisplayName(), module.getDescription(), flags, state, listener, Width, Height);
 
-            for (Value value : module.getValueList()) {
+            for (Value value : module.getValues()) {
                 listener = new ComponentItemListener() {
                     @Override
                     public void OnEnabled() {}

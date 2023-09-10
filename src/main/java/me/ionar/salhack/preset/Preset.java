@@ -18,12 +18,12 @@ import me.ionar.salhack.module.Value;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class Preset {
-    private String DisplayName;
+    private String displayName;
     private final ConcurrentHashMap<String, ConcurrentHashMap<String, String>> moduleValues = new ConcurrentHashMap<>();
-    private boolean Active;
+    private boolean active;
 
     public Preset(String displayName) {
-        DisplayName = displayName;
+        this.displayName = displayName;
     }
 
     public void initNewPreset() {
@@ -36,7 +36,7 @@ public class Preset {
         valsMap.put("display", module.getDisplayName());
         valsMap.put("keybind", String.valueOf(module.getKey()));
         valsMap.put("hidden",  module.isHidden() ? "true" : "false");
-        module.getValueList().forEach(val -> {if (val.getValue() != null) valsMap.put(val.getName(), val.getValue().toString());});
+        module.getValues().forEach(val -> {if (val.getValue() != null) valsMap.put(val.getName(), val.getValue().toString());});
         moduleValues.put(module.getDisplayName(), valsMap);
         save();
     }
@@ -51,7 +51,7 @@ public class Preset {
             String key = (String) entry.getKey();
             String val = (String) entry.getValue();
             if (key.equals("displayName")) {
-                DisplayName = val;
+                displayName = val;
             }
         }
 
@@ -72,8 +72,8 @@ public class Preset {
 
     public void save() {
         Map<String, String> map = new HashMap<>();
-        map.put("displayName", DisplayName);
-        SalHack.getFilesManager().write("SalHack/Presets/" + DisplayName + "/" + DisplayName + ".json", SalHack.gson.toJson(map, Map.class));
+        map.put("displayName", displayName);
+        SalHack.getFilesManager().write("SalHack/Presets/" + displayName + "/" + displayName + ".json", SalHack.gson.toJson(map, Map.class));
         for (Entry<String, ConcurrentHashMap<String, String>> entry : moduleValues.entrySet()) {
             map = new HashMap<>();
             for (Entry<String, String> value : entry.getValue().entrySet()) {
@@ -81,23 +81,23 @@ public class Preset {
                 String val = value.getValue();
                 map.put(key, val);
             }
-            SalHack.getFilesManager().write("SalHack/Presets/"+DisplayName+"/Modules/"+entry.getKey()+".json", SalHack.gson.toJson(map, Map.class));
+            SalHack.getFilesManager().write("SalHack/Presets/"+ displayName +"/Modules/"+entry.getKey()+".json", SalHack.gson.toJson(map, Map.class));
         }
     }
 
     public String getName() {
-        return DisplayName;
+        return displayName;
     }
 
     public boolean isActive() {
-        return Active;
+        return active;
     }
 
     public void setActive(boolean b) {
-        Active = b;
+        active = b;
     }
 
-    public void initValuesForModule(Module module) {
+    public void init(Module module) {
         if (moduleValues.containsKey(module.getDisplayName())) {
             for (Entry<String, String> value : moduleValues.get(module.getDisplayName()).entrySet()) {
                 String Key = value.getKey();
@@ -110,32 +110,32 @@ public class Preset {
                 }
 
                 if (Key.equalsIgnoreCase("display")) {
-                    module.DisplayName = Value;
+                    module.displayName = Value;
                     continue;
                 }
 
                 if (Key.equalsIgnoreCase("keybind")) {
-                    module.Key = Integer.parseInt(Value);
+                    module.key = Integer.parseInt(Value);
                     continue;
                 }
 
                 if (Key.equalsIgnoreCase("hidden")) {
-                    module.Hidden = Value.equalsIgnoreCase("true");
+                    module.hidden = Value.equalsIgnoreCase("true");
                     continue;
                 }
 
-                for (Value valueObj : module.ValueList) {
+                for (Value valueObj : module.values) {
                     if (valueObj.getName().equalsIgnoreCase(value.getKey())) {
                         if (valueObj.getValue() instanceof Number && !(valueObj.getValue() instanceof Enum)) {
-                            if (valueObj.getValue() instanceof Integer) valueObj.SetForcedValue(Integer.parseInt(Value));
-                            else if (valueObj.getValue() instanceof Float) valueObj.SetForcedValue(Float.parseFloat(Value));
-                            else if (valueObj.getValue() instanceof Double) valueObj.SetForcedValue(Double.parseDouble(Value));
+                            if (valueObj.getValue() instanceof Integer) valueObj.setForcedValue(Integer.parseInt(Value));
+                            else if (valueObj.getValue() instanceof Float) valueObj.setForcedValue(Float.parseFloat(Value));
+                            else if (valueObj.getValue() instanceof Double) valueObj.setForcedValue(Double.parseDouble(Value));
                         } else if (valueObj.getValue() instanceof Boolean) {
-                            valueObj.SetForcedValue(Value.equalsIgnoreCase("true"));
+                            valueObj.setForcedValue(Value.equalsIgnoreCase("true"));
                         } else if (valueObj.getValue() instanceof Enum) {
-                            Enum e = valueObj.GetEnumReal(Value);
-                            if (e != null) valueObj.SetForcedValue(e);
-                        } else if (valueObj.getValue() instanceof String) valueObj.SetForcedValue(Value);
+                            Enum e = valueObj.getEnumReal(Value);
+                            if (e != null) valueObj.setForcedValue(e);
+                        } else if (valueObj.getValue() instanceof String) valueObj.setForcedValue(Value);
                         break;
                     }
                 }

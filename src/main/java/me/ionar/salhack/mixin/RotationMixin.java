@@ -15,9 +15,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class RotationMixin {
     @Inject(method = "getRenderingSeed", at = @At("HEAD"), cancellable = true)
     private void SeedRender(BlockState state, BlockPos pos, CallbackInfoReturnable<Long> cir) {
-        //if (SalHack.getModuleManager().getMod(CoordsSpooferModule.class) != null) {
-        //    CoordsSpooferModule coordspoof =  (CoordsSpooferModule) SalHack.getModuleManager().getMod(CoordsSpooferModule.class);
-        //    if (coordspoof.isEnabled() && coordspoof.TextureSpoof.getValue()) cir.setReturnValue((long) coordspoof.CoordsX.getValue() + (long) coordspoof.CoordsZ.getValue());
-        //}
+        if (SalHack.getModuleManager().getMod(CoordsSpooferModule.class) != null) {
+            CoordsSpooferModule coordspoof =  (CoordsSpooferModule) SalHack.getModuleManager().getMod(CoordsSpooferModule.class);
+            if (coordspoof.isEnabled() && coordspoof.textureSpoof.getValue()) cir.setReturnValue((long) coordspoof.coordsX.getValue() + (long) coordspoof.coordsZ.getValue());
+        }
     }
 }
