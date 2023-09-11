@@ -19,6 +19,7 @@ import me.ionar.salhack.module.misc.FriendsModule;
 import me.ionar.salhack.module.misc.MiddleClickFriendsModule;
 import me.ionar.salhack.module.movement.ElytraFlyModule;
 import me.ionar.salhack.module.misc.Rotation;
+import me.ionar.salhack.module.movement.Flight;
 import me.ionar.salhack.module.movement.SpeedModule;
 import me.ionar.salhack.module.movement.Sprint;
 import me.ionar.salhack.module.render.Fullbright;
@@ -55,6 +56,7 @@ public class ModuleManager {
 
         /// Movement
         Add(new ElytraFlyModule());
+        Add(new Flight());
         Add(new SpeedModule());
         Add(new Sprint());
         Add(new Rotation());
