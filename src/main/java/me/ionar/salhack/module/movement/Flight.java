@@ -25,6 +25,7 @@ public class Flight extends Module {
         if (mc.player != null) {
             flying = true;
             mc.player.getAbilities().flying = true;
+            if (mc.player.getAbilities().creativeMode) return;
             mc.player.getAbilities().allowFlying = true;
         }
     }
@@ -34,6 +35,7 @@ public class Flight extends Module {
         if (mc.player != null) {
             flying = false;
             mc.player.getAbilities().flying = false;
+            if (mc.player.getAbilities().creativeMode) return;
             mc.player.getAbilities().allowFlying = false;
         }
     }
@@ -42,7 +44,7 @@ public class Flight extends Module {
     public void onTick(TickEvent event) {
         if (event.isPre()) return;
         if (mc.player != null) {
-            if (flying == true) {
+            if (flying) {
                 mc.player.getAbilities().setFlySpeed(Speed.getValue());
             }
         }
