@@ -14,7 +14,7 @@ public class SalHackMod implements ClientModInitializer {
     public static final Logger log = LoggerFactory.getLogger("sal");
 	public static final String NAME = "SalHack";
 	public static final String MOD_ID = "sal-hack";
-	public static final String VERSION = "v0.6 Beta";
+	public static final String VERSION = "v0.7 Beta";
 	public static final IEventBus NORBIT_EVENT_BUS = EventBus.threadSafe();
 
 	@Override
