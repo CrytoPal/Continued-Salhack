@@ -1,6 +1,7 @@
 package me.ionar.salhack.main;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.entity.Entity;
 
 public class Wrapper {
 
@@ -10,4 +11,7 @@ public class Wrapper {
         return mc;
     }
 
+    public static Entity GetPlayer() {
+        return mc.player;
+    }
 }

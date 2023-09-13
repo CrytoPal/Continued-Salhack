@@ -6,19 +6,21 @@
     "defaultRequire": 1
   },
   "client": [
-    "GameRendererMixin",
-    "RotationMixin",
+    "ClientPlayerEntityAccessor",
     "CoordsModifyPosMixin",
+    "GameRendererMixin",
     "KeyboardMixin",
+    "MinecraftClientAccessor",
+    "MixinClientConnection",
     "MixinClientPlayerEntity",
+    "MixinClientWorld",
     "MixinEntityRenderer",
     "MixinIngameHud",
     "MixinMinecraftClient",
     "MixinMouse",
+    "MixinPlayerEntity",
     "MixinRenderTickCounter",
     "PlayerListHudMixin",
-    "MinecraftClientAccessor",
-    "MixinClientConnection",
-    "MixinPlayerEntity"
+    "RotationMixin"
   ]
 }

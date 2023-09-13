@@ -11,6 +11,7 @@ import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.Value;
+import me.ionar.salhack.module.combat.AutoCrystalRewrite;
 import me.ionar.salhack.module.combat.Offhand;
 import me.ionar.salhack.module.combat.KillAura;
 import me.ionar.salhack.module.exploit.Bowbomb;
@@ -42,6 +43,7 @@ public class ModuleManager {
         /// Combat
         Add(new KillAura());
         Add(new Offhand());
+        Add(new AutoCrystalRewrite());
 
         /// Exploit
         Add(new Bowbomb());

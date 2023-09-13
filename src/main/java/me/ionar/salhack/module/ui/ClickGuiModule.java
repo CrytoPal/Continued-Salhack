@@ -26,9 +26,11 @@ public final class ClickGuiModule extends Module {
 
         if (ClickGui == null) ClickGui = new ClickGuiScreen(this, (ColorsModule)ModuleManager.Get().GetMod(ColorsModule.class));
 
-        //if (mc.world != null){
+        try{
             System.out.println("open clickgui");
             mc.setScreen(ClickGui);
-        //}
+        } catch (NullPointerException exception){
+            System.out.println("invoked before init..");
+        }
     }
 }
