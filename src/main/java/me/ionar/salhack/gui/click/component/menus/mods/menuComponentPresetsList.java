@@ -2,25 +2,20 @@ package me.ionar.salhack.gui.click.component.menus.mods;
 
 import me.ionar.salhack.gui.click.component.MenuComponent;
 import me.ionar.salhack.gui.click.component.item.ComponentItem;
-import me.ionar.salhack.gui.click.component.item.ComponentPresetItem;
+import me.ionar.salhack.gui.click.component.item.componentPresetItem;
 import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
 import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.managers.PresetsManager;
-import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.ui.ClickGuiModule;
 import me.ionar.salhack.module.ui.ColorsModule;
 import me.ionar.salhack.preset.Preset;
 
-public class MenuComponentPresetsList extends MenuComponent {
-    private final float Width = 105f;
-    private final float Height = 11f;
-
-    public MenuComponentPresetsList(String displayName, ModuleType moduleType, float X, float Y, String image, ColorsModule colorsModule, ClickGuiModule clickGuiModule) {
-        super(displayName, X, Y, 100f, 105f, image, colorsModule, clickGuiModule);
-        SalHack.getPresetsManager().getItems().forEach(this::AddPreset);
+public class menuComponentPresetsList extends MenuComponent {
+    public menuComponentPresetsList(String displayName, float x, float y, String image, ColorsModule colorsModule, ClickGuiModule clickGuiModule) {
+        super(displayName, x, y, 100f, 105f, image, colorsModule, clickGuiModule);
+        SalHack.getPresetsManager().getItems().forEach(this::addPreset);
     }
 
-    public void AddPreset(Preset preset) {
+    public void addPreset(Preset preset) {
         ComponentItemListener listener = new ComponentItemListener() {
             @Override
             public void OnEnabled() {}
@@ -41,25 +36,25 @@ public class MenuComponentPresetsList extends MenuComponent {
         int flags = ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip;
         int state = 0;
         if (preset.isActive()) state |= ComponentItem.Clicked;
-
-        ComponentItem componentItem = new ComponentPresetItem(preset, flags, state, listener, Width, Height);
+        float width = 105f;
+        float height = 11f;
+        ComponentItem componentItem = new componentPresetItem(preset, flags, state, listener, width, height);
 
         // todo: add values for deleting, renaming, and copying
 
-        AddItem(componentItem);
+        addItem(componentItem);
     }
 
-    public void RemovePreset(Preset toRemove) {
+    public void removePreset(Preset toRemove) {
         ComponentItem removeItem = null;
-        for (ComponentItem componentItem : this.Items) {
-            if (componentItem instanceof ComponentPresetItem) {
-                ComponentPresetItem comp = (ComponentPresetItem) componentItem;
+        for (ComponentItem componentItem : this.componentItems) {
+            if (componentItem instanceof componentPresetItem comp) {
                 if (comp.getPreset() == toRemove) {
                     removeItem = comp;
                     break;
                 }
             }
         }
-        if (removeItem != null) this.Items.remove(removeItem);
+        if (removeItem != null) this.componentItems.remove(removeItem);
     }
 }

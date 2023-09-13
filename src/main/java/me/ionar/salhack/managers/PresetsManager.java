@@ -7,13 +7,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.io.FileUtils;
 
-import me.ionar.salhack.gui.click.component.menus.mods.MenuComponentPresetsList;
+import me.ionar.salhack.gui.click.component.menus.mods.menuComponentPresetsList;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.preset.Preset;
 // DO NOT TOUCH THESE THEY MAY BREAK OPENING THE GUI
 public class PresetsManager {
     private List<Preset> _presets = new CopyOnWriteArrayList<>();
-    private MenuComponentPresetsList _presetList;
+    private menuComponentPresetsList _presetList;
 
     public void init() {
         File[] directories = new File(SalHack.getFilesManager().getCurrentDirectory() + "/SalHack/Presets/").listFiles(File::isDirectory);
@@ -53,7 +53,7 @@ public class PresetsManager {
             setPresetActive(preset);
 
             if (_presetList != null) {
-                _presetList.AddPreset(preset);
+                _presetList.addPreset(preset);
             }
 
         } catch (Exception e) {
@@ -81,7 +81,7 @@ public class PresetsManager {
             }
             _presets.remove(toRemove);
             if (_presetList != null) {
-                _presetList.RemovePreset(toRemove);
+                _presetList.removePreset(toRemove);
             }
         }
     }
@@ -111,7 +111,7 @@ public class PresetsManager {
     }
 
 
-    public void initializeGUIComponent(MenuComponentPresetsList presetList) {
+    public void initializeGUIComponent(menuComponentPresetsList presetList) {
         _presetList = presetList;
     }
 }

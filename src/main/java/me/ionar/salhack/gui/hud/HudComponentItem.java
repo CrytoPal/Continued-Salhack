@@ -234,19 +234,19 @@ public class HudComponentItem {
         }
     }
 
-    public int GetSide() {
+    public int getSide() {
         return side;
     }
 
-    public int GetClampLevel() {
+    public int getClampLevel() {
         return clampLevel;
     }
 
-    public boolean HasFlag(int flag) {
+    public boolean hasFlag(int flag) {
         return (flags & flag) != 0;
     }
 
-    public void AddFlag(int flags) {
+    public void addFlag(int flags) {
         this.flags |= flags;
     }
 

@@ -15,38 +15,29 @@ import java.text.DecimalFormat;
 public class TPSComponent extends HudComponentItem {
     private final HudModule hud = (HudModule) SalHack.getModuleManager().getMod(HudModule.class);
 
-    private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
-    private final int i = 0;
+    private final SalRainbowUtil rainbow = new SalRainbowUtil(9);
+    final DecimalFormat formatter = new DecimalFormat("#.#");
+
     public TPSComponent() {
         super("TPS", 2, 33);
         setHidden(false);
     }
 
-    final DecimalFormat Formatter = new DecimalFormat("#.#");
-
     public String format(double input) {
-        String result = Formatter.format(input);
-
-        if (!result.contains("."))
-            result += ".0";
-
+        String result = formatter.format(input);
+        if (!result.contains(".")) result += ".0";
         return result;
     }
 
     @Override
     public void onRender(int mouseX, int mouseY, float partialTicks, DrawContext context) {
         super.onRender(mouseX, mouseY, partialTicks, context);
-
         final String tickrate = "TPS " + Formatting.WHITE +  format(SalHack.getTickRateManager().getTickRate());
-
-        if (HudModule.customFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), tickrate, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
-        } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(tickrate), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
-        }
-        Rainbow.onRender();
-        setWidth(Wrapper.GetMC().textRenderer.getWidth(tickrate));
-        setHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        if (HudModule.customFont.getValue()) FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), tickrate, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor(), true);
+        else context.drawTextWithShadow(mc.textRenderer, Text.of(tickrate), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor());
+        rainbow.onRender();
+        setWidth(mc.textRenderer.getWidth(tickrate));
+        setHeight(mc.textRenderer.fontHeight);
     }
 
 }

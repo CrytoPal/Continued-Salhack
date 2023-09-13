@@ -7,19 +7,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class RendererFontAdapter implements FontAdapter {
-
     final FontRenderer fontRenderer;
+    final float size;
 
-    final float si;
-
-    public RendererFontAdapter(Font fnt, float si) {
-        //this.fontRenderer = new FontRenderer(new Font[] { fnt }, si);
-        this.fontRenderer = new FontRenderer(fnt, (int) si);
-        this.si = si;
+    public RendererFontAdapter(Font font, float size) {
+        this.fontRenderer = new FontRenderer(font, (int) size);
+        this.size = size;
     }
 
     public float getSize() {
-        return si;
+        return size;
     }
 
     public FontRenderer getFontRenderer() {
@@ -29,9 +26,7 @@ public class RendererFontAdapter implements FontAdapter {
     @Override
     public void drawString(MatrixStack matrices, String text, float x, float y, int color) {
         int color1 = color;
-        if ((color1 & 0xfc000000) == 0) {
-            color1 |= 0xff000000;
-        }
+        if ((color1 & 0xfc000000) == 0) color1 |= 0xff000000;
         float a = (float) (color1 >> 24 & 255) / 255.0F;
         float r = (float) (color1 >> 16 & 255) / 255.0F;
         float g = (float) (color1 >> 8 & 255) / 255.0F;
@@ -44,36 +39,31 @@ public class RendererFontAdapter implements FontAdapter {
         drawString(matrices, text, (float) x, (float) y, color);
     }
 
-    public void drawString(MatrixStack stack, ColoredTextSegment cts, float x, float y) {
-        float v = x;
-        ArrayList<ColoredTextSegment> ctsC = new ArrayList<>();
-        ctsC.add(cts);
-        while (!ctsC.isEmpty()) {
-            ColoredTextSegment poll = ctsC.get(0);
-            ctsC.remove(0);
-            ctsC.addAll(0, Arrays.asList(poll.children()));
+    public void drawString(MatrixStack stack, ColoredTextSegment coloredTextSegment, float x, float y) {
+        float newX = x;
+        ArrayList<ColoredTextSegment> coloredTextSegments = new ArrayList<>();
+        coloredTextSegments.add(coloredTextSegment);
+        while (!coloredTextSegments.isEmpty()) {
+            ColoredTextSegment poll = coloredTextSegments.get(0);
+            coloredTextSegments.remove(0);
+            coloredTextSegments.addAll(0, Arrays.asList(poll.children()));
             String text = poll.text();
-            if (text.isEmpty()) {
-                continue;
-            }
-
-            drawString(stack, text, v, y, poll.r(), poll.g(), poll.b(), poll.a());
-            v += getStringWidth(text);
+            if (text.isEmpty()) continue;
+            drawString(stack, text, newX, y, poll.r(), poll.g(), poll.b(), poll.a());
+            newX += getStringWidth(text);
         }
     }
 
     @Override
     public void drawString(MatrixStack matrices, String text, float x, float y, float r, float g, float b, float a) {
-        float v = AlphaOverride.compute((int) (a * 255)) / 255;
-        fontRenderer.drawString(matrices, text, x, y, r, g, b, v);
+        float alpha = AlphaOverride.compute((int) (a * 255)) / 255;
+        fontRenderer.drawString(matrices, text, x, y, r, g, b, alpha);
     }
 
     @Override
     public void drawCenteredString(MatrixStack matrices, String text, double x, double y, int color) {
         int color1 = color;
-        if ((color1 & 0xfc000000) == 0) {
-            color1 |= 0xff000000;
-        }
+        if ((color1 & 0xfc000000) == 0) color1 |= 0xff000000;
         float a = (float) (color1 >> 24 & 255) / 255.0F;
         float r = (float) (color1 >> 16 & 255) / 255.0F;
         float g = (float) (color1 >> 8 & 255) / 255.0F;
@@ -83,8 +73,8 @@ public class RendererFontAdapter implements FontAdapter {
 
     @Override
     public void drawCenteredString(MatrixStack matrices, String text, double x, double y, float r, float g, float b, float a) {
-        float v = AlphaOverride.compute((int) (a * 255)) / 255;
-        fontRenderer.drawCenteredString(matrices, text, (float) x, (float) y, r, g, b, v);
+        float alpha = AlphaOverride.compute((int) (a * 255)) / 255;
+        fontRenderer.drawCenteredString(matrices, text, (float) x, (float) y, r, g, b, alpha);
     }
 
     @Override
@@ -122,9 +112,7 @@ public class RendererFontAdapter implements FontAdapter {
     public String trimStringToWidth(String in, double width) {
         StringBuilder sb = new StringBuilder();
         for (char c : in.toCharArray()) {
-            if (getStringWidth(sb.toString() + c) >= width) {
-                return sb.toString();
-            }
+            if (getStringWidth(sb.toString() + c) >= width) return sb.toString();
             sb.append(c);
         }
         return sb.toString();

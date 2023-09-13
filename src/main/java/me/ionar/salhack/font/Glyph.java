@@ -20,15 +20,15 @@ import java.nio.ByteBuffer;
 
 public class Glyph {
     final Texture imageTex;
-    final Font f;
+    final Font font;
     final char c;
     final int offsetX = 5;
     final int offsetY = 5;
     Rectangle2D dimensions;
 
-    public Glyph(char c, Font f) {
-        this.imageTex = new Texture("font/glyphs/" + (int) c + "-" + f.getName().toLowerCase().hashCode() + (int) Math.floor(Math.random() * 0xFFFF));
-        this.f = f;
+    public Glyph(char c, Font font) {
+        this.imageTex = new Texture("font/glyphs/" + (int) c + "-" + font.getName().toLowerCase().hashCode() + (int) Math.floor(Math.random() * 0xFFFF));
+        this.font = font;
         this.c = c;
         generateTexture();
     }
@@ -44,12 +44,12 @@ public class Glyph {
     void generateTexture() {
         AffineTransform affineTransform = new AffineTransform();
         FontRenderContext fontRenderContext = new FontRenderContext(affineTransform, true, true);
-        Rectangle2D dim = f.getStringBounds(String.valueOf(c), fontRenderContext);
+        Rectangle2D dim = font.getStringBounds(String.valueOf(c), fontRenderContext);
         this.dimensions = dim;
         BufferedImage bufferedImage = new BufferedImage((int) Math.ceil(dim.getWidth()) + 10, (int) Math.ceil(dim.getHeight()) + 10, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bufferedImage.createGraphics();
 
-        g.setFont(f);
+        g.setFont(font);
         // Set Color to Transparent
         g.setColor(new Color(255, 255, 255, 0));
         // Set the image background to transparent

@@ -1,6 +1,7 @@
 package me.ionar.salhack.util.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
@@ -18,11 +19,10 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
-import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -38,7 +38,6 @@ public class TransformPositionUtil {
     private static final MinecraftClient mc = Wrapper.GetMC();
     private static final char randomStart = 'a';
     private static final char randomEnd = 'z';
-    private static final Random random = new Random();
 
     /**
      * <p>Sets up rendering and resets everything that should be reset</p>
@@ -286,7 +285,7 @@ public class TransformPositionUtil {
     }
 
     private static String randomString(int length) {
-        return IntStream.range(0, length).mapToObj(operand -> String.valueOf((char) random.nextInt(randomStart))).collect(Collectors.joining());
+        return IntStream.range(0, length).mapToObj(operand -> String.valueOf((char) SalHack.random.nextInt(randomStart))).collect(Collectors.joining());
     }
 
     /**

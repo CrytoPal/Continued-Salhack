@@ -8,37 +8,36 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Formatting;
 
 public class Command {
-    private final String Name;
-    private final String Description;
+    private final String name;
+    private final String description;
     protected final MinecraftClient mc = MinecraftClient.getInstance();
-    protected final List<String> CommandChunks = new ArrayList<String>();
+    protected final List<String> commandChunks = new ArrayList<>();
 
-    public Command(String CName, String CDescription) {
-        Name = CName;
-        Description = CDescription;
+    public Command(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
-    public String GetName() {
-        return Name;
+    public String getName() {
+        return name;
     }
 
-    public String GetDescription() {
-        return Description;
+    public String getDescription() {
+        return description;
     }
 
-    public void ProcessCommand(String p_Args) {
-    }
+    public void processCommand(String args) {}
 
 
-    protected void SendToChat(String p_Desc) {
-        SalHack.sendMessage(String.format("%s[%s]: %s", Formatting.LIGHT_PURPLE, GetName(), Formatting.YELLOW + p_Desc));
+    protected void SendToChat(String description) {
+        SalHack.sendMessage(String.format("%s[%s]: %s", Formatting.LIGHT_PURPLE, getName(), Formatting.YELLOW + description));
     }
 
     public List<String> GetChunks() {
-        return CommandChunks;
+        return commandChunks;
     }
 
     public String getHelp() {
-        return Description;
+        return description;
     }
 }

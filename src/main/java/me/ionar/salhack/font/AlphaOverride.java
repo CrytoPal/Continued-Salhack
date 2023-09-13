@@ -15,10 +15,7 @@ public class AlphaOverride {
 
     public static float compute(int initialAlpha) {
         float alpha = initialAlpha;
-        for (Float alphaMultiplier : alphaMultipliers) {
-            alpha *= alphaMultiplier;
-        }
+        for (Float alphaMultiplier : alphaMultipliers) alpha *= alphaMultiplier;
         return alpha;
     }
-
 }

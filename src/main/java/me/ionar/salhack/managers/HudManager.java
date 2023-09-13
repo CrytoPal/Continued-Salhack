@@ -128,7 +128,7 @@ public class HudManager {
         context.getMatrices().push();
 
         componentItems.forEach(p_Item -> {
-            if (!p_Item.isHidden() && !p_Item.HasFlag(HudComponentItem.onlyVisibleInHudEditor)) {
+            if (!p_Item.isHidden() && !p_Item.hasFlag(HudComponentItem.onlyVisibleInHudEditor)) {
                 try {
                     p_Item.onRender(0, 0, p_PartialTicks, context);
                 }
@@ -158,10 +158,10 @@ public class HudManager {
             map.put("visible", !p_Item.isHidden() ? "true" : "false");
             map.put("PositionX", String.valueOf(p_Item.getPositionX()));
             map.put("PositionY", String.valueOf(p_Item.getPositionY()));
-            map.put("ClampLevel", String.valueOf(p_Item.GetClampLevel()));
+            map.put("ClampLevel", String.valueOf(p_Item.getClampLevel()));
             map.put("ClampPositionX", String.valueOf(p_Item.getPositionX()));
             map.put("ClampPositionY", String.valueOf(p_Item.getPositionY()));
-            map.put("Side", String.valueOf(p_Item.GetSide()));
+            map.put("Side", String.valueOf(p_Item.getSide()));
 
             for (Value l_Val : p_Item.values)
             {

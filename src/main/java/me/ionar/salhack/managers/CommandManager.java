@@ -34,19 +34,19 @@ public class CommandManager {
         SalHack.getModuleManager().getModuleList().forEach(p_Mod -> {
             ModuleCommandListener l_Listener = new ModuleCommandListener() {
                 @Override
-                public void OnHide()
+                public void onHide()
                 {
                     p_Mod.setHidden(!p_Mod.isHidden());
                 }
 
                 @Override
-                public void OnToggle()
+                public void onToggle()
                 {
                     p_Mod.toggle(true);
                 }
 
                 @Override
-                public void OnRename(String p_NewName)
+                public void onRename(String p_NewName)
                 {
                     p_Mod.setDisplayName(p_NewName);
                 }
@@ -58,19 +58,19 @@ public class CommandManager {
         SalHack.getHudManager().componentItems.forEach(p_Item -> {
             ModuleCommandListener l_Listener = new ModuleCommandListener() {
                 @Override
-                public void OnHide()
+                public void onHide()
                 {
                     p_Item.setHidden(!p_Item.isHidden());
                 }
 
                 @Override
-                public void OnToggle()
+                public void onToggle()
                 {
                     p_Item.setHidden(!p_Item.isHidden());
                 }
 
                 @Override
-                public void OnRename(String p_NewName) {
+                public void onRename(String p_NewName) {
                     p_Item.setDisplayName(p_NewName, true);
                 }
             };
@@ -79,7 +79,7 @@ public class CommandManager {
         });
 
         /// Sort by alphabet
-        commands.sort(Comparator.comparing(Command::GetName));
+        commands.sort(Comparator.comparing(Command::getName));
     }
 
     private ArrayList<Command> commands = new ArrayList<Command>();
@@ -90,13 +90,13 @@ public class CommandManager {
 
     public final List<Command> getCommandsLike(String p_Like) {
         return commands.stream()
-                .filter(p_Command -> p_Command.GetName().toLowerCase().startsWith(p_Like.toLowerCase()))
+                .filter(p_Command -> p_Command.getName().toLowerCase().startsWith(p_Like.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
     public Command getCommandLike(String p_Like) {
         for (Command l_Command : commands) {
-            if (l_Command.GetName().toLowerCase().startsWith(p_Like.toLowerCase()))
+            if (l_Command.getName().toLowerCase().startsWith(p_Like.toLowerCase()))
                 return l_Command;
         }
 

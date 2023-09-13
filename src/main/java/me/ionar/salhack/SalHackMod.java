@@ -22,7 +22,7 @@ public class SalHackMod implements ClientModInitializer {
 		// Caller-sensitive, needs to be called from a class within the specified package
 		NORBIT_EVENT_BUS.registerLambdaFactory("me.ionar.salhack", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
 		log.info("Welcome to " + NAME);
-		SalHack.Init();
+		SalHack.init();
 		NORBIT_EVENT_BUS.subscribe(this);
 	}
 }

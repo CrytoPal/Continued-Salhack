@@ -2,6 +2,7 @@ package me.ionar.salhack.gui.click.component.item;
 
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.util.KeyUtil;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.util.Formatting;
 import org.lwjgl.glfw.GLFW;
 
@@ -11,92 +12,81 @@ import me.ionar.salhack.module.Module;
 import me.ionar.salhack.util.Timer;
 
 public class ComponentItemKeybind extends ComponentItem {
-    public boolean Listening = false;
-    final Module Module;
-    private int LastKey = GLFW.GLFW_KEY_UNKNOWN;
+    public boolean listening = false;
+    final Module module;
+    private int lastKey = GLFW.GLFW_KEY_UNKNOWN;
     private final Timer timer = new Timer();
-    private String DisplayString = "";
+    private String displayString = "";
+    private final MinecraftClient mc = Wrapper.GetMC();
 
     public ComponentItemKeybind(Module module, String displayText, String description, int flags, int state, ComponentItemListener listener, float width, float height) {
         super(displayText, description, flags, state, listener, width, height);
-        Module = module;
-
-        Flags |= ComponentItem.RectDisplayAlways;
+        this.module = module;
+        this.flags |= ComponentItem.RectDisplayAlways;
     }
 
     @Override
-    public String GetDisplayText() {
-        if (Listening) return "Press a Key...";
-
-        String displayText = "Keybind " + KeyUtil.getKeyName(Module.getKey());
-
-        if (HasState(ComponentItem.Hovered) && Wrapper.GetMC().textRenderer.getWidth(displayText) > GetWidth() - 3) {
-            if (DisplayString == null) DisplayString = "Keybind " + KeyUtil.getKeyName(Module.getKey()) + " ";
-
-            displayText = DisplayString;
-            float width = Wrapper.GetMC().textRenderer.getWidth(displayText);
-
-            while (width > GetWidth() - 3) {
-                width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+    public String getDisplayText() {
+        if (listening) return "Press a Key...";
+        String displayText = "Keybind " + KeyUtil.getKeyName(module.getKey());
+        if (hasState(ComponentItem.Hovered) && mc.textRenderer.getWidth(displayText) > getWidth() - 3) {
+            if (displayString == null) displayString = "Keybind " + KeyUtil.getKeyName(module.getKey()) + " ";
+            displayText = displayString;
+            float width = mc.textRenderer.getWidth(displayText);
+            while (width > getWidth() - 3) {
+                width = mc.textRenderer.getWidth(displayText);
                 displayText = displayText.substring(0, displayText.length() - 1);
             }
-
-            if (timer.passed(75) && !DisplayString.isEmpty()) {
-                String l_FirstChar = String.valueOf(DisplayString.charAt(0));
-                DisplayString = DisplayString.substring(1) + l_FirstChar;
+            if (timer.passed(75) && !displayString.isEmpty()) {
+                String l_FirstChar = String.valueOf(displayString.charAt(0));
+                displayString = displayString.substring(1) + l_FirstChar;
                 timer.reset();
             }
-
             return displayText;
-        } else DisplayString = null;
-
-        float width = Wrapper.GetMC().textRenderer.getWidth(displayText);
-
-        while (width > GetWidth() - 3) {
-            width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+        } else displayString = null;
+        float width = mc.textRenderer.getWidth(displayText);
+        while (width > getWidth() - 3) {
+            width = mc.textRenderer.getWidth(displayText);
             displayText = displayText.substring(0, displayText.length() - 1);
         }
-
         return displayText;
     }
 
     @Override
-    public String GetDescription() {
-        return "Sets the key of the Module: " + Module.getDisplayName();
+    public String getDescription() {
+        return "Sets the key of the Module: " + module.getDisplayName();
     }
 
     @Override
-    public void OnMouseClick(int mouseX, int mouseY, int mouseButton) {
-        super.OnMouseClick(mouseX, mouseY, mouseButton);
-
-        LastKey = GLFW.GLFW_KEY_UNKNOWN;
-
-        if (mouseButton == 0) Listening = !Listening;
-        else if (mouseButton == 1) Listening = false;
+    public void onMouseClick(int mouseX, int mouseY, int mouseButton) {
+        super.onMouseClick(mouseX, mouseY, mouseButton);
+        lastKey = GLFW.GLFW_KEY_UNKNOWN;
+        if (mouseButton == 0) listening = !listening;
+        else if (mouseButton == 1) listening = false;
         else if (mouseButton == 2) {
-            Module.setKey(GLFW.GLFW_KEY_UNKNOWN);
-            SalHack.sendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + "Unbinded the module: " + Formatting.GOLD + Module.getDisplayName());
-            Listening = false;
+            module.setKey(GLFW.GLFW_KEY_UNKNOWN);
+            SalHack.sendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + "Unbound the module: " + Formatting.GOLD + module.getDisplayName());
+            listening = false;
         }
     }
 
     @Override
     public void keyTyped(int keyCode, int scanCode, int modifiers) {
-        if (Listening) {
+        if (listening) {
             int key;
             if (keyCode == GLFW.GLFW_KEY_END || keyCode == GLFW.GLFW_KEY_BACKSPACE || keyCode == GLFW.GLFW_KEY_DELETE) key = 0;
             else key = keyCode;
-            LastKey = key;
+            lastKey = key;
         }
         super.keyTyped(keyCode, scanCode, modifiers);
     }
 
     @Override
-    public void Update() {
-        if (Listening && LastKey != GLFW.GLFW_KEY_UNKNOWN) {
-            Module.setKey(LastKey);
-            SalHack.sendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + "Set the key of " + Formatting.GOLD + Module.getDisplayName() +  Formatting.WHITE + " to " + Formatting.GREEN + KeyUtil.getKeyName(LastKey));
-            Listening = false;
+    public void update() {
+        if (listening && lastKey != GLFW.GLFW_KEY_UNKNOWN) {
+            module.setKey(lastKey);
+            SalHack.sendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + "Set the key of " + Formatting.GOLD + module.getDisplayName() +  Formatting.WHITE + " to " + Formatting.GREEN + KeyUtil.getKeyName(lastKey));
+            listening = false;
         }
     }
 }

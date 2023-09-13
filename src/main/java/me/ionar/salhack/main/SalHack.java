@@ -6,6 +6,8 @@ import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.managers.*;
 import net.minecraft.text.Text;
 
+import java.util.Random;
+
 public class SalHack {
     public static int TICK_TIMER = 1;
     private static final ModuleManager moduleManager = new ModuleManager();
@@ -25,9 +27,10 @@ public class SalHack {
     private static final PresetsManager presetsManager = new PresetsManager();
     //private static UUIDManager UUIDManager = new UUIDManager();
     public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public static final Random random = new Random();
 
 
-    public static void Init() {
+    public static void init() {
         SalHackMod.log.info("Initializing Salhack");
         filesManager.init();
         SalHackMod.log.info("Initializing Files Manager");

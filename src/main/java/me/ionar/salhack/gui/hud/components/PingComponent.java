@@ -14,9 +14,7 @@ import java.util.Objects;
 
 public class PingComponent extends HudComponentItem {
     private final HudModule hud = (HudModule) SalHack.getModuleManager().getMod(HudModule.class);
-
-    private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
-    private final int i = 0;
+    private final SalRainbowUtil rainbow = new SalRainbowUtil(9);
     public PingComponent() {
         super("Ping", 2, 43);
         setHidden(false);
@@ -25,20 +23,16 @@ public class PingComponent extends HudComponentItem {
     @Override
     public void onRender(int mouseX, int mouseY, float partialTicks, DrawContext context) {
         super.onRender(mouseX, mouseY, partialTicks, context);
-
         if (mc.world != null) {
             PlayerListEntry playerListEntry = Objects.requireNonNull(mc.player).networkHandler.getPlayerListEntry(mc.player.getUuid());
-
-            final String ping = "Ping " + Formatting.WHITE + playerListEntry.getLatency();
-
-            if (HudModule.customFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), ping, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
-            } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
+            if (playerListEntry != null) {
+                final String ping = "Ping " + Formatting.WHITE + playerListEntry.getLatency();
+                if (HudModule.customFont.getValue()) FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), ping, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor(), true);
+                else context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor());
+                rainbow.onRender();
+                setWidth(mc.textRenderer.getWidth(ping));
+                setHeight(mc.textRenderer.fontHeight);
             }
-            Rainbow.onRender();
-            setWidth(mc.textRenderer.getWidth(ping));
-            setHeight(mc.textRenderer.fontHeight);
         }
     }
 }

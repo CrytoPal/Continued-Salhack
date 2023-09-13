@@ -23,7 +23,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import static org.lwjgl.opengl.GL11.*;
 
 public class FontRenderer {
-
     static final Map<Character, Integer> colorMap = Util.make(() -> {
         Map<Character, Integer> ci = new HashMap<>();
         ci.put('0', 0x000000);
@@ -44,19 +43,16 @@ public class FontRenderer {
         ci.put('F', 0xFFFFFF);
         return ci;
     });
-    final Font f;
+    final Font font;
     final Map<Character, Glyph> glyphMap = new ConcurrentHashMap<>();
     final int size;
     final float cachedHeight;
 
-    public FontRenderer(Font f, int size) {
-        this.f = f;
+    public FontRenderer(Font font, int size) {
+        this.font = font;
         this.size = size;
         init();
-        cachedHeight = (float) glyphMap.values()
-                .stream()
-                .max(Comparator.comparingDouble(value -> value.dimensions.getHeight()))
-                .orElseThrow().dimensions.getHeight() * 0.25f;
+        cachedHeight = (float) glyphMap.values().stream().max(Comparator.comparingDouble(value -> value.dimensions.getHeight())).orElseThrow().dimensions.getHeight() * 0.25f;
     }
 
     public int getSize() {
@@ -66,7 +62,7 @@ public class FontRenderer {
     void init() {
         char[] chars = "ABCabc 123+-".toCharArray(); // basic abc + specials, more gets generated on the fly
         for (char aChar : chars) {
-            Glyph glyph = new Glyph(aChar, f);
+            Glyph glyph = new Glyph(aChar, font);
             glyphMap.put(aChar, glyph);
         }
     }
@@ -80,21 +76,17 @@ public class FontRenderer {
     }
 
     public void drawString(MatrixStack matrices, ColoredTextSegment cts, float x, float y) {
-
         float roundedX = (float) roundToDecimal(x, 1);
         float roundedY = (float) roundToDecimal(y, 1);
         matrices.push();
         matrices.translate(roundedX, roundedY, 0);
         matrices.scale(0.25F, 0.25F, 1f);
-
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableCull();
         GlStateManager._texParameter(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
         RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
-
         ArrayList<ColoredTextSegment> ctsC = new ArrayList<>();
         ctsC.add(cts);
         while (!ctsC.isEmpty()) {
@@ -102,17 +94,13 @@ public class FontRenderer {
             ctsC.remove(0);
             ctsC.addAll(0, Arrays.asList(poll.children()));
             String text = poll.text();
-            if (text.isEmpty()) {
-                continue;
-            }
-
+            if (text.isEmpty()) continue;
             for (char c : text.toCharArray()) {
                 Matrix4f matrix = matrices.peek().getPositionMatrix();
                 double prevWidth = drawChar(bufferBuilder, matrix, c, poll.r(), poll.g(), poll.b(), poll.a());
                 matrices.translate(prevWidth, 0, 0);
             }
         }
-
         matrices.pop();
     }
 
@@ -125,12 +113,10 @@ public class FontRenderer {
         matrices.push();
         matrices.translate(roundedX, roundedY, 0);
         matrices.scale(0.25F, 0.25F, 1f);
-
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableCull();
         GlStateManager._texParameter(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
         RenderSystem.setShader(GameRenderer::getPositionTexColorProgram);
         BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
         boolean isInSelector = false;
@@ -148,12 +134,10 @@ public class FontRenderer {
                 isInSelector = true;
                 continue;
             }
-
             Matrix4f matrix = matrices.peek().getPositionMatrix();
             double prevWidth = drawChar(bufferBuilder, matrix, c, r1, g1, b1, a);
             matrices.translate(prevWidth, 0, 0);
         }
-
         matrices.pop();
     }
 
@@ -175,7 +159,7 @@ public class FontRenderer {
     public float getStringWidth(String text) {
         float wid = 0;
         for (char c : stripControlCodes(text).toCharArray()) {
-            Glyph g = glyphMap.computeIfAbsent(c, character -> new Glyph(character, this.f));
+            Glyph g = glyphMap.computeIfAbsent(c, character -> new Glyph(character, this.font));
             wid += g.dimensions.getWidth();
         }
         return wid * 0.25f;
@@ -184,9 +168,7 @@ public class FontRenderer {
     public String trimStringToWidth(String t, float maxWidth) {
         StringBuilder sb = new StringBuilder();
         for (char c : t.toCharArray()) {
-            if (getStringWidth(sb.toString() + c) >= maxWidth) {
-                return sb.toString();
-            }
+            if (getStringWidth(sb.toString() + c) >= maxWidth) return sb.toString();
             sb.append(c);
         }
         return sb.toString();
@@ -202,22 +184,18 @@ public class FontRenderer {
 
     private double drawChar(BufferBuilder bufferBuilder, Matrix4f matrix, char c, float r, float g, float b, float a) {
         float v = Renderer.transformColor(a);
-        Glyph glyph = glyphMap.computeIfAbsent(c, character -> new Glyph(character, this.f));
+        Glyph glyph = glyphMap.computeIfAbsent(c, character -> new Glyph(character, this.font));
         RenderSystem.setShaderTexture(0, glyph.getImageTex());
-
         float height = (float) glyph.dimensions.getHeight();
         float width = (float) glyph.dimensions.getWidth();
-
         float inOffsetX = glyph.offsetX / (width + 10);
         float inOffsetY = glyph.offsetY / (height + 10);
-
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
         bufferBuilder.vertex(matrix, 0, height, 0).texture(0 + inOffsetX, 1 - inOffsetY).color(r, g, b, v).next();
         bufferBuilder.vertex(matrix, width, height, 0).texture(1 - inOffsetX, 1 - inOffsetY).color(r, g, b, v).next();
         bufferBuilder.vertex(matrix, width, 0, 0).texture(1 - inOffsetX, 0 + inOffsetY).color(r, g, b, v).next();
         bufferBuilder.vertex(matrix, 0, 0, 0).texture(0 + inOffsetX, 0 + inOffsetY).color(r, g, b, v).next();
         BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
-
         return width;
     }
 }

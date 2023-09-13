@@ -3,7 +3,7 @@ package me.ionar.salhack.gui.click.component.menus.mods;
 import me.ionar.salhack.gui.click.component.MenuComponent;
 import me.ionar.salhack.gui.click.component.item.ComponentItem;
 import me.ionar.salhack.gui.click.component.item.ComponentItemHUD;
-import me.ionar.salhack.gui.click.component.item.ComponentItemValue;
+import me.ionar.salhack.gui.click.component.item.componentItemValue;
 import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.SalHack;
@@ -12,12 +12,10 @@ import me.ionar.salhack.module.Value;
 
 @SuppressWarnings("rawtypes")
 public class MenuComponentHUDList extends MenuComponent {
-    public MenuComponentHUDList(String displayName, float X, float Y) {
-        super(displayName, X, Y, 100f, 105f, "", (ColorsModule) SalHack.getModuleManager().getMod(ColorsModule.class), null);
-
+    public MenuComponentHUDList(String displayName, float x, float y) {
+        super(displayName, x, y, 100f, 105f, "", (ColorsModule) SalHack.getModuleManager().getMod(ColorsModule.class), null);
         final float Width = 105f;
         final float Height = 11f;
-
         for (HudComponentItem item : SalHack.getHudManager().componentItems) {
             ComponentItemListener listener = new ComponentItemListener() {
                 @Override
@@ -58,8 +56,8 @@ public class MenuComponentHUDList extends MenuComponent {
                     public void OnMouseLeave() {}
                 };
 
-                ComponentItemValue valueItem = new ComponentItemValue(value, value.getName(), value.getDescription(), ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, listener, Width, Height);
-                componentItem.DropdownItems.add(valueItem);
+                componentItemValue valueItem = new componentItemValue(value, value.getName(), value.getDescription(), ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, listener, Width, Height);
+                componentItem.dropdownItems.add(valueItem);
             }
 
             listener = new ComponentItemListener() {
@@ -80,8 +78,8 @@ public class MenuComponentHUDList extends MenuComponent {
             };
 
             ComponentItem resetButton = new ComponentItem("Reset", "Resets the position of " + item.getDisplayName() + " to default.",  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip | ComponentItem.Enum | ComponentItem.DontDisplayClickableHighlight | ComponentItem.RectDisplayAlways, 0, listener, Width, Height);
-            componentItem.DropdownItems.add(resetButton);
-            AddItem(componentItem);
+            componentItem.dropdownItems.add(resetButton);
+            addItem(componentItem);
         }
     }
 }

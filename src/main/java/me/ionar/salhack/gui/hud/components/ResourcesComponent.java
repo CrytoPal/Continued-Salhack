@@ -15,13 +15,11 @@ import net.minecraft.util.Formatting;
 
 public class ResourcesComponent extends HudComponentItem {
     private final HudModule hud = (HudModule) SalHack.getModuleManager().getMod(HudModule.class);
-
-    private final SalRainbowUtil Rainbow = new SalRainbowUtil(2);
-
-    public final Value<Boolean> Totems = new Value<Boolean>("Totems", new String[]{ "Totems" }, "Include Totems", true);
-    public final Value<Boolean> Crystals = new Value<Boolean>("Crystals", new String[]{ "Crystals" }, "Include Crystals", true);
-    public final Value<Boolean> EXP = new Value<Boolean>("EXP", new String[]{ "EXP" }, "Include EXP", true);
-    public final Value<Boolean> EGap = new Value<Boolean>("EGap", new String[]{ "EGap" }, "Include EGap", true);
+    private final SalRainbowUtil rainbow = new SalRainbowUtil(2);
+    public final Value<Boolean> totems = new Value<>("Totems", new String[]{"Totems"}, "Include Totems", true);
+    public final Value<Boolean> crystals = new Value<>("Crystals", new String[]{"Crystals"}, "Include Crystals", true);
+    public final Value<Boolean> exp = new Value<>("EXP", new String[]{"EXP"}, "Include EXP", true);
+    public final Value<Boolean> eGap = new Value<>("EGap", new String[]{"EGap"}, "Include EGap", true);
     public ResourcesComponent() {
         super("Resources", 2, 53);
         setHidden(false);
@@ -30,60 +28,45 @@ public class ResourcesComponent extends HudComponentItem {
     @Override
     public void onRender(int mouseX, int mouseY, float partialTicks, DrawContext context) {
         super.onRender(mouseX, mouseY, partialTicks, context);
-
         int EGapCount = getItemCount(Items.ENCHANTED_GOLDEN_APPLE);
         int totemCount = getItemCount(Items.TOTEM_OF_UNDYING);
         int expCount = getItemCount(Items.EXPERIENCE_BOTTLE);
         int crystalCount = getItemCount(Items.END_CRYSTAL);
-
         final String EGapCount1 = "EGap: " + Formatting.WHITE + EGapCount;
         final String totemCount1 = "Totems: " + Formatting.WHITE + totemCount;
         final String crystals1 = "Crystals: " + Formatting.WHITE + crystalCount;
         final String expCount1 = "Exp: " + Formatting.WHITE + expCount;
-
-        if (EGap.getValue()) {
-            if (HudModule.customFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), EGapCount1, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
-            } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
-            }
-            Rainbow.onRender();
+        if (eGap.getValue()) {
+            if (HudModule.customFont.getValue()) FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), EGapCount1, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor(), true);
+            else context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor());
+            rainbow.onRender();
             setWidth(mc.textRenderer.getWidth(EGapCount1));
             setHeight(mc.textRenderer.fontHeight + 30);
         }
-        if (Totems.getValue()) {
-            if (HudModule.customFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), totemCount1, (int) (getPositionX()), (int) (getPositionY()) + 30, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
-            } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) getPositionX(), (int) getPositionY() + 30, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
-            }
+        if (totems.getValue()) {
+            if (HudModule.customFont.getValue()) FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), totemCount1, (int) (getPositionX()), (int) (getPositionY()) + 30, hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor(), true);
+            else context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) getPositionX(), (int) getPositionY() + 30, hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor());
         }
-        if (Crystals.getValue()) {
-            if (HudModule.customFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), crystals1, (int) (getPositionX()), (int) (getPositionY()) + 10, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
-            } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) getPositionX(), (int) getPositionY() + 10, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
-            }
+        if (crystals.getValue()) {
+            if (HudModule.customFont.getValue()) FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), crystals1, (int) (getPositionX()), (int) (getPositionY()) + 10, hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor(), true);
+            else context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) getPositionX(), (int) getPositionY() + 10, hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor());
         }
-        if (EXP.getValue()) {
-            if (HudModule.customFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), expCount1, (int) (getPositionX()), (int) (getPositionY()) + 20, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
-            } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) getPositionX(), (int) getPositionY() + 20, hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
-            }
+        if (exp.getValue()) {
+            if (HudModule.customFont.getValue()) FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), expCount1, (int) (getPositionX()), (int) (getPositionY()) + 20, hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor(), true);
+            else context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) getPositionX(), (int) getPositionY() + 20, hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor());
         }
     }
 
     public int getItemCount(Item item) {
         if (mc.player != null) {
-            int n = 0;
-            int n2 = 44;
-            for (int i = 0; i <= n2; ++i) {
+            int count = 0;
+            int slots = 44;
+            for (int i = 0; i <= slots; ++i) {
                 ItemStack itemStack = mc.player.getInventory().getStack(i);
                 if (itemStack.getItem() != item) continue;
-                n += itemStack.getCount();
+                count += itemStack.getCount();
             }
-            return n;
+            return count;
         }
         return 0;
     }

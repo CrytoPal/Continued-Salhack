@@ -15,9 +15,7 @@ import java.util.Date;
 
 public class TimeComponent extends HudComponentItem {
     private final HudModule hud = (HudModule) SalHack.getModuleManager().getMod(HudModule.class);
-
-    private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
-    private final int i = 0;
+    private final SalRainbowUtil rainbow = new SalRainbowUtil(9);
     public TimeComponent() {
         super("Time", 2, 13);
         setHidden(false);
@@ -26,16 +24,11 @@ public class TimeComponent extends HudComponentItem {
     @Override
     public void onRender(int mouseX, int mouseY, float partialTicks, DrawContext context) {
         super.onRender(mouseX, mouseY, partialTicks, context);
-
         final String time = "Time " + Formatting.WHITE + new SimpleDateFormat("h:mm a").format(new Date());
-
-        if (HudModule.customFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), time, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor(), true);
-        } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(time), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : getTextColor());
-        }
-        Rainbow.onRender();
-        setWidth(Wrapper.GetMC().textRenderer.getWidth(time));
-        setHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        if (HudModule.customFont.getValue()) FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), time, (int) (getPositionX()), (int) (getPositionY()), hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor(), true);
+        else context.drawTextWithShadow(mc.textRenderer, Text.of(time), (int) getPositionX(), (int) getPositionY(), hud.rainbow.getValue() ? rainbow.getRainbowColorAt(rainbow.getRainbowColorNumber()) : getTextColor());
+        rainbow.onRender();
+        setWidth(mc.textRenderer.getWidth(time));
+        setHeight(mc.textRenderer.fontHeight);
     }
 }

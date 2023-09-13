@@ -7,79 +7,51 @@ import me.ionar.salhack.command.util.ModuleCommandListener;
 import me.ionar.salhack.module.Value;
 
 public class ModuleCommand extends Command {
-    private ModuleCommandListener Listener;
-    private final List<Value> Values;
+    private ModuleCommandListener listener;
+    private final List<Value> values;
 
-    public ModuleCommand(String p_Name, String p_Description, ModuleCommandListener p_Listener, final List<Value> p_Values) {
-        super(p_Name, p_Description);
-        Listener = p_Listener;
-        Values = p_Values;
-
-        CommandChunks.add("hide");
-        CommandChunks.add("toggle");
-        CommandChunks.add("rename <newname>");
-
+    public ModuleCommand(String name, String description, ModuleCommandListener listener, final List<Value> values) {
+        super(name, description);
+        this.listener = listener;
+        this.values = values;
+        commandChunks.add("hide");
+        commandChunks.add("toggle");
+        commandChunks.add("rename <newname>");
         /// TODO: Add enum names, etc
-        for (Value l_Val : Values)
-            CommandChunks.add(String.format("%s <%s>", l_Val.getName(), "value"));
+        for (Value value : this.values) commandChunks.add(String.format("%s <%s>", value.getName(), "value"));
     }
 
     @Override
-    public void ProcessCommand(String p_Args) {
-        String[] l_Split = p_Args.split(" ");
-
-        if (l_Split == null || l_Split.length <= 1) {
-            /// Print values
-            for (Value l_Val : Values)
-            {
-                SendToChat(String.format("%s : %s",l_Val.getName(), l_Val.getValue()));
-            }
+    public void processCommand(String args) {
+        String[] split = args.split(" ");
+        if (split.length <= 1) {
+            for (Value value : values) SendToChat(String.format("%s : %s",value.getName(), value.getValue()));
             return;
         }
-
-        if (l_Split[1].equalsIgnoreCase("hide")) {
-            Listener.OnHide();
+        if (split[1].equalsIgnoreCase("hide")) {
+            listener.onHide();
             return;
         }
-
-        if (l_Split[1].equalsIgnoreCase("toggle")) {
-            Listener.OnHide();
+        if (split[1].equalsIgnoreCase("toggle")) {
+            listener.onHide();
             return;
         }
-
-        if (l_Split[1].equalsIgnoreCase("rename")) {
-            if (l_Split.length <= 3)
-                Listener.OnRename(l_Split[2]);
-
+        if (split[1].equalsIgnoreCase("rename")) {
+            if (split.length <= 3) listener.onRename(split[2]);
             return;
         }
-
-        for (Value l_Val : Values) {
-            if (l_Val.getName().toLowerCase().startsWith(l_Split[1].toLowerCase())) {
-                if (l_Split.length <= 2)
-                    break;
-
-                String l_Value = l_Split[2].toLowerCase();
-
-                if (l_Val.getValue() instanceof Number && !(l_Val.getValue() instanceof Enum)) {
-                    if (l_Val.getValue() instanceof Integer)
-                        l_Val.setForcedValue(Integer.parseInt(l_Value));
-                    else if (l_Val.getValue() instanceof Float)
-                        l_Val.setForcedValue(Float.parseFloat(l_Value));
-                    else if (l_Val.getValue() instanceof Double)
-                        l_Val.setForcedValue(Double.parseDouble(l_Value));
-                }
-                else if (l_Val.getValue() instanceof Boolean) {
-                    l_Val.setForcedValue(l_Value.equalsIgnoreCase("true"));
-                }
-                else if (l_Val.getValue() instanceof Enum) {
-                    l_Val.setForcedValue(l_Val.getEnumReal(l_Value));
-                }
-                else if (l_Val.getValue() instanceof String)
-                    l_Val.setForcedValue(l_Value);
-
-                SendToChat(String.format("Set the value of %s to %s", l_Val.getName(), l_Val.getValue()));
-
+        for (Value value : values) {
+            if (value.getName().toLowerCase().startsWith(split[1].toLowerCase())) {
+                if (split.length == 2) break;
+                String value2 = split[2].toLowerCase();
+                if (value.getValue() instanceof Number && !(value.getValue() instanceof Enum)) {
+                    if (value.getValue() instanceof Integer) value.setForcedValue(Integer.parseInt(value2));
+                    else if (value.getValue() instanceof Float) value.setForcedValue(Float.parseFloat(value2));
+                    else if (value.getValue() instanceof Double) value.setForcedValue(Double.parseDouble(value2));
+                } else if (value.getValue() instanceof Boolean) value.setForcedValue(value2.equalsIgnoreCase("true"));
+                else if (value.getValue() instanceof Enum) value.setForcedValue(value.getEnumReal(value2));
+                else if (value.getValue() instanceof String) value.setForcedValue(value2);
+                SendToChat(String.format("Set the value of %s to %s", value.getName(), value.getValue()));
                 break;
             }
         }
@@ -87,6 +59,6 @@ public class ModuleCommand extends Command {
 
     @Override
     public String getHelp() {
-        return GetDescription();
+        return getDescription();
     }
 }

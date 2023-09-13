@@ -11,37 +11,20 @@ public class HelpCommand extends Command {
         super("Help", "Gives you help for commands");
     }
 
-    public void processCommand(String p_Args) {
-        String[] l_Split = p_Args.split(" ");
-
-        if (l_Split == null || l_Split.length <= 1) {
+    public void processCommand(String args) {
+        String[] split = args.split(" ");
+        if (split.length <= 1) {
             SendToChat(getHelp());
             return;
         }
-
-        Command l_Command = SalHack.getCommandManager().getCommandLike(l_Split[1]);
-
-        if (l_Command == null)
-            SendToChat(String.format("Couldn't find any command named like %s", l_Split[1]));
-        else
-            SendToChat(l_Command.getHelp());
+        Command command = SalHack.getCommandManager().getCommandLike(split[1]);
+        if (command == null) SendToChat(String.format("Couldn't find any command named like %s", split[1]));
+        else SendToChat(command.getHelp());
     }
 
     @Override
     public String getHelp() {
-        final List<Command> l_Commands = SalHack.getCommandManager().getCommands();
-
-        String l_CommandString = "Available commands: (" + l_Commands.size() + ")" + Formatting.WHITE + " [";
-
-        for (int l_I = 0; l_I < l_Commands.size(); ++l_I) {
-            Command l_Command = l_Commands.get(l_I);
-
-            if (l_I == l_Commands.size() - 1)
-                l_CommandString += l_Command.GetName() + "]";
-            else
-                l_CommandString += l_Command.GetName() + ", ";
-        }
-
-        return l_CommandString;
+        final List<Command> commands = SalHack.getCommandManager().getCommands();
+        return "Available commands: (" + commands.size() + ")" + Formatting.WHITE + commands.stream().map(Command::getName);
     }
 }

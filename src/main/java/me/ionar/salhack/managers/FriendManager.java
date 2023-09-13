@@ -74,7 +74,7 @@ public class FriendManager {
         if (!friendList.containsKey(p_Entity.getName().getString().toLowerCase()))
             return p_Entity.getName().getString();
 
-        return friendList.get(p_Entity.getName().getString().toLowerCase()).GetAlias();
+        return friendList.get(p_Entity.getName().getString().toLowerCase()).getAlias();
     }
 
     public boolean isFriend(Entity p_Entity) {
