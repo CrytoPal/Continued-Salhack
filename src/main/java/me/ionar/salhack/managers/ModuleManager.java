@@ -11,20 +11,20 @@ import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.Value;
-import me.ionar.salhack.module.combat.OffhandModule;
-import me.ionar.salhack.module.combat.KillAuraModule;
-import me.ionar.salhack.module.exploit.BowbombModule;
+import me.ionar.salhack.module.combat.Offhand;
+import me.ionar.salhack.module.combat.KillAura;
+import me.ionar.salhack.module.exploit.Bowbomb;
 import me.ionar.salhack.module.misc.FakePlayer;
-import me.ionar.salhack.module.misc.FriendsModule;
-import me.ionar.salhack.module.misc.MiddleClickFriendsModule;
+import me.ionar.salhack.module.misc.Friends;
+import me.ionar.salhack.module.misc.MiddleClickFriends;
 import me.ionar.salhack.module.movement.*;
 import me.ionar.salhack.module.misc.Rotation;
 import me.ionar.salhack.module.render.Fullbright;
 import me.ionar.salhack.module.render.NametagsModule;
 import me.ionar.salhack.module.ui.*;
-import me.ionar.salhack.module.world.AutoToolModule;
-import me.ionar.salhack.module.world.CoordsSpooferModule;
-import me.ionar.salhack.module.world.TimerModule;
+import me.ionar.salhack.module.world.AutoTool;
+import me.ionar.salhack.module.world.CoordsSpoofer;
+import me.ionar.salhack.module.world.Timer;
 import me.ionar.salhack.preset.Preset;
 import me.ionar.salhack.util.ReflectionUtil;
 
@@ -40,22 +40,22 @@ public class ModuleManager {
     private ArrayList<Module> ArrayListAnimations = new ArrayList<Module>();
     public void Init() {
         /// Combat
-        Add(new KillAuraModule());
-        Add(new OffhandModule());
+        Add(new KillAura());
+        Add(new Offhand());
 
         /// Exploit
-        Add(new BowbombModule());
+        Add(new Bowbomb());
 
         /// Misc
         Add(new FakePlayer());
-        Add(new FriendsModule());
-        Add(new MiddleClickFriendsModule());
+        Add(new Friends());
+        Add(new MiddleClickFriends());
         Add(new Rotation());
 
         /// Movement
-        Add(new ElytraFlyModule());
+        Add(new ElytraFly());
         Add(new Flight());
-        Add(new SpeedModule());
+        Add(new Speed());
         Add(new Sprint());
         Add(new Sneak());
 
@@ -71,9 +71,9 @@ public class ModuleManager {
         Add(new Notification());
 
         /// World
-        Add(new TimerModule());
-        Add(new CoordsSpooferModule());
-        Add(new AutoToolModule());
+        Add(new Timer());
+        Add(new CoordsSpoofer());
+        Add(new AutoTool());
 
         /// Schematica
 

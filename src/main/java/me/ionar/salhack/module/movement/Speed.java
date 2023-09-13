@@ -7,13 +7,12 @@ import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
-import me.ionar.salhack.module.world.TimerModule;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.MathHelper;
 
-public class SpeedModule extends Module {
+public class Speed extends Module {
     public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode"}, "The mode of speed to use", Modes.Strafe);
     public final Value<Boolean> UseTimer = new Value<>("UseTimer", new String[]{"UseTimer"}, "Uses timer to go faster", false);
     public final Value<Boolean> AutoSprint = new Value<>("AutoSprint", new String[]{"AutoSprint"}, "Automatically sprints for you", false);
@@ -26,11 +25,11 @@ public class SpeedModule extends Module {
         OnGround
     }
 
-    public SpeedModule() {
+    public Speed() {
         super("Speed", new String[]{ "Strafe" }, "Speed strafe", 0, 0xDB2468, ModuleType.MOVEMENT);
     }
 
-    private TimerModule Timer = null;
+    private me.ionar.salhack.module.world.Timer Timer = null;
 
     @Override
     public String getMetaData() {
@@ -40,7 +39,7 @@ public class SpeedModule extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
-        Timer = (TimerModule) ModuleManager.Get().GetMod(TimerModule.class);
+        Timer = (me.ionar.salhack.module.world.Timer) ModuleManager.Get().GetMod(me.ionar.salhack.module.world.Timer.class);
     }
 
     @EventHandler

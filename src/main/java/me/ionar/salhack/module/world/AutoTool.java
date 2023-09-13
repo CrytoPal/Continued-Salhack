@@ -14,14 +14,14 @@ import net.minecraft.util.math.BlockPos;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AutoToolModule extends Module {
+public class AutoTool extends Module {
 
     public final Value<Boolean> swapBack = new Value<>("SwapBack", new String[]{ "" }, "Swaps to the item you originally had.", true);
     public static int itemslot;
     int index = -1;
     private boolean send;
 
-    public AutoToolModule() {
+    public AutoTool() {
         super("AutoTool", new String[]{"S"} ,"yes",0,-1 ,ModuleType.WORLD);
     }
 

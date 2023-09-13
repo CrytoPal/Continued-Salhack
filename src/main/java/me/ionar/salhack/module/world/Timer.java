@@ -9,16 +9,15 @@ import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.managers.TickRateManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
-import me.ionar.salhack.util.Timer;
 import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 
-public final class TimerModule extends Module {
+public final class Timer extends Module {
     public final Value<Float> speed = new Value<>("Speed", new String[]{"Spd"}, "Tick-rate multiplier. [(20tps/second) * (this value)]", 4.0f, 0.1f, 20.0f, 0.1f);
     public final Value<Boolean> Accelerate = new Value<>("Accelerate", new String[]{"Acc"}, "Accelerates from 1.0 until the anti-cheat lags you back", false);
     public final Value<Boolean> TPSSync = new Value<>("TPSSync", new String[]{"TPS"}, "Syncs the game time to the current TPS", false);
-    private final Timer timer = new Timer();
+    private final me.ionar.salhack.util.Timer timer = new me.ionar.salhack.util.Timer();
 
-    public TimerModule() {
+    public Timer() {
         super("Timer", new String[]{ "Time", "Tmr" }, "Speeds up the client tick rate", 0, 0x24DBA3, ModuleType.WORLD);
     }
 

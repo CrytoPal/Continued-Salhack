@@ -14,7 +14,7 @@ import com.google.gson.reflect.TypeToken;
 
 import me.ionar.salhack.friend.Friend;
 import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.module.misc.FriendsModule;
+import me.ionar.salhack.module.misc.Friends;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 
@@ -23,7 +23,7 @@ public class FriendManager {
         return SalHack.GetFriendManager();
     }
 
-    private FriendsModule m_FriendsModule;
+    private Friends m_FriendsModule;
 
     public FriendManager() {
     }
@@ -128,6 +128,6 @@ public class FriendManager {
     public void Load() {
         LoadFriends();
 
-        m_FriendsModule = (FriendsModule)ModuleManager.Get().GetMod(FriendsModule.class);
+        m_FriendsModule = (Friends)ModuleManager.Get().GetMod(Friends.class);
     }
 }

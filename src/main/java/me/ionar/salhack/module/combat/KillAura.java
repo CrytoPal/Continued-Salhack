@@ -22,7 +22,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
 
-public class KillAuraModule extends Module
+public class KillAura extends Module
 {
     public final Value<Modes> Mode = new Value<Modes>("Mode", new String[] {"Mode"}, "The KillAura Mode to use", Modes.Closest);
     public final Value<Float> Distance = new Value<Float>("Distance", new String[] {"Range"}, "Range for attacking a target", 5.0f, 0.0f, 10.0f, 1.0f);
@@ -49,7 +49,7 @@ public class KillAuraModule extends Module
         Switch,
     }
 
-    public KillAuraModule()
+    public KillAura()
     {
         super("KillAura", new String[] {"Aura"}, "Automatically faces and hits entities around you", 0, 0xFF0000, ModuleType.COMBAT);
     }

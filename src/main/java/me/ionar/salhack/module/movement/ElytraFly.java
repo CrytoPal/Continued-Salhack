@@ -19,7 +19,7 @@ import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.MathUtil;
 import me.ionar.salhack.util.Timer;
 
-public final class ElytraFlyModule extends Module {
+public final class ElytraFly extends Module {
     public final Value<Mode> mode = new Value<>("Mode", new String[]{"Mode", "M"}, "Mode to use for 2b2t flight.", Mode.Superior);
     public final Value<Float> speed = new Value<>("Speed", new String[]{"Spd"}, "Speed multiplier for flight, higher values equals more speed. - 2b speed recommended is 1.8~", 1.82f, 0.0f, 10.0f, 0.1f);
     public final Value<Float> DownSpeed = new Value<>("DownSpeed", new String[]{"DS"}, "DownSpeed multiplier for flight, higher values equals more speed.", 1.82f, 0.0f, 10.0f, 0.1f);
@@ -44,7 +44,7 @@ public final class ElytraFlyModule extends Module {
         Normal, Tarzan, Superior, Packet, Control
     }
 
-    public ElytraFlyModule() {
+    public ElytraFly() {
         super("ElytraFly", new String[]{ "ElytraFly2b2t" }, "Allows you to fly with elytra on 2b2t", 0, 0x24DB26, ModuleType.MOVEMENT);
     }
 

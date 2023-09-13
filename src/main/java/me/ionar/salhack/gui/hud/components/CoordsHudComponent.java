@@ -6,7 +6,7 @@ import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ui.HudModule;
-import me.ionar.salhack.module.world.CoordsSpooferModule;
+import me.ionar.salhack.module.world.CoordsSpoofer;
 import me.ionar.salhack.util.color.SalRainbowUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
@@ -28,7 +28,7 @@ public class CoordsHudComponent extends HudComponentItem {
 
     final DecimalFormat Formatter = new DecimalFormat("#.#");
 
-    private final CoordsSpooferModule _getCoords = (CoordsSpooferModule) ModuleManager.Get().GetMod(CoordsSpooferModule.class);
+    private final CoordsSpoofer _getCoords = (CoordsSpoofer) ModuleManager.Get().GetMod(CoordsSpoofer.class);
 
     private static String coords;
     public CoordsHudComponent() {
