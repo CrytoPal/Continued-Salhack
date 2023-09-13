@@ -46,22 +46,22 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
 public class AutoCrystalRewrite extends Module {
-    public static final Value<BreakModes> BreakMode = new Value<BreakModes>("BreakMode", new String[]{"BM"}, "Mode of breaking to use", BreakModes.Always);
-    public static final Value<PlaceModes> PlaceMode = new Value<PlaceModes>("PlaceMode", new String[]{"BM"}, "Mode of placing to use", PlaceModes.Most);
-    public static final Value<Float> PlaceRadius = new Value<Float>("PlaceRadius", new String[]{""}, "Radius for placing", 4.0f, 0.0f, 6.0f, 0.5f);
-    public static final Value<Float> BreakRadius = new Value<Float>("BreakRadius", new String[]{""}, "Radius for BreakRadius", 4.0f, 0.0f, 6.0f, 0.5f);
-    public static final Value<Float> WallsRange = new Value<Float>("WallsRange", new String[]{""}, "Max distance through walls", 3.5f, 0.0f, 6.0f, 0.5f);
-    public static final Value<Boolean> MultiPlace = new Value<Boolean>("MultiPlace", new String[]{"MultiPlaces"}, "Tries to multiplace", false);
+    public static final Value<BreakModes> breakMode = new Value<BreakModes>("BreakMode", new String[]{"BM"}, "Mode of breaking to use", BreakModes.Always);
+    public static final Value<PlaceModes> placeMode = new Value<PlaceModes>("PlaceMode", new String[]{"BM"}, "Mode of placing to use", PlaceModes.Most);
+    public static final Value<Float> placeRadius = new Value<Float>("PlaceRadius", new String[]{""}, "Radius for placing", 4.0f, 0.0f, 6.0f, 0.5f);
+    public static final Value<Float> breakRadius = new Value<Float>("BreakRadius", new String[]{""}, "Radius for BreakRadius", 4.0f, 0.0f, 6.0f, 0.5f);
+    public static final Value<Float> wallsRange = new Value<Float>("WallsRange", new String[]{""}, "Max distance through walls", 3.5f, 0.0f, 6.0f, 0.5f);
+    public static final Value<Boolean> multiPlace = new Value<Boolean>("MultiPlace", new String[]{"MultiPlaces"}, "Tries to multiplace", false);
     public static final Value<Integer> Ticks = new Value<Integer>("Ticks", new String[]{"IgnoreTicks"}, "The number of ticks to ignore on client update", 0, 0, 20, 1);
 
-    public static final Value<Float> MinDMG = new Value<Float>("MinDMG", new String[]{""}, "Minimum damage to do to your opponent", 4.0f, 0.0f, 20.0f, 1f);
-    public static final Value<Float> MaxSelfDMG = new Value<Float>("MaxSelfDMG", new String[]{""}, "Max self dmg for breaking crystals that will deal tons of dmg", 4.0f, 0.0f, 20.0f, 1.0f);
-    public static final Value<Float> FacePlace = new Value<Float>("FacePlace", new String[]{""}, "Required target health for faceplacing", 8.0f, 0.0f, 20.0f, 0.5f);
-    public static final Value<Boolean> AutoSwitch = new Value<Boolean>("AutoSwitch", new String[]{""}, "Automatically switches to crystals in your hotbar", true);
-    public static final Value<Boolean> PauseIfHittingBlock = new Value<Boolean>("PauseIfHittingBlock", new String[]{""}, "Pauses when your hitting a block with a pickaxe", false);
-    public static final Value<Boolean> PauseWhileEating = new Value<Boolean>("PauseWhileEating", new String[]{"PauseWhileEating"}, "Pause while eating", false);
-    public static final Value<Boolean> NoSuicide = new Value<Boolean>("NoSuicide", new String[]{"NS"}, "Doesn't commit suicide/pop if you are going to take fatal damage from self placed crystal", true);
-    public static final Value<Boolean> AntiWeakness = new Value<Boolean>("AntiWeakness", new String[]{"AW"}, "Switches to a sword to try and break crystals", true);
+    public static final Value<Float> minDMG = new Value<Float>("MinDMG", new String[]{""}, "Minimum damage to do to your opponent", 4.0f, 0.0f, 20.0f, 1f);
+    public static final Value<Float> maxSelfDMG = new Value<Float>("MaxSelfDMG", new String[]{""}, "Max self dmg for breaking crystals that will deal tons of dmg", 4.0f, 0.0f, 20.0f, 1.0f);
+    public static final Value<Float> facePlace = new Value<Float>("FacePlace", new String[]{""}, "Required target health for faceplacing", 8.0f, 0.0f, 20.0f, 0.5f);
+    public static final Value<Boolean> autoSwitch = new Value<Boolean>("AutoSwitch", new String[]{""}, "Automatically switches to crystals in your hotbar", true);
+    public static final Value<Boolean> pauseIfHittingBlock = new Value<Boolean>("PauseIfHittingBlock", new String[]{""}, "Pauses when your hitting a block with a pickaxe", false);
+    public static final Value<Boolean> pauseWhileEating = new Value<Boolean>("PauseWhileEating", new String[]{"PauseWhileEating"}, "Pause while eating", false);
+    public static final Value<Boolean> noSuicide = new Value<Boolean>("NoSuicide", new String[]{"NS"}, "Doesn't commit suicide/pop if you are going to take fatal damage from self placed crystal", true);
+    public static final Value<Boolean> antiWeakness = new Value<Boolean>("AntiWeakness", new String[]{"AW"}, "Switches to a sword to try and break crystals", true);
 
     public static final Value<Boolean> Render = new Value<Boolean>("Render", new String[]{"Render"}, "Allows for rendering of block placements", true);
     public static final Value<Integer> Red = new Value<Integer>("Red", new String[]{"Red"}, "Red for rendering", 0x33, 0, 255, 5);
@@ -155,18 +155,18 @@ public class AutoCrystalRewrite extends Module {
         if (attackedEnderCrystals.containsKey(e) && attackedEnderCrystals.get(e) > 5)
             return false;
 
-        if (e.distanceTo(mc.player) > (!mc.player.canSee(e) ? WallsRange.getValue() : BreakRadius.getValue()))
+        if (e.distanceTo(mc.player) > (!mc.player.canSee(e) ? wallsRange.getValue() : breakRadius.getValue()))
             return false;
 
-        switch (BreakMode.getValue()) {
+        switch (breakMode.getValue()) {
             case OnlyOwn -> {
                 return e.distanceTo(e) <= 3;
             }
             case Smart -> {
                 float selfDamage = CrystalUtils.calculateDamage(mc.world, e.getX(), e.getY(), e.getZ(), mc.player, 0);
-                if (selfDamage > MaxSelfDMG.getValue())
+                if (selfDamage > maxSelfDMG.getValue())
                     return false;
-                if (NoSuicide.getValue() && selfDamage >= mc.player.getHealth() + mc.player.getAbsorptionAmount())
+                if (noSuicide.getValue() && selfDamage >= mc.player.getHealth() + mc.player.getAbsorptionAmount())
                     return false;
 
                 // iterate through all players, and crystal positions to find the best position for most damage
@@ -176,10 +176,10 @@ public class AutoCrystalRewrite extends Module {
                         continue;
 
                     // store this as a variable for faceplace per player
-                    float minDamage = MinDMG.getValue();
+                    float minDamage = minDMG.getValue();
 
                     // check if players health + gap health is less than or equal to faceplace, then we activate faceplacing
-                    if (player.getHealth() + player.getAbsorptionAmount() <= FacePlace.getValue())
+                    if (player.getHealth() + player.getAbsorptionAmount() <= facePlace.getValue())
                         minDamage = 1f;
 
                     float calculatedDamage = CrystalUtils.calculateDamage(mc.world, e.getX(), e.getY(), e.getZ(), player, 0);
@@ -216,13 +216,13 @@ public class AutoCrystalRewrite extends Module {
 
     private boolean VerifyCrystalBlocks(BlockPos pos) {
         // check distance
-        if (mc.player.squaredDistanceTo(pos.toCenterPos()) > PlaceRadius.getValue() * PlaceRadius.getValue())
+        if (mc.player.squaredDistanceTo(pos.toCenterPos()) > placeRadius.getValue() * placeRadius.getValue())
             return false;
 
         // check walls range
-        if (WallsRange.getValue() > 0) {
+        if (wallsRange.getValue() > 0) {
             if (!PlayerUtil.CanSeeBlock(pos))
-                if (pos.getSquaredDistance((int) mc.player.getX(), (int) mc.player.getY(), (int) mc.player.getZ()) > WallsRange.getValue() * WallsRange.getValue())
+                if (pos.getSquaredDistance((int) mc.player.getX(), (int) mc.player.getY(), (int) mc.player.getZ()) > wallsRange.getValue() * wallsRange.getValue())
                     return false;
         }
 
@@ -230,11 +230,11 @@ public class AutoCrystalRewrite extends Module {
         float selfDamage = CrystalUtils.calculateDamage(mc.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, mc.player, 0);
 
         // make sure self damage is not greater than maxselfdamage
-        if (selfDamage > MaxSelfDMG.getValue())
+        if (selfDamage > maxSelfDMG.getValue())
             return false;
 
         // no suicide, verify self damage won't kill us
-        if (NoSuicide.getValue() && selfDamage >= mc.player.getHealth() + mc.player.getAbsorptionAmount())
+        if (noSuicide.getValue() && selfDamage >= mc.player.getHealth() + mc.player.getAbsorptionAmount())
             return false;
 
         // it's an ok position.
@@ -263,7 +263,7 @@ public class AutoCrystalRewrite extends Module {
         }
 
         // override
-        if (PlaceMode.getValue() == PlaceModes.Lethal && lastPlaceLocation != BlockPos.ORIGIN) {
+        if (placeMode.getValue() == PlaceModes.Lethal && lastPlaceLocation != BlockPos.ORIGIN) {
             float damage = 0f;
 
             PlayerEntity trappedTarget = null;
@@ -276,10 +276,10 @@ public class AutoCrystalRewrite extends Module {
                     continue;
 
                 // store this as a variable for faceplace per player
-                float minDamage = MinDMG.getValue();
+                float minDamage = minDMG.getValue();
 
                 // check if players health + gap health is less than or equal to faceplace, then we activate faceplacing
-                if (player.getHealth() + player.getAbsorptionAmount() <= FacePlace.getValue())
+                if (player.getHealth() + player.getAbsorptionAmount() <= facePlace.getValue())
                     minDamage = 1f;
 
                 float calculatedDamage = CrystalUtils.calculateDamage(mc.world, lastPlaceLocation.getX() + 0.5, lastPlaceLocation.getY() + 1.0, lastPlaceLocation.getZ() + 0.5, player, 0);
@@ -301,7 +301,7 @@ public class AutoCrystalRewrite extends Module {
             --remainingTicks;
         }
 
-        boolean skipUpdateBlocks = lastPlaceLocation != BlockPos.ORIGIN && PlaceMode.getValue() == PlaceModes.Lethal;
+        boolean skipUpdateBlocks = lastPlaceLocation != BlockPos.ORIGIN && placeMode.getValue() == PlaceModes.Lethal;
 
         // create a list of available place locations
         ArrayList<BlockPos> placeLocations = new ArrayList<BlockPos>();
@@ -312,7 +312,7 @@ public class AutoCrystalRewrite extends Module {
             remainingTicks = Ticks.getValue();
 
             // this is the most expensive code, we need to get valid crystal blocks.
-            final List<BlockPos> cachedCrystalBlocks = CrystalUtils.findCrystalBlocks(mc.player, AutoCrystalRewrite.PlaceRadius.getValue()).stream().filter(pos -> VerifyCrystalBlocks(pos)).collect(Collectors.toList());
+            final List<BlockPos> cachedCrystalBlocks = CrystalUtils.findCrystalBlocks(mc.player, AutoCrystalRewrite.placeRadius.getValue()).stream().filter(pos -> VerifyCrystalBlocks(pos)).collect(Collectors.toList());
 
             // this is where we will iterate through all players (for most damage) and cachedCrystalBlocks
             if (!cachedCrystalBlocks.isEmpty()) {
@@ -326,10 +326,10 @@ public class AutoCrystalRewrite extends Module {
                         continue;
 
                     // store this as a variable for faceplace per player
-                    float minDamage = MinDMG.getValue();
+                    float minDamage = minDMG.getValue();
 
                     // check if players health + gap health is less than or equal to faceplace, then we activate faceplacing
-                    if (player.getHealth() + player.getAbsorptionAmount() <= FacePlace.getValue())
+                    if (player.getHealth() + player.getAbsorptionAmount() <= facePlace.getValue())
                         minDamage = 1f;
 
                     // iterate through all valid crystal blocks for this player, and calculate the damages.
@@ -355,10 +355,10 @@ public class AutoCrystalRewrite extends Module {
                     // ensure we have place locations
                     if (!placeLocations.isEmpty()) {
                         // store this as a variable for faceplace per player
-                        float minDamage = MinDMG.getValue();
+                        float minDamage = minDMG.getValue();
 
                         // check if players health + gap health is less than or equal to faceplace, then we activate faceplacing
-                        if (playerTarget.getHealth() + playerTarget.getAbsorptionAmount() <= FacePlace.getValue())
+                        if (playerTarget.getHealth() + playerTarget.getAbsorptionAmount() <= facePlace.getValue())
                             minDamage = 1f;
 
                         final float finalMinDamage = minDamage;
@@ -383,7 +383,7 @@ public class AutoCrystalRewrite extends Module {
         EndCrystalEntity crystal = GetNearestCrystalTo(mc.player);
 
         // get a valid crystal in range, and check if it's in break radius
-        boolean isValidCrystal = crystal != null ? mc.player.distanceTo(crystal) < BreakRadius.getValue() : false;
+        boolean isValidCrystal = crystal != null ? mc.player.distanceTo(crystal) < breakRadius.getValue() : false;
 
         // no where to place or break
         if (!isValidCrystal && placeLocations.isEmpty() && !skipUpdateBlocks) {
@@ -393,7 +393,7 @@ public class AutoCrystalRewrite extends Module {
 
         if (isValidCrystal && (skipUpdateBlocks ? true : remainingTicks == Ticks.getValue())) // we are checking null here because we don't want to waste time not destroying crystals right away
         {
-            if (AntiWeakness.getValue() && mc.player.hasStatusEffect(StatusEffects.WEAKNESS)) {
+            if (antiWeakness.getValue() && mc.player.hasStatusEffect(StatusEffects.WEAKNESS)) {
                 if (mc.player.getMainHandStack() == ItemStack.EMPTY || (!(mc.player.getMainHandStack().getItem() instanceof SwordItem) && !(mc.player.getMainHandStack().getItem() instanceof ToolItem))) {
                     for (int i = 0; i < 9; ++i) {
                         ItemStack stack = mc.player.getInventory().getStack(i);
@@ -420,14 +420,14 @@ public class AutoCrystalRewrite extends Module {
             AddAttackedCrystal(crystal);
 
             // if we are not multiplacing return here, we have something to do for this tick.
-            if (!MultiPlace.getValue())
+            if (!multiPlace.getValue())
                 return;
         }
 
         // verify the placeTimer is ready, selectedPosition is not 0,0,0 and the event isn't already cancelled
         if (!placeLocations.isEmpty() || skipUpdateBlocks) {
             // auto switch
-            if (AutoSwitch.getValue()) {
+            if (autoSwitch.getValue()) {
                 if (mc.player.getOffHandStack().getItem() != Items.END_CRYSTAL) {
                     if (mc.player.getMainHandStack().getItem() != Items.END_CRYSTAL) {
                         for (int i = 0; i < 9; ++i) {
@@ -500,7 +500,7 @@ public class AutoCrystalRewrite extends Module {
 
             if (lastPlaceLocation != BlockPos.ORIGIN && lastPlaceLocation == selectedPos) {
                 // reset ticks, we don't need to do more rotations for this position, so we can crystal faster.
-                if (PlaceMode.getValue() == PlaceModes.Lethal)
+                if (placeMode.getValue() == PlaceModes.Lethal)
                     remainingTicks = 0;
             } else // set this to our last place location
                 lastPlaceLocation = selectedPos;
@@ -612,10 +612,10 @@ public class AutoCrystalRewrite extends Module {
             return true;
          */
 
-        if (PauseIfHittingBlock.getValue() && mc.interactionManager.isBreakingBlock() && mc.player.getMainHandStack().getItem() instanceof ToolItem)
+        if (pauseIfHittingBlock.getValue() && mc.interactionManager.isBreakingBlock() && mc.player.getMainHandStack().getItem() instanceof ToolItem)
             return true;
 
-        if (PauseWhileEating.getValue() && mc.player.isUsingItem())
+        if (pauseWhileEating.getValue() && mc.player.isUsingItem())
             return true;
 
         // if (_autoCity.isEnabled())
