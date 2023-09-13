@@ -1,6 +1,8 @@
 package me.ionar.salhack.mixin;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import me.ionar.salhack.SalHackMod;
+import me.ionar.salhack.events.render.RenderEvent;
 import me.ionar.salhack.util.render.TransformPositionUtil;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -23,5 +25,8 @@ public abstract class GameRendererMixin {
         TransformPositionUtil.lastProjMat.set(RenderSystem.getProjectionMatrix());
         TransformPositionUtil.lastModMat.set(RenderSystem.getModelViewMatrix());
         TransformPositionUtil.lastWorldSpaceMatrix.set(matrix.peek().getPositionMatrix());
+
+        RenderEvent event = new RenderEvent(matrix);
+        SalHackMod.NORBIT_EVENT_BUS.post(event);
     }
 }

@@ -1,7 +1,5 @@
 package me.ionar.salhack.module.combat;
 
-import java.util.Comparator;
-
 import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.managers.FriendManager;
@@ -22,36 +20,35 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
 
-public class KillAura extends Module
-{
-    public final Value<Modes> Mode = new Value<Modes>("Mode", new String[] {"Mode"}, "The KillAura Mode to use", Modes.Closest);
-    public final Value<Float> Distance = new Value<Float>("Distance", new String[] {"Range"}, "Range for attacking a target", 5.0f, 0.0f, 10.0f, 1.0f);
-    public final Value<Boolean> HitDelay = new Value<Boolean>("Hit Delay", new String[] {"Hit Delay"}, "Use vanilla hit delay", true);
-    public final Value<Boolean> TPSSync = new Value<Boolean>("TPSSync", new String[] {"TPSSync"}, "Use TPS Sync for hit delay", false);
-    public final Value<Boolean> Players = new Value<Boolean>("Players", new String[] {"Players"}, "Should we target Players", true);
-    public final Value<Boolean> Monsters = new Value<Boolean>("Monsters", new String[] {"Players"}, "Should we target Monsters", true);
-    public final Value<Boolean> Neutrals = new Value<Boolean>("Neutrals", new String[] {"Players"}, "Should we target Neutrals", false);
-    public final Value<Boolean> Animals = new Value<Boolean>("Animals", new String[] {"Players"}, "Should we target Animals", false);
-    public final Value<Boolean> Tamed = new Value<Boolean>("Tamed", new String[] {"Players"}, "Should we target Tamed", false);
-    public final Value<Boolean> Projectiles = new Value<Boolean>("Projectile", new String[] {"Projectile"}, "Should we target Projectiles (shulker bullets, etc)", false);
-    public final Value<Boolean> SwordOnly = new Value<Boolean>("SwordOnly", new String[] {"SwordOnly"}, "Only activate on sword", false);
-    public final Value<Boolean> PauseIfCrystal = new Value<Boolean>("PauseIfCrystal", new String[] {"PauseIfCrystal"}, "Pauses if a crystal is in your hand", false);
-    public final Value<Boolean> PauseIfEating = new Value<Boolean>("PauseIfEating", new String[] {"PauseIfEating"}, "Pauses if your eating", false);
-    public final Value<Boolean> AutoSwitch = new Value<Boolean>("AutoSwitch", new String[] {"AutoSwitch"}, "Automatically switches to a sword in your hotbar", false);
-    public final Value<Integer> Ticks = new Value<Integer>("Ticks", new String[] {"Ticks"}, "If you don't have HitDelay on, how fast the kill aura should be hitting", 10, 0, 40, 1);
-    public final Value<Integer> Iterations = new Value<Integer>("Iterations", new String[] {""}, "Allows you to do more iteratons per tick", 1, 1, 10, 1);
-    public final Value<Boolean> Only32k = new Value<Boolean>("32kOnly", new String[] {""}, "Only killauras when 32k sword is in your hand", false);
+import java.util.Comparator;
 
-    public enum Modes
-    {
+public class KillAura extends Module {
+    public final Value<Modes> Mode = new Value<Modes>("Mode", new String[]{"Mode"}, "The KillAura Mode to use", Modes.Closest);
+    public final Value<Float> Distance = new Value<Float>("Distance", new String[]{"Range"}, "Range for attacking a target", 5.0f, 0.0f, 10.0f, 1.0f);
+    public final Value<Boolean> HitDelay = new Value<Boolean>("Hit Delay", new String[]{"Hit Delay"}, "Use vanilla hit delay", true);
+    public final Value<Boolean> TPSSync = new Value<Boolean>("TPSSync", new String[]{"TPSSync"}, "Use TPS Sync for hit delay", false);
+    public final Value<Boolean> Players = new Value<Boolean>("Players", new String[]{"Players"}, "Should we target Players", true);
+    public final Value<Boolean> Monsters = new Value<Boolean>("Monsters", new String[]{"Players"}, "Should we target Monsters", true);
+    public final Value<Boolean> Neutrals = new Value<Boolean>("Neutrals", new String[]{"Players"}, "Should we target Neutrals", false);
+    public final Value<Boolean> Animals = new Value<Boolean>("Animals", new String[]{"Players"}, "Should we target Animals", false);
+    public final Value<Boolean> Tamed = new Value<Boolean>("Tamed", new String[]{"Players"}, "Should we target Tamed", false);
+    public final Value<Boolean> Projectiles = new Value<Boolean>("Projectile", new String[]{"Projectile"}, "Should we target Projectiles (shulker bullets, etc)", false);
+    public final Value<Boolean> SwordOnly = new Value<Boolean>("SwordOnly", new String[]{"SwordOnly"}, "Only activate on sword", false);
+    public final Value<Boolean> PauseIfCrystal = new Value<Boolean>("PauseIfCrystal", new String[]{"PauseIfCrystal"}, "Pauses if a crystal is in your hand", false);
+    public final Value<Boolean> PauseIfEating = new Value<Boolean>("PauseIfEating", new String[]{"PauseIfEating"}, "Pauses if your eating", false);
+    public final Value<Boolean> AutoSwitch = new Value<Boolean>("AutoSwitch", new String[]{"AutoSwitch"}, "Automatically switches to a sword in your hotbar", false);
+    public final Value<Integer> Ticks = new Value<Integer>("Ticks", new String[]{"Ticks"}, "If you don't have HitDelay on, how fast the kill aura should be hitting", 10, 0, 40, 1);
+    public final Value<Integer> Iterations = new Value<Integer>("Iterations", new String[]{""}, "Allows you to do more iteratons per tick", 1, 1, 10, 1);
+    public final Value<Boolean> Only32k = new Value<Boolean>("32kOnly", new String[]{""}, "Only killauras when 32k sword is in your hand", false);
+
+    public enum Modes {
         Closest,
         Priority,
         Switch,
     }
 
-    public KillAura()
-    {
-        super("KillAura", new String[] {"Aura"}, "Automatically faces and hits entities around you", 0, 0xFF0000, ModuleType.COMBAT);
+    public KillAura() {
+        super("KillAura", new String[]{"Aura"}, "Automatically faces and hits entities around you", 0, 0xFF0000, ModuleType.COMBAT);
     }
 
     private Entity CurrentTarget;
@@ -59,28 +56,23 @@ public class KillAura extends Module
     private int RemainingTicks = 0;
 
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         super.onEnable();
         RemainingTicks = 0;
     }
 
     @Override
-    public void onDisable()
-    {
+    public void onDisable() {
         super.onDisable();
     }
 
     @Override
-    public String getMetaData()
-    {
+    public String getMetaData() {
         return Mode.getValue().toString();
     }
 
-    private boolean IsValidTarget(Entity p_Entity, Entity p_ToIgnore)
-    {
-        if (!(p_Entity instanceof LivingEntity))
-        {
+    private boolean IsValidTarget(Entity p_Entity, Entity p_ToIgnore) {
+        if (!(p_Entity instanceof LivingEntity)) {
             boolean l_IsProjectile = (p_Entity instanceof ShulkerBulletEntity || p_Entity instanceof FireballEntity);
 
             if (!l_IsProjectile)
@@ -93,8 +85,7 @@ public class KillAura extends Module
         if (p_ToIgnore != null && p_Entity == p_ToIgnore)
             return false;
 
-        if (p_Entity instanceof PlayerEntity)
-        {
+        if (p_Entity instanceof PlayerEntity) {
             /// Ignore if it's us
             if (p_Entity == mc.player)
                 return false;
@@ -109,11 +100,9 @@ public class KillAura extends Module
 
         if (EntityUtil.isHostileMob(p_Entity) && !Monsters.getValue()) return false;
 
-        if (EntityUtil.isPassive(p_Entity))
-        {
-            if (p_Entity instanceof HorseEntity)
-            {
-                HorseEntity l_Horse = (HorseEntity)p_Entity;
+        if (EntityUtil.isPassive(p_Entity)) {
+            if (p_Entity instanceof HorseEntity) {
+                HorseEntity l_Horse = (HorseEntity) p_Entity;
 
                 if (l_Horse.isTame() && !Tamed.getValue())
                     return false;
@@ -131,9 +120,8 @@ public class KillAura extends Module
 
         boolean l_HealthCheck = true;
 
-        if (p_Entity instanceof LivingEntity)
-        {
-            LivingEntity l_Base = (LivingEntity)p_Entity;
+        if (p_Entity instanceof LivingEntity) {
+            LivingEntity l_Base = (LivingEntity) p_Entity;
 
             l_HealthCheck = !l_Base.isDead() && l_Base.getHealth() > 0.0f;
         }
@@ -145,8 +133,7 @@ public class KillAura extends Module
     private void OnTick(TickEvent event) {
         if (event.isPre()) return;
 
-        if (!(mc.player.getMainHandStack().getItem() instanceof SwordItem))
-        {
+        if (!(mc.player.getMainHandStack().getItem() instanceof SwordItem)) {
             if (mc.player.getMainHandStack().getItem() == Items.END_CRYSTAL && PauseIfCrystal.getValue())
                 return;
 
@@ -155,12 +142,9 @@ public class KillAura extends Module
 
             int l_Slot = -1;
 
-            if (AutoSwitch.getValue())
-            {
-                for (int l_I = 0; l_I < 9; ++l_I)
-                {
-                    if (mc.player.getInventory().getStack(l_I).getItem() instanceof SwordItem)
-                    {
+            if (AutoSwitch.getValue()) {
+                for (int l_I = 0; l_I < 9; ++l_I) {
+                    if (mc.player.getInventory().getStack(l_I).getItem() instanceof SwordItem) {
                         l_Slot = l_I;
                         mc.player.getInventory().selectedSlot = l_Slot;
                         mc.player.networkHandler.sendPacket(new UpdateSelectedSlotC2SPacket(l_Slot));
@@ -173,27 +157,23 @@ public class KillAura extends Module
                 return;
         }
 
-        if (Only32k.getValue())
-        {
+        if (Only32k.getValue()) {
             if (!ItemUtil.Is32k(mc.player.getMainHandStack()))
                 return;
         }
 
-        if (AimbotResetTimer.passed(5000))
-        {
+        if (AimbotResetTimer.passed(5000)) {
             AimbotResetTimer.reset();
         }
 
-        if (RemainingTicks > 0)
-        {
+        if (RemainingTicks > 0) {
             --RemainingTicks;
         }
 
         /// Chose target based on current mode
         Entity l_TargetToHit = CurrentTarget;
 
-        switch (Mode.getValue())
-        {
+        switch (Mode.getValue()) {
             case Closest:
                 l_TargetToHit = EntityUtil.getEntities().stream()
                         .filter(p_Entity -> IsValidTarget(p_Entity, null))
@@ -201,8 +181,7 @@ public class KillAura extends Module
                         .orElse(null);
                 break;
             case Priority:
-                if (l_TargetToHit == null)
-                {
+                if (l_TargetToHit == null) {
                     l_TargetToHit = EntityUtil.getEntities().stream()
                             .filter(p_Entity -> IsValidTarget(p_Entity, null))
                             .min(Comparator.comparing(p_Entity -> mc.player.distanceTo(p_Entity)))
@@ -225,8 +204,7 @@ public class KillAura extends Module
         }
 
         /// nothing to hit - return until next tick for searching
-        if (l_TargetToHit == null || l_TargetToHit.distanceTo(mc.player) > Distance.getValue())
-        {
+        if (l_TargetToHit == null || l_TargetToHit.distanceTo(mc.player) > Distance.getValue()) {
             CurrentTarget = null;
             return;
         }
@@ -244,8 +222,7 @@ public class KillAura extends Module
         RemainingTicks = Ticks.getValue();
 
         //  mc.playerController.attackEntity(mc.player, l_TargetToHit);
-        for (int l_I = 0; l_I < Iterations.getValue(); ++l_I)
-        {
+        for (int l_I = 0; l_I < Iterations.getValue(); ++l_I) {
             mc.interactionManager.attackEntity(mc.player, l_TargetToHit);
             mc.player.swingHand(Hand.MAIN_HAND);
         }
