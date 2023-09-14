@@ -69,29 +69,21 @@ public final class AutoTrap extends Module
                     new Vec3d(0.0, 3.0, 0.0), // +3 middle
                     new Vec3d(0.0, 4.0, 0.0) // +4 middle
             };
-    public final Value<Boolean> toggleMode = new Value<Boolean>("toggleMode", new String[]
-            { "toggleMode "}, "ToggleMode", true);
-    public final Value<Float> range = new Value<Float>("range", new String[]
-            { "range" }, "Range", 5.5f, 0f, 10.0f, 1.0f);
-    public final Value<Integer> blockPerTick = new Value<Integer>("blockPerTick", new String[]
-            { "blockPerTick" }, "Blocks per Tick", 4, 1, 10, 1);
-    public final Value<Boolean> rotate = new Value<Boolean>("rotate", new String[]
-            { "rotate" }, "Rotate", true);
-    public final Value<Boolean> announceUsage = new Value<Boolean>("announceUsage", new String[]
-            { "announceUsage" }, "Announce Usage", true);
-    public final Value<Boolean> EChests = new Value<Boolean>("EChests", new String[]
-            { "EChests" }, "EChests", false);
+    public final Value<Boolean> toggleMode = new Value<Boolean>("toggleMode", new String[]{ "toggleMode "}, "ToggleMode", true);
+    public final Value<Float> range = new Value<Float>("range", new String[]{ "range" }, "Range", 5.5f, 0f, 10.0f, 1.0f);
+    public final Value<Integer> blockPerTick = new Value<Integer>("blockPerTick", new String[]{ "blockPerTick" }, "Blocks per Tick", 4, 1, 10, 1);
+    public final Value<Boolean> rotate = new Value<Boolean>("rotate", new String[]{ "rotate" }, "Rotate", true);
+    public final Value<Boolean> announceUsage = new Value<Boolean>("announceUsage", new String[]{ "announceUsage" }, "Announce Usage", true);
+    public final Value<Boolean> EChests = new Value<Boolean>("EChests", new String[]{ "EChests" }, "EChests", false);
 
     public final Value<Modes> Mode = new Value<Modes>("Mode", new String[] {"Mode"}, "The mode to use for autotrap", Modes.Full);
 
-    public enum Modes
-    {
+    public enum Modes {
         Full,
         Tall,
     }
 
-    public AutoTrap()
-    {
+    public AutoTrap() {
         super("AutoTrap", new String[]
                 { "AutoTrap" }, "Traps enemies in obsidian", 0, 0x24DB43, Module.ModuleType.COMBAT);
     }
@@ -104,8 +96,7 @@ public final class AutoTrap extends Module
     private boolean firstRun = true;
 
     @Override
-    public String getMetaData()
-    {
+    public String getMetaData() {
         if (EChests.getValue())
             return "Ender Chests";
 
@@ -113,12 +104,10 @@ public final class AutoTrap extends Module
     }
 
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         super.onEnable();
 
-        if (mc.player == null)
-        {
+        if (mc.player == null) {
             toggle(true);
             return;
         }
@@ -127,30 +116,29 @@ public final class AutoTrap extends Module
         playerHotbarSlot = mc.player.getInventory().selectedSlot;
         lastHotbarSlot = -1;
 
-        if (findObiInHotbar() == -1)
-        {
+        if (findObiInHotbar() == -1) {
             SalHack.SendMessage(String.format("[AutoTrap] You do not have any %s in your hotbar!", Formatting.LIGHT_PURPLE + (EChests.getValue() ? "Ender Chests" : "Obsidian") + Formatting.RESET));
             toggle(true);
         }
     }
 
     @Override
-    public void onDisable()
-    {
+    public void onDisable() {
         super.onDisable();
 
-        if (lastHotbarSlot != playerHotbarSlot && playerHotbarSlot != -1)
-            mc.player.getInventory().selectedSlot = playerHotbarSlot;
+        if (mc.player != null) {
+            if (lastHotbarSlot != playerHotbarSlot && playerHotbarSlot != -1)
+                mc.player.getInventory().selectedSlot = playerHotbarSlot;
 
-        if (isSneaking)
-        {
-            mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
-            isSneaking = false;
+            if (isSneaking) {
+                mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
+                isSneaking = false;
+            }
+            playerHotbarSlot = -1;
+            lastHotbarSlot = -1;
+            if (announceUsage.getValue())
+                SalHack.SendMessage("[AutoTrap] Disabled!");
         }
-        playerHotbarSlot = -1;
-        lastHotbarSlot = -1;
-        if (announceUsage.getValue())
-            SalHack.SendMessage("[AutoTrap] Disabled!");
     }
 
     @EventHandler
@@ -159,136 +147,112 @@ public final class AutoTrap extends Module
             return;
 
         PlayerEntity closestTarget = SalUtil.findClosestTarget();
-        if (closestTarget == null)
-        {
-            if (firstRun)
-            {
-                firstRun = false;
-                if (announceUsage.getValue())
-                {
-                    SalHack.SendMessage("[AutoTrap] Enabled, waiting for target.");
+        if (mc.player != null) {
+            if (closestTarget == null) {
+                if (firstRun) {
+                    firstRun = false;
+                    if (announceUsage.getValue()) {
+                        SalHack.SendMessage("[AutoTrap] Enabled, waiting for target.");
+                    }
                 }
-            }
-            return;
-        }
-        if (firstRun)
-        {
-            firstRun = false;
-            lastTickTargetName = closestTarget.getName().getString();
-            if (announceUsage.getValue())
-            {
-                SalHack.SendMessage("[AutoTrap] Enabled, target: " + lastTickTargetName);
-            }
-        }
-        else if (!lastTickTargetName.equals(closestTarget.getName().getString()))
-        {
-            lastTickTargetName = closestTarget.getName().getString();
-            offsetStep = 0;
-            if (announceUsage.getValue())
-            {
-                SalHack.SendMessage("[AutoTrap] New target: " + lastTickTargetName);
-            }
-        }
-
-        if (toggleMode.getValue())
-        {
-            if (PlayerUtil.IsEntityTrapped(closestTarget))
-            {
-                toggle(true);
                 return;
             }
-        }
-
-        final List<Vec3d> placeTargets = new ArrayList<>();
-
-        switch (Mode.getValue()) {
-            case Full -> Collections.addAll(placeTargets, offsetsDefault);
-            case Tall -> Collections.addAll(placeTargets, offsetsTall);
-            default -> {
-            }
-        }
-
-        int blocksPlaced = 0;
-        while (blocksPlaced < blockPerTick.getValue())
-        {
-            if (offsetStep >= placeTargets.size())
-            {
+            if (firstRun) {
+                firstRun = false;
+                lastTickTargetName = closestTarget.getName().getString();
+                if (announceUsage.getValue()) {
+                    SalHack.SendMessage("[AutoTrap] Enabled, target: " + lastTickTargetName);
+                }
+            } else if (!lastTickTargetName.equals(closestTarget.getName().getString())) {
+                lastTickTargetName = closestTarget.getName().getString();
                 offsetStep = 0;
-                break;
-            }
-            final BlockPos offsetPos = BlockPos.ofFloored(placeTargets.get(offsetStep));
-            final BlockPos targetPos = BlockPos.ofFloored(closestTarget.getPos()).down().add(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ());
-
-            boolean shouldTryToPlace = true;
-            if (!mc.world.getBlockState(targetPos).isReplaceable())
-                shouldTryToPlace = false;
-
-            for (final Entity entity : mc.world.getOtherEntities(null, new Box(targetPos)))
-            {
-                if (!(entity instanceof ItemEntity) && !(entity instanceof ExperienceOrbEntity))
-                {
-                    shouldTryToPlace = false;
-                    break;
+                if (announceUsage.getValue()) {
+                    SalHack.SendMessage("[AutoTrap] New target: " + lastTickTargetName);
                 }
             }
 
-            if (shouldTryToPlace && placeBlock(targetPos))
-            {
-                ++blocksPlaced;
+            if (toggleMode.getValue()) {
+                if (PlayerUtil.IsEntityTrapped(closestTarget)) {
+                    toggle(true);
+                    return;
+                }
             }
-            ++offsetStep;
-        }
-        if (blocksPlaced > 0)
-        {
-            if (lastHotbarSlot != playerHotbarSlot && playerHotbarSlot != -1)
-            {
-                mc.player.getInventory().selectedSlot = playerHotbarSlot;
-                lastHotbarSlot = playerHotbarSlot;
+
+            final List<Vec3d> placeTargets = new ArrayList<>();
+
+            switch (Mode.getValue()) {
+                case Full -> Collections.addAll(placeTargets, offsetsDefault);
+                case Tall -> Collections.addAll(placeTargets, offsetsTall);
+                default -> {
+                }
             }
-            if (isSneaking)
-            {
-                mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
-                isSneaking = false;
+
+            int blocksPlaced = 0;
+            while (blocksPlaced < blockPerTick.getValue()) {
+                if (offsetStep >= placeTargets.size()) {
+                    offsetStep = 0;
+                    break;
+                }
+                final BlockPos offsetPos = BlockPos.ofFloored(placeTargets.get(offsetStep));
+                final BlockPos targetPos = BlockPos.ofFloored(closestTarget.getPos()).down().add(offsetPos.getX(), offsetPos.getY(), offsetPos.getZ());
+
+                boolean shouldTryToPlace = true;
+                if (!mc.world.getBlockState(targetPos).isReplaceable())
+                    shouldTryToPlace = false;
+
+                for (final Entity entity : mc.world.getOtherEntities(null, new Box(targetPos))) {
+                    if (!(entity instanceof ItemEntity) && !(entity instanceof ExperienceOrbEntity)) {
+                        shouldTryToPlace = false;
+                        break;
+                    }
+                }
+
+                if (shouldTryToPlace && placeBlock(targetPos)) {
+                    ++blocksPlaced;
+                }
+                ++offsetStep;
+            }
+            if (blocksPlaced > 0) {
+                if (lastHotbarSlot != playerHotbarSlot && playerHotbarSlot != -1) {
+                    mc.player.getInventory().selectedSlot = playerHotbarSlot;
+                    lastHotbarSlot = playerHotbarSlot;
+                }
+                if (isSneaking) {
+                    mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.RELEASE_SHIFT_KEY));
+                    isSneaking = false;
+                }
             }
         }
     }
 
-    private boolean placeBlock(final BlockPos pos)
-    {
+    private boolean placeBlock(final BlockPos pos) {
         if (!mc.world.getBlockState(pos).isReplaceable())
             return false;
         if (!BlockInteractionHelper.checkForNeighbours(pos))
             return false;
         final Vec3d eyesPos = new Vec3d(mc.player.getX(), mc.player.getY() + mc.player.getEyeHeight(mc.player.getPose()), mc.player.getZ());
-        for (final Direction side : Direction.values())
-        {
+        for (final Direction side : Direction.values()) {
             final BlockPos neighbor = pos.offset(side);
             final Direction side2 = side.getOpposite();
-            if (mc.world.getBlockState(neighbor).getCollisionShape(mc.world, neighbor) != VoxelShapes.empty())
-            {
+            if (mc.world.getBlockState(neighbor).getCollisionShape(mc.world, neighbor) != VoxelShapes.empty()) {
                 final Vec3d hitVec = new Vec3d(neighbor.getX() + 0.5 + side2.getVector().getX() * 0.5, neighbor.getY() + 0.5 + side2.getVector().getY() * 0.5, neighbor.getZ() + 0.5 + side2.getVector().getZ() * 0.5);
 
-                if (eyesPos.distanceTo(hitVec) <= range.getValue())
-                {
+                if (eyesPos.distanceTo(hitVec) <= range.getValue()) {
                     final int obiSlot = findObiInHotbar();
-                    if (obiSlot == -1)
-                    {
+                    if (obiSlot == -1) {
                         toggle(true);
                         return false;
                     }
-                    if (lastHotbarSlot != obiSlot)
-                    {
+                    if (lastHotbarSlot != obiSlot) {
                         mc.player.getInventory().selectedSlot = obiSlot;
                         lastHotbarSlot = obiSlot;
                     }
                     final Block neighborPos = mc.world.getBlockState(neighbor).getBlock();
-                    if (BlockInteractionHelper.blackList.contains(neighborPos) || BlockInteractionHelper.shulkerList.contains(neighborPos))
-                    {
+                    if (BlockInteractionHelper.blackList.contains(neighborPos) || BlockInteractionHelper.shulkerList.contains(neighborPos)) {
                         mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.PRESS_SHIFT_KEY));
                         isSneaking = true;
                     }
-                    if (rotate.getValue())
-                    {
+                    if (rotate.getValue()) {
                         BlockInteractionHelper.faceVectorPacketInstant(hitVec);
                     }
 
@@ -302,22 +266,17 @@ public final class AutoTrap extends Module
         return false;
     }
 
-    private int findObiInHotbar()
-    {
-        for (int i = 0; i < 9; ++i)
-        {
+    private int findObiInHotbar() {
+        for (int i = 0; i < 9; ++i) {
             final ItemStack stack = mc.player.getInventory().getStack(i);
-            if (stack != ItemStack.EMPTY && stack.getItem() instanceof BlockItem)
-            {
+            if (stack != ItemStack.EMPTY && stack.getItem() instanceof BlockItem) {
                 final Block block = ((BlockItem) stack.getItem()).getBlock();
 
-                if (EChests.getValue())
-                {
+                if (EChests.getValue()) {
                     if (block instanceof EnderChestBlock)
                         return i;
                 }
-                else if (block == Blocks.OBSIDIAN)
-                {
+                else if (block == Blocks.OBSIDIAN) {
                     return i;
                 }
             }
