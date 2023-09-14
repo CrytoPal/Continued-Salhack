@@ -191,6 +191,61 @@ public class PlayerUtil {
         });
     }
 
+    public static boolean IsPlayerTrapped()
+    {
+        BlockPos l_PlayerPos = GetLocalPlayerPosFloored();
+
+        final BlockPos[] l_TrapPositions = {
+                l_PlayerPos.down(),
+                l_PlayerPos.up().up(),
+                l_PlayerPos.north(),
+                l_PlayerPos.south(),
+                l_PlayerPos.east(),
+                l_PlayerPos.west(),
+                l_PlayerPos.north().up(),
+                l_PlayerPos.south().up(),
+                l_PlayerPos.east().up(),
+                l_PlayerPos.west().up(),
+        };
+
+        for (BlockPos l_Pos : l_TrapPositions)
+        {
+            BlockState l_State = mc.world.getBlockState(l_Pos);
+
+            if (l_State.getBlock() != Blocks.OBSIDIAN && mc.world.getBlockState(l_Pos).getBlock() != Blocks.BEDROCK)
+                return false;
+        }
+
+        return true;
+    }
+
+    public static boolean IsEntityTrapped(Entity e)
+    {
+        BlockPos l_PlayerPos = EntityPosToFloorBlockPos(e);
+
+        final BlockPos[] l_TrapPositions = {
+                l_PlayerPos.up().up(),
+                l_PlayerPos.north(),
+                l_PlayerPos.south(),
+                l_PlayerPos.east(),
+                l_PlayerPos.west(),
+                l_PlayerPos.north().up(),
+                l_PlayerPos.south().up(),
+                l_PlayerPos.east().up(),
+                l_PlayerPos.west().up(),
+        };
+
+        for (BlockPos l_Pos : l_TrapPositions)
+        {
+            BlockState l_State = mc.world.getBlockState(l_Pos);
+
+            if (l_State.getBlock() != Blocks.OBSIDIAN && mc.world.getBlockState(l_Pos).getBlock() != Blocks.BEDROCK)
+                return false;
+        }
+
+        return true;
+    }
+
     public static void PacketFacePitchAndYaw(float yaw, float pitch) {
         float pre_Yaw = mc.player.getYaw();
         float pre_Pitch = mc.player.getPitch();

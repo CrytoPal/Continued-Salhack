@@ -1,14 +1,19 @@
 package me.ionar.salhack.module.combat;
 
 import io.github.racoondog.norbit.EventHandler;
+import io.github.racoondog.norbit.EventPriority;
+import me.ionar.salhack.events.EventEra;
+import me.ionar.salhack.events.player.PlayerMotionUpdate;
 import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.managers.TickRateManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
+import me.ionar.salhack.util.MathUtil;
 import me.ionar.salhack.util.Timer;
 import me.ionar.salhack.util.entity.EntityUtil;
 import me.ionar.salhack.util.entity.ItemUtil;
+import me.ionar.salhack.util.entity.PlayerUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.passive.HorseEntity;
@@ -129,9 +134,10 @@ public class KillAura extends Module {
         return l_HealthCheck && p_Entity.distanceTo(p_Entity) <= Distance.getValue();
     }
 
-    @EventHandler
-    private void OnTick(TickEvent event) {
-        if (event.isPre()) return;
+    @EventHandler(priority = EventPriority.LOWEST)
+    private void OnTick(PlayerMotionUpdate event) {
+        if (event.getEra() != EventEra.PRE)
+            return;
 
         if (!(mc.player.getMainHandStack().getItem() instanceof SwordItem)) {
             if (mc.player.getMainHandStack().getItem() == Items.END_CRYSTAL && PauseIfCrystal.getValue())
@@ -208,6 +214,11 @@ public class KillAura extends Module {
             CurrentTarget = null;
             return;
         }
+
+        float[] l_Rotation = MathUtil.calcAngle(mc.player.getEyePos(), l_TargetToHit.getEyePos());
+
+        PlayerUtil.PacketFacePitchAndYaw(l_Rotation[0], l_Rotation[1]);
+        event.cancel();
 
         final float l_Ticks = 20.0f - TickRateManager.Get().getTickRate();
 

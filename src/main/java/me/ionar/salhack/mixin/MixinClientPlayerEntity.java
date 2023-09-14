@@ -36,9 +36,15 @@ public class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
 
     @Inject(method = "sendMovementPackets", at = @At("HEAD"), cancellable = true)
     private void sendMovementPackets$Inject$HEAD(CallbackInfo p_Info) {
-        if(PlayerUtil.rotating) return;
+        if(PlayerUtil.rotating)
+        {
+            PlayerUtil.rotating = false;
+            return;
+        }
+
         PlayerMotionUpdate event = new PlayerMotionUpdate(EventEra.PRE);
         SalHackMod.NORBIT_EVENT_BUS.post(event);
+
         if (event.isCancelled())
         {
             p_Info.cancel();
