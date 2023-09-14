@@ -24,17 +24,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class CrystalUtils {
-    public static boolean canPlaceCrystal(final BlockPos pos) {
-        final MinecraftClient mc = Wrapper.GetMC();
+    final static MinecraftClient mc = Wrapper.GetMC();
 
+
+    public static boolean canPlaceCrystal(final BlockPos pos) {
         final Block block = mc.world.getBlockState(pos).getBlock();
 
         if (block == Blocks.OBSIDIAN || block == Blocks.BEDROCK) {
-            final Block floor = mc.world.getBlockState(pos.add(0, 1, 0)).getBlock();
-            final Block ceil = mc.world.getBlockState(pos.add(0, 2, 0)).getBlock();
+            final Block floor = mc.world.getBlockState(pos.up()).getBlock();
+            // deprecated
+            //final Block ceil = mc.world.getBlockState(pos.add(0, 2, 0)).getBlock();
 
-            if (floor == Blocks.AIR && ceil == Blocks.AIR) {
-                if (mc.world.getOtherEntities(null, new Box(pos.add(0, 1, 0))).isEmpty()) {
+            if (floor == Blocks.AIR /*&& ceil == Blocks.AIR*/) {
+                if (mc.world.getOtherEntities(null, new Box(pos.up())).isEmpty()) {
                     return true;
                 }
             }
@@ -75,6 +77,10 @@ public class CrystalUtils {
             }
         }
         return circleblocks;
+    }
+
+    public static boolean checkBase(BlockPos bp){
+        return mc.world.getBlockState(bp).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(bp).getBlock() == Blocks.BEDROCK;
     }
 
     public static float calculateDamage(final World p_World, double posX, double posY, double posZ, PlayerEntity target,

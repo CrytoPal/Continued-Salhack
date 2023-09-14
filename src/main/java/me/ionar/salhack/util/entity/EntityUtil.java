@@ -13,6 +13,8 @@ import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 public class EntityUtil {
@@ -39,6 +41,16 @@ public class EntityUtil {
 
     public static boolean isFakeLocalPlayer(Entity entity) {
         return entity != null && entity.getId() == -100 && Wrapper.GetMC().player != entity;
+    }
+
+    public static BlockPos GetPositionVectorBlockPos(Entity entity, @Nullable BlockPos toAdd)
+    {
+        final Vec3d v = entity.getPos();
+
+        if (toAdd == null)
+            return BlockPos.ofFloored(v.x, v.y, v.z);
+
+        return BlockPos.ofFloored(v.x, v.y, v.z).add(toAdd);
     }
 
     /**

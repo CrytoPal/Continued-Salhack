@@ -11,9 +11,7 @@ import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.Value;
-import me.ionar.salhack.module.combat.AutoCrystalRewrite;
-import me.ionar.salhack.module.combat.Offhand;
-import me.ionar.salhack.module.combat.KillAura;
+import me.ionar.salhack.module.combat.*;
 import me.ionar.salhack.module.exploit.Bowbomb;
 import me.ionar.salhack.module.misc.FakePlayer;
 import me.ionar.salhack.module.misc.Friends;
@@ -44,6 +42,12 @@ public class ModuleManager {
         Add(new KillAura());
         Add(new Offhand());
         Add(new AutoCrystalRewrite());
+        Add(new Surround());
+        Add(new AutoTrap());
+        Add(new AntiCityBoss());
+        Add(new AutoArmor());
+        Add(new BowSpam());
+        Add(new AutoCity());
 
         /// Exploit
         Add(new Bowbomb());
