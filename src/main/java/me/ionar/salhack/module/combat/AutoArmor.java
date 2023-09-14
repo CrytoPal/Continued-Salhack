@@ -55,6 +55,7 @@ public class AutoArmor extends Module
 
             if (l_FoundSlot != -1)
             {
+
                 timer.reset();
 
                 /// support for xcarry
@@ -78,10 +79,10 @@ public class AutoArmor extends Module
       //  if (AutoMend != null && AutoMend.isEnabled())
       //      return;
 
-        SwitchItemIfNeed(mc.player.getInventory().getStack(5), EquipmentSlot.HEAD, 5);
-        SwitchItemIfNeed(mc.player.getInventory().getStack(6), EquipmentSlot.CHEST, 6);
-        SwitchItemIfNeed(mc.player.getInventory().getStack(7), EquipmentSlot.LEGS, 7);
-        SwitchItemIfNeed(mc.player.getInventory().getStack(8), EquipmentSlot.FEET, 8);
+        SwitchItemIfNeed(mc.player.getInventory().getStack(36), EquipmentSlot.FEET, 8);
+        SwitchItemIfNeed(mc.player.getInventory().getStack(37), EquipmentSlot.LEGS, 7);
+        SwitchItemIfNeed(mc.player.getInventory().getStack(38), EquipmentSlot.CHEST, 6);
+        SwitchItemIfNeed(mc.player.getInventory().getStack(39), EquipmentSlot.HEAD, 5);
 
         if (ElytraReplace.getValue() && !mc.player.getInventory().getStack(6).isEmpty())
         {
@@ -119,11 +120,8 @@ public class AutoArmor extends Module
         int slot = -1;
         float damage = 0;
 
-        for (int i = 0; i < mc.player.getInventory().size(); ++i)
+        for (int i = 0; i < 36; i++)
         {
-            /// @see: https://wiki.vg/Inventory, 0 is crafting slot, and 5,6,7,8 are Armor slots
-            if (i == 0 || i == 5 || i == 6 || i == 7 || i == 8)
-                continue;
 
             ItemStack s = mc.player.getInventory().getStack(i);
             if (s != null && s.getItem() != Items.AIR)
@@ -144,10 +142,10 @@ public class AutoArmor extends Module
                     }
                 }
                 else if (type == EquipmentSlot.CHEST && PreferElytra.getValue() && s.getItem() instanceof ElytraItem && ArmorHudComponent.GetPctFromStack(s) > 3)
-                    return i;
+                    return (i < 9 ? i + 36 : i);
             }
         }
 
-        return slot;
+        return (slot < 9 ? slot + 36 : slot);
     }
 }
