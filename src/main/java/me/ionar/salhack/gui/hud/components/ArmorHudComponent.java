@@ -61,4 +61,12 @@ public class ArmorHudComponent extends HudComponentItem {
             setHeight(10);
         }
     }
+
+    public static float GetPctFromStack(ItemStack p_Stack)
+    {
+        float l_ArmorPct = ((float)(p_Stack.getMaxDamage()-p_Stack.getDamage()) /  (float)p_Stack.getMaxDamage())*100.0f;
+        float l_ArmorBarPct = Math.min(l_ArmorPct, 100.0f);
+
+        return l_ArmorBarPct;
+    }
 }
