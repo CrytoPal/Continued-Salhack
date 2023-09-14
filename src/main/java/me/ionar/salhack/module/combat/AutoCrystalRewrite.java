@@ -15,6 +15,7 @@ import me.ionar.salhack.util.Timer;
 import me.ionar.salhack.util.entity.EntityUtil;
 import me.ionar.salhack.util.entity.PlayerUtil;
 import me.ionar.salhack.util.render.RenderUtil;
+import me.ionar.salhack.managers.ModuleManager;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
@@ -98,24 +99,24 @@ public class AutoCrystalRewrite extends Module {
 
     // Modules used for pausing
 
-    // private SurroundModule _surround = null;
+    private Surround _surround = null;
     // private AutoTrapFeet _autoTrapFeet = null;
     // private AutoMendArmorModule _autoMend = null;
     // private SelfTrapModule _selfTrap = null;
     // private HoleFillerModule _holeFiller = null;
-    // private AutoCityModule _autoCity = null;
+     private AutoCity _autoCity = null;
 
     @Override
     public void init() {
         Mod = this;
 
         // initalize the mods as needed
-        // _surround = (SurroundModule) ModuleManager.Get().GetMod(SurroundModule.class);
+         _surround = (Surround) ModuleManager.Get().GetMod(Surround.class);
         // _autoTrapFeet = (AutoTrapFeet) ModuleManager.Get().GetMod(AutoTrapFeet.class);
         // _autoMend = (AutoMendArmorModule) ModuleManager.Get().GetMod(AutoMendArmorModule.class);
         // _selfTrap = (SelfTrapModule) ModuleManager.Get().GetMod(SelfTrapModule.class);
         // _holeFiller = (HoleFillerModule) ModuleManager.Get().GetMod(HoleFillerModule.class);
-        // _autoCity = (AutoCityModule) ModuleManager.Get().GetMod(AutoCityModule.class);
+         _autoCity = (AutoCity) ModuleManager.Get().GetMod(AutoCity.class);
     }
 
 
@@ -590,14 +591,15 @@ public class AutoCrystalRewrite extends Module {
     public boolean NeedPause() {
         /// We need to pause if we have surround enabled, and don't have obsidian
 
-        /*
+
          if (_surround.isEnabled() && !_surround.IsSurrounded(mc.player) && _surround.HasObsidian()) {
              if (!_surround.ActivateOnlyOnShift.getValue())
                  return true;
 
-            if (!mc.options.sneakKey.isKeyDown())
+            if (!mc.options.sneakKey.isPressed())
                 return true;
         }
+        /*
 
         if (_autoTrapFeet.isEnabled() && !_autoTrapFeet.IsCurrentTargetTrapped() && _autoTrapFeet.HasObsidian())
             return true;
@@ -618,8 +620,8 @@ public class AutoCrystalRewrite extends Module {
         if (pauseWhileEating.getValue() && mc.player.isUsingItem())
             return true;
 
-        // if (_autoCity.isEnabled())
-        //    return true;
+         if (_autoCity.isEnabled())
+            return true;
 
         return false;
     }

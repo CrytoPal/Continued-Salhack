@@ -191,6 +191,7 @@ public class PlayerUtil {
         });
     }
 
+
     public static boolean IsPlayerTrapped()
     {
         BlockPos l_PlayerPos = GetLocalPlayerPosFloored();
@@ -245,6 +246,7 @@ public class PlayerUtil {
 
         return true;
     }
+
 
     public static void PacketFacePitchAndYaw(float yaw, float pitch) {
         float pre_Yaw = mc.player.getYaw();

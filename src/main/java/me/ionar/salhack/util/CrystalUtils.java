@@ -26,7 +26,6 @@ import java.util.stream.Collectors;
 public class CrystalUtils {
     final static MinecraftClient mc = Wrapper.GetMC();
 
-
     public static boolean canPlaceCrystal(final BlockPos pos) {
         final Block block = mc.world.getBlockState(pos).getBlock();
 
@@ -79,9 +78,11 @@ public class CrystalUtils {
         return circleblocks;
     }
 
+
     public static boolean checkBase(BlockPos bp){
         return mc.world.getBlockState(bp).getBlock() == Blocks.OBSIDIAN || mc.world.getBlockState(bp).getBlock() == Blocks.BEDROCK;
     }
+
 
     public static float calculateDamage(final World p_World, double posX, double posY, double posZ, PlayerEntity target,
                                         int p_InterlopedAmount) {
@@ -138,6 +139,4 @@ public class CrystalUtils {
         }
         return 0f;
     }
-
-
 }
