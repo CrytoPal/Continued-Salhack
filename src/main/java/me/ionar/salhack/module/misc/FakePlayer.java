@@ -66,13 +66,11 @@ public class FakePlayer extends Module {
     // Reformating a short uuid type into a long uuid type
     private static String reformatUuid(String uuid) {
         String longUuid = "";
-
         longUuid += uuid.substring(1, 9) + "-";
         longUuid += uuid.substring(9, 13) + "-";
         longUuid += uuid.substring(13, 17) + "-";
         longUuid += uuid.substring(17, 21) + "-";
         longUuid += uuid.substring(21, 33);
-
         return longUuid;
     }
 }

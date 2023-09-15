@@ -80,4 +80,11 @@ public class MathUtil {
     public static double degToRad(double deg) {
         return deg * (float) (Math.PI / 180.0f);
     }
+
+    public Vec3d getCenter(double posX, double posY, double posZ) {
+        double x = Math.floor(posX) + 0.5D;
+        double y = Math.floor(posY);
+        double z = Math.floor(posZ) + 0.5D ;
+        return new Vec3d(x, y, z);
+    }
 }

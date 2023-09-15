@@ -15,6 +15,11 @@ public class Flight extends Module {
     // public final Value<Modes> Mode = new Value<Modes>("Mode", new String[]{"M"}, "Modes of the speed to use", Modes.Vanilla);
     public final Value<Float> Speed = new Value<Float>("Speed", new String[]{""}, "Speed to use", 0.1f, 0.0f, 1.0f, 0.1f);
     // public final Value<Boolean> AntiKick = new Value<Boolean>("AntiKick", new String[]{""}, "Prevents you from getting kicked while flying by vanilla anticheat", true);
+    public enum modes {
+        Vanilla,
+        Creative,
+    }
+
     public Flight() {
         super("Flight", new String[]{ "fly" }, "Lets you fly like a bird", 0, -1, ModuleType.MOVEMENT);
     }
@@ -43,15 +48,6 @@ public class Flight extends Module {
     @EventHandler
     public void onTick(TickEvent event) {
         if (event.isPre()) return;
-        if (mc.player != null) {
-            if (flying) {
-                mc.player.getAbilities().setFlySpeed(Speed.getValue());
-            }
-        }
-    }
-
-    public enum Modes {
-        Vanilla,
-        Creative,
+        if (mc.player != null && flying) mc.player.getAbilities().setFlySpeed(Speed.getValue());
     }
 }

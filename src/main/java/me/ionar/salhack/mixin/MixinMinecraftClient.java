@@ -17,13 +17,13 @@ public class MixinMinecraftClient {
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void onPreTick(CallbackInfo info){
-        if (Wrapper.GetMC().player == null) return;
+        if (Wrapper.GetMC() != null && Wrapper.GetMC().player == null) return;
         SalHackMod.NORBIT_EVENT_BUS.post(new TickEvent(EventEra.PRE));
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
     public void onTick(CallbackInfo info){
-        if (Wrapper.GetMC().player == null) return;
+        if (Wrapper.GetMC() != null && Wrapper.GetMC().player == null) return;
         SalHackMod.NORBIT_EVENT_BUS.post(new TickEvent(EventEra.POST));
     }
 

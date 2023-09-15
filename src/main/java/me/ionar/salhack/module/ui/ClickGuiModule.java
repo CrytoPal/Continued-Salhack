@@ -21,7 +21,7 @@ public final class ClickGuiModule extends Module {
     public void onEnable() {
         super.onEnable();
         if (clickGui == null) clickGui = new ClickGuiScreen(this, (ColorsModule) SalHack.getModuleManager().getMod(ColorsModule.class));
-        if (mc.world != null && mc.mouse != null) {
+        if (mc != null && mc.world != null && mc.mouse != null) {
             System.out.println("open clickgui");
             mc.setScreen(clickGui);
         }

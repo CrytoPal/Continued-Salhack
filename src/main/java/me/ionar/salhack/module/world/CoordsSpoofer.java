@@ -3,7 +3,7 @@ package me.ionar.salhack.module.world;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 
-public class CoordsSpooferModule extends Module {
+public class CoordsSpoofer extends Module {
     public final Value<Integer> coordsZ = new Value<>("Z", new String[]{"Z"}, "How much to Spoof Z coord", 0, 0, 30000000, 11);
     public final Value<Integer> coordsX = new Value<>("X", new String[]{"X"}, "How much to Spoof X coord", 0, 0, 30000000, 11);
     public final Value<Integer> coordsNegativeZ = new Value<>("-Z", new String[]{"-Z"}, "How much to Spoof -Z coord", 0, 0, -30000000, 11);
@@ -15,7 +15,7 @@ public class CoordsSpooferModule extends Module {
     public final Value<Boolean> flowerSpoof = new Value<>("Flower Spoof", new String[]{"FlowerSpoof"}, "Removes Flowers to prevent exploits", false);
     public final Value<Boolean> biomeSpoof = new Value<>("Biome Spoof", new String[]{"BiomeSpoof"}, "Prevents biome from changing water or leave color", false);
 
-    public CoordsSpooferModule() {
+    public CoordsSpoofer() {
         super("CoordSpoofer", new String[]{"CoordSpoofer"}, "Removes any way for players to get your coords", 0, 0x96DB24, ModuleType.WORLD);
     }
 

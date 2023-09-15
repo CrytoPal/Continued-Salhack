@@ -13,7 +13,7 @@ public final class HudEditorModule extends Module {
     @Override
     public void onToggle() {
         super.onToggle();
-        if (mc.world != null && mc.mouse != null) {
+        if (mc != null && mc.world != null && mc.mouse != null) {
             if (hudEditor == null) hudEditor = new GuiHudEditor(this);
             mc.setScreen(hudEditor);
         }

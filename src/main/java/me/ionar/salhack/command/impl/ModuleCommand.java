@@ -6,8 +6,9 @@ import me.ionar.salhack.command.Command;
 import me.ionar.salhack.command.util.ModuleCommandListener;
 import me.ionar.salhack.module.Value;
 
+@SuppressWarnings({"rawtypes", "unchecked"})
 public class ModuleCommand extends Command {
-    private ModuleCommandListener listener;
+    private final ModuleCommandListener listener;
     private final List<Value> values;
 
     public ModuleCommand(String name, String description, ModuleCommandListener listener, final List<Value> values) {

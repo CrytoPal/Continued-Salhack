@@ -12,10 +12,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameHud.class)
 public abstract class MixinInGameHud {
 
-    @Inject(at = @At(value = "RETURN"), method = "render", cancellable = true)
-    public void render(DrawContext context, float tickDelta, CallbackInfo callback) {
+    @Inject(method = "render", at = @At(value = "RETURN"), cancellable = true)
+    public void render(DrawContext context, float tickDelta, CallbackInfo info) {
         RenderGameOverlayEvent event = new RenderGameOverlayEvent(context, tickDelta);
         SalHackMod.NORBIT_EVENT_BUS.post(event);
-        if (event.isCancelled()) callback.cancel();
+        if (event.isCancelled()) info.cancel();
     }
 }

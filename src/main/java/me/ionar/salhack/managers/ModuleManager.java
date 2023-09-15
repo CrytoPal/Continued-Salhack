@@ -4,59 +4,51 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.stream.Collectors;
-
 import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.Value;
-import me.ionar.salhack.module.combat.OffhandModule;
-import me.ionar.salhack.module.combat.KillAuraModule;
-import me.ionar.salhack.module.exploit.BowbombModule;
-import me.ionar.salhack.module.misc.FakePlayer;
-import me.ionar.salhack.module.misc.FriendsModule;
-import me.ionar.salhack.module.misc.MiddleClickFriendsModule;
-import me.ionar.salhack.module.movement.ElytraFlyModule;
-import me.ionar.salhack.module.movement.Rotation;
-import me.ionar.salhack.module.movement.SpeedModule;
-import me.ionar.salhack.module.movement.Sprint;
-import me.ionar.salhack.module.render.NametagsModule;
+import me.ionar.salhack.module.combat.*;
+import me.ionar.salhack.module.exploit.*;
+import me.ionar.salhack.module.misc.*;
+import me.ionar.salhack.module.movement.*;
+import me.ionar.salhack.module.render.*;
 import me.ionar.salhack.module.ui.*;
-import me.ionar.salhack.module.world.AutoToolModule;
-import me.ionar.salhack.module.world.CoordsSpooferModule;
-import me.ionar.salhack.module.world.TimerModule;
+import me.ionar.salhack.module.world.*;
+import me.ionar.salhack.module.world.Timer;
 import me.ionar.salhack.preset.Preset;
 import me.ionar.salhack.util.ReflectionUtil;
 // DO NOT TOUCH THESE THEY MAY BREAK OPENING THE GUI
 public class ModuleManager {
 
-    public ModuleManager() {
-    }
+    public ModuleManager() {}
 
-    public static ArrayList<Module> modules = new ArrayList<Module>();
-    private ArrayList<Module> arrayListAnimations = new ArrayList<Module>();
+    public static ArrayList<Module> modules = new ArrayList<>();
+    private ArrayList<Module> arrayListAnimations = new ArrayList<>();
     public void init() {
         /// Combat
-        add(new KillAuraModule());
-        add(new OffhandModule());
+        add(new KillAura());
+        add(new Offhand());
 
         /// Exploit
-        add(new BowbombModule());
+        add(new Bowbomb());
 
         /// Misc
         add(new FakePlayer());
-        add(new FriendsModule());
-        add(new MiddleClickFriendsModule());
+        add(new Friends());
+        add(new MiddleClickFriends());
 
         /// Movement
-        add(new ElytraFlyModule());
-        add(new SpeedModule());
+        add(new ElytraFly());
+        add(new Speed());
         add(new Sprint());
         add(new Rotation());
 
         /// Render
         add(new NametagsModule());
+        add(new Fullbright());
 
         /// UI
         add(new ColorsModule());
@@ -66,9 +58,9 @@ public class ModuleManager {
         add(new Notification());
 
         /// World
-        add(new TimerModule());
-        add(new CoordsSpooferModule());
-        add(new AutoToolModule());
+        add(new Timer());
+        add(new CoordsSpoofer());
+        add(new AutoTool());
 
         /// Schematica
 
@@ -156,6 +148,7 @@ public class ModuleManager {
     }
 
     public void onModEnable(Module p_Mod) {
+        if (Wrapper.GetMC() == null) return;
         arrayListAnimations.remove(p_Mod);
         arrayListAnimations.add(p_Mod);
 
@@ -176,8 +169,7 @@ public class ModuleManager {
     }
 
     public void update() {
-        if (arrayListAnimations.isEmpty())
-            return;
+        if (arrayListAnimations.isEmpty() || Wrapper.GetMC() == null) return;
 
         Module l_Mod = arrayListAnimations.get(0);
 

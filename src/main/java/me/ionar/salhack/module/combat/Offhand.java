@@ -13,7 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 
-public final class OffhandModule extends Module {
+public final class Offhand extends Module {
     public final Value<Float> health = new Value<>("Health", new String[]{"Hp"}, "The amount of health needed to acquire a totem.", 16.0f, 0.0f, 20.0f, 0.5f);
     public final Value<offhandModes> mode = new Value<>("Mode", new String[]{"Mode"}, "If you are above the required health for a totem, x will be used in offhand instead.", offhandModes.Totem);
     // Will fix later
@@ -54,7 +54,7 @@ public final class OffhandModule extends Module {
         }
     }
 
-    public OffhandModule() {
+    public Offhand() {
         super("Offhand", new String[]{"OF"}, "Automatically puts an Item of your choice in your offhand", 0, 0xDADB24, ModuleType.COMBAT);
     }
 

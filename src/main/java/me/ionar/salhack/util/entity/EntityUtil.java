@@ -1,6 +1,7 @@
 package me.ionar.salhack.util.entity;
 
 import me.ionar.salhack.main.Wrapper;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
@@ -15,11 +16,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 public class EntityUtil {
-
+    private static final MinecraftClient mc = Wrapper.GetMC();
     public static ArrayList<Entity> getEntities() {
         ArrayList<Entity> entities = new ArrayList<>();
-        if (Wrapper.GetMC().world != null) {
-            for (Entity entity : Wrapper.GetMC().world.getEntities()) {
+        if (mc.world != null) {
+            for (Entity entity : mc.world.getEntities()) {
                 entities.add(entity);
             }
         }
@@ -27,26 +28,22 @@ public class EntityUtil {
     }
 
     public static boolean isPassive(Entity entity) {
-        if (entity instanceof WolfEntity && ((WolfEntity) entity).isUniversallyAngry(Wrapper.GetMC().world)) return false;
+        if (entity instanceof WolfEntity && ((WolfEntity) entity).isUniversallyAngry(mc.world)) return false;
         if (entity instanceof AnimalEntity || entity instanceof AmbientEntity || entity instanceof SquidEntity) return true;
         return entity instanceof IronGolemEntity && ((IronGolemEntity) entity).getTarget() == null;
     }
 
     public static boolean isLiving(Entity entity) {
-        return entity instanceof LivingEntity;
+        return entity instanceof LivingEntity && ((LivingEntity) entity).getHealth() != 0;
     }
 
     public static boolean isFakePlayer(Entity entity) {
-        return entity != null && entity.getId() == -100 && Wrapper.GetMC().player != entity;
+        return entity != null && entity.getId() == -100 && mc.player != entity;
     }
 
-    public static BlockPos GetPositionVectorBlockPos(Entity entity, @Nullable BlockPos toAdd)
-    {
+    public static BlockPos getPositionVectorBlockPos(Entity entity, @Nullable BlockPos toAdd) {
         final Vec3d v = entity.getPos();
-
-        if (toAdd == null)
-            return BlockPos.ofFloored(v.x, v.y, v.z);
-
+        if (toAdd == null) return BlockPos.ofFloored(v.x, v.y, v.z);
         return BlockPos.ofFloored(v.x, v.y, v.z).add(toAdd);
     }
 
@@ -66,18 +63,18 @@ public class EntityUtil {
     }
 
     public static boolean isInWater(Entity entity) {
-        if (entity == null || Wrapper.GetMC().world == null) return false;
+        if (entity == null || mc.world == null) return false;
         double y = entity.getY() + 0.01;
         for (int x = MathHelper.floor(entity.getX()); x < MathHelper.ceil(entity.getX()); x++)
             for (int z = MathHelper.floor(entity.getZ()); z < MathHelper.ceil(entity.getZ()); z++) {
                 BlockPos pos = new BlockPos(x, (int) y, z);
-                if (Wrapper.GetMC().world.getBlockState(pos).getFluidState() != null) return true;
+                if (mc.world.getBlockState(pos).getFluidState() != null) return true;
             }
         return false;
     }
 
     public static boolean isDrivenByPlayer(Entity entity) {
-        return Wrapper.GetMC().player != null && entity != null && entity.equals(Wrapper.GetMC().player.getVehicle());
+        return mc.player != null && entity != null && entity.equals(mc.player.getVehicle());
     }
 
     public static boolean isAboveWater(Entity entity) {
@@ -85,7 +82,7 @@ public class EntityUtil {
     }
 
     public static boolean isAboveWater(Entity entity, boolean packet) {
-        if (entity == null || Wrapper.GetMC().world == null) return false;
+        if (entity == null || mc.world == null) return false;
         double y = entity.getY() - (packet ? 0.03 : (EntityUtil.isPlayer(entity) ? 0.2 : 0.5));
         // increasing this seems
         // to flag more in NCP but
@@ -95,7 +92,7 @@ public class EntityUtil {
         for (int x = MathHelper.floor(entity.getX()); x < MathHelper.ceil(entity.getX()); x++)
             for (int z = MathHelper.floor(entity.getZ()); z < MathHelper.ceil(entity.getZ()); z++) {
                 BlockPos pos = new BlockPos(x, MathHelper.floor(y), z);
-                if (Wrapper.GetMC().world.getBlockState(pos).getFluidState() != null) return true;
+                if (mc.world.getBlockState(pos).getFluidState() != null) return true;
             }
         return false;
     }
@@ -131,7 +128,7 @@ public class EntityUtil {
 
     public static int getPlayerMS(PlayerEntity player) {
         if (player.getUuid() != null) {
-            ClientPlayNetworkHandler handler = Wrapper.GetMC().getNetworkHandler();
+            ClientPlayNetworkHandler handler = mc.getNetworkHandler();
             if (handler != null) {
                 PlayerListEntry entry = handler.getPlayerListEntry(player.getUuid());
                 if (entry != null) return entry.getLatency();

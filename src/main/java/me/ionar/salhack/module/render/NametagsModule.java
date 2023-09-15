@@ -40,16 +40,13 @@ public class NametagsModule extends Module {
     public final Value<Boolean> entityID = new Value<>("EntityID", new String[]{""}, "", false);
     public final Value<Boolean> gameMode = new Value<>("GameMode", new String[]{""}, "", false);
     public final Value<Boolean> ping = new Value<>("Ping", new String[]{""}, "", true);
-    Entity camera = mc.getCameraEntity();
     public NametagsModule() {
         super("NameTags", new String[]{ "Nametag" }, "Improves nametags of players around you", 0, -1, ModuleType.RENDER);
     }
 
     @EventHandler
     private void onRenderGameOverlay(RenderGameOverlayEvent event) {
-        EntityUtil.getEntities().stream().filter(EntityUtil::isLiving).filter(entity -> !EntityUtil.isFakePlayer(entity))
-                .filter(entity -> (entity instanceof PlayerEntity && mc.player != entity)).forEach(e ->
-                        renderNameTagFor((PlayerEntity) e, event));
+        EntityUtil.getEntities().stream().filter(EntityUtil::isLiving).filter(entity -> !EntityUtil.isFakePlayer(entity)).filter(entity -> (entity instanceof PlayerEntity && mc.player != entity)).forEach(entity -> renderNameTagFor((PlayerEntity) entity, event));
     }
 
     private void renderNameTagFor(PlayerEntity entity, RenderGameOverlayEvent Event) {
@@ -100,7 +97,6 @@ public class NametagsModule extends Module {
                             context.getMatrices().pop();
                             x += 16;
                             final List<String> stringsToDraw = Lists.newArrayList();
-
                             if (stack.isDamaged()) {
                                 float ArmorPercent = ((float)(stack.getMaxDamage()-stack.getDamage()) /  (float)stack.getMaxDamage())*100.0f;
                                 float ArmorBarPercent = Math.min(ArmorPercent, 100.0f);

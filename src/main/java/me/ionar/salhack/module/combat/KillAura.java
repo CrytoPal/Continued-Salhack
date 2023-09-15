@@ -20,7 +20,7 @@ import net.minecraft.util.Hand;
 
 import java.util.Comparator;
 
-public class KillAuraModule extends Module {
+public class KillAura extends Module {
     public final Value<modes> mode = new Value<>("Mode", new String[]{"Mode"}, "The KillAura Mode to use", modes.Closest);
     public final Value<Float> distance = new Value<>("Distance", new String[]{"Range"}, "Range for attacking a target", 5.0f, 0.0f, 10.0f, 1.0f);
     public final Value<Boolean> hitDelay = new Value<>("Hit Delay", new String[]{"Hit Delay"}, "Use vanilla hit delay", true);
@@ -47,7 +47,7 @@ public class KillAuraModule extends Module {
         Switch,
     }
 
-    public KillAuraModule() {
+    public KillAura() {
         super("KillAura", new String[] {"Aura"}, "Automatically faces and hits entities around you", 0, 0xFF0000, ModuleType.COMBAT);
     }
 
@@ -107,7 +107,6 @@ public class KillAuraModule extends Module {
             }
             if (swordOnly.getValue() && slot == -1) return;
         }
-
         if (only32K.getValue() && !ItemUtil.is32K(mc.player.getMainHandStack())) return;
         if (aimbotResetTimer.passed(5000)) aimbotResetTimer.reset();
         if (remainingTicks > 0) --remainingTicks;

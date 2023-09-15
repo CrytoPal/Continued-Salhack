@@ -3,7 +3,6 @@ package me.ionar.salhack.managers;
 import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.events.network.PacketEvent;
-import me.ionar.salhack.main.SalHack;
 import net.minecraft.network.packet.s2c.play.WorldTimeUpdateS2CPacket;
 import net.minecraft.util.math.MathHelper;
 

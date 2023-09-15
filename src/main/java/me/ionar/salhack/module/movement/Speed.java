@@ -7,26 +7,26 @@ import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
-import me.ionar.salhack.module.world.TimerModule;
+import me.ionar.salhack.module.world.Timer;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.MathHelper;
 
-public class SpeedModule extends Module {
+public class Speed extends Module {
     public final Value<modes> mode = new Value<>("Mode", new String[]{"Mode"}, "The mode of speed to use", modes.Strafe);
     public final Value<Boolean> useTimer = new Value<>("UseTimer", new String[]{"UseTimer"}, "Uses timer to go faster", false);
     public final Value<Boolean> autoSprint = new Value<>("AutoSprint", new String[]{"AutoSprint"}, "Automatically sprints for you", false);
     public final Value<Boolean> speedInWater = new Value<>("SpeedInWater", new String[]{"SpeedInWater"}, "Speeds in water", false);
     public final Value<Boolean> autoJump = new Value<>("AutoJump", new String[]{"AutoJump"}, "Automatically jumps", true);
     public final Value<Boolean> strict = new Value<>("Strict", new String[]{"Strict"}, "Strict mode, use this for when hauses patch comes back for strafe", false);
-    private TimerModule timer = null;
+    private Timer timer = null;
     public enum modes {
         Strafe,
         OnGround
     }
 
-    public SpeedModule() {
+    public Speed() {
         super("Speed", new String[]{ "Strafe" }, "Speed strafe", 0, 0xDB2468, ModuleType.MOVEMENT);
     }
 
@@ -38,7 +38,7 @@ public class SpeedModule extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
-        timer = (TimerModule) SalHack.getModuleManager().getMod(TimerModule.class);
+        timer = (Timer) SalHack.getModuleManager().getMod(Timer.class);
     }
 
     @EventHandler

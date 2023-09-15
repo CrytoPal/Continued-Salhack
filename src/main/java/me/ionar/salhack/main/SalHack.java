@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.managers.*;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
 import java.util.Random;
@@ -28,6 +29,7 @@ public class SalHack {
     //private static UUIDManager UUIDManager = new UUIDManager();
     public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static final Random random = new Random();
+    private static final MinecraftClient mc = Wrapper.GetMC();
 
 
     public static void init() {
@@ -70,8 +72,8 @@ public class SalHack {
     /// Writes a message to ingame chat
     /// Player must be ingame for this
     public static void sendMessage(String string) {
-        if (Wrapper.GetMC().player == null) return;
-        Wrapper.GetMC().player.sendMessage(Text.of(string));
+        if (mc.player == null) return;
+        mc.player.sendMessage(Text.of(string));
     }
 
     public static HudManager getHudManager() {

@@ -14,16 +14,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
-
     @Inject(method = "tiltViewWhenHurt", at = @At("HEAD"), cancellable = true)
     private void bobView(MatrixStack matrixStack, float f, CallbackInfo info) {}
 
-    @Inject(at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = Opcodes.GETFIELD, ordinal = 0), method = "renderWorld")
+    @Inject(method = "renderWorld", at = @At(value = "FIELD", target = "Lnet/minecraft/client/render/GameRenderer;renderHand:Z", opcode = Opcodes.GETFIELD, ordinal = 0))
     void renderer_postWorldRender(float tickDelta, long limitTime, MatrixStack matrix, CallbackInfo ci) {
         TransformPositionUtil.lastProjMat.set(RenderSystem.getProjectionMatrix());
         TransformPositionUtil.lastModMat.set(RenderSystem.getModelViewMatrix());
         TransformPositionUtil.lastWorldSpaceMatrix.set(matrix.peek().getPositionMatrix());
-
         RenderEvent event = new RenderEvent(matrix);
         SalHackMod.NORBIT_EVENT_BUS.post(event);
     }

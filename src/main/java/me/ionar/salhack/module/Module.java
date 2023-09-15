@@ -45,7 +45,7 @@ public abstract class Module {
         /// allow events to be called
         SalHackMod.NORBIT_EVENT_BUS.subscribe(this);
         SalHack.getModuleManager().onModEnable(this);
-        if (mc.player != null) {
+        if (mc != null && mc.player != null) {
             remainingXAnimation = mc.textRenderer.getWidth(getFullArrayListDisplayName())+10f;
             if (notification.isEnabled()) mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + displayName + Formatting.GREEN + " ON"));
         }
@@ -57,7 +57,7 @@ public abstract class Module {
         /// disallow events to be called
         SalHackMod.NORBIT_EVENT_BUS.unsubscribe(this);
         SalHackMod.NORBIT_EVENT_BUS.post(new ModuleEvent.Disabled(this));
-        if (mc.player != null && notification.isEnabled()) SalHack.sendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + displayName + Formatting.RED + " OFF");
+        if (mc != null && mc.player != null && notification.isEnabled()) SalHack.sendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + displayName + Formatting.RED + " OFF");
     }
 
     public void onToggle() {}
@@ -128,7 +128,7 @@ public abstract class Module {
     }
 
     public boolean isKeyPressed(int KeyCode) {
-        if (mc.currentScreen != null) return false;
+        if (mc != null && mc.currentScreen != null) return false;
         return key == KeyCode;
     }
 
@@ -215,7 +215,7 @@ public abstract class Module {
     }
 
     public void sendMessage(String message) {
-        if (mc.player != null) SalHack.sendMessage(Formatting.AQUA + "[" + getArrayListDisplayName() + "]: " + Formatting.RESET + message);
+        if (mc != null && mc.player != null) SalHack.sendMessage(Formatting.AQUA + "[" + getArrayListDisplayName() + "]: " + Formatting.RESET + message);
     }
 
     public void saveSettings() {

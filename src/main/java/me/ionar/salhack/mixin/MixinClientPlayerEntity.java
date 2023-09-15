@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin({ClientPlayerEntity.class})
+@Mixin(ClientPlayerEntity.class)
 public class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
     private MixinClientPlayerEntity(ClientWorld world, GameProfile profile) {
         super(world, profile);
@@ -34,19 +34,13 @@ public class MixinClientPlayerEntity extends AbstractClientPlayerEntity {
     }
 
     @Inject(method = "sendMovementPackets", at = @At("HEAD"), cancellable = true)
-    private void sendMovementPackets$Inject$HEAD(CallbackInfo p_Info) {
-        if(PlayerUtil.rotating)
-        {
+    private void sendMovementPackets$Inject$HEAD(CallbackInfo info) {
+        if(PlayerUtil.rotating) {
             PlayerUtil.rotating = false;
             return;
         }
-
         PlayerMotionUpdate event = new PlayerMotionUpdate(EventEra.PRE);
         SalHackMod.NORBIT_EVENT_BUS.post(event);
-
-        if (event.isCancelled())
-        {
-            p_Info.cancel();
-        }
+        if (event.isCancelled()) info.cancel();
     }
 }

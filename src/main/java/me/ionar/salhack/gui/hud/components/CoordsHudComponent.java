@@ -5,7 +5,7 @@ import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ui.HudModule;
-import me.ionar.salhack.module.world.CoordsSpooferModule;
+import me.ionar.salhack.module.world.CoordsSpoofer;
 import me.ionar.salhack.util.color.SalRainbowUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
@@ -21,7 +21,7 @@ public class CoordsHudComponent extends HudComponentItem {
     private final HudModule hud = (HudModule) SalHack.getModuleManager().getMod(HudModule.class);
     private final SalRainbowUtil rainbow = new SalRainbowUtil(9);
     final DecimalFormat formatter = new DecimalFormat("#.#");
-    private final CoordsSpooferModule coordsSpooferModule = (CoordsSpooferModule) SalHack.getModuleManager().getMod(CoordsSpooferModule.class);
+    private final CoordsSpoofer coordsSpoofer = (CoordsSpoofer) SalHack.getModuleManager().getMod(CoordsSpoofer.class);
 
     public CoordsHudComponent() {
         super("Coords", 3, 517);
@@ -56,10 +56,10 @@ public class CoordsHudComponent extends HudComponentItem {
     }
 
     private Boolean getCoordSpoofer() {
-        return coordsSpooferModule != null && coordsSpooferModule.isEnabled();
+        return coordsSpoofer != null && coordsSpoofer.isEnabled();
     }
     private Boolean getRandom() {
-        return coordsSpooferModule != null && coordsSpooferModule.random.getValue();
+        return coordsSpoofer != null && coordsSpoofer.random.getValue();
     }
 
 
@@ -83,13 +83,13 @@ public class CoordsHudComponent extends HudComponentItem {
         if (mc.world.getDimension().respawnAnchorWorks()) {
             if (getCoordSpoofer()) {
                 if (getRandom()) return mc.player.getX() * 8 + randX() * 8;
-                if (!getRandom() && coordsSpooferModule != null) return mc.player.getX() * 8 + coordsSpooferModule.coordsX.getValue() * 8 + coordsSpooferModule.coordsNegativeX.getValue() * 8;
+                if (!getRandom() && coordsSpoofer != null) return mc.player.getX() * 8 + coordsSpoofer.coordsX.getValue() * 8 + coordsSpoofer.coordsNegativeX.getValue() * 8;
             }
             return mc.player.getX() * 8;
         } else {
             if (getCoordSpoofer()) {
                 if (getRandom()) return mc.player.getX() + randX();
-                if (!getRandom() && coordsSpooferModule != null) return mc.player.getX() + coordsSpooferModule.coordsX.getValue() + coordsSpooferModule.coordsNegativeX.getValue();
+                if (!getRandom() && coordsSpoofer != null) return mc.player.getX() + coordsSpoofer.coordsX.getValue() + coordsSpoofer.coordsNegativeX.getValue();
             }
             return mc.player.getX();
         }
@@ -100,13 +100,13 @@ public class CoordsHudComponent extends HudComponentItem {
         if (mc.world.getDimension().respawnAnchorWorks()) {
             if (getCoordSpoofer()) {
                 if (getRandom()) return mc.player.getX() + randX();
-                if (!getRandom() && coordsSpooferModule != null) return mc.player.getX() + coordsSpooferModule.coordsX.getValue() + coordsSpooferModule.coordsNegativeX.getValue();
+                if (!getRandom() && coordsSpoofer != null) return mc.player.getX() + coordsSpoofer.coordsX.getValue() + coordsSpoofer.coordsNegativeX.getValue();
             }
             return mc.player.getX();
         } else {
             if (getCoordSpoofer()) {
                 if (getRandom()) return mc.player.getX() / 8 + (double) randX() / 8;
-                if (!getRandom() && coordsSpooferModule != null) return mc.player.getX() / 8 + (double) coordsSpooferModule.coordsX.getValue() / 8 + (double) coordsSpooferModule.coordsNegativeX.getValue() / 8;
+                if (!getRandom() && coordsSpoofer != null) return mc.player.getX() / 8 + (double) coordsSpoofer.coordsX.getValue() / 8 + (double) coordsSpoofer.coordsNegativeX.getValue() / 8;
             }
             return mc.player.getX() / 8;
         }
@@ -117,13 +117,13 @@ public class CoordsHudComponent extends HudComponentItem {
         if (mc.world.getDimension().respawnAnchorWorks()) {
             if (getCoordSpoofer()) {
                 if (getRandom()) return mc.player.getZ() + randZ();
-                if (!getRandom() && coordsSpooferModule != null) return mc.player.getZ() + coordsSpooferModule.coordsZ.getValue() + coordsSpooferModule.coordsNegativeZ.getValue();
+                if (!getRandom() && coordsSpoofer != null) return mc.player.getZ() + coordsSpoofer.coordsZ.getValue() + coordsSpoofer.coordsNegativeZ.getValue();
             }
             return mc.player.getZ();
         } else {
             if (getCoordSpoofer()) {
                 if (getRandom()) return mc.player.getZ() / 8 + (double) randZ() / 8;
-                if (!getRandom() && coordsSpooferModule != null) return mc.player.getZ() / 8 + (double) coordsSpooferModule.coordsZ.getValue() / 8 + (double) coordsSpooferModule.coordsNegativeZ.getValue() / 8;
+                if (!getRandom() && coordsSpoofer != null) return mc.player.getZ() / 8 + (double) coordsSpoofer.coordsZ.getValue() / 8 + (double) coordsSpoofer.coordsNegativeZ.getValue() / 8;
             }
             return mc.player.getZ() / 8;
         }
@@ -134,13 +134,13 @@ public class CoordsHudComponent extends HudComponentItem {
         if (mc.world.getDimension().respawnAnchorWorks()) {
             if (getCoordSpoofer()) {
                 if (getRandom()) return mc.player.getZ() * 8 + randZ() * 8;
-                if (!getRandom() && coordsSpooferModule != null) return mc.player.getZ() * 8 + coordsSpooferModule.coordsZ.getValue() * 8 + coordsSpooferModule.coordsNegativeZ.getValue() * 8;
+                if (!getRandom() && coordsSpoofer != null) return mc.player.getZ() * 8 + coordsSpoofer.coordsZ.getValue() * 8 + coordsSpoofer.coordsNegativeZ.getValue() * 8;
             }
             return mc.player.getZ() * 8;
         } else {
             if (getCoordSpoofer()) {
                 if (getRandom()) return mc.player.getZ() + randZ();
-                if (!getRandom() && coordsSpooferModule != null) return mc.player.getZ() + coordsSpooferModule.coordsZ.getValue() + coordsSpooferModule.coordsNegativeZ.getValue();
+                if (!getRandom() && coordsSpoofer != null) return mc.player.getZ() + coordsSpoofer.coordsZ.getValue() + coordsSpoofer.coordsNegativeZ.getValue();
             }
             return mc.player.getZ();
         }

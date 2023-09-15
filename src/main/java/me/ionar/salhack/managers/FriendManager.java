@@ -14,13 +14,13 @@ import com.google.gson.reflect.TypeToken;
 
 import me.ionar.salhack.friend.Friend;
 import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.module.misc.FriendsModule;
+import me.ionar.salhack.module.misc.Friends;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 // DO NOT TOUCH THESE THEY MAY BREAK OPENING THE GUI
 public class FriendManager {
 
-    private FriendsModule m_FriendsModule;
+    private Friends m_FriendsModule;
 
     public FriendManager() {
     }
@@ -125,6 +125,6 @@ public class FriendManager {
     public void init() {
         loadFriends();
 
-        m_FriendsModule = (FriendsModule)SalHack.getModuleManager().getMod(FriendsModule.class);
+        m_FriendsModule = (Friends)SalHack.getModuleManager().getMod(Friends.class);
     }
 }

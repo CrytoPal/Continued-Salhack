@@ -17,61 +17,49 @@ import org.joml.Vector3f;
 import java.awt.*;
 
 public class RenderUtil {
-
-    public static void drawFilledBox(MatrixStack stack, Box box, int c) {
-        drawFilledBox(stack, box, new Color(c));
+    public static void drawFilledBox(MatrixStack stack, Box box, int color) {
+        drawFilledBox(stack, box, new Color(color));
     }
 
-    public static void drawFilledBox(MatrixStack stack, Box box, Color c) {
+    public static void drawFilledBox(MatrixStack stack, Box box, Color color) {
         float minX = (float) (box.minX - Wrapper.GetMC().getEntityRenderDispatcher().camera.getPos().getX());
         float minY = (float) (box.minY - Wrapper.GetMC().getEntityRenderDispatcher().camera.getPos().getY());
         float minZ = (float) (box.minZ - Wrapper.GetMC().getEntityRenderDispatcher().camera.getPos().getZ());
         float maxX = (float) (box.maxX - Wrapper.GetMC().getEntityRenderDispatcher().camera.getPos().getX());
         float maxY = (float) (box.maxY - Wrapper.GetMC().getEntityRenderDispatcher().camera.getPos().getY());
         float maxZ = (float) (box.maxZ - Wrapper.GetMC().getEntityRenderDispatcher().camera.getPos().getZ());
-
         Tessellator tessellator = Tessellator.getInstance();
         BufferBuilder bufferBuilder = tessellator.getBuffer();
-
         RenderSystem.enableBlend();
         RenderSystem.defaultBlendFunc();
         RenderSystem.enableDepthTest();
-
-
         RenderSystem.setShader(GameRenderer::getPositionColorProgram);
         bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
-
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, minZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, minZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, maxZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, maxZ).color(c.getRGB()).next();
-
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, minZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, minZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, minZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, minZ).color(c.getRGB()).next();
-
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, minZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, minZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, maxZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, maxZ).color(c.getRGB()).next();
-
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, maxZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, maxZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, maxZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, maxZ).color(c.getRGB()).next();
-
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, minZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, maxZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, maxZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, minZ).color(c.getRGB()).next();
-
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, minZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, maxZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, maxZ).color(c.getRGB()).next();
-        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, minZ).color(c.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, minZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, minZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, minZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, minZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, minZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, minZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, minZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, minZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, minY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, minZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, minY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, minZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, minZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), minX, maxY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, maxZ).color(color.getRGB()).next();
+        bufferBuilder.vertex(stack.peek().getPositionMatrix(), maxX, maxY, minZ).color(color.getRGB()).next();
         RenderSystem.disableDepthTest();
-
         tessellator.draw();
         RenderSystem.disableBlend();
     }
@@ -91,16 +79,13 @@ public class RenderUtil {
         RenderSystem.setShader(GameRenderer::getRenderTypeLinesProgram);
         RenderSystem.lineWidth(lineWidth);
         buffer.begin(VertexFormat.DrawMode.LINES, VertexFormats.LINES);
-
         box = box.offset(new Vec3d(box.minX, box.minY, box.minZ).negate());
-
         float x1 = (float) box.minX;
         float y1 = (float) box.minY;
         float z1 = (float) box.minZ;
         float x2 = (float) box.maxX;
         float y2 = (float) box.maxY;
         float z2 = (float) box.maxZ;
-
         vertexLine(matrices, buffer, x1, y1, z1, x2, y1, z1, color);
         vertexLine(matrices, buffer, x2, y1, z1, x2, y1, z2, color);
         vertexLine(matrices, buffer, x2, y1, z2, x1, y1, z2, color);
@@ -113,7 +98,6 @@ public class RenderUtil {
         vertexLine(matrices, buffer, x2, y2, z1, x2, y2, z2, color);
         vertexLine(matrices, buffer, x2, y2, z2, x1, y2, z2, color);
         vertexLine(matrices, buffer, x1, y2, z2, x1, y2, z1, color);
-
         tessellator.draw();
         RenderSystem.enableCull();
         RenderSystem.disableBlend();
@@ -133,19 +117,15 @@ public class RenderUtil {
         float yNormal = y2 - y1;
         float zNormal = z2 - z1;
         float normalSqrt = MathHelper.sqrt(xNormal * xNormal + yNormal * yNormal + zNormal * zNormal);
-
         return new Vector3f(xNormal / normalSqrt, yNormal / normalSqrt, zNormal / normalSqrt);
     }
 
     public static MatrixStack matrixFrom(double x, double y, double z) {
         MatrixStack matrices = new MatrixStack();
-
         Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
         matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(camera.getPitch()));
         matrices.multiply(RotationAxis.POSITIVE_Y.rotationDegrees(camera.getYaw() + 180.0F));
-
         matrices.translate(x - camera.getPos().x, y - camera.getPos().y, z - camera.getPos().z);
-
         return matrices;
     }
 
