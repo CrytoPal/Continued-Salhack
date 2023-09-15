@@ -1,10 +1,5 @@
 package me.ionar.salhack.managers;
 
-import java.io.File;
-import java.lang.reflect.Field;
-import java.util.*;
-import java.util.stream.Collectors;
-
 import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
@@ -13,19 +8,23 @@ import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.combat.*;
 import me.ionar.salhack.module.exploit.Bowbomb;
-import me.ionar.salhack.module.misc.FakePlayer;
-import me.ionar.salhack.module.misc.Friends;
-import me.ionar.salhack.module.misc.MiddleClickFriends;
+import me.ionar.salhack.module.misc.*;
 import me.ionar.salhack.module.movement.*;
-import me.ionar.salhack.module.misc.Rotation;
+import me.ionar.salhack.module.world.Timer;
+import me.ionar.salhack.util.*;
 import me.ionar.salhack.module.render.Fullbright;
 import me.ionar.salhack.module.render.NametagsModule;
 import me.ionar.salhack.module.ui.*;
 import me.ionar.salhack.module.world.AutoTool;
 import me.ionar.salhack.module.world.CoordsSpoofer;
-import me.ionar.salhack.module.world.Timer;
 import me.ionar.salhack.preset.Preset;
-import me.ionar.salhack.util.ReflectionUtil;
+
+import java.io.File;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ModuleManager {
     public static ModuleManager Get() {
@@ -37,6 +36,7 @@ public class ModuleManager {
 
     public static ArrayList<Module> Mods = new ArrayList<Module>();
     private ArrayList<Module> ArrayListAnimations = new ArrayList<Module>();
+
     public void Init() {
         /// Combat
         Add(new KillAura());
@@ -57,6 +57,15 @@ public class ModuleManager {
         Add(new Friends());
         Add(new MiddleClickFriends());
         Add(new Rotation());
+        Add(new AntiAFK());
+        Add(new AutoBonemeal());
+        Add(new AutoDye());
+        Add(new AutoEat());
+        Add(new AutoFarmland());
+        Add(new AutoMount());
+        Add(new AutoShear());
+        Add(new AutoShovelPath());
+        Add(new RetardChat());
 
         /// Movement
         Add(new ElytraFly());
@@ -82,7 +91,6 @@ public class ModuleManager {
         Add(new AutoTool());
 
         /// Schematica
-
 
 
         LoadExternalModules();
@@ -114,8 +122,7 @@ public class ModuleManager {
                 }
             }
             Mods.add(mod);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
