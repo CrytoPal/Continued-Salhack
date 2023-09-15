@@ -20,6 +20,6 @@ public final class HudModule extends Module {
 
     @EventHandler
     private void onRenderGameOverlay(RenderGameOverlayEvent event) {
-        if (!mc.options.debugEnabled) SalHack.getHudManager().onRender(event.tickDelta, event.getContext());
+        if (mc != null && !mc.options.debugEnabled) SalHack.getHudManager().onRender(event.tickDelta, event.getContext());
     }
 }
