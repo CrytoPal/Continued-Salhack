@@ -18,25 +18,21 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class AutoShovelPath extends Module
-{
-    public final Value<Integer> Radius = new Value<Integer>("Radius", new String[] {"R"}, "Radius to search for grass", 4, 0, 10, 1);
+public class AutoShovelPath extends Module {
+    public final Value<Integer> Radius = new Value<>("Radius", new String[] {"R"}, "Radius to search for grass", 4, 0, 10, 1);
 
-    public AutoShovelPath()
-    {
+    public AutoShovelPath() {
         super("AutoShovelPath", new String[] {""}, "Automatically shovels path in range", 0, -1, ModuleType.MISC);
     }
 
     @EventHandler
-    public void OnPlayerUpdate(PlayerMotionUpdate p_Event)
-    {
+    public void OnPlayerUpdate(PlayerMotionUpdate p_Event) {
         BlockPos l_ClosestPos = BlockInteractionHelper.getSphere(PlayerUtil.GetLocalPlayerPosFloored(), Radius.getValue(), Radius.getValue(), false, true, 0).stream()
                 .filter(p_Pos -> IsValidBlockPos(p_Pos))
                 .min(Comparator.comparing(p_Pos -> mc.player.squaredDistanceTo(p_Pos.toCenterPos())))
                 .orElse(null);
 
-        if (l_ClosestPos != null && mc.player.getMainHandStack().getItem() instanceof ShovelItem)
-        {
+        if (l_ClosestPos != null && mc.player.getMainHandStack().getItem() instanceof ShovelItem) {
             p_Event.cancel();
 
             final double l_Pos[] =  EntityUtil.calculateLookAt(
@@ -53,8 +49,7 @@ public class AutoShovelPath extends Module
         }
     }
 
-    private boolean IsValidBlockPos(final BlockPos p_Pos)
-    {
+    private boolean IsValidBlockPos(final BlockPos p_Pos) {
         BlockState l_State = mc.world.getBlockState(p_Pos);
 
         if (l_State.getBlock() instanceof GrassBlock || l_State.getBlock() == Blocks.DIRT)

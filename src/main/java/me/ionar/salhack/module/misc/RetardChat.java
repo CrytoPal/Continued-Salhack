@@ -6,20 +6,17 @@ import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 
-public final class RetardChat extends Module
-{
-    public final Value<Modes> mode = new Value<Modes>("Mode", new String[] {"M"}, "The retard chat mode", Modes.Spongebob);
+public final class RetardChat extends Module {
+    public final Value<Modes> mode = new Value<>("Mode", new String[] {"M"}, "The retard chat mode", Modes.Spongebob);
 
     private String last = "";
 
 
-    public enum Modes
-    {
+    public enum Modes {
         Spongebob,
     }
 
-    public RetardChat()
-    {
+    public RetardChat() {
         super("RetardChat", new String[]
                         { "Retard" }, "Makes your chat retarded", 0,
                 0xDB2485, ModuleType.MISC);
@@ -44,14 +41,11 @@ public final class RetardChat extends Module
 
         String l_Message = "";
 
-        switch (mode.getValue())
-        {
-            case Spongebob:
-            {
+        switch (mode.getValue()) {
+            case Spongebob: {
                 boolean l_Flag = false;
 
-                for (char l_Char : c_Message.chatMessage().toCharArray())
-                {
+                for (char l_Char : c_Message.chatMessage().toCharArray()) {
                     String l_Val = String.valueOf(l_Char);
 
                     l_Message += l_Flag ? l_Val.toUpperCase() : l_Val.toLowerCase();

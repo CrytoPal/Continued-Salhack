@@ -22,19 +22,17 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class AutoBonemeal extends Module
-{
-    public static Value<Integer> Radius = new Value<Integer>("Radius", new String[] {"R"}, "Radius to search for not fully grown seeds", 4, 0, 10, 1);
+public class AutoBonemeal extends Module {
+    public static Value<Integer> Radius = new Value<>("Radius", new String[] {"R"}, "Radius to search for not fully grown seeds", 4, 0, 10, 1);
 
-    public AutoBonemeal()
-    {
+    public AutoBonemeal() {
         super("AutoBonemeal", new String[] {""}, "Bonemeals anything nearby", 0, -1, ModuleType.MISC);
     }
 
     private boolean IsRunning = false;
 
     @EventHandler
-    public void OnPlayerUpdate(PlayerMotionUpdate p_Event){
+    public void OnPlayerUpdate(PlayerMotionUpdate p_Event) {
         if(p_Event.getEra() != EventEra.PRE)
             return;
 
@@ -43,8 +41,7 @@ public class AutoBonemeal extends Module
                 .min(Comparator.comparing(p_Pos -> mc.player.squaredDistanceTo(p_Pos.toCenterPos())))
                 .orElse(null);
 
-        if (l_ClosestPos != null && UpdateBonemealIfNeed())
-        {
+        if (l_ClosestPos != null && UpdateBonemealIfNeed()) {
             p_Event.cancel();
 
             final double l_Pos[] =  EntityUtil.calculateLookAt(
@@ -67,13 +64,11 @@ public class AutoBonemeal extends Module
             IsRunning = false;
     }
 
-    private boolean IsValidBlockPos(final BlockPos p_Pos)
-    {
+    private boolean IsValidBlockPos(final BlockPos p_Pos) {
         BlockState l_State = mc.world.getBlockState(p_Pos);
 
         // crops XD
-        if (l_State.getBlock() instanceof CropBlock l_Crop)
-        {
+        if (l_State.getBlock() instanceof CropBlock l_Crop) {
             if (l_Crop.getMaxAge() != l_Crop.getAge(l_State))
                 return true;
         }
@@ -81,29 +76,24 @@ public class AutoBonemeal extends Module
         return false;
     }
 
-    public boolean IsRunning()
-    {
+    public boolean IsRunning() {
         return IsRunning;
     }
 
-    private boolean UpdateBonemealIfNeed()
-    {
+    private boolean UpdateBonemealIfNeed() {
         ItemStack l_Main = mc.player.getMainHandStack();
         ItemStack l_Off = mc.player.getOffHandStack();
 
-        if (!l_Main.isEmpty() && l_Main.getItem() instanceof BoneMealItem)
-        {
+        if (!l_Main.isEmpty() && l_Main.getItem() instanceof BoneMealItem) {
             if (IsBoneMealItem(l_Main))
                 return true;
         }
-        else if (!l_Off.isEmpty() && l_Off.getItem() instanceof BoneMealItem)
-        {
+        else if (!l_Off.isEmpty() && l_Off.getItem() instanceof BoneMealItem) {
             if (IsBoneMealItem(l_Off))
                 return true;
         }
 
-        for (int l_I = 0; l_I < 9; ++l_I)
-        {
+        for (int l_I = 0; l_I < 9; ++l_I) {
             ItemStack l_Stack = mc.player.getInventory().getStack(l_I);
 
             if (l_Stack.isEmpty() || !IsBoneMealItem(l_Stack))
@@ -116,8 +106,7 @@ public class AutoBonemeal extends Module
         return false;
     }
 
-    private boolean IsBoneMealItem(ItemStack p_Stack)
-    {
+    private boolean IsBoneMealItem(ItemStack p_Stack) {
         return p_Stack.getItem() instanceof BoneMealItem;
     }
 }

@@ -17,12 +17,12 @@ import net.minecraft.item.Items;
 import net.minecraft.screen.slot.SlotActionType;
 
 public class AutoArmor extends Module {
-    public final Value<Float> delay = new Value<Float>("Delay", new String[]
+    public final Value<Float> delay = new Value<>("Delay", new String[]
             {"Del"}, "The amount of delay in milliseconds.", 50.0f, 0.0f, 1000.0f, 1.0f);
-    public final Value<Boolean> curse = new Value<Boolean>("Curse", new String[]
+    public final Value<Boolean> curse = new Value<>("Curse", new String[]
             {"Curses"}, "Prevents you from equipping armor with cursed enchantments.", false);
-    public final Value<Boolean> PreferElytra = new Value<Boolean>("Elytra", new String[]{"Wings"}, "Prefers elytra over chestplate if available", false);
-    public final Value<Boolean> ElytraReplace = new Value<Boolean>("ElytraReplace", new String[]{"ElytraReplace"}, "Attempts to replace your broken elytra", false);
+    public final Value<Boolean> PreferElytra = new Value<>("Elytra", new String[]{"Wings"}, "Prefers elytra over chestplate if available", false);
+    public final Value<Boolean> ElytraReplace = new Value<>("ElytraReplace", new String[]{"ElytraReplace"}, "Attempts to replace your broken elytra", false);
 
     private Timer timer = new Timer();
 

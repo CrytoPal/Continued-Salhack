@@ -21,8 +21,8 @@ import net.minecraft.util.math.Vec3d;
 
 public class AntiCityBoss extends Module
 {
-    public final Value<Boolean> TrapCheck = new Value<Boolean>("TrapCheck", new String[]
-            { "HC" }, "Only functions if you're trapped", false);
+    public final Value<Boolean> TrapCheck = new Value<>("TrapCheck", new String[]
+            {"HC"}, "Only functions if you're trapped", false);
 
     public AntiCityBoss()
     {

@@ -24,23 +24,18 @@ import net.minecraft.util.math.BlockPos;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
-public class AutoCity extends Module
-{
-    public AutoCity()
-    {
-        super("AutoCity", new String[]
-                { "AutoCityBoss" }, "Automatically mines the city block if a target near you can be citied", 0, 0xDADB24, ModuleType.COMBAT);
+public class AutoCity extends Module {
+    public AutoCity() {
+        super("AutoCity", new String[]{ "AutoCityBoss" }, "Automatically mines the city block if a target near you can be citied", 0, 0xDADB24, ModuleType.COMBAT);
     }
 
     @Override
-    public void onEnable()
-    {
+    public void onEnable() {
         super.onEnable();
 
         final ArrayList<Pair<PlayerEntity, ArrayList<BlockPos>>> cityPlayers = GetPlayersReadyToBeCitied();
 
-        if (cityPlayers.isEmpty())
-        {
+        if (cityPlayers.isEmpty()) {
             SendMessage(Formatting.RED + "There is no one to city!");
             toggle(true);
             return;
@@ -50,12 +45,9 @@ public class AutoCity extends Module
         BlockPos targetBlock = null;
         double currDistance = 100;
 
-        for (Pair<PlayerEntity, ArrayList<BlockPos>> pair : cityPlayers)
-        {
-            for (BlockPos pos : pair.getSecond())
-            {
-                if (targetBlock == null)
-                {
+        for (Pair<PlayerEntity, ArrayList<BlockPos>> pair : cityPlayers) {
+            for (BlockPos pos : pair.getSecond()) {
+                if (targetBlock == null) {
                     target = pair.getFirst();
                     targetBlock = pos;
                     continue;
@@ -63,8 +55,7 @@ public class AutoCity extends Module
 
                 double dist = pos.getSquaredDistance(targetBlock.getX(), targetBlock.getY(), targetBlock.getZ());
 
-                if (dist < currDistance)
-                {
+                if (dist < currDistance) {
                     currDistance = dist;
                     targetBlock = pos;
                     target = pair.getFirst();
@@ -72,8 +63,7 @@ public class AutoCity extends Module
             }
         }
 
-        if (targetBlock == null)
-        {
+        if (targetBlock == null) {
             SendMessage(Formatting.RED + "Couldn't find any blocks to mine!");
             toggle(true);
             return;
@@ -90,17 +80,14 @@ public class AutoCity extends Module
 
         boolean hasPickaxe = mc.player.getMainHandStack().getItem() == Items.DIAMOND_PICKAXE;
 
-        if (!hasPickaxe)
-        {
-            for (int i = 0; i < 9; ++i)
-            {
+        if (!hasPickaxe) {
+            for (int i = 0; i < 9; ++i) {
                 ItemStack stack = mc.player.getInventory().getStack(i);
 
                 if (stack.isEmpty())
                     continue;
 
-                if (stack.getItem() == Items.DIAMOND_PICKAXE || stack.getItem() == Items.NETHERITE_PICKAXE)
-                {
+                if (stack.getItem() == Items.DIAMOND_PICKAXE || stack.getItem() == Items.NETHERITE_PICKAXE) {
                     hasPickaxe = true;
                     mc.player.getInventory().selectedSlot = i;
                     mc.player.networkHandler.sendPacket(new UpdateSelectedSlotC2SPacket(i));
@@ -109,8 +96,7 @@ public class AutoCity extends Module
             }
         }
 
-        if (!hasPickaxe)
-        {
+        if (!hasPickaxe) {
             SendMessage(Formatting.RED + "No pickaxe!");
             toggle(true);
             return;
@@ -118,8 +104,7 @@ public class AutoCity extends Module
 
         BlockPos currBlock = BlockManager.GetCurrBlock();
 
-        if (currBlock == null)
-        {
+        if (currBlock == null) {
             SendMessage(Formatting.GREEN + "Done!");
             toggle(true);
             return;
@@ -139,16 +124,13 @@ public class AutoCity extends Module
     }
 
 
-    public static ArrayList<Pair<PlayerEntity, ArrayList<BlockPos>>> GetPlayersReadyToBeCitied()
-    {
+    public static ArrayList<Pair<PlayerEntity, ArrayList<BlockPos>>> GetPlayersReadyToBeCitied() {
         ArrayList<Pair<PlayerEntity, ArrayList<BlockPos>>> players = new ArrayList<>();
 
-        for (Entity entity : Wrapper.GetMC().world.getPlayers().stream().filter(entityPlayer -> !FriendManager.Get().IsFriend(entityPlayer) && entityPlayer != MinecraftClient.getInstance().player).collect(Collectors.toList()))
-        {
+        for (Entity entity : Wrapper.GetMC().world.getPlayers().stream().filter(entityPlayer -> !FriendManager.Get().IsFriend(entityPlayer) && entityPlayer != MinecraftClient.getInstance().player).collect(Collectors.toList())) {
             ArrayList<BlockPos> positions = new ArrayList<>();
 
-            for (int i = 0; i < 4; ++i)
-            {
+            for (int i = 0; i < 4; ++i) {
                 BlockPos o = EntityUtil.GetPositionVectorBlockPos(entity, surroundOffset[i]);
 
                 // ignore if the surrounding block is not obsidian
@@ -183,11 +165,10 @@ public class AutoCity extends Module
         return players;
     }
 
-    private static final BlockPos[] surroundOffset =
-            {
+    private static final BlockPos[] surroundOffset = {
                     new BlockPos(0, 0, -1), // north
                     new BlockPos(1, 0, 0), // east
                     new BlockPos(0, 0, 1), // south
                     new BlockPos(-1, 0, 0) // west
-            };
+    };
 }

@@ -23,17 +23,17 @@ import net.minecraft.util.math.Vec3d;
 import static me.ionar.salhack.util.BlockInteractionHelper.ValidResult;
 
 public class Surround extends Module {
-    public final Value<Boolean> disable = new Value<Boolean>("Toggles", new String[]
+    public final Value<Boolean> disable = new Value<>("Toggles", new String[]
             {"Toggles", "Disables"}, "Will toggle off after a place", false);
-    public final Value<Boolean> ToggleOffGround = new Value<Boolean>("ToggleOffGround", new String[]
+    public final Value<Boolean> ToggleOffGround = new Value<>("ToggleOffGround", new String[]
             {"Toggles", "Disables"}, "Will toggle off after a place", false);
-    public final Value<CenterModes> CenterMode = new Value<CenterModes>("Center", new String[]
+    public final Value<CenterModes> CenterMode = new Value<>("Center", new String[]
             {"Center"}, "Moves you to center of block", CenterModes.NCP);
 
-    public final Value<Boolean> rotate = new Value<Boolean>("Rotate", new String[]
+    public final Value<Boolean> rotate = new Value<>("Rotate", new String[]
             {"rotate"}, "Rotate", true);
-    public final Value<Integer> BlocksPerTick = new Value<Integer>("BlocksPerTick", new String[]{"BPT"}, "Blocks per tick", 1, 1, 10, 1);
-    public final Value<Boolean> ActivateOnlyOnShift = new Value<Boolean>("ActivateOnlyOnShift", new String[]
+    public final Value<Integer> BlocksPerTick = new Value<>("BlocksPerTick", new String[]{"BPT"}, "Blocks per tick", 1, 1, 10, 1);
+    public final Value<Boolean> ActivateOnlyOnShift = new Value<>("ActivateOnlyOnShift", new String[]
             {"AoOS"}, "Activates only when shift is pressed.", false);
 
     public enum CenterModes {

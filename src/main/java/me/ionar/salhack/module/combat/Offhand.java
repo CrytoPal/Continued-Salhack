@@ -14,17 +14,17 @@ import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 
 public final class Offhand extends Module {
-    public final Value<Float> health = new Value<Float>("Health", new String[]
+    public final Value<Float> health = new Value<>("Health", new String[]
             {"Hp"}, "The amount of health needed to acquire a totem.", 16.0f, 0.0f, 20.0f, 0.5f);
-    public final Value<offhandMode> Mode = new Value<offhandMode>("Mode", new String[]{"Mode"}, "If you are above the required health for a totem, x will be used in offhand instead.", offhandMode.Totem);
+    public final Value<offhandMode> Mode = new Value<>("Mode", new String[]{"Mode"}, "If you are above the required health for a totem, x will be used in offhand instead.", offhandMode.Totem);
     // Will fix later
     //public final Value<AutoTotemMode> FallbackMode = new Value<AutoTotemMode>("Fallback", new String[]{"FallbackMode"}, "If you don't have the required item for mode, this will be the fallback.", AutoTotemMode.Crystal);
-    public final Value<Float> FallDistance = new Value<Float>("FallDistance", new String[]{"Fall"}, "If your fall distance exceeds this value, use a totem", 15.0f, 0.0f, 100.0f, 10.0f);
-    public final Value<Boolean> TotemOnElytra = new Value<Boolean>("TotemOnElytra", new String[]{"Elytra"}, "Will automatically switch to a totem if you're elytra flying", true);
-    public final Value<Boolean> OffhandGapOnSword = new Value<Boolean>("SwordGap", new String[]{"SwordGap"}, "Will override all else, and try and use a gap in offhand when using a sword in main hand", false);
-    public final Value<Boolean> OffhandStrNoStrSword = new Value<Boolean>("StrGap", new String[]{"Strength"}, "Will put a potion if offhand if you don't have strength and wearing a sword", false);
-    public final Value<Boolean> Override = new Value<Boolean>("Override", new String[]{"O"}, "Replaces your current offhand with the item mode if there's another item", false);
-    public final Value<Boolean> NearPlayers = new Value<Boolean>("e",new String[]{"NP"},"hi", true);
+    public final Value<Float> FallDistance = new Value<>("FallDistance", new String[]{"Fall"}, "If your fall distance exceeds this value, use a totem", 15.0f, 0.0f, 100.0f, 10.0f);
+    public final Value<Boolean> TotemOnElytra = new Value<>("TotemOnElytra", new String[]{"Elytra"}, "Will automatically switch to a totem if you're elytra flying", true);
+    public final Value<Boolean> OffhandGapOnSword = new Value<>("SwordGap", new String[]{"SwordGap"}, "Will override all else, and try and use a gap in offhand when using a sword in main hand", false);
+    public final Value<Boolean> OffhandStrNoStrSword = new Value<>("StrGap", new String[]{"Strength"}, "Will put a potion if offhand if you don't have strength and wearing a sword", false);
+    public final Value<Boolean> Override = new Value<>("Override", new String[]{"O"}, "Replaces your current offhand with the item mode if there's another item", false);
+    public final Value<Boolean> NearPlayers = new Value<>("e",new String[]{"NP"},"hi", true);
 
     // public final Value<Boolean> InventorySwitch = new Value<Boolean>("Switch in Inv", new String[]{"Strength"}, "Puts the Item into your offhand while inventory gui is on.", true);
     // public final Value<Boolean> HotbarFirst = new Value<Boolean>("HotbarFirst", new String[]{"Recursive"}, "Prioritizes your hotbar before inventory slots", false);

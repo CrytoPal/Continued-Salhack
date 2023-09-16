@@ -28,23 +28,23 @@ import net.minecraft.util.Hand;
 import java.util.Comparator;
 
 public class KillAura extends Module {
-    public final Value<Modes> Mode = new Value<Modes>("Mode", new String[]{"Mode"}, "The KillAura Mode to use", Modes.Closest);
-    public final Value<Float> Distance = new Value<Float>("Distance", new String[]{"Range"}, "Range for attacking a target", 5.0f, 0.0f, 10.0f, 1.0f);
-    public final Value<Boolean> HitDelay = new Value<Boolean>("Hit Delay", new String[]{"Hit Delay"}, "Use vanilla hit delay", true);
-    public final Value<Boolean> TPSSync = new Value<Boolean>("TPSSync", new String[]{"TPSSync"}, "Use TPS Sync for hit delay", false);
-    public final Value<Boolean> Players = new Value<Boolean>("Players", new String[]{"Players"}, "Should we target Players", true);
-    public final Value<Boolean> Monsters = new Value<Boolean>("Monsters", new String[]{"Players"}, "Should we target Monsters", true);
-    public final Value<Boolean> Neutrals = new Value<Boolean>("Neutrals", new String[]{"Players"}, "Should we target Neutrals", false);
-    public final Value<Boolean> Animals = new Value<Boolean>("Animals", new String[]{"Players"}, "Should we target Animals", false);
-    public final Value<Boolean> Tamed = new Value<Boolean>("Tamed", new String[]{"Players"}, "Should we target Tamed", false);
-    public final Value<Boolean> Projectiles = new Value<Boolean>("Projectile", new String[]{"Projectile"}, "Should we target Projectiles (shulker bullets, etc)", false);
-    public final Value<Boolean> SwordOnly = new Value<Boolean>("SwordOnly", new String[]{"SwordOnly"}, "Only activate on sword", false);
-    public final Value<Boolean> PauseIfCrystal = new Value<Boolean>("PauseIfCrystal", new String[]{"PauseIfCrystal"}, "Pauses if a crystal is in your hand", false);
-    public final Value<Boolean> PauseIfEating = new Value<Boolean>("PauseIfEating", new String[]{"PauseIfEating"}, "Pauses if your eating", false);
-    public final Value<Boolean> AutoSwitch = new Value<Boolean>("AutoSwitch", new String[]{"AutoSwitch"}, "Automatically switches to a sword in your hotbar", false);
-    public final Value<Integer> Ticks = new Value<Integer>("Ticks", new String[]{"Ticks"}, "If you don't have HitDelay on, how fast the kill aura should be hitting", 10, 0, 40, 1);
-    public final Value<Integer> Iterations = new Value<Integer>("Iterations", new String[]{""}, "Allows you to do more iteratons per tick", 1, 1, 10, 1);
-    public final Value<Boolean> Only32k = new Value<Boolean>("32kOnly", new String[]{""}, "Only killauras when 32k sword is in your hand", false);
+    public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode"}, "The KillAura Mode to use", Modes.Closest);
+    public final Value<Float> Distance = new Value<>("Distance", new String[]{"Range"}, "Range for attacking a target", 5.0f, 0.0f, 10.0f, 1.0f);
+    public final Value<Boolean> HitDelay = new Value<>("Hit Delay", new String[]{"Hit Delay"}, "Use vanilla hit delay", true);
+    public final Value<Boolean> TPSSync = new Value<>("TPSSync", new String[]{"TPSSync"}, "Use TPS Sync for hit delay", false);
+    public final Value<Boolean> Players = new Value<>("Players", new String[]{"Players"}, "Should we target Players", true);
+    public final Value<Boolean> Monsters = new Value<>("Monsters", new String[]{"Players"}, "Should we target Monsters", true);
+    public final Value<Boolean> Neutrals = new Value<>("Neutrals", new String[]{"Players"}, "Should we target Neutrals", false);
+    public final Value<Boolean> Animals = new Value<>("Animals", new String[]{"Players"}, "Should we target Animals", false);
+    public final Value<Boolean> Tamed = new Value<>("Tamed", new String[]{"Players"}, "Should we target Tamed", false);
+    public final Value<Boolean> Projectiles = new Value<>("Projectile", new String[]{"Projectile"}, "Should we target Projectiles (shulker bullets, etc)", false);
+    public final Value<Boolean> SwordOnly = new Value<>("SwordOnly", new String[]{"SwordOnly"}, "Only activate on sword", false);
+    public final Value<Boolean> PauseIfCrystal = new Value<>("PauseIfCrystal", new String[]{"PauseIfCrystal"}, "Pauses if a crystal is in your hand", false);
+    public final Value<Boolean> PauseIfEating = new Value<>("PauseIfEating", new String[]{"PauseIfEating"}, "Pauses if your eating", false);
+    public final Value<Boolean> AutoSwitch = new Value<>("AutoSwitch", new String[]{"AutoSwitch"}, "Automatically switches to a sword in your hotbar", false);
+    public final Value<Integer> Ticks = new Value<>("Ticks", new String[]{"Ticks"}, "If you don't have HitDelay on, how fast the kill aura should be hitting", 10, 0, 40, 1);
+    public final Value<Integer> Iterations = new Value<>("Iterations", new String[]{""}, "Allows you to do more iteratons per tick", 1, 1, 10, 1);
+    public final Value<Boolean> Only32k = new Value<>("32kOnly", new String[]{""}, "Only killauras when 32k sword is in your hand", false);
 
     public enum Modes {
         Closest,

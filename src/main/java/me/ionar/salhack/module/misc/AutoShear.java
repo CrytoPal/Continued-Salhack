@@ -16,9 +16,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 
-public class AutoShear extends Module
-{
-    public final Value<Integer> Radius = new Value<Integer>("Radius", new String[] {"R"}, "Radius to search for sheep", 4, 0, 10, 1);
+public class AutoShear extends Module {
+    public final Value<Integer> Radius = new Value<>("Radius", new String[] {"R"}, "Radius to search for sheep", 4, 0, 10, 1);
 
     public AutoShear()
     {
@@ -26,7 +25,7 @@ public class AutoShear extends Module
     }
 
     @EventHandler
-    public void OnPlayerUpdate(PlayerMotionUpdate p_Event){
+    public void OnPlayerUpdate(PlayerMotionUpdate p_Event) {
         if (!(mc.player.getMainHandStack().getItem() instanceof ShearsItem))
             return;
 
@@ -40,8 +39,7 @@ public class AutoShear extends Module
                 .min(Comparator.comparing(p_Entity -> mc.player.squaredDistanceTo(p_Entity)))
                 .orElse(null);
 
-        if (l_Sheep != null)
-        {
+        if (l_Sheep != null) {
             p_Event.cancel();
 
             final double l_Pos[] =  EntityUtil.calculateLookAt(
@@ -57,8 +55,7 @@ public class AutoShear extends Module
         }
     }
 
-    private boolean IsValidSheep(Entity p_Entity)
-    {
+    private boolean IsValidSheep(Entity p_Entity) {
         if (!(p_Entity instanceof SheepEntity l_Sheep))
             return false;
 

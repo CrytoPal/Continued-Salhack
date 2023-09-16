@@ -32,10 +32,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class AutoTrap extends Module
-{
-    private final Vec3d[] offsetsDefault = new Vec3d[]
-            {
+public final class AutoTrap extends Module {
+    private final Vec3d[] offsetsDefault = new Vec3d[]{
                     new Vec3d(0.0, 0.0, -1.0), // left
                     new Vec3d(1.0, 0.0, 0.0),  // right
                     new Vec3d(0.0, 0.0, 1.0), // forwards
@@ -51,8 +49,7 @@ public final class AutoTrap extends Module
                     new Vec3d(0.0, 3.0, -1.0), // +3 left
                     new Vec3d(0.0, 3.0, 0.0) // +3 middle
             };
-    private final Vec3d[]  offsetsTall = new Vec3d[]
-            {
+    private final Vec3d[]  offsetsTall = new Vec3d[]{
                     new Vec3d(0.0, 0.0, -1.0), // left
                     new Vec3d(1.0, 0.0, 0.0),  // right
                     new Vec3d(0.0, 0.0, 1.0), // forwards
@@ -69,14 +66,14 @@ public final class AutoTrap extends Module
                     new Vec3d(0.0, 3.0, 0.0), // +3 middle
                     new Vec3d(0.0, 4.0, 0.0) // +4 middle
             };
-    public final Value<Boolean> toggleMode = new Value<Boolean>("toggleMode", new String[]{ "toggleMode "}, "ToggleMode", true);
-    public final Value<Float> range = new Value<Float>("range", new String[]{ "range" }, "Range", 5.5f, 0f, 10.0f, 1.0f);
-    public final Value<Integer> blockPerTick = new Value<Integer>("blockPerTick", new String[]{ "blockPerTick" }, "Blocks per Tick", 4, 1, 10, 1);
-    public final Value<Boolean> rotate = new Value<Boolean>("rotate", new String[]{ "rotate" }, "Rotate", true);
-    public final Value<Boolean> announceUsage = new Value<Boolean>("announceUsage", new String[]{ "announceUsage" }, "Announce Usage", true);
-    public final Value<Boolean> EChests = new Value<Boolean>("EChests", new String[]{ "EChests" }, "EChests", false);
+    public final Value<Boolean> toggleMode = new Value<>("toggleMode", new String[]{ "toggleMode "}, "ToggleMode", true);
+    public final Value<Float> range = new Value<>("range", new String[]{ "range" }, "Range", 5.5f, 0f, 10.0f, 1.0f);
+    public final Value<Integer> blockPerTick = new Value<>("blockPerTick", new String[]{ "blockPerTick" }, "Blocks per Tick", 4, 1, 10, 1);
+    public final Value<Boolean> rotate = new Value<>("rotate", new String[]{ "rotate" }, "Rotate", true);
+    public final Value<Boolean> announceUsage = new Value<>("announceUsage", new String[]{ "announceUsage" }, "Announce Usage", true);
+    public final Value<Boolean> EChests = new Value<>("EChests", new String[]{ "EChests" }, "EChests", false);
 
-    public final Value<Modes> Mode = new Value<Modes>("Mode", new String[] {"Mode"}, "The mode to use for autotrap", Modes.Full);
+    public final Value<Modes> Mode = new Value<>("Mode", new String[] {"Mode"}, "The mode to use for autotrap", Modes.Full);
 
     public enum Modes {
         Full,

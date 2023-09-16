@@ -20,21 +20,18 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
-public class AutoFarmland extends Module
-{
-    public final Value<Integer> Radius = new Value<Integer>("Radius", new String[] {"R"}, "Radius to search for grass/dirt", 4, 0, 10, 1);
-    public final Value<Float> Delay = new Value<Float>("Delay", new String[] {"D"}, "Delay to use", 1.0f, 0.0f, 10.0f, 1.0f);
+public class AutoFarmland extends Module {
+    public final Value<Integer> Radius = new Value<>("Radius", new String[] {"R"}, "Radius to search for grass/dirt", 4, 0, 10, 1);
+    public final Value<Float> Delay = new Value<>("Delay", new String[] {"D"}, "Delay to use", 1.0f, 0.0f, 10.0f, 1.0f);
 
-    public AutoFarmland()
-    {
+    public AutoFarmland() {
         super("AutoFarmland", new String[] {""}, "Automatically sets grass or dirt to farmland", 0, -1, ModuleType.MISC);
     }
 
     private Timer timer = new Timer();
 
     @EventHandler
-    public void OnPlayerUpdate(PlayerMotionUpdate p_Event)
-    {
+    public void OnPlayerUpdate(PlayerMotionUpdate p_Event) {
         if (!timer.passed(Delay.getValue() * 100))
             return;
 
@@ -43,8 +40,7 @@ public class AutoFarmland extends Module
                 .min(Comparator.comparing(p_Pos -> mc.player.squaredDistanceTo(p_Pos.toCenterPos())))
                 .orElse(null);
 
-        if (l_ClosestPos != null && mc.player.getMainHandStack().getItem() instanceof HoeItem)
-        {
+        if (l_ClosestPos != null && mc.player.getMainHandStack().getItem() instanceof HoeItem) {
             timer.reset();
 
             p_Event.cancel();
@@ -63,8 +59,7 @@ public class AutoFarmland extends Module
         }
     }
 
-    private boolean IsValidBlockPos(final BlockPos p_Pos)
-    {
+    private boolean IsValidBlockPos(final BlockPos p_Pos) {
         BlockState l_State = mc.world.getBlockState(p_Pos);
 
         if (l_State.getBlock() == Blocks.DIRT || l_State.getBlock() instanceof GrassBlock)
