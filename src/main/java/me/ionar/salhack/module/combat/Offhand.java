@@ -13,8 +13,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 
-import static me.ionar.salhack.main.Wrapper.mc;
-
 public final class Offhand extends Module {
     public final Value<Float> health = new Value<>("Health", new String[]
             {"Hp"}, "The amount of health needed to acquire a totem.", 16.0f, 0.0f, 20.0f, 0.5f);
@@ -39,20 +37,20 @@ public final class Offhand extends Module {
             boolean elytra = mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() == Items.ELYTRA && mc.player.isFallFlying();
 
             if (!mc.player.getMainHandStack().isEmpty()) {
-                if (health.getValue() <= PlayerUtil.GetHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandStrNoStrSword.getValue()) {
+                if (health.getValue() <= PlayerUtil.getHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandStrNoStrSword.getValue()) {
                     SwitchOffHandIfNeed(offhandMode.Strength);
                     return;
                 }
 
                 /// Sword override
-                if (health.getValue() <= PlayerUtil.GetHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandGapOnSword.getValue()) {
+                if (health.getValue() <= PlayerUtil.getHealthWithAbsorption() && mc.player.getMainHandStack().getItem() instanceof SwordItem && OffhandGapOnSword.getValue()) {
                     SwitchOffHandIfNeed(offhandMode.EGap);
                     return;
                 }
             }
 
             /// First check health, most important as we don't want to die for no reason.
-            if (health.getValue() > PlayerUtil.GetHealthWithAbsorption() || Mode.getValue() == offhandMode.Totem || (TotemOnElytra.getValue() && elytra) || (mc.player.fallDistance >= FallDistance.getValue() && !elytra) || noNearbyPlayers()) {
+            if (health.getValue() > PlayerUtil.getHealthWithAbsorption() || Mode.getValue() == offhandMode.Totem || (TotemOnElytra.getValue() && elytra) || (mc.player.fallDistance >= FallDistance.getValue() && !elytra) || noNearbyPlayers()) {
                 SwitchOffHandIfNeed(offhandMode.Totem);
                 return;
             }
@@ -81,7 +79,7 @@ public final class Offhand extends Module {
             if (mc.player.getOffHandStack().isEmpty()) {
                 for (int i = 9; i < 45; i++) {
                     if (mc.player.getInventory().getStack(i >= 36 ? i - 36 : i).getItem() == item) {
-                        ItemUtil.Move(i,45);
+                        ItemUtil.move(i,45);
                         return;
                     }
                 }
@@ -89,7 +87,7 @@ public final class Offhand extends Module {
             if (mc.player.getOffHandStack().getItem() != item && Override.getValue()) {
                 for (int i = 9; i < 45; i++) {
                     if (mc.player.getInventory().getStack(i >= 36 ? i - 36 : i).getItem() == item) {
-                        ItemUtil.Move(i,45);
+                        ItemUtil.move(i,45);
                         return;
                     }
                 }

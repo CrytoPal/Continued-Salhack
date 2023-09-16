@@ -5,46 +5,45 @@ import net.minecraft.client.texture.DynamicTexture;
 import java.awt.image.BufferedImage;
 
 public class SalDynamicTexture extends BufferedImage {
-    private final int Height;
-    private final int Width;
-    private final BufferedImage BufferedImage;
-    private String TexturedLocation;
-    private ImageFrame Frame;
+    private final int height, width;
+    private final BufferedImage bufferedImage;
+    private String texturedLocation;
+    private ImageFrame frame;
 
     public SalDynamicTexture(BufferedImage bufferedImage, int height, int width)  {
         super(width, height, 1);
-        Frame = null;
-        BufferedImage = bufferedImage;
-        Height = height;
-        Width = width;
+        frame = null;
+        this.bufferedImage = bufferedImage;
+        this.height = height;
+        this.width = width;
     }
 
-    public int GetHeight() {
-        return Height;
+    public int getHeight() {
+        return height;
     }
 
-    public int GetWidth() {
-        return Width;
+    public int getWidth() {
+        return width;
     }
 
-    public final DynamicTexture GetDynamicTexture() {
+    public final DynamicTexture getDynamicTexture() {
         return (DynamicTexture)this;
     }
 
-    public void SetResourceLocation(String dynamicTextureLocation) {
-        TexturedLocation = dynamicTextureLocation;
+    public void setResourceLocation(String dynamicTextureLocation) {
+        texturedLocation = dynamicTextureLocation;
     }
 
-    public final String GetResourceLocation() {
-        return TexturedLocation;
+    public final String getResourceLocation() {
+        return texturedLocation;
     }
 
-    public void SetImageFrame(final ImageFrame frame) {
-        Frame = frame;
+    public void setImageFrame(final ImageFrame frame) {
+        this.frame = frame;
     }
 
     /// used for gifs
-    public final ImageFrame GetFrame() {
-        return Frame;
+    public final ImageFrame getFrame() {
+        return frame;
     }
 }

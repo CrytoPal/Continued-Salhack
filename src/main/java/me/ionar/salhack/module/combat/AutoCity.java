@@ -4,7 +4,6 @@ import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.events.EventEra;
 import me.ionar.salhack.events.player.PlayerMotionUpdate;
 import me.ionar.salhack.events.render.RenderEvent;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.BlockManager;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.module.Module;
@@ -28,8 +27,6 @@ import net.minecraft.util.math.Box;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
-
-import static me.ionar.salhack.main.Wrapper.mc;
 
 public class AutoCity extends Module {
 
@@ -135,7 +132,7 @@ public class AutoCity extends Module {
                 currBlock.getZ() + 0.5,
                 mc.player);
 
-        PlayerUtil.PacketFacePitchAndYaw((float)rotations[0], (float)rotations[1]);
+        PlayerUtil.packetFacePitchAndYaw((float)rotations[0], (float)rotations[1]);
 
         BlockManager.Update(3, false);
     }
@@ -147,7 +144,7 @@ public class AutoCity extends Module {
         for (Entity entity : mc.world.getPlayers().stream().filter(entityPlayer -> !FriendManager.Get().IsFriend(entityPlayer) && entityPlayer != MinecraftClient.getInstance().player).collect(Collectors.toList())) {
 
             for (int i = 0; i < 4; ++i) {
-                BlockPos o = EntityUtil.GetPositionVectorBlockPos(entity, surroundOffset[i]);
+                BlockPos o = EntityUtil.getPositionVectorBlockPos(entity, surroundOffset[i]);
 
                 // ignore if the surrounding block is not obsidian
                 if (mc.world.getBlockState(o).getBlock() != Blocks.OBSIDIAN)

@@ -4,10 +4,7 @@ import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.AmbientEntity;
-import net.minecraft.entity.mob.EndermanEntity;
-import net.minecraft.entity.mob.HostileEntity;
-import net.minecraft.entity.mob.ZombifiedPiglinEntity;
+import net.minecraft.entity.mob.*;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -20,21 +17,15 @@ import java.util.ArrayList;
 import static me.ionar.salhack.main.Wrapper.mc;
 
 public class EntityUtil {
-
     public static ArrayList<Entity> getEntities() {
         ArrayList<Entity> entities = new ArrayList<>();
-        if (mc.world != null) {
-            for (Entity entity : mc.world.getEntities()) {
-                entities.add(entity);
-            }
-        }
+        if (mc.world != null) for (Entity entity : mc.world.getEntities()) entities.add(entity);
         return entities;
     }
 
     public static boolean isPassive(Entity entity) {
-        if (entity instanceof WolfEntity && ((WolfEntity) entity).isUniversallyAngry(mc.world)) return false;
-        if (entity instanceof AnimalEntity || entity instanceof AmbientEntity || entity instanceof SquidEntity) return true;
-        return entity instanceof IronGolemEntity && ((IronGolemEntity) entity).getTarget() == null;
+        if (entity instanceof Angerable mob) return !mob.isUniversallyAngry(mc.world) && mob.getTarget() == null;
+        else return entity instanceof AmbientEntity || entity instanceof PassiveEntity || entity instanceof WaterCreatureEntity;
     }
 
     public static boolean isLiving(Entity entity) {
@@ -45,14 +36,10 @@ public class EntityUtil {
         return entity != null && entity.getId() == -100 && mc.player != entity;
     }
 
-    public static BlockPos GetPositionVectorBlockPos(Entity entity, @Nullable BlockPos toAdd)
-    {
-        final Vec3d v = entity.getPos();
-
-        if (toAdd == null)
-            return BlockPos.ofFloored(v.x, v.y, v.z);
-
-        return BlockPos.ofFloored(v.x, v.y, v.z).add(toAdd);
+    public static BlockPos getPositionVectorBlockPos(Entity entity, @Nullable BlockPos toAdd) {
+        final Vec3d vec = entity.getPos();
+        if (toAdd == null) return BlockPos.ofFloored(vec.x, vec.y, vec.z);
+        return BlockPos.ofFloored(vec.x, vec.y, vec.z).add(toAdd);
     }
 
     /**
@@ -60,7 +47,7 @@ public class EntityUtil {
      * it
      */
     public static boolean isNeutralMob(Entity entity) {
-        return entity instanceof ZombifiedPiglinEntity || entity instanceof WolfEntity || entity instanceof EndermanEntity;
+        return entity instanceof Angerable;
     }
 
     /**
@@ -115,7 +102,6 @@ public class EntityUtil {
         dirz /= len;
         double pitch = Math.asin(diry);
         double yaw = Math.atan2(dirz, dirx);
-        // to degree
         pitch = pitch * 180.0d / Math.PI;
         yaw = yaw * 180.0d / Math.PI;
         yaw += 90f;

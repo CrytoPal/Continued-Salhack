@@ -19,8 +19,6 @@ import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.MathUtil;
 import me.ionar.salhack.util.Timer;
 
-import static me.ionar.salhack.main.Wrapper.mc;
-
 public final class ElytraFly extends Module {
     public final Value<Mode> mode = new Value<>("Mode", new String[]{"Mode", "M"}, "Mode to use for 2b2t flight.", Mode.Superior);
     public final Value<Float> speed = new Value<>("Speed", new String[]{"Spd"}, "Speed multiplier for flight, higher values equals more speed. - 2b speed recommended is 1.8~", 1.82f, 0.0f, 10.0f, 0.1f);
@@ -73,7 +71,7 @@ public final class ElytraFly extends Module {
 
                 if (ElytraSlot != -1) {
                     boolean HasArmorAtChest = mc.player.getEquippedStack(EquipmentSlot.CHEST).getItem() != Items.AIR;
-                    ItemUtil.Move(ElytraSlot, 6);
+                    ItemUtil.move(ElytraSlot, 6);
                     if (HasArmorAtChest) mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, ElytraSlot, 0, SlotActionType.PICKUP, mc.player);
                 }
             }
@@ -87,7 +85,7 @@ public final class ElytraFly extends Module {
 
         if (ElytraSlot != -1) {
             boolean HasItem = !mc.player.getInventory().getStack(ElytraSlot).isEmpty() || mc.player.getInventory().getStack(ElytraSlot).getItem() != Items.AIR;
-            ItemUtil.Move(6, ElytraSlot);
+            ItemUtil.move(6, ElytraSlot);
             if (HasItem) mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, 6, 0, SlotActionType.PICKUP, mc.player);
         }
     }

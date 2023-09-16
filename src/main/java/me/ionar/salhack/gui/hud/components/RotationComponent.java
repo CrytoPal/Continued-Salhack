@@ -4,7 +4,6 @@ import java.text.DecimalFormat;
 
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ui.HudModule;
@@ -76,11 +75,11 @@ public class RotationComponent extends HudComponentItem {
         }
 
         if (HudModule.CustomFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), direction, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), direction, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
         } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+            context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
-        Rainbow.OnRender();
+        Rainbow.onRender();
         SetWidth(mc.textRenderer.getWidth(direction));
         SetHeight(mc.textRenderer.fontHeight);
     }

@@ -149,14 +149,11 @@ public class TransformPositionUtil {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             ImageIO.write(bufferedImage, "png", out);
             byte[] bytes = out.toByteArray();
-
             ByteBuffer data = BufferUtils.createByteBuffer(bytes.length).put(bytes);
             data.flip();
             NativeImageBackedTexture tex = new NativeImageBackedTexture(NativeImage.read(data));
             MinecraftClient.getInstance().execute(() -> MinecraftClient.getInstance().getTextureManager().registerTexture(identifier, tex));
-        } catch (Exception e) { // should never happen, but just in case
-            e.printStackTrace();
-        }
+        } catch (Exception ignored) {}
     }
 
     /**
@@ -296,5 +293,27 @@ public class TransformPositionUtil {
     @Contract(value = "-> new", pure = true)
     public static Identifier randomIdentifier() {
         return new Identifier("renderer", "temp/" + randomString(32));
+    }
+
+    /**
+     * Returns the center for the position given
+     * @param posX the position x
+     * @param posY the position y
+     * @param posZ the position z
+     * @return Center
+     */
+    public static Vec3d getCenter(double posX, double posY, double posZ) {
+        double x = Math.floor(posX) + 0.5D;
+        double y = Math.floor(posY);
+        double z = Math.floor(posZ) + 0.5D ;
+        return new Vec3d(x, y, z);
+    }
+
+    /**Returns the center for the position given
+     * @param pos the position
+     * @return Center
+     */
+    public static Vec3d getCenter(Vec3d pos) {
+        return getCenter(pos.x, pos.y, pos.z);
     }
 }

@@ -2,7 +2,6 @@ package me.ionar.salhack.gui.hud.components;
 
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.ui.HudModule;
 import me.ionar.salhack.util.color.SalRainbowUtil;
@@ -29,11 +28,11 @@ public class DirectionComponent extends HudComponentItem {
         final String direction = this.getFacing(mc.player) + " " + Formatting.GRAY + this.getTowards(mc.player);
 
         if (HudModule.CustomFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), direction, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), direction, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
         } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+            context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
-        Rainbow.OnRender();
+        Rainbow.onRender();
         SetWidth(mc.textRenderer.getWidth(direction));
         SetHeight(mc.textRenderer.fontHeight);
     }

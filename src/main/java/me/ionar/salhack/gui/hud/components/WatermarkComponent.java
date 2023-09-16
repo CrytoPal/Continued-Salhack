@@ -3,7 +3,6 @@ package me.ionar.salhack.gui.hud.components;
 import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ui.HudModule;
@@ -35,21 +34,21 @@ public class WatermarkComponent extends HudComponentItem {
             final String l_Text = "Reliant (rel-1.20.1-Fabric)";
 
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), l_Text, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), l_Text, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(l_Text), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(l_Text), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
-            Rainbow.OnRender();
+            Rainbow.onRender();
             SetWidth(mc.textRenderer.getWidth(l_Text));
             SetHeight(mc.textRenderer.fontHeight);
         }
         else {
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), WatermarkString, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), WatermarkString, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
-            Rainbow.OnRender();
+            Rainbow.onRender();
             SetWidth(mc.textRenderer.getWidth(WatermarkString));
             SetHeight(mc.textRenderer.fontHeight);
         }

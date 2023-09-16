@@ -2,7 +2,6 @@ package me.ionar.salhack.gui.hud.components;
 
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ui.HudModule;
@@ -61,12 +60,12 @@ public class SpeedComponent extends HudComponentItem {
         }
 
         if (HudModule.CustomFont.getValue()) {
-            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), speed, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), speed, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
         } else {
-            context.drawTextWithShadow(mc.textRenderer, Text.of(speed), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+            context.drawTextWithShadow(mc.textRenderer, Text.of(speed), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
 
-        Rainbow.OnRender();
+        Rainbow.onRender();
         SetWidth(mc.textRenderer.getWidth(speed));
         SetHeight(mc.textRenderer.fontHeight);
     }

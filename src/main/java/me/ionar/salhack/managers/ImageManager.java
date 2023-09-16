@@ -56,8 +56,8 @@ public class ImageManager {
 
         final SalDynamicTexture l_Texture = new SalDynamicTexture(l_Image, l_Height, l_Width);
         if (l_Texture != null) {
-            System.out.println(l_Texture.GetResourceLocation());
-            l_Texture.SetResourceLocation("salhack/imgs/" + p_Img + ".png");
+            System.out.println(l_Texture.getResourceLocation());
+            l_Texture.setResourceLocation("salhack/imgs/" + p_Img + ".png");
 
             Pictures.put(p_Img, l_Texture);
 

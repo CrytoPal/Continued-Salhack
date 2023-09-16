@@ -10,7 +10,6 @@ import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
-import javax.swing.*;
 import java.util.Objects;
 
 public class PingComponent extends HudComponentItem {
@@ -33,11 +32,11 @@ public class PingComponent extends HudComponentItem {
             final String ping = "Ping " + Formatting.WHITE + playerListEntry.getLatency();
 
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), ping, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), ping, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
-            Rainbow.OnRender();
+            Rainbow.onRender();
             SetWidth(mc.textRenderer.getWidth(ping));
             SetHeight(mc.textRenderer.fontHeight);
         }

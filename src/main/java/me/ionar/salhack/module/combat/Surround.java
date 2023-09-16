@@ -20,8 +20,7 @@ import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
-import static me.ionar.salhack.main.Wrapper.mc;
-import static me.ionar.salhack.util.BlockInteractionHelper.ValidResult;
+import static me.ionar.salhack.util.BlockInteractionHelper.validResult;
 
 public class Surround extends Module {
     public final Value<Boolean> disable = new Value<>("Toggles", new String[]
@@ -153,24 +152,24 @@ public class Surround extends Module {
                 int l_BlocksPerTick = BlocksPerTick.getValue();
 
                 for (BlockPos l_Pos : l_Array) {
-                    ValidResult l_Result = BlockInteractionHelper.valid(l_Pos);
+                    validResult l_Result = BlockInteractionHelper.valid(l_Pos);
 
-                    if (l_Result == ValidResult.AlreadyBlockThere && !mc.world.getBlockState(l_Pos).isReplaceable())
+                    if (l_Result == validResult.AlreadyBlockThere && !mc.world.getBlockState(l_Pos).isReplaceable())
                         continue;
 
-                    if (l_Result == ValidResult.NoNeighbors) {
+                    if (l_Result == validResult.NoNeighbors) {
                         final BlockPos[] l_Test = {l_Pos.down(), l_Pos.north(), l_Pos.south(), l_Pos.east(), l_Pos.west(), l_Pos.up(),};
 
                         for (BlockPos l_Pos2 : l_Test) {
-                            ValidResult l_Result2 = BlockInteractionHelper.valid(l_Pos2);
+                            validResult l_Result2 = BlockInteractionHelper.valid(l_Pos2);
 
-                            if (l_Result2 == ValidResult.NoNeighbors || l_Result2 == ValidResult.NoEntityCollision)
+                            if (l_Result2 == validResult.NoNeighbors || l_Result2 == validResult.NoEntityCollision)
                                 continue;
 
                             BlockInteractionHelper.place(l_Pos2, 5.0f, false, false);
                             p_Event.cancel();
                             float[] rotations = BlockInteractionHelper.getLegitRotations(new Vec3d(l_Pos2.getX(), l_Pos2.getY(), l_Pos2.getZ()));
-                            PlayerUtil.PacketFacePitchAndYaw(rotations[0], rotations[1]);
+                            PlayerUtil.packetFacePitchAndYaw(rotations[0], rotations[1]);
                             break;
                         }
 
@@ -182,7 +181,7 @@ public class Surround extends Module {
                     p_Event.cancel();
 
                     float[] rotations = BlockInteractionHelper.getLegitRotations(new Vec3d(l_Pos.getX(), l_Pos.getY(), l_Pos.getZ()));
-                    PlayerUtil.PacketFacePitchAndYaw(rotations[0], rotations[1]);
+                    PlayerUtil.packetFacePitchAndYaw(rotations[0], rotations[1]);
                     if (--l_BlocksPerTick <= 0)
                         break;
                 }
@@ -213,7 +212,7 @@ public class Surround extends Module {
         BlockPos[] l_Array = {l_North, l_South, l_East, l_West};
 
         for (BlockPos l_Pos : l_Array) {
-            if (BlockInteractionHelper.valid(l_Pos) != BlockInteractionHelper.ValidResult.AlreadyBlockThere) {
+            if (BlockInteractionHelper.valid(l_Pos) != validResult.AlreadyBlockThere) {
                 return false;
             }
         }

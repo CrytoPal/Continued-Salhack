@@ -11,7 +11,6 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
 
 import me.ionar.salhack.gui.click.component.item.ComponentItem;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.ui.ClickGuiModule;
 import me.ionar.salhack.module.ui.ColorsModule;
 import net.minecraft.util.Identifier;
@@ -123,7 +122,7 @@ public class MenuComponent {
 
         if (BarTexture != null) {
             float x = GetX()+GetWidth()-15;
-            drawTexture(new Identifier(BarTexture.GetResourceLocation()), (int) x, (int) (GetY()+3-offsetY), BarTexture.getWidth()/3, BarTexture.getHeight()/3, context);
+            drawTexture(new Identifier(BarTexture.getResourceLocation()), (int) x, (int) (GetY()+3-offsetY), BarTexture.getWidth()/3, BarTexture.getHeight()/3, context);
         }
         if (!Minimized) {
 

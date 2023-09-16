@@ -45,8 +45,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
 
-import static me.ionar.salhack.main.Wrapper.mc;
-
 public class AutoCrystalRewrite extends Module {
     public static final Value<BreakModes> breakMode = new Value<BreakModes>("BreakMode", new String[]{"BM"}, "Mode of breaking to use", BreakModes.Always);
     public static final Value<PlaceModes> placeMode = new Value<PlaceModes>("PlaceMode", new String[]{"BM"}, "Mode of placing to use", PlaceModes.Most);
@@ -164,7 +162,7 @@ public class AutoCrystalRewrite extends Module {
                 return e.distanceTo(e) <= 3;
             }
             case Smart -> {
-                float selfDamage = CrystalUtils.calculateDamage(mc.world, e.getX(), e.getY(), e.getZ(), mc.player, 0);
+                float selfDamage = CrystalUtils.calculateDamage(mc.world, e.getX(), e.getY(), e.getZ(), mc.player);
                 if (selfDamage > maxSelfDMG.getValue())
                     return false;
                 if (noSuicide.getValue() && selfDamage >= mc.player.getHealth() + mc.player.getAbsorptionAmount())
@@ -183,7 +181,7 @@ public class AutoCrystalRewrite extends Module {
                     if (player.getHealth() + player.getAbsorptionAmount() <= facePlace.getValue())
                         minDamage = 1f;
 
-                    float calculatedDamage = CrystalUtils.calculateDamage(mc.world, e.getX(), e.getY(), e.getZ(), player, 0);
+                    float calculatedDamage = CrystalUtils.calculateDamage(mc.world, e.getX(), e.getY(), e.getZ(), player);
 
                     if (calculatedDamage > minDamage)
                         return true;
@@ -222,13 +220,13 @@ public class AutoCrystalRewrite extends Module {
 
         // check walls range
         if (wallsRange.getValue() > 0) {
-            if (!PlayerUtil.CanSeeBlock(pos))
+            if (!PlayerUtil.canSeeBlock(pos))
                 if (pos.getSquaredDistance((int) mc.player.getX(), (int) mc.player.getY(), (int) mc.player.getZ()) > wallsRange.getValue() * wallsRange.getValue())
                     return false;
         }
 
         // check self damage
-        float selfDamage = CrystalUtils.calculateDamage(mc.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, mc.player, 0);
+        float selfDamage = CrystalUtils.calculateDamage(mc.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, mc.player);
 
         // make sure self damage is not greater than maxselfdamage
         if (selfDamage > maxSelfDMG.getValue())
@@ -283,7 +281,7 @@ public class AutoCrystalRewrite extends Module {
                 if (player.getHealth() + player.getAbsorptionAmount() <= facePlace.getValue())
                     minDamage = 1f;
 
-                float calculatedDamage = CrystalUtils.calculateDamage(mc.world, lastPlaceLocation.getX() + 0.5, lastPlaceLocation.getY() + 1.0, lastPlaceLocation.getZ() + 0.5, player, 0);
+                float calculatedDamage = CrystalUtils.calculateDamage(mc.world, lastPlaceLocation.getX() + 0.5, lastPlaceLocation.getY() + 1.0, lastPlaceLocation.getZ() + 0.5, player);
 
                 if (calculatedDamage >= minDamage && calculatedDamage > damage) {
                     damage = calculatedDamage;
@@ -335,7 +333,7 @@ public class AutoCrystalRewrite extends Module {
 
                     // iterate through all valid crystal blocks for this player, and calculate the damages.
                     for (BlockPos pos : cachedCrystalBlocks) {
-                        float calculatedDamage = CrystalUtils.calculateDamage(mc.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, player, 0);
+                        float calculatedDamage = CrystalUtils.calculateDamage(mc.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, player);
 
                         if (calculatedDamage >= minDamage && calculatedDamage > damage) {
                             damage = calculatedDamage;
@@ -366,7 +364,7 @@ public class AutoCrystalRewrite extends Module {
                         final PlayerEntity finalTarget = playerTarget;
 
                         // iterate this again, we need to remove some values that are useless, since we iterated all players
-                        placeLocations.removeIf(pos -> CrystalUtils.calculateDamage(mc.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, finalTarget, 0) < finalMinDamage);
+                        placeLocations.removeIf(pos -> CrystalUtils.calculateDamage(mc.world, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, finalTarget) < finalMinDamage);
 
                         // at this point, the place locations list is in asc order, we need to reverse it to get to desc
                         Collections.reverse(placeLocations);
@@ -494,7 +492,7 @@ public class AutoCrystalRewrite extends Module {
             placedCrystals.add(selectedPos);
 
             if (playerTarget != null) {
-                float calculatedDamage = CrystalUtils.calculateDamage(mc.world, selectedPos.getX() + 0.5, selectedPos.getY() + 1.0, selectedPos.getZ() + 0.5, playerTarget, 0);
+                float calculatedDamage = CrystalUtils.calculateDamage(mc.world, selectedPos.getX() + 0.5, selectedPos.getY() + 1.0, selectedPos.getZ() + 0.5, playerTarget);
 
                 placedCrystalsDamage.put(selectedPos, calculatedDamage);
             }
@@ -533,7 +531,7 @@ public class AutoCrystalRewrite extends Module {
         // rotations are valid, cancel this update and use our custom rotations instead.
         if (rotations != null) {
             event.cancel();
-            PlayerUtil.PacketFacePitchAndYaw((float) rotations[0], (float) rotations[1]);
+            PlayerUtil.packetFacePitchAndYaw((float) rotations[0], (float) rotations[1]);
         }
     }
 

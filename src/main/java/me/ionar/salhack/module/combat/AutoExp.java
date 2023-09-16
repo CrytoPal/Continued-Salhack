@@ -56,11 +56,11 @@ public final class AutoExp extends Module {
 
                     if (state.Reequip) {
                         if (state.SlotMovedTo <= 4) {
-                            ItemUtil.Move(state.SlotMovedTo, state.ArmorSlot);
+                            ItemUtil.move(state.SlotMovedTo, state.ArmorSlot);
                         }
                     } else {
-                        ItemUtil.Move(state.SlotMovedTo, state.ArmorSlot);
-                        ItemUtil.Move(state.ArmorSlot, state.SlotMovedTo);
+                        ItemUtil.move(state.SlotMovedTo, state.ArmorSlot);
+                        ItemUtil.move(state.ArmorSlot, state.SlotMovedTo);
                     }
 
                     needBreak = true;
@@ -86,7 +86,7 @@ public final class AutoExp extends Module {
 
                 int currSlot = -1;
                 if (currItem.isEmpty() || currItem.getItem() != Items.EXPERIENCE_BOTTLE) {
-                    int slot = PlayerUtil.GetItemInHotbar(Items.EXPERIENCE_BOTTLE);
+                    int slot = PlayerUtil.getItemInHotbar(Items.EXPERIENCE_BOTTLE);
 
                     if (slot != -1) {
                         currSlot = mc.player.getInventory().selectedSlot;
@@ -177,7 +177,7 @@ public final class AutoExp extends Module {
         ReadyToMend = false;
         AllDone = false;
 
-        int slot = PlayerUtil.GetItemInHotbar(Items.EXPERIENCE_BOTTLE);
+        int slot = PlayerUtil.getItemInHotbar(Items.EXPERIENCE_BOTTLE);
 
         if (slot == -1) {
             SendMessage("You don't have any XP! Disabling!");

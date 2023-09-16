@@ -16,13 +16,10 @@ import net.minecraft.block.CropBlock;
 import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
-import net.minecraft.util.DyeColor;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-
-import static me.ionar.salhack.main.Wrapper.mc;
 
 public class AutoBonemeal extends Module {
     public static Value<Integer> Radius = new Value<>("Radius", new String[] {"R"}, "Radius to search for not fully grown seeds", 4, 0, 10, 1);
@@ -38,7 +35,7 @@ public class AutoBonemeal extends Module {
         if(p_Event.getEra() != EventEra.PRE)
             return;
 
-        BlockPos l_ClosestPos = BlockInteractionHelper.getSphere(PlayerUtil.GetLocalPlayerPosFloored(), Radius.getValue(), Radius.getValue(), false, true, 0).stream()
+        BlockPos l_ClosestPos = BlockInteractionHelper.getSphere(PlayerUtil.getLocalPlayerPosFloored(), Radius.getValue(), Radius.getValue(), false, true, 0).stream()
                 .filter(p_Pos -> IsValidBlockPos(p_Pos))
                 .min(Comparator.comparing(p_Pos -> mc.player.squaredDistanceTo(p_Pos.toCenterPos())))
                 .orElse(null);
@@ -52,7 +49,7 @@ public class AutoBonemeal extends Module {
                     l_ClosestPos.getZ() + 0.5,
                     mc.player);
 
-            PlayerUtil.PacketFacePitchAndYaw((float)l_Pos[0], (float)l_Pos[1]);
+            PlayerUtil.packetFacePitchAndYaw((float)l_Pos[0], (float)l_Pos[1]);
 
             mc.interactionManager.interactBlock(mc.player, mc.player.getOffHandStack().getItem() instanceof BoneMealItem ? Hand.OFF_HAND : Hand.MAIN_HAND,
                     new BlockHitResult(l_ClosestPos.toCenterPos().offset(Direction.UP, 0.5f), Direction.UP, l_ClosestPos, false));

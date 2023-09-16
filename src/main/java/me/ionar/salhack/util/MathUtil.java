@@ -29,22 +29,16 @@ public class MathUtil {
     public static double[] directionSpeedNoForward(double speed) {
         if (mc.player == null) return new double[0];
         float forward = 1f;
-
         if (mc.options.leftKey.isPressed() || mc.options.rightKey.isPressed() || mc.options.backKey.isPressed() || mc.options.forwardKey.isPressed()) forward = mc.player.input.movementForward;
-
         float side = mc.player.input.movementSideways;
         float yaw = mc.player.prevYaw + (mc.player.getYaw() - mc.player.prevYaw) * mc.getTickDelta();
-
         if (forward != 0) {
             if (side > 0) yaw += (forward > 0 ? -45 : 45);
             else if (side < 0) yaw += (forward > 0 ? 45 : -45);
             side = 0;
-
-            // forward = clamp(forward, 0, 1);
             if (forward > 0) forward = 1;
             else if (forward < 0) forward = -1;
         }
-
         final double sin = Math.sin(Math.toRadians(yaw + 90));
         final double cos = Math.cos(Math.toRadians(yaw + 90));
         final double posX = (forward * speed * cos + side * speed * sin);
@@ -57,18 +51,13 @@ public class MathUtil {
         float forward = mc.player.input.movementForward;
         float side = mc.player.input.movementSideways;
         float yaw = mc.player.prevYaw + (mc.player.getYaw() - mc.player.prevYaw) * mc.getTickDelta();
-
         if (forward != 0) {
             if (side > 0) yaw += (forward > 0 ? -45 : 45);
             else if (side < 0) yaw += (forward > 0 ? 45 : -45);
-
             side = 0;
-
-            // forward = clamp(forward, 0, 1);
             if (forward > 0) forward = 1;
             else if (forward < 0) forward = -1;
         }
-
         final double sin = Math.sin(Math.toRadians(yaw + 90));
         final double cos = Math.cos(Math.toRadians(yaw + 90));
         final double posX = (forward * speed * cos + side * speed * sin);

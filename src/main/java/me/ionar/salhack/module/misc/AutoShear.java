@@ -15,8 +15,6 @@ import net.minecraft.util.Hand;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import static me.ionar.salhack.main.Wrapper.mc;
-
 
 public class AutoShear extends Module {
     public final Value<Integer> Radius = new Value<>("Radius", new String[] {"R"}, "Radius to search for sheep", 4, 0, 10, 1);
@@ -50,7 +48,7 @@ public class AutoShear extends Module {
                     l_Sheep.getZ(),
                     mc.player);
 
-            PlayerUtil.PacketFacePitchAndYaw((float)l_Pos[0], (float)l_Pos[1]);
+            PlayerUtil.packetFacePitchAndYaw((float)l_Pos[0], (float)l_Pos[1]);
 
             mc.player.networkHandler.sendPacket(PlayerInteractEntityC2SPacket.interact(l_Sheep, mc.player.isSneaking(), Hand.MAIN_HAND));
             mc.player.swingHand(Hand.MAIN_HAND);

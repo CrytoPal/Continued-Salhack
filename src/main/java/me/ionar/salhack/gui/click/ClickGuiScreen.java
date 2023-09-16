@@ -2,7 +2,6 @@ package me.ionar.salhack.gui.click;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.ionar.salhack.gui.click.component.MenuComponent;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ImageManager;
 import me.ionar.salhack.util.imgs.SalDynamicTexture;
 import net.minecraft.client.gui.DrawContext;
@@ -170,7 +169,7 @@ public class ClickGuiScreen extends SalGuiScreen
         }
 
         if (Watermark != null && ClickGuiMod.Watermark.getValue()) {
-            drawTexture(new Identifier(Watermark.GetResourceLocation()), 0, res.getScaledHeight() - Watermark.GetHeight() - 5, Watermark.GetWidth() / 2, Watermark.GetHeight() / 2, context);
+            drawTexture(new Identifier(Watermark.getResourceLocation()), 0, res.getScaledHeight() - Watermark.getHeight() - 5, Watermark.getWidth() / 2, Watermark.getHeight() / 2, context);
         }
 
         MenuComponent l_LastHovered = null;

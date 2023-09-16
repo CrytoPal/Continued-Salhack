@@ -13,14 +13,11 @@ import me.ionar.salhack.util.entity.PlayerUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.GrassBlock;
-import net.minecraft.item.BoneMealItem;
 import net.minecraft.item.HoeItem;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-
-import static me.ionar.salhack.main.Wrapper.mc;
 
 public class AutoFarmland extends Module {
     public final Value<Integer> Radius = new Value<>("Radius", new String[] {"R"}, "Radius to search for grass/dirt", 4, 0, 10, 1);
@@ -37,7 +34,7 @@ public class AutoFarmland extends Module {
         if (!timer.passed(Delay.getValue() * 100))
             return;
 
-        BlockPos l_ClosestPos = BlockInteractionHelper.getSphere(PlayerUtil.GetLocalPlayerPosFloored(), Radius.getValue(), Radius.getValue(), false, true, 0).stream()
+        BlockPos l_ClosestPos = BlockInteractionHelper.getSphere(PlayerUtil.getLocalPlayerPosFloored(), Radius.getValue(), Radius.getValue(), false, true, 0).stream()
                 .filter(p_Pos -> IsValidBlockPos(p_Pos))
                 .min(Comparator.comparing(p_Pos -> mc.player.squaredDistanceTo(p_Pos.toCenterPos())))
                 .orElse(null);
@@ -54,7 +51,7 @@ public class AutoFarmland extends Module {
                     mc.player);
 
 
-            PlayerUtil.PacketFacePitchAndYaw((float)l_Pos[0], (float)l_Pos[1]);
+            PlayerUtil.packetFacePitchAndYaw((float)l_Pos[0], (float)l_Pos[1]);
 
             mc.interactionManager.interactBlock(mc.player,Hand.MAIN_HAND, new BlockHitResult(l_ClosestPos.toCenterPos().offset(Direction.UP, 0.5f), Direction.UP, l_ClosestPos, false));
             mc.player.swingHand(Hand.MAIN_HAND);

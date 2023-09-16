@@ -7,7 +7,6 @@ import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.BlockInteractionHelper;
-import me.ionar.salhack.util.SalUtil;
 import me.ionar.salhack.util.entity.PlayerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -31,8 +30,6 @@ import net.minecraft.util.shape.VoxelShapes;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static me.ionar.salhack.main.Wrapper.mc;
 
 public final class AutoTrap extends Module {
     private final Vec3d[] offsetsDefault = new Vec3d[]{
@@ -145,7 +142,7 @@ public final class AutoTrap extends Module {
         if (p_Event.getEra() != EventEra.PRE)
             return;
 
-        PlayerEntity closestTarget = SalUtil.findClosestTarget();
+        PlayerEntity closestTarget = PlayerUtil.findClosestTarget();
         if (mc.player != null) {
             if (closestTarget == null) {
                 if (firstRun) {
@@ -171,7 +168,7 @@ public final class AutoTrap extends Module {
             }
 
             if (toggleMode.getValue()) {
-                if (PlayerUtil.IsEntityTrapped(closestTarget)) {
+                if (PlayerUtil.isEntityTrapped(closestTarget)) {
                     toggle(true);
                     return;
                 }
@@ -227,7 +224,7 @@ public final class AutoTrap extends Module {
     private boolean placeBlock(final BlockPos pos) {
         if (!mc.world.getBlockState(pos).isReplaceable())
             return false;
-        if (!BlockInteractionHelper.checkForNeighbours(pos))
+        if (!BlockInteractionHelper.hasNeighbours(pos))
             return false;
         final Vec3d eyesPos = new Vec3d(mc.player.getX(), mc.player.getY() + mc.player.getEyeHeight(mc.player.getPose()), mc.player.getZ());
         for (final Direction side : Direction.values()) {

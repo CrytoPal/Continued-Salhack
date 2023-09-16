@@ -43,33 +43,33 @@ public class ResourcesComponent extends HudComponentItem {
 
         if (EGap.getValue()) {
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), EGapCount1, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), EGapCount1, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(EGapCount1), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
-            Rainbow.OnRender();
+            Rainbow.onRender();
             SetWidth(mc.textRenderer.getWidth(EGapCount1));
             SetHeight(mc.textRenderer.fontHeight + 30);
         }
         if (Totems.getValue()) {
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), totemCount1, (int) (GetX()), (int) (GetY()) + 30, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), totemCount1, (int) (GetX()), (int) (GetY()) + 30, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) GetX(), (int) GetY() + 30, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(totemCount1), (int) GetX(), (int) GetY() + 30, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
         }
         if (Crystals.getValue()) {
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), crystals1, (int) (GetX()), (int) (GetY()) + 10, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), crystals1, (int) (GetX()), (int) (GetY()) + 10, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) GetX(), (int) GetY() + 10, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(crystals1), (int) GetX(), (int) GetY() + 10, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
         }
         if (EXP.getValue()) {
             if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), expCount1, (int) (GetX()), (int) (GetY()) + 20, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), expCount1, (int) (GetX()), (int) (GetY()) + 20, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) GetX(), (int) GetY() + 20, hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                context.drawTextWithShadow(mc.textRenderer, Text.of(expCount1), (int) GetX(), (int) GetY() + 20, hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
             }
         }
     }

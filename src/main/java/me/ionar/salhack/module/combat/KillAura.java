@@ -4,7 +4,6 @@ import io.github.racoondog.norbit.EventHandler;
 import io.github.racoondog.norbit.EventPriority;
 import me.ionar.salhack.events.EventEra;
 import me.ionar.salhack.events.player.PlayerMotionUpdate;
-import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.managers.TickRateManager;
 import me.ionar.salhack.module.Module;
@@ -26,8 +25,6 @@ import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
 
 import java.util.Comparator;
-
-import static me.ionar.salhack.main.Wrapper.mc;
 
 public class KillAura extends Module {
     public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode"}, "The KillAura Mode to use", Modes.Closest);
@@ -166,7 +163,7 @@ public class KillAura extends Module {
         }
 
         if (Only32k.getValue()) {
-            if (!ItemUtil.Is32k(mc.player.getMainHandStack()))
+            if (!ItemUtil.is32K(mc.player.getMainHandStack()))
                 return;
         }
 
@@ -219,7 +216,7 @@ public class KillAura extends Module {
 
         float[] l_Rotation = MathUtil.calcAngle(mc.player.getEyePos(), l_TargetToHit.getEyePos());
 
-        PlayerUtil.PacketFacePitchAndYaw(l_Rotation[0], l_Rotation[1]);
+        PlayerUtil.packetFacePitchAndYaw(l_Rotation[0], l_Rotation[1]);
         event.cancel();
 
         final float l_Ticks = 20.0f - TickRateManager.Get().getTickRate();

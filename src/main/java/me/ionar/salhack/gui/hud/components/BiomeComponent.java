@@ -2,7 +2,6 @@ package me.ionar.salhack.gui.hud.components;
 
 import me.ionar.salhack.font.FontRenderers;
 import me.ionar.salhack.gui.hud.HudComponentItem;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.ui.HudModule;
 import me.ionar.salhack.util.color.SalRainbowUtil;
@@ -42,9 +41,9 @@ public class BiomeComponent extends HudComponentItem {
                 SetHeight(mc.textRenderer.fontHeight);
 
                 if (HudModule.CustomFont.getValue()) {
-                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), biome, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), biome, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
                 } else {
-                    context.drawTextWithShadow(mc.textRenderer, biome, (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+                    context.drawTextWithShadow(mc.textRenderer, biome, (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.getRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
                 }
             }
         }

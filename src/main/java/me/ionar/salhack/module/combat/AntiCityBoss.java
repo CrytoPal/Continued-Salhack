@@ -16,10 +16,8 @@ import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
 
-import me.ionar.salhack.util.BlockInteractionHelper.ValidResult;
+import me.ionar.salhack.util.BlockInteractionHelper.validResult;
 import net.minecraft.util.math.Vec3d;
-
-import static me.ionar.salhack.main.Wrapper.mc;
 
 public class AntiCityBoss extends Module
 {
@@ -41,7 +39,7 @@ public class AntiCityBoss extends Module
         if (p_Event.getEra() != EventEra.PRE)
             return;
 
-        if (TrapCheck.getValue() && !PlayerUtil.IsPlayerTrapped())
+        if (TrapCheck.getValue() && !PlayerUtil.isPlayerTrapped())
             return;
 
         final int slot = findStackHotbar(Blocks.OBSIDIAN);
@@ -50,10 +48,10 @@ public class AntiCityBoss extends Module
         if (slot == -1)
             return;
 
-        BlockPos l_CenterPos = PlayerUtil.GetLocalPlayerPosFloored();
+        BlockPos l_CenterPos = PlayerUtil.getLocalPlayerPosFloored();
         ArrayList<BlockPos> BlocksToFill = new ArrayList<BlockPos>();
 
-        switch (PlayerUtil.GetFacing())
+        switch (PlayerUtil.getFacing())
         {
             case East:
                 BlocksToFill.add(l_CenterPos.east().east());
@@ -87,9 +85,9 @@ public class AntiCityBoss extends Module
 
         for (BlockPos l_Pos : BlocksToFill)
         {
-            ValidResult l_Result = BlockInteractionHelper.valid(l_Pos);
+            validResult l_Result = BlockInteractionHelper.valid(l_Pos);
 
-            if (l_Result != ValidResult.Ok)
+            if (l_Result != validResult.Ok)
                 continue;
 
             l_PosToFill = l_Pos;
@@ -106,7 +104,7 @@ public class AntiCityBoss extends Module
             p_Event.cancel();
             float[] rotations = BlockInteractionHelper
                     .getLegitRotations(new Vec3d(l_PosToFill.getX(), l_PosToFill.getY(), l_PosToFill.getZ()));
-            PlayerUtil.PacketFacePitchAndYaw(rotations[0], rotations[1]);
+            PlayerUtil.packetFacePitchAndYaw(rotations[0], rotations[1]);
             BlockInteractionHelper.place(l_PosToFill, 5.0f, false, false);
             Finish(lastSlot);
         }
