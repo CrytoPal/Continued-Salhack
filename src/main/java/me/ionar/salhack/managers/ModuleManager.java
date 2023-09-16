@@ -48,6 +48,7 @@ public class ModuleManager {
         Add(new AutoArmor());
         Add(new BowSpam());
         Add(new AutoCity());
+        Add(new AutoExp());
 
         /// Exploit
         Add(new Bowbomb());
