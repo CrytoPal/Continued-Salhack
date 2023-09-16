@@ -11,7 +11,6 @@ import me.ionar.salhack.util.entity.PlayerUtil;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.Formatting;
 import net.minecraft.util.Hand;
 
@@ -21,10 +20,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 public final class AutoExp extends Module {
-    public final Value<Float> Delay = new Value<Float>("Delay", new String[]{"D"}, "Delay for moving armor pieces", 1.0f, 0.0f, 10.0f, 1.0f);
-    public final Value<Float> Pct = new Value<Float>("Pct", new String[]{"P"}, "Amount of armor pct to heal at, so you don't waste extra experience potions", 90.0f, 0.0f, 100.0f, 10.0f);
-    public final Value<Boolean> GhostHand = new Value<Boolean>("GhostHand", new String[]{"GH"}, "Uses ghost hand for exp", false);
-    private final LinkedList<MendState> SlotsToMoveTo = new LinkedList<MendState>();
+    public final Value<Float> Delay = new Value<>("Delay", new String[]{"D"}, "Delay for moving armor pieces", 1.0f, 0.0f, 10.0f, 1.0f);
+    public final Value<Float> Pct = new Value<>("Pct", new String[]{"P"}, "Amount of armor pct to heal at, so you don't waste extra experience potions", 90.0f, 0.0f, 100.0f, 10.0f);
+    public final Value<Boolean> GhostHand = new Value<>("GhostHand", new String[]{"GH"}, "Uses ghost hand for exp", false);
+    private final LinkedList<MendState> SlotsToMoveTo = new LinkedList<>();
     private final Timer timer = new Timer();
     private final Timer internalTimer = new Timer();
     private boolean ReadyToMend = false;

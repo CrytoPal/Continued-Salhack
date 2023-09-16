@@ -34,8 +34,8 @@ public class ModuleManager {
     public ModuleManager() {
     }
 
-    public static ArrayList<Module> Mods = new ArrayList<Module>();
-    private ArrayList<Module> ArrayListAnimations = new ArrayList<Module>();
+    public static ArrayList<Module> Mods = new ArrayList<>();
+    private ArrayList<Module> ArrayListAnimations = new ArrayList<>();
 
     public void Init() {
         /// Combat
