@@ -1,9 +1,11 @@
-package me.ionar.salhack.module.movement;
+package me.ionar.salhack.module.misc;
 
 import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
+
+import static me.ionar.salhack.main.Wrapper.mc;
 
 public final class Rotation extends Module {
     public final Value<Integer> yawLock = new Value<>("Yaw", new String[]{"Y"}, "Lock the player's rotation yaw at a point", 0, 0, 360, 11);
@@ -24,7 +26,7 @@ public final class Rotation extends Module {
     }
 
     @EventHandler
-    private void onTick(TickEvent event) {
+    private void OnPlayerUpdate(TickEvent event) {
         if (event.isPre()) return;
         if (mc.player != null) {
             mc.player.setYaw((float) yawLock.getValue());

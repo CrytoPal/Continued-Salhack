@@ -17,8 +17,11 @@ import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.misc.Friends;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-// DO NOT TOUCH THESE THEY MAY BREAK OPENING THE GUI
+
 public class FriendManager {
+    public static FriendManager Get() {
+        return SalHack.GetFriendManager();
+    }
 
     private Friends m_FriendsModule;
 
@@ -26,7 +29,7 @@ public class FriendManager {
     }
 
     /// Loads the friends from the JSON
-    public void loadFriends() {
+    public void LoadFriends() {
         File l_Exists = new File("SalHack/FriendList.json");
         if (!l_Exists.exists())
             return;
@@ -39,7 +42,7 @@ public class FriendManager {
             Reader reader = Files.newBufferedReader(Paths.get("SalHack/" + "FriendList" + ".json"));
 
             // convert JSON file to map
-            friendList = gson.fromJson(reader, new TypeToken<LinkedTreeMap<String, Friend>>(){}.getType());
+            FriendList = gson.fromJson(reader, new TypeToken<LinkedTreeMap<String, Friend>>(){}.getType());
 
             // close reader
             reader.close();
@@ -50,7 +53,7 @@ public class FriendManager {
         }
     }
 
-    public void saveFriends() {
+    public void SaveFriends() {
         GsonBuilder builder = new GsonBuilder();
 
         Gson gson = builder.setPrettyPrinting().create();
@@ -59,7 +62,7 @@ public class FriendManager {
         try {
             writer = Files.newBufferedWriter(Paths.get("SalHack/" + "FriendList" + ".json"));
 
-            gson.toJson(friendList, new TypeToken<LinkedTreeMap<String, Friend>>(){}.getType(), writer);
+            gson.toJson(FriendList, new TypeToken<LinkedTreeMap<String, Friend>>(){}.getType(), writer);
             writer.close();
         }
         catch (IOException e) {
@@ -68,63 +71,63 @@ public class FriendManager {
         }
     }
 
-    private LinkedTreeMap<String, Friend> friendList = new LinkedTreeMap<>();
+    private LinkedTreeMap<String, Friend> FriendList = new LinkedTreeMap<>();
 
-    public String getFriendName(Entity p_Entity) {
-        if (!friendList.containsKey(p_Entity.getName().getString().toLowerCase()))
+    public String GetFriendName(Entity p_Entity) {
+        if (!FriendList.containsKey(p_Entity.getName().getString().toLowerCase()))
             return p_Entity.getName().getString();
 
-        return friendList.get(p_Entity.getName().getString().toLowerCase()).getAlias();
+        return FriendList.get(p_Entity.getName().getString().toLowerCase()).GetAlias();
     }
 
-    public boolean isFriend(Entity p_Entity) {
-        return p_Entity instanceof PlayerEntity && friendList.containsKey(p_Entity.getName().getString().toLowerCase());
+    public boolean IsFriend(Entity p_Entity) {
+        return p_Entity instanceof PlayerEntity && FriendList.containsKey(p_Entity.getName().getString().toLowerCase());
     }
 
-    public boolean addFriend(String p_Name) {
-        if (friendList.containsKey(p_Name))
+    public boolean AddFriend(String p_Name) {
+        if (FriendList.containsKey(p_Name))
             return false;
 
         Friend l_Friend = new Friend(p_Name, p_Name, null);
 
-        friendList.put(p_Name, l_Friend);
-        saveFriends();
+        FriendList.put(p_Name, l_Friend);
+        SaveFriends();
         return true;
     }
 
-    public boolean removeFriend(String p_Name) {
-        if (!friendList.containsKey(p_Name))
+    public boolean RemoveFriend(String p_Name) {
+        if (!FriendList.containsKey(p_Name))
             return false;
 
-        friendList.remove(p_Name);
-        saveFriends();
+        FriendList.remove(p_Name);
+        SaveFriends();
         return true;
     }
 
-    public final LinkedTreeMap<String, Friend> getFriends() {
-        return friendList;
+    public final LinkedTreeMap<String, Friend> GetFriends() {
+        return FriendList;
     }
 
-    public boolean isFriend(String p_Name) {
+    public boolean IsFriend(String p_Name) {
         if (!m_FriendsModule.isEnabled())
             return false;
 
-        return friendList.containsKey(p_Name.toLowerCase());
+        return FriendList.containsKey(p_Name.toLowerCase());
     }
 
-    public Friend getFriend(Entity e) {
+    public Friend GetFriend(Entity e) {
         if (!m_FriendsModule.isEnabled())
             return null;
 
-        if (!friendList.containsKey(e.getName().getString().toLowerCase()))
+        if (!FriendList.containsKey(e.getName().getString().toLowerCase()))
             return null;
 
-        return friendList.get(e.getName().getString().toLowerCase());
+        return FriendList.get(e.getName().getString().toLowerCase());
     }
 
-    public void init() {
-        loadFriends();
+    public void Load() {
+        LoadFriends();
 
-        m_FriendsModule = (Friends)SalHack.getModuleManager().getMod(Friends.class);
+        m_FriendsModule = (Friends)ModuleManager.Get().GetMod(Friends.class);
     }
 }

@@ -8,14 +8,21 @@ public class Texture extends Identifier {
         super("coffee", validatePath(path));
     }
 
-    public Texture(Identifier identifier) {
-        super(identifier.getNamespace(), identifier.getPath());
+    public Texture(Identifier i) {
+        super(i.getNamespace(), i.getPath());
     }
 
     static String validatePath(String path) {
-        if (isValid(path)) return path;
-        StringBuilder returnString = new StringBuilder();
-        for (char c : path.toLowerCase().toCharArray()) if (isPathCharacterValid(c)) returnString.append(c);
-        return returnString.toString();
+        if (isValid(path)) {
+            return path;
+        }
+        StringBuilder ret = new StringBuilder();
+        for (char c : path.toLowerCase().toCharArray()) {
+            if (isPathCharacterValid(c)) {
+                ret.append(c);
+            }
+        }
+        return ret.toString();
     }
+
 }

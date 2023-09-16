@@ -1,8 +1,6 @@
 package me.ionar.salhack.util.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.main.Wrapper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.Camera;
 import net.minecraft.client.texture.NativeImage;
@@ -19,10 +17,11 @@ import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
+import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -35,9 +34,10 @@ public class TransformPositionUtil {
     public static final Matrix4f lastModMat = new Matrix4f();
     public static final Matrix4f lastWorldSpaceMatrix = new Matrix4f();
     private static final MatrixStack empty = new MatrixStack();
-    private static final MinecraftClient mc = Wrapper.GetMC();
-    private static final char randomStart = 'a';
-    private static final char randomEnd = 'z';
+    private static final MinecraftClient client = MinecraftClient.getInstance();
+    private static final char RND_START = 'a';
+    private static final char RND_END = 'z';
+    private static final Random RND = new Random();
 
     /**
      * <p>Sets up rendering and resets everything that should be reset</p>
@@ -160,7 +160,7 @@ public class TransformPositionUtil {
     }
 
     /**
-     * Gets an Empty matrix stack without having to initialize the object
+     * Gets an empty matrix stack without having to initialize the object
      *
      * @return An empty matrix stack
      */
@@ -176,7 +176,7 @@ public class TransformPositionUtil {
      */
     @Contract("-> new")
     public static Vec3d getCrosshairVector() {
-        Camera camera = mc.gameRenderer.getCamera();
+        Camera camera = client.gameRenderer.getCamera();
 
         float pi = (float) Math.PI;
         float yawRad = (float) Math.toRadians(-camera.getYaw());
@@ -210,8 +210,8 @@ public class TransformPositionUtil {
      */
     @Contract(value = "_ -> new", pure = true)
     public static Vec3d worldSpaceToScreenSpace( Vec3d pos) {
-        Camera camera = mc.getEntityRenderDispatcher().camera;
-        int displayHeight = mc.getWindow().getHeight();
+        Camera camera = client.getEntityRenderDispatcher().camera;
+        int displayHeight = client.getWindow().getHeight();
         int[] viewport = new int[4];
         GL11.glGetIntegerv(GL11.GL_VIEWPORT, viewport);
         Vector3f target = new Vector3f();
@@ -227,7 +227,7 @@ public class TransformPositionUtil {
 
         matrixProj.mul(matrixModel).project(transformedCoordinates.x(), transformedCoordinates.y(), transformedCoordinates.z(), viewport, target);
 
-        return new Vec3d(target.x / mc.getWindow().getScaleFactor(), (displayHeight - target.y) / mc.getWindow().getScaleFactor(), target.z);
+        return new Vec3d(target.x / client.getWindow().getScaleFactor(), (displayHeight - target.y) / client.getWindow().getScaleFactor(), target.z);
     }
 
     /**
@@ -260,9 +260,9 @@ public class TransformPositionUtil {
      */
     @Contract(value = "_,_,_ -> new", pure = true)
     public static Vec3d screenSpaceToWorldSpace(double x, double y, double d) {
-        Camera camera = mc.getEntityRenderDispatcher().camera;
-        int displayHeight = mc.getWindow().getScaledHeight();
-        int displayWidth = mc.getWindow().getScaledWidth();
+        Camera camera = client.getEntityRenderDispatcher().camera;
+        int displayHeight = client.getWindow().getScaledHeight();
+        int displayWidth = client.getWindow().getScaledWidth();
         int[] viewport = new int[4];
         GL11.glGetIntegerv(GL11.GL_VIEWPORT, viewport);
         Vector3f target = new Vector3f();
@@ -285,7 +285,7 @@ public class TransformPositionUtil {
     }
 
     private static String randomString(int length) {
-        return IntStream.range(0, length).mapToObj(operand -> String.valueOf((char) SalHack.random.nextInt(randomStart))).collect(Collectors.joining());
+        return IntStream.range(0, length).mapToObj(operand -> String.valueOf((char) RND.nextInt(RND_START))).collect(Collectors.joining());
     }
 
     /**

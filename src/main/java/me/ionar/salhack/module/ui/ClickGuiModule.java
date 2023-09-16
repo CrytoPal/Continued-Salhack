@@ -1,17 +1,21 @@
 package me.ionar.salhack.module.ui;
 
 import me.ionar.salhack.gui.click.ClickGuiScreen;
-import me.ionar.salhack.main.SalHack;
+import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import org.lwjgl.glfw.GLFW;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
+@SuppressWarnings("SuspiciousIndentAfterControlStatement")
 public final class ClickGuiModule extends Module {
-    public final Value<Boolean> allowOverflow = new Value<>("AllowOverflow", new String[]{"AllowOverflow"}, "Allows the GUI to overflow", true);
-    public final Value<Boolean> watermark = new Value<>("Watermark", new String[]{"Watermark"}, "Displays the watermark on the GUI", true);
-    public final Value<Boolean> hoverDescriptions = new Value<>("HoverDescriptions", new String[]{"HD"}, "Displays hover descriptions over values and modules", true);
-    public final Value<Boolean> snowing = new Value<>("Snowing", new String[]{"SN"}, "Play a snowing animation in ClickGUI", true);
-    public ClickGuiScreen clickGui;
+    public final Value<Boolean> AllowOverflow = new Value<>("AllowOverflow", new String[]{"AllowOverflow"}, "Allows the GUI to overflow", true);
+    public final Value<Boolean> Watermark = new Value<>("Watermark", new String[]{"Watermark"}, "Displays the watermark on the GUI", true);
+    public final Value<Boolean> HoverDescriptions = new Value<>("HoverDescriptions", new String[]{"HD"}, "Displays hover descriptions over values and modules", true);
+    public final Value<Boolean> Snowing = new Value<>("Snowing", new String[]{"SN"}, "Play a snowing animation in ClickGUI", true);
+    public ClickGuiScreen ClickGui;
+    //public TestScreen testScreen = new TestScreen();
 
     public ClickGuiModule() {
         super("ClickGui", new String[]{ "Gui", "ClickGui" }, "Displays the click gui", GLFW.GLFW_KEY_RIGHT_SHIFT, 0xDB9324, ModuleType.UI);
@@ -20,10 +24,15 @@ public final class ClickGuiModule extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
-        if (clickGui == null) clickGui = new ClickGuiScreen(this, (ColorsModule) SalHack.getModuleManager().getMod(ColorsModule.class));
-        if (mc != null && mc.world != null && mc.mouse != null) {
+        //mc.setScreen(testScreen);
+
+        if (ClickGui == null) ClickGui = new ClickGuiScreen(this, (ColorsModule)ModuleManager.Get().GetMod(ColorsModule.class));
+
+        try{
             System.out.println("open clickgui");
-            mc.setScreen(clickGui);
+            mc.setScreen(ClickGui);
+        } catch (NullPointerException exception){
+            System.out.println("invoked before init..");
         }
     }
 }

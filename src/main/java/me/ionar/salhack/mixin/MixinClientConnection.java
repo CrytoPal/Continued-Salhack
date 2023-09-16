@@ -15,17 +15,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinClientConnection {
 
     @Inject(method = "send(Lnet/minecraft/network/packet/Packet;)V", at = @At("HEAD"), cancellable = true)
-    private void onSendPacket(Packet<?> packet, CallbackInfo info) {
+    private void onSendPacket(Packet<?> packet, CallbackInfo callbackInfo) {
         PacketEvent.Send event = new PacketEvent.Send(EventEra.PRE, packet);
         SalHackMod.NORBIT_EVENT_BUS.post(event);
-        if (event.isCancelled()) info.cancel();
+
+        if (event.isCancelled()) {
+            callbackInfo.cancel();
+        }
     }
 
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
     private static <T extends PacketListener> void onChannelRead(Packet<T> packet, PacketListener listener, CallbackInfo callbackInfo) {
         PacketEvent.Receive event = new PacketEvent.Receive(EventEra.PRE, packet);
         SalHackMod.NORBIT_EVENT_BUS.post(event);
-        if (event.isCancelled()) callbackInfo.cancel();
+
+        if (event.isCancelled()) {
+            callbackInfo.cancel();
+        }
     }
 
     @Inject(method = "send(Lnet/minecraft/network/packet/Packet;)V", at = @At("RETURN"))

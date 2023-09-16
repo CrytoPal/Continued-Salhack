@@ -7,22 +7,27 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.io.FileUtils;
 
-import me.ionar.salhack.gui.click.component.menus.mods.menuComponentPresetsList;
+import me.ionar.salhack.gui.click.component.menus.mods.MenuComponentPresetsList;
 import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.preset.Preset;
-// DO NOT TOUCH THESE THEY MAY BREAK OPENING THE GUI
+
 public class PresetsManager {
     private List<Preset> _presets = new CopyOnWriteArrayList<>();
-    private menuComponentPresetsList _presetList;
+    private MenuComponentPresetsList _presetList;
 
-    public void init() {
-        File[] directories = new File(SalHack.getFilesManager().getCurrentDirectory() + "/SalHack/Presets/").listFiles(File::isDirectory);
+    public void LoadPresets() {
+        try {
+            File[] directories = new File(DirectoryManager.Get().GetCurrentDirectory() + "/SalHack/Presets/").listFiles(File::isDirectory);
 
-        for (File file : directories) {
-            System.out.println("" + file.getName().toString());
-            Preset preset = new Preset(file.getName().toString());
-            preset.load(file);
-            _presets.add(preset);
+            for (File file : directories) {
+                System.out.println("" + file.getName().toString());
+                Preset preset = new Preset(file.getName().toString());
+                preset.load(file);
+                _presets.add(preset);
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
 
         Preset defaultPreset = null;
@@ -42,18 +47,18 @@ public class PresetsManager {
         }
     }
 
-    public void createPreset(String presetName) {
+    public void CreatePreset(String presetName) {
         try {
-            new File(SalHack.getFilesManager().getCurrentDirectory() + "/SalHack/Presets/" + presetName).mkdirs();
-            new File(SalHack.getFilesManager().getCurrentDirectory() + "/SalHack/Presets/" + presetName + "/Modules").mkdirs();
+            new File(DirectoryManager.Get().GetCurrentDirectory() + "/SalHack/Presets/" + presetName).mkdirs();
+            new File(DirectoryManager.Get().GetCurrentDirectory() + "/SalHack/Presets/" + presetName + "/Modules").mkdirs();
             Preset preset = new Preset(presetName);
             _presets.add(preset);
             preset.initNewPreset();
             preset.save();
-            setPresetActive(preset);
+            SetPresetActive(preset);
 
             if (_presetList != null) {
-                _presetList.addPreset(preset);
+                _presetList.AddPreset(preset);
             }
 
         } catch (Exception e) {
@@ -61,7 +66,7 @@ public class PresetsManager {
         }
     }
 
-    public void removePreset(String presetName) {
+    public void RemovePreset(String presetName) {
         Preset toRemove = null;
 
         for (Preset p : _presets) {
@@ -73,7 +78,7 @@ public class PresetsManager {
 
         if (toRemove != null) {
             try {
-                FileUtils.deleteDirectory(new File(SalHack.getFilesManager().getCurrentDirectory() + "/SalHack/Presets/" + toRemove.getName()));
+                FileUtils.deleteDirectory(new File(DirectoryManager.Get().GetCurrentDirectory() + "/SalHack/Presets/" + toRemove.getName()));
             }
             catch (IOException e) {
                 // TODO Auto-generated catch block
@@ -81,7 +86,7 @@ public class PresetsManager {
             }
             _presets.remove(toRemove);
             if (_presetList != null) {
-                _presetList.removePreset(toRemove);
+                _presetList.RemovePreset(toRemove);
             }
         }
     }
@@ -96,22 +101,25 @@ public class PresetsManager {
         return _presets.get(0);
     }
 
-    public void setPresetActive(Preset preset) {
+    public void SetPresetActive(Preset preset) {
         for (Preset p : _presets) {
             p.setActive(false);
         }
 
         preset.setActive(true);
 
-        ModuleManager.modules.forEach(preset::init);
+        ModuleManager.Mods.forEach(preset::initValuesForMod);
     }
 
-    public final List<Preset> getItems() {
+    public final List<Preset> GetItems() {
         return _presets;
     }
 
+    public static PresetsManager Get() {
+        return SalHack.GetPresetsManager();
+    }
 
-    public void initializeGUIComponent(menuComponentPresetsList presetList) {
+    public void InitalizeGUIComponent(MenuComponentPresetsList presetList) {
         _presetList = presetList;
     }
 }

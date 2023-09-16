@@ -1,16 +1,16 @@
 package me.ionar.salhack.util.entity;
 
 import me.ionar.salhack.main.Wrapper;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.slot.SlotActionType;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class ItemUtil {
-    private static final MinecraftClient mc = Wrapper.GetMC();
-    public static boolean is32K(ItemStack item) {
+    public static boolean Is32k(ItemStack item) {
         if (item.getEnchantments() != null) {
             final NbtList tags = item.getEnchantments();
             for (int i = 0; i < tags.size(); i++) {
@@ -28,9 +28,9 @@ public class ItemUtil {
         return false;
     }
 
-    public static void move(int slotFrom, int slotTo) {
+    public static void Move(int slot_from, int slot_to) {
         if (mc.player == null || mc.interactionManager == null) return;
-        mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, slotFrom, 0, SlotActionType.PICKUP, mc.player);
-        mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, slotTo, 0, SlotActionType.PICKUP, mc.player);
+        mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, slot_from, 0, SlotActionType.PICKUP, mc.player);
+        mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, slot_to, 0, SlotActionType.PICKUP, mc.player);
     }
 }

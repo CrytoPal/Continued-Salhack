@@ -3,26 +3,29 @@ package me.ionar.salhack.gui.click.component.menus.mods;
 import me.ionar.salhack.gui.click.component.MenuComponent;
 import me.ionar.salhack.gui.click.component.item.ComponentItem;
 import me.ionar.salhack.gui.click.component.item.ComponentItemHUD;
-import me.ionar.salhack.gui.click.component.item.componentItemValue;
+import me.ionar.salhack.gui.click.component.item.ComponentItemValue;
 import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
 import me.ionar.salhack.gui.hud.HudComponentItem;
-import me.ionar.salhack.main.SalHack;
+import me.ionar.salhack.managers.HudManager;
+import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.ui.ColorsModule;
 import me.ionar.salhack.module.Value;
 
 @SuppressWarnings("rawtypes")
 public class MenuComponentHUDList extends MenuComponent {
-    public MenuComponentHUDList(String displayName, float x, float y) {
-        super(displayName, x, y, 100f, 105f, "", (ColorsModule) SalHack.getModuleManager().getMod(ColorsModule.class), null);
+    public MenuComponentHUDList(String displayName, float X, float Y) {
+        super(displayName, X, Y, 100f, 105f, "", (ColorsModule)ModuleManager.Get().GetMod(ColorsModule.class), null);
+
         final float Width = 105f;
         final float Height = 11f;
-        for (HudComponentItem item : SalHack.getHudManager().componentItems) {
+
+        for (HudComponentItem item : HudManager.Get().Items) {
             ComponentItemListener listener = new ComponentItemListener() {
                 @Override
                 public void OnEnabled() {}
                 @Override
                 public void OnToggled() {
-                    item.setHidden(!item.isHidden());
+                    item.SetHidden(!item.IsHidden());
                 }
                 @Override
                 public void OnDisabled() {}
@@ -35,12 +38,12 @@ public class MenuComponentHUDList extends MenuComponent {
             };
 
             int flags = ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip;
-            if (!item.values.isEmpty()) flags |= ComponentItem.HasValues;
+            if (!item.ValueList.isEmpty()) flags |= ComponentItem.HasValues;
             int state = 0;
-            if (!item.isHidden()) state |= ComponentItem.Clicked;
-            ComponentItem componentItem = new ComponentItemHUD(item, item.getDisplayName(), "", flags, state, listener, Width, Height);
+            if (!item.IsHidden()) state |= ComponentItem.Clicked;
+            ComponentItem componentItem = new ComponentItemHUD(item, item.GetDisplayName(), "", flags, state, listener, Width, Height);
 
-            for (Value value : item.values) {
+            for (Value value : item.ValueList) {
                 listener = new ComponentItemListener() {
                     @Override
                     public void OnEnabled() {}
@@ -56,8 +59,8 @@ public class MenuComponentHUDList extends MenuComponent {
                     public void OnMouseLeave() {}
                 };
 
-                componentItemValue valueItem = new componentItemValue(value, value.getName(), value.getDescription(), ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, listener, Width, Height);
-                componentItem.dropdownItems.add(valueItem);
+                ComponentItemValue valueItem = new ComponentItemValue(value, value.getName(), value.getDescription(), ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, listener, Width, Height);
+                componentItem.DropdownItems.add(valueItem);
             }
 
             listener = new ComponentItemListener() {
@@ -65,7 +68,7 @@ public class MenuComponentHUDList extends MenuComponent {
                 public void OnEnabled() {}
                 @Override
                 public void OnToggled() {
-                    item.resetToDefaultPos();
+                    item.ResetToDefaultPos();
                 }
                 @Override
                 public void OnDisabled() {}
@@ -77,9 +80,9 @@ public class MenuComponentHUDList extends MenuComponent {
                 public void OnMouseLeave() {}
             };
 
-            ComponentItem resetButton = new ComponentItem("Reset", "Resets the position of " + item.getDisplayName() + " to default.",  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip | ComponentItem.Enum | ComponentItem.DontDisplayClickableHighlight | ComponentItem.RectDisplayAlways, 0, listener, Width, Height);
-            componentItem.dropdownItems.add(resetButton);
-            addItem(componentItem);
+            ComponentItem resetButton = new ComponentItem("Reset", "Resets the position of " + item.GetDisplayName() + " to default.",  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip | ComponentItem.Enum | ComponentItem.DontDisplayClickableHighlight | ComponentItem.RectDisplayAlways, 0, listener, Width, Height);
+            componentItem.DropdownItems.add(resetButton);
+            AddItem(componentItem);
         }
     }
 }

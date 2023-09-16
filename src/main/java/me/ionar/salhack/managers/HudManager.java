@@ -1,5 +1,5 @@
 package me.ionar.salhack.managers;
-// DO NOT TOUCH THESE THEY MAY BREAK OPENING THE GUI
+
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
@@ -18,31 +18,34 @@ import com.google.gson.GsonBuilder;
 import me.ionar.salhack.gui.hud.GuiHudEditor;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.gui.hud.components.*;
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ValueListeners;
+
+import static me.ionar.salhack.main.Wrapper.mc;
 
 public class HudManager {
     public HudManager() {
     }
 
-    public void init() {
-        add(new WatermarkComponent());
-	    add(new WelcomerHudComponent());
-        add(new CoordsHudComponent());
-        add(new TimeComponent());
-        add(new FPSComponent());
-        add(new DirectionComponent());
-        add(new TPSComponent());
-        add(new PingComponent());
-        add(new ResourcesComponent());
-        add(new SpeedComponent());
-        add(new RotationComponent());
-        add(new TrueDurabilityComponent());
-        add(new InventoryComponent());
-        add(new ArmorHudComponent());
-        add(new BiomeComponent());
-        add(new PlayerCountComponent());
+    public void Init() {
+        Add(new WatermarkComponent());
+	    Add(new WelcomerHudComponent());
+        Add(new CoordsHudComponent());
+        Add(new TimeComponent());
+        Add(new FPSComponent());
+        Add(new DirectionComponent());
+        Add(new TPSComponent());
+        Add(new PingComponent());
+        Add(new ResourcesComponent());
+        Add(new SpeedComponent());
+        Add(new RotationComponent());
+        Add(new TrueDurabilityComponent());
+        Add(new InventoryComponent());
+        Add(new ArmorHudComponent());
+        Add(new BiomeComponent());
+        Add(new PlayerCountComponent());
         /*
         Add(new ArrayListComponent());
         Add(new InventoryComponent());
@@ -72,22 +75,22 @@ public class HudManager {
          */
 
         // MUST be last in list
-        add(new SelectorMenuComponent());
+        Add(new SelectorMenuComponent());
 
-        canSave = false;
+        CanSave = false;
 
-        componentItems.forEach(p_Item ->
+        Items.forEach(p_Item ->
         {
-            p_Item.loadSettings();
+            p_Item.LoadSettings();
         });
 
-        canSave = true;
+        CanSave = true;
     }
 
-    public ArrayList<HudComponentItem> componentItems = new ArrayList<HudComponentItem>();
-    private boolean canSave = false;
+    public ArrayList<HudComponentItem> Items = new ArrayList<HudComponentItem>();
+    private boolean CanSave = false;
 
-    public void add(HudComponentItem p_Item) {
+    public void Add(HudComponentItem p_Item) {
         try {
             for (Field field : p_Item.getClass().getDeclaredFields()) {
                 if (Value.class.isAssignableFrom(field.getType())) {
@@ -99,25 +102,25 @@ public class HudManager {
 
                     ValueListeners listener = new ValueListeners() {
                         @Override
-                        public void onValueChange(Value p_Val)
+                        public void OnValueChange(Value p_Val)
                         {
-                            scheduleSave(p_Item);
+                            ScheduleSave(p_Item);
                         }
                     };
 
-                    val.listener = listener;
-                    p_Item.values.add(val);
+                    val.Listener = listener;
+                    p_Item.ValueList.add(val);
                 }
             }
-            componentItems.add(p_Item);
+            Items.add(p_Item);
         }
         catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    public void onRender(float p_PartialTicks, DrawContext context) {
-        Screen l_CurrScreen = Wrapper.GetMC().currentScreen;
+    public void OnRender(float p_PartialTicks, DrawContext context) {
+        Screen l_CurrScreen = mc.currentScreen;
 
         if (l_CurrScreen != null) {
             if (l_CurrScreen instanceof GuiHudEditor) {
@@ -127,10 +130,10 @@ public class HudManager {
 
         context.getMatrices().push();
 
-        componentItems.forEach(p_Item -> {
-            if (!p_Item.isHidden() && !p_Item.hasFlag(HudComponentItem.onlyVisibleInHudEditor)) {
+        Items.forEach(p_Item -> {
+            if (!p_Item.IsHidden() && !p_Item.HasFlag(HudComponentItem.OnlyVisibleInHudEditor)) {
                 try {
-                    p_Item.onRender(0, 0, p_PartialTicks, context);
+                    p_Item.render(0, 0, p_PartialTicks, context);
                 }
                 catch (Exception e) {
                     System.out.println(e.toString());
@@ -141,9 +144,12 @@ public class HudManager {
         context.getMatrices().pop();
     }
 
+    public static HudManager Get() {
+        return SalHack.GetHudManager();
+    }
 
-    public void scheduleSave(HudComponentItem p_Item) {
-        if (!canSave)
+    public void ScheduleSave(HudComponentItem p_Item) {
+        if (!CanSave)
             return;
 
         try {
@@ -151,19 +157,19 @@ public class HudManager {
 
             Gson gson = builder.setPrettyPrinting().create();
 
-            Writer writer = Files.newBufferedWriter(Paths.get("SalHack/HUD/" + p_Item.getDisplayName() + ".json"));
+            Writer writer = Files.newBufferedWriter(Paths.get("SalHack/HUD/" + p_Item.GetDisplayName() + ".json"));
             Map<String, String> map = new HashMap<>();
 
-            map.put("displayname", p_Item.getDisplayName());
-            map.put("visible", !p_Item.isHidden() ? "true" : "false");
-            map.put("PositionX", String.valueOf(p_Item.getPositionX()));
-            map.put("PositionY", String.valueOf(p_Item.getPositionY()));
-            map.put("ClampLevel", String.valueOf(p_Item.getClampLevel()));
-            map.put("ClampPositionX", String.valueOf(p_Item.getPositionX()));
-            map.put("ClampPositionY", String.valueOf(p_Item.getPositionY()));
-            map.put("Side", String.valueOf(p_Item.getSide()));
+            map.put("displayname", p_Item.GetDisplayName());
+            map.put("visible", !p_Item.IsHidden() ? "true" : "false");
+            map.put("PositionX", String.valueOf(p_Item.GetX()));
+            map.put("PositionY", String.valueOf(p_Item.GetY()));
+            map.put("ClampLevel", String.valueOf(p_Item.GetClampLevel()));
+            map.put("ClampPositionX", String.valueOf(p_Item.GetX()));
+            map.put("ClampPositionY", String.valueOf(p_Item.GetY()));
+            map.put("Side", String.valueOf(p_Item.GetSide()));
 
-            for (Value l_Val : p_Item.values)
+            for (Value l_Val : p_Item.ValueList)
             {
                 map.put(l_Val.getName().toString(), l_Val.getValue().toString());
             }

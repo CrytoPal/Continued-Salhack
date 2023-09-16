@@ -22,110 +22,120 @@ public class ComponentItem {
     public static final int Hovered = 0x2;
     public static final int Extended = 0x4;
 
-    private final String displayText;
-    private final String description;
-    protected int flags;
-    protected int state;
-    protected ComponentItemListener listener;
-    private float x;
-    private float y;
-    private float width;
-    private float height;
+    private final String DisplayText;
+    private final String Description;
+    protected int Flags;
+    protected int State;
+    protected ComponentItemListener Listener;
+    private float X;
+    private float Y;
+    private float Width;
+    private float Height;
     protected float currentWidth;
-    public ArrayList<ComponentItem> dropdownItems;
+
+    public ArrayList<ComponentItem> DropdownItems;
 
     public ComponentItem(String displayText, String description, int flags, int state, ComponentItemListener listener, float width, float height) {
-        this.displayText = displayText;
-        this.description = description;
-        this.flags = flags;
-        this.state = state;
-        this.listener = listener;
-        dropdownItems = new ArrayList<>();
-        x = 0;
-        y = 0;
-        this.width = width;
-        this.height = height;
-        currentWidth = this.width;
+        DisplayText = displayText;
+        Description = description;
+        Flags = flags;
+        State = state;
+        Listener = listener;
+
+        DropdownItems = new ArrayList<>();
+
+        X = 0;
+        Y = 0;
+        Width = width;
+        Height = height;
+        currentWidth = Width;
     }
 
-    public String getDisplayText() {
-        return displayText;
+    public String GetDisplayText() {
+        return DisplayText;
     }
 
-    public String getDescription() {
-        return description;
+    public String GetDescription() {
+        return Description;
     }
 
-    public boolean hasFlag(int flag) {
-        return (flags & flag) != 0;
+    public boolean HasFlag(int flag) {
+        return (Flags & flag) != 0;
     }
 
-    public boolean hasState(int state) {
-        return (this.state & state) != 0;
+    public boolean HasState(int state) {
+        return (State & state) != 0;
     }
 
-    public void addState(int state) {
-        this.state |= state;
+    public void AddState(int state) {
+        State |= state;
     }
 
-    public void removeState(int state) {
-        this.state &= ~state;
+    public void RemoveState(int state) {
+        State &= ~state;
     }
 
-    public float getX() {
-        return x;
+    public float GetX() {
+        return X;
     }
 
-    public void setX(float x) {
-        this.x = x;
+    public void SetX(float x) {
+        X = x;
     }
 
-    public float getY() {
-        return y;
+    public float GetY() {
+        return Y;
     }
 
-    public void setY(float y) {
-        this.y = y;
+    public void SetY(float y) {
+        Y = y;
     }
 
-    public float getWidth() {
-        return width;
+    public float GetWidth() {
+        return Width;
     }
 
-    public void setWidth(float width) {
-        this.width = width;
+    public void SetWidth(float width) {
+        Width = width;
     }
 
-    public float getHeight() {
-        return height;
+    public float GetHeight() {
+        return Height;
     }
 
-    public void setHeight(float height) {
-        this.height = height;
+    public void SetHeight(float height) {
+        Height = height;
     }
 
-    public float getCurrentWidth() {
+    public float GetCurrentWidth() {
         return currentWidth;
     }
 
-    public void onMouseClick(int mouseX, int mouseY, int mouseButton) {
+    public void OnMouseClick(int mouseX, int mouseY, int mouseButton) {
         if (mouseButton == 0) {
-            if (listener != null) listener.OnToggled();
-            if (hasState(Clicked)) removeState(Clicked);
-            else addState(Clicked);
+            if (Listener != null) Listener.OnToggled();
+            if (HasState(Clicked)) RemoveState(Clicked);
+            else AddState(Clicked);
         } else if (mouseButton == 1) {
-            if (hasState(Extended)) removeState(Extended);
-            else addState(Extended);
+            if (HasState(Extended)) RemoveState(Extended);
+            else AddState(Extended);
         }
     }
 
-    public void keyTyped(int keyCode, int scanCode, int modifiers) {}
+    public void keyTyped(int keyCode, int scanCode, int modifiers) {
+    }
 
-    public void onMouseMove(float mouseX, float mouseY, float x, float y) {}
+    public void OnMouseMove(float mouseX, float mouseY, float x, float y) {
+    }
 
-    public void update() {}
+    public void Update() {
+    }
 
-    public void onMouseRelease(int mouseX, int mouseY) {}
+    public void OnMouseRelease(int mouseX, int mouseY) {
+        // TODO Auto-generated method stub
+    }
 
-    public void onMouseClickMove(int mouseX, int mouseY, int mouseButton) {}
+    public void OnMouseClickMove(int mouseX, int mouseY, int mouseButton) {
+        // TODO Auto-generated method stub
+    }
 }

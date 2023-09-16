@@ -18,17 +18,19 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class Glyph {
     final Texture imageTex;
-    final Font font;
+    final Font f;
     final char c;
     final int offsetX = 5;
     final int offsetY = 5;
     Rectangle2D dimensions;
 
-    public Glyph(char c, Font font) {
-        this.imageTex = new Texture("font/glyphs/" + (int) c + "-" + font.getName().toLowerCase().hashCode() + (int) Math.floor(Math.random() * 0xFFFF));
-        this.font = font;
+    public Glyph(char c, Font f) {
+        this.imageTex = new Texture("font/glyphs/" + (int) c + "-" + f.getName().toLowerCase().hashCode() + (int) Math.floor(Math.random() * 0xFFFF));
+        this.f = f;
         this.c = c;
         generateTexture();
     }
@@ -44,12 +46,12 @@ public class Glyph {
     void generateTexture() {
         AffineTransform affineTransform = new AffineTransform();
         FontRenderContext fontRenderContext = new FontRenderContext(affineTransform, true, true);
-        Rectangle2D dim = font.getStringBounds(String.valueOf(c), fontRenderContext);
+        Rectangle2D dim = f.getStringBounds(String.valueOf(c), fontRenderContext);
         this.dimensions = dim;
         BufferedImage bufferedImage = new BufferedImage((int) Math.ceil(dim.getWidth()) + 10, (int) Math.ceil(dim.getHeight()) + 10, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bufferedImage.createGraphics();
 
-        g.setFont(font);
+        g.setFont(f);
         // Set Color to Transparent
         g.setColor(new Color(255, 255, 255, 0));
         // Set the image background to transparent
@@ -86,7 +88,7 @@ public class Glyph {
             ByteBuffer data = BufferUtils.createByteBuffer(content.length).put(content);
             data.flip();
             NativeImageBackedTexture tex = new NativeImageBackedTexture(NativeImage.read(data));
-            Wrapper.GetMC().execute(() -> Wrapper.GetMC().getTextureManager().registerTexture(i, tex));
+            mc.execute(() -> mc.getTextureManager().registerTexture(i, tex));
         } catch (Exception e) {
             e.printStackTrace();
         }

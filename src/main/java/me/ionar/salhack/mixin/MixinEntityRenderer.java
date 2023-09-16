@@ -12,13 +12,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(EntityRenderer.class)
+@Mixin({EntityRenderer.class})
 public class MixinEntityRenderer {
 
     @Inject(method = "renderLabelIfPresent", at = @At("HEAD"), cancellable = true)
-    private void renderLabelIfPresent(Entity entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo info) {
-        NametagRenderEvent event = new NametagRenderEvent();
-        SalHackMod.NORBIT_EVENT_BUS.post(event);
-        if (event.isCancelled()) info.cancel();
+    private void renderLabelIfPresent(Entity entity, Text text, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, CallbackInfo p_Info) {
+        NametagRenderEvent l_Event = new NametagRenderEvent();
+        SalHackMod.NORBIT_EVENT_BUS.post(l_Event);
+        if (l_Event.isCancelled()) p_Info.cancel();
     }
 }

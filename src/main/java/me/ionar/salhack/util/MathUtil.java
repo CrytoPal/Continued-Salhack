@@ -1,20 +1,21 @@
 package me.ionar.salhack.util;
 
-import me.ionar.salhack.main.Wrapper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class MathUtil {
-    public static Vec3d interpolateEntity(Entity entity) {
-        return entity.getPos().subtract(getInterpolationOffset(entity));
+    public static Vec3d interpolateEntity(Entity e) {
+        return e.getPos().subtract(getInterpolationOffset(e));
     }
 
-    public static Vec3d getInterpolationOffset(Entity entity) {
+    public static Vec3d getInterpolationOffset(Entity e) {
         if (MinecraftClient.getInstance().isPaused()) return Vec3d.ZERO;
         double tickDelta = MinecraftClient.getInstance().getTickDelta();
-        return new Vec3d(entity.getX() - MathHelper.lerp(tickDelta, entity.lastRenderX, entity.getX()), entity.getY() - MathHelper.lerp(tickDelta, entity.lastRenderY, entity.getY()), entity.getZ() - MathHelper.lerp(tickDelta, entity.lastRenderZ, entity.getZ()));
+        return new Vec3d(e.getX() - MathHelper.lerp(tickDelta, e.lastRenderX, e.getX()), e.getY() - MathHelper.lerp(tickDelta, e.lastRenderY, e.getY()), e.getZ() - MathHelper.lerp(tickDelta, e.lastRenderZ, e.getZ()));
     }
 
     public static float[] calcAngle(Vec3d from, Vec3d to) {
@@ -26,7 +27,6 @@ public class MathUtil {
     }
 
     public static double[] directionSpeedNoForward(double speed) {
-        final MinecraftClient mc = Wrapper.GetMC();
         if (mc.player == null) return new double[0];
         float forward = 1f;
 
@@ -53,7 +53,6 @@ public class MathUtil {
     }
 
     public static double[] directionSpeed(double speed) {
-        final MinecraftClient mc = Wrapper.GetMC();
         if (mc.player == null) return new double[0];
         float forward = mc.player.input.movementForward;
         float side = mc.player.input.movementSideways;
@@ -79,12 +78,5 @@ public class MathUtil {
 
     public static double degToRad(double deg) {
         return deg * (float) (Math.PI / 180.0f);
-    }
-
-    public Vec3d getCenter(double posX, double posY, double posZ) {
-        double x = Math.floor(posX) + 0.5D;
-        double y = Math.floor(posY);
-        double z = Math.floor(posZ) + 0.5D ;
-        return new Vec3d(x, y, z);
     }
 }

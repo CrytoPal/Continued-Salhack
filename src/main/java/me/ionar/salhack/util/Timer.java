@@ -8,15 +8,15 @@ public final class Timer {
     }
 
     public boolean passed(double ms) {
-        return System.currentTimeMillis() - time >= ms;
+        return System.currentTimeMillis() - this.time >= ms;
     }
 
     public void reset() {
-        time = System.currentTimeMillis();
+        this.time = System.currentTimeMillis();
     }
 
-    public void resetTimeSkipTo(long ms) {
-        time = System.currentTimeMillis() + ms;
+    public void resetTimeSkipTo(long p_MS) {
+        this.time = System.currentTimeMillis() + p_MS;
     }
 
     public long getTime() {

@@ -3,7 +3,7 @@ package me.ionar.salhack.command.impl;
 import java.util.List;
 
 import me.ionar.salhack.command.Command;
-import me.ionar.salhack.main.SalHack;
+import me.ionar.salhack.managers.CommandManager;
 import net.minecraft.util.Formatting;
 
 public class HelpCommand extends Command {
@@ -11,20 +11,38 @@ public class HelpCommand extends Command {
         super("Help", "Gives you help for commands");
     }
 
-    public void processCommand(String args) {
-        String[] split = args.split(" ");
-        if (split.length <= 1) {
-            SendToChat(getHelp());
+    @Override
+    public void ProcessCommand(String p_Args) {
+        String[] l_Split = p_Args.split(" ");
+
+        if (l_Split == null || l_Split.length <= 1) {
+            SendToChat(GetHelp());
             return;
         }
-        Command command = SalHack.getCommandManager().getCommandLike(split[1]);
-        if (command == null) SendToChat(String.format("Couldn't find any command named like %s", split[1]));
-        else SendToChat(command.getHelp());
+
+        Command l_Command = CommandManager.Get().GetCommandLike(l_Split[1]);
+
+        if (l_Command == null)
+            SendToChat(String.format("Couldn't find any command named like %s", l_Split[1]));
+        else
+            SendToChat(l_Command.GetHelp());
     }
 
     @Override
-    public String getHelp() {
-        final List<Command> commands = SalHack.getCommandManager().getCommands();
-        return "Available commands: (" + commands.size() + ")" + Formatting.WHITE + commands.stream().map(Command::getName);
+    public String GetHelp() {
+        final List<Command> l_Commands = CommandManager.Get().GetCommands();
+
+        String l_CommandString = "Available commands: (" + l_Commands.size() + ")" + Formatting.WHITE + " [";
+
+        for (int l_I = 0; l_I < l_Commands.size(); ++l_I) {
+            Command l_Command = l_Commands.get(l_I);
+
+            if (l_I == l_Commands.size() - 1)
+                l_CommandString += l_Command.GetName() + "]";
+            else
+                l_CommandString += l_Command.GetName() + ", ";
+        }
+
+        return l_CommandString;
     }
 }

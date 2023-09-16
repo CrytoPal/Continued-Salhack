@@ -18,10 +18,10 @@ public class ImageFrame {
 
     public ImageFrame(Identifier image) {
         this.image = image;
-        delay = -1;
-        disposal = null;
-        width = -1;
-        height = -1;
+        this.delay = -1;
+        this.disposal = null;
+        this.width = -1;
+        this.height = -1;
     }
 
     public Identifier getImage() {

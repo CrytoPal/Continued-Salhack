@@ -1,7 +1,8 @@
 package me.ionar.salhack.command.util;
 
-public interface ModuleCommandListener {
-    public void onHide();
-    public void onToggle();
-    public void onRename(String p_NewName);
+public interface ModuleCommandListener
+{
+    public void OnHide();
+    public void OnToggle();
+    public void OnRename(String p_NewName);
 }

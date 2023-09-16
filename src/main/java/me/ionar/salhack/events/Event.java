@@ -29,8 +29,5 @@ public class Event implements ICancellable {
     public boolean isPre() {
         return era == EventEra.PRE;
     }
-    public boolean isPost() {
-        return era == EventEra.POST;
-    }
 
 }

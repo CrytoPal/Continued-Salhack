@@ -9,14 +9,14 @@ import me.ionar.salhack.command.Command;
 import me.ionar.salhack.command.impl.*;
 import me.ionar.salhack.command.util.ModuleCommandListener;
 import me.ionar.salhack.main.SalHack;
-// DO NOT TOUCH THESE THEY MAY BREAK OPENING THE GUI
+
 public class CommandManager {
     public CommandManager() {
     }
 
-    public void init() {
+    public void InitalizeCommands() {
         //Commands.add(new FriendCommand());
-        commands.add(new HelpCommand());
+        Commands.add(new HelpCommand());
         /*
         Commands.add(new SoundReloadCommand());
         Commands.add(new HClipCommand());
@@ -31,80 +31,84 @@ public class CommandManager {
 
          */
 
-        SalHack.getModuleManager().getModuleList().forEach(p_Mod -> {
+        ModuleManager.Get().GetModuleList().forEach(p_Mod -> {
             ModuleCommandListener l_Listener = new ModuleCommandListener() {
                 @Override
-                public void onHide()
+                public void OnHide()
                 {
                     p_Mod.setHidden(!p_Mod.isHidden());
                 }
 
                 @Override
-                public void onToggle()
+                public void OnToggle()
                 {
                     p_Mod.toggle(true);
                 }
 
                 @Override
-                public void onRename(String p_NewName)
+                public void OnRename(String p_NewName)
                 {
                     p_Mod.setDisplayName(p_NewName);
                 }
             };
 
-            commands.add(new ModuleCommand(p_Mod.getDisplayName(), p_Mod.getDescription(), l_Listener, p_Mod.getValues()));
+            Commands.add(new ModuleCommand(p_Mod.getDisplayName(), p_Mod.getDescription(), l_Listener, p_Mod.getValueList()));
         });
 
-        SalHack.getHudManager().componentItems.forEach(p_Item -> {
+        HudManager.Get().Items.forEach(p_Item -> {
             ModuleCommandListener l_Listener = new ModuleCommandListener() {
                 @Override
-                public void onHide()
+                public void OnHide()
                 {
-                    p_Item.setHidden(!p_Item.isHidden());
+                    p_Item.SetHidden(!p_Item.IsHidden());
                 }
 
                 @Override
-                public void onToggle()
+                public void OnToggle()
                 {
-                    p_Item.setHidden(!p_Item.isHidden());
+                    p_Item.SetHidden(!p_Item.IsHidden());
                 }
 
                 @Override
-                public void onRename(String p_NewName) {
-                    p_Item.setDisplayName(p_NewName, true);
+                public void OnRename(String p_NewName) {
+                    p_Item.SetDisplayName(p_NewName, true);
                 }
             };
 
-            commands.add(new ModuleCommand(p_Item.getDisplayName(), "NYI", l_Listener, p_Item.values));
+            Commands.add(new ModuleCommand(p_Item.GetDisplayName(), "NYI", l_Listener, p_Item.ValueList));
         });
 
         /// Sort by alphabet
-        commands.sort(Comparator.comparing(Command::getName));
+        Commands.sort(Comparator.comparing(Command::GetName));
     }
 
-    private ArrayList<Command> commands = new ArrayList<Command>();
+    private ArrayList<Command> Commands = new ArrayList<Command>();
 
-    public final ArrayList<Command> getCommands() {
-        return commands;
+    public final ArrayList<Command> GetCommands() {
+        return Commands;
     }
 
-    public final List<Command> getCommandsLike(String p_Like) {
-        return commands.stream()
-                .filter(p_Command -> p_Command.getName().toLowerCase().startsWith(p_Like.toLowerCase()))
+    public final List<Command> GetCommandsLike(String p_Like) {
+        return Commands.stream()
+                .filter(p_Command -> p_Command.GetName().toLowerCase().startsWith(p_Like.toLowerCase()))
                 .collect(Collectors.toList());
     }
 
-    public Command getCommandLike(String p_Like) {
-        for (Command l_Command : commands) {
-            if (l_Command.getName().toLowerCase().startsWith(p_Like.toLowerCase()))
+    public static CommandManager Get() {
+        return SalHack.GetCommandManager();
+    }
+
+    public Command GetCommandLike(String p_Like) {
+        for (Command l_Command : Commands) {
+            if (l_Command.GetName().toLowerCase().startsWith(p_Like.toLowerCase()))
                 return l_Command;
         }
 
         return null;
     }
 
-    public void reload() {
-        commands.clear();
-        init();
+    public void Reload() {
+        Commands.clear();
+        InitalizeCommands();
     }
 }

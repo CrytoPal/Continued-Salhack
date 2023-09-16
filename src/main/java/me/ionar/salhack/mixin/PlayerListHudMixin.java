@@ -15,12 +15,21 @@ import net.minecraft.scoreboard.Team;
 import java.util.Comparator;
 import java.util.List;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 @Mixin(PlayerListHud.class)
 public class PlayerListHudMixin {
-    private static final Comparator<Object> ENTRY_ORDERING = Comparator.comparingInt((entry) -> ((PlayerListEntry)entry).getGameMode() == GameMode.SPECTATOR ? 1 : 0).thenComparing((entry) -> Nullables.mapOrElse(((PlayerListEntry)entry).getScoreboardTeam(), Team::getName, "")).thenComparing((entry) -> ((PlayerListEntry)entry).getProfile().getName(), String::compareToIgnoreCase);
+
+    private static final Comparator<Object> ENTRY_ORDERING = Comparator.comparingInt((entry) -> {
+        return ((PlayerListEntry)entry).getGameMode() == GameMode.SPECTATOR ? 1 : 0;
+    }).thenComparing((entry) -> {
+        return (String) Nullables.mapOrElse(((PlayerListEntry)entry).getScoreboardTeam(), Team::getName, "");
+    }).thenComparing((entry) -> {
+        return ((PlayerListEntry)entry).getProfile().getName();
+    }, String::compareToIgnoreCase);
 
     @Inject(method = "collectPlayerEntries", at = @At("HEAD"), cancellable = true)
-    private void collectPlayerEntriesHook(CallbackInfoReturnable<List<PlayerListEntry>> info) {
-        if (Wrapper.GetMC() != null && Wrapper.GetMC().player != null) info.setReturnValue(Wrapper.GetMC().player.networkHandler.getListedPlayerListEntries().stream().sorted(ENTRY_ORDERING).limit(HudModule.extraTab.getValue()).toList());
+    private void collectPlayerEntriesHook(CallbackInfoReturnable<List<PlayerListEntry>> cir) {
+        cir.setReturnValue(mc.player.networkHandler.getListedPlayerListEntries().stream().sorted(ENTRY_ORDERING).limit(HudModule.ExtraTab.getValue()).toList());
     }
 }

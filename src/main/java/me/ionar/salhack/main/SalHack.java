@@ -1,65 +1,63 @@
 package me.ionar.salhack.main;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.managers.*;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 
-import java.util.Random;
+import static me.ionar.salhack.main.Wrapper.mc;
 
 public class SalHack {
-    public static int TICK_TIMER = 1;
-    private static final ModuleManager moduleManager = new ModuleManager();
-    private static final ImageManager imageManager = new ImageManager();
-    //private static FontManager m_FontManager = new FontManager();
-    private static final HudManager hudManager = new HudManager();
-    private static final FriendManager friendManager = new FriendManager();
-    //private static DiscordManager m_DiscordManager = new DiscordManager();
-    private static final FilesManager filesManager = new FilesManager();
 
-    private static final NotificationManager notificationManager = new NotificationManager();
-    private static final CommandManager commandManager = new CommandManager();
-    private static final TickRateManager tickRateManager = new TickRateManager();
+    public static int TICK_TIMER = 1;
+    private static ModuleManager m_ModuleManager = new ModuleManager();
+
+    private static ImageManager m_ImageManager = new ImageManager();
+    //private static FontManager m_FontManager = new FontManager();
+    private static HudManager m_HudManager = new HudManager();
+    private static FriendManager m_FriendManager = new FriendManager();
+    //private static DiscordManager m_DiscordManager = new DiscordManager();
+    private static DirectoryManager m_DirectoryManager = new DirectoryManager();
+
+    private static NotificationManager m_NotificationManager = new NotificationManager();
+    private static CommandManager m_CommandManager = new CommandManager();
+    private static TickRateManager m_TickRateManager = new TickRateManager();
     //private static NotificationManager m_NotificationManager = new NotificationManager();
     //private static WaypointManager m_WaypointManager = new WaypointManager();
     //private static CapeManager m_CapeManager = new CapeManager();
-    private static final PresetsManager presetsManager = new PresetsManager();
-    //private static UUIDManager UUIDManager = new UUIDManager();
-    public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    public static final Random random = new Random();
-    private static final MinecraftClient mc = Wrapper.GetMC();
+    private static PresetsManager m_PresetsManager = new PresetsManager();
+    //private static UUIDManager m_UUIDManager = new UUIDManager();
 
 
-    public static void init() {
-        SalHackMod.log.info("Initializing Salhack");
-        filesManager.init();
-        SalHackMod.log.info("Initializing Files Manager");
+    public static void Init() {
+        SalHackMod.log.info("Initalizing Salhack");
+        m_DirectoryManager.Init();
+        SalHackMod.log.info("Initalizing Directory Manager");
+
         /// load before mods
         //m_FontManager.Load();
-        presetsManager.init(); // must be before module init
+        m_PresetsManager.LoadPresets(); // must be before module init
         SalHackMod.log.info("Loaded Presets");
-        moduleManager.init();
+        m_ModuleManager.Init();
         SalHackMod.log.info("Loaded Modules");
-        hudManager.init();
+        m_HudManager.Init();
         SalHackMod.log.info("Loaded Hud");
-        commandManager.init();
+        m_CommandManager.InitalizeCommands();
         SalHackMod.log.info("Loaded Commands");
-        friendManager.init();
+        m_FriendManager.Load();
         SalHackMod.log.info("Loaded Friends");
         SalHackMod.log.info("Strange. There was no friends in your friend manager :)");
     }
 
     public static void postWindowInit() {
-        imageManager.init();
+        m_ImageManager.Load();
     }
 
-    public static ModuleManager getModuleManager() {
-        return moduleManager;
+    public static ModuleManager GetModuleManager() {
+        return m_ModuleManager;
     }
-    public static ImageManager getImageManager(){
-        return imageManager;
+    public static ImageManager GetImageManager(){
+        return m_ImageManager;
     }
 /*
     public static FontManager GetFontManager()
@@ -71,17 +69,16 @@ public class SalHack {
 
     /// Writes a message to ingame chat
     /// Player must be ingame for this
-    public static void sendMessage(String string) {
-        if (mc.player == null) return;
+    public static void SendMessage(String string) {
         mc.player.sendMessage(Text.of(string));
     }
 
-    public static HudManager getHudManager() {
-        return hudManager;
+    public static HudManager GetHudManager() {
+        return m_HudManager;
     }
 
-    public static FriendManager getFriendManager() {
-        return friendManager;
+    public static FriendManager GetFriendManager() {
+        return m_FriendManager;
     }
 /*
     public static DiscordManager GetDiscordManager()
@@ -90,20 +87,20 @@ public class SalHack {
     }
  */
 
-    public static FilesManager getFilesManager() {
-        return filesManager;
+    public static DirectoryManager GetDirectoryManager() {
+        return m_DirectoryManager;
     }
 
-    public static CommandManager getCommandManager() {
-        return commandManager;
+    public static CommandManager GetCommandManager() {
+        return m_CommandManager;
     }
 
-    public static TickRateManager getTickRateManager() {
-        return tickRateManager;
+    public static TickRateManager GetTickRateManager() {
+        return m_TickRateManager;
     }
 
-    public static NotificationManager getNotificationManager() {
-        return notificationManager;
+    public static NotificationManager GetNotificationManager() {
+        return m_NotificationManager;
     }
 
     /*
@@ -120,8 +117,8 @@ public class SalHack {
 
  */
 
-    public static PresetsManager getPresetsManager() {
-        return presetsManager;
+    public static PresetsManager GetPresetsManager() {
+        return m_PresetsManager;
     }
 /*
     public static UUIDManager GetUUIDManager()

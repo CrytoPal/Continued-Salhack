@@ -2,7 +2,6 @@ package me.ionar.salhack.font;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import me.ionar.salhack.main.Wrapper;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gl.ShaderProgram;
 import net.minecraft.client.render.BufferBuilder;
 import net.minecraft.client.render.BufferRenderer;
@@ -30,8 +29,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class Renderer {
-    private static final MinecraftClient mc = Wrapper.GetMC();
     public static void setupRender() {
         RenderSystem.enableBlend();
         RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
@@ -53,6 +53,7 @@ public class Renderer {
 
         public static void renderFadingBlock(Color outlineColor, Color fillColor, Vec3d start, Vec3d dimensions, long lifeTimeMs) {
             FadingBlock fb = new FadingBlock(outlineColor, fillColor, start, dimensions, System.currentTimeMillis(), lifeTimeMs);
+
             fades.removeIf(fadingBlock -> fadingBlock.start.equals(start) && fadingBlock.dimensions.equals(dimensions));
             fades.add(fb);
         }
@@ -60,7 +61,9 @@ public class Renderer {
         public static void renderFadingBlocks(MatrixStack stack) {
             fades.removeIf(FadingBlock::isDead);
             for (FadingBlock fade : fades) {
-                if (fade == null) continue;
+                if (fade == null) {
+                    continue;
+                }
                 long lifetimeLeft = fade.getLifeTimeLeft();
                 double progress = lifetimeLeft / (double) fade.lifeTime;
                 progress = MathHelper.clamp(progress, 0, 1);
@@ -83,29 +86,33 @@ public class Renderer {
             return in.subtract(camPos);
         }
 
-        static float[] getColor(Color color) {
-            return new float[] { color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, transformColor(color.getAlpha() / 255f) };
+        static float[] getColor(Color c) {
+            return new float[] { c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, transformColor(c.getAlpha() / 255f) };
         }
 
         private static void useBuffer(VertexFormat.DrawMode mode, VertexFormat format, Supplier<ShaderProgram> shader, Consumer<BufferBuilder> runner) {
             Tessellator t = Tessellator.getInstance();
-            BufferBuilder bufferBuilder = t.getBuffer();
-            bufferBuilder.begin(mode, format);
-            runner.accept(bufferBuilder);
+            BufferBuilder bb = t.getBuffer();
+
+            bb.begin(mode, format);
+
+            runner.accept(bb);
+
             setupRender();
             RenderSystem.setShader(shader);
-            BufferRenderer.drawWithGlobalProgram(bufferBuilder.end());
+            BufferRenderer.drawWithGlobalProgram(bb.end());
             endRender();
         }
 
-        public static void renderCircleOutline(MatrixStack stack, Color color, Vec3d start, double rad, double width, double segments) {
+        public static void renderCircleOutline(MatrixStack stack, Color c, Vec3d start, double rad, double width, double segments) {
             stack.push();
             Vec3d vec3d = transformVec3d(start);
             stack.translate(vec3d.x, vec3d.y, vec3d.z);
             double segments1 = MathHelper.clamp(segments, 2, 90);
+
             Matrix4f matrix = stack.peek().getPositionMatrix();
             stack.pop();
-            float[] col = getColor(color);
+            float[] col = getColor(c);
             doAction(new Renderable(start) {
                 @Override
                 void draw() {
@@ -124,12 +131,12 @@ public class Renderer {
             });
         }
 
-        static void doAction(Renderable renderable) {
-            currentStack.add(renderable);
+        static void doAction(Renderable ac) {
+            currentStack.add(ac);
         }
 
         public static void renderOutline(MatrixStack stack, Color color, Vec3d start, Vec3d dimensions) {
-            Matrix4f matrix = stack.peek().getPositionMatrix();
+            Matrix4f m = stack.peek().getPositionMatrix();
             doAction(new Renderable(start.add(dimensions.multiply(.5))) {
                 @Override
                 void draw() {
@@ -137,7 +144,7 @@ public class Renderer {
                             VertexFormat.DrawMode.DEBUG_LINES,
                             VertexFormats.POSITION_COLOR,
                             GameRenderer::getPositionColorProgram,
-                            matrix,
+                            m,
                             start,
                             dimensions,
                             color,
@@ -150,6 +157,7 @@ public class Renderer {
                                 buffer.vertex(matrix, x2, y1, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y1, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y1, z1).color(red, green, blue, alpha).next();
+
                                 buffer.vertex(matrix, x1, y2, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y2, z2).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y2, z2).color(red, green, blue, alpha).next();
@@ -158,12 +166,16 @@ public class Renderer {
                                 buffer.vertex(matrix, x2, y2, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y2, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y2, z1).color(red, green, blue, alpha).next();
+
                                 buffer.vertex(matrix, x1, y1, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y2, z1).color(red, green, blue, alpha).next();
+
                                 buffer.vertex(matrix, x2, y1, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y2, z1).color(red, green, blue, alpha).next();
+
                                 buffer.vertex(matrix, x2, y1, z2).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y2, z2).color(red, green, blue, alpha).next();
+
                                 buffer.vertex(matrix, x1, y1, z2).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y2, z2).color(red, green, blue, alpha).next();
                             }
@@ -181,6 +193,7 @@ public class Renderer {
             Matrix4f matrix = stack.peek().getPositionMatrix();
             float[] fill = getColor(colorFill);
             float[] outline = getColor(colorOutline);
+
             Vec3d vec3d = transformVec3d(start);
             Vec3d end = vec3d.add(dimensions);
             float x1 = (float) vec3d.x;
@@ -205,22 +218,27 @@ public class Renderer {
                         buffer.vertex(matrix, x1, y2, z2).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x2, y2, z2).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x2, y2, z1).color(redFill, greenFill, blueFill, alphaFill).next();
+
                         buffer.vertex(matrix, x1, y1, z2).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x2, y1, z2).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x2, y2, z2).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x1, y2, z2).color(redFill, greenFill, blueFill, alphaFill).next();
+
                         buffer.vertex(matrix, x2, y2, z2).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x2, y1, z2).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x2, y1, z1).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x2, y2, z1).color(redFill, greenFill, blueFill, alphaFill).next();
+
                         buffer.vertex(matrix, x2, y2, z1).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x2, y1, z1).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x1, y1, z1).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x1, y2, z1).color(redFill, greenFill, blueFill, alphaFill).next();
+
                         buffer.vertex(matrix, x1, y2, z1).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x1, y1, z1).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x1, y1, z2).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x1, y2, z2).color(redFill, greenFill, blueFill, alphaFill).next();
+
                         buffer.vertex(matrix, x1, y1, z1).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x2, y1, z1).color(redFill, greenFill, blueFill, alphaFill).next();
                         buffer.vertex(matrix, x2, y1, z2).color(redFill, greenFill, blueFill, alphaFill).next();
@@ -236,6 +254,7 @@ public class Renderer {
                         buffer.vertex(matrix, x2, y1, z1).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
                         buffer.vertex(matrix, x2, y1, z1).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
                         buffer.vertex(matrix, x1, y1, z1).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
+
                         buffer.vertex(matrix, x1, y2, z1).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
                         buffer.vertex(matrix, x1, y2, z2).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
                         buffer.vertex(matrix, x1, y2, z2).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
@@ -244,12 +263,16 @@ public class Renderer {
                         buffer.vertex(matrix, x2, y2, z1).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
                         buffer.vertex(matrix, x2, y2, z1).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
                         buffer.vertex(matrix, x1, y2, z1).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
+
                         buffer.vertex(matrix, x1, y1, z1).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
                         buffer.vertex(matrix, x1, y2, z1).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
+
                         buffer.vertex(matrix, x2, y1, z1).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
                         buffer.vertex(matrix, x2, y2, z1).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
+
                         buffer.vertex(matrix, x2, y1, z2).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
                         buffer.vertex(matrix, x2, y2, z2).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
+
                         buffer.vertex(matrix, x1, y1, z2).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
                         buffer.vertex(matrix, x1, y2, z2).color(redOutline, greenOutline, blueOutline, alphaOutline).next();
                     });
@@ -257,7 +280,8 @@ public class Renderer {
             });
         }
 
-        private static void genericAABBRender(VertexFormat.DrawMode mode, VertexFormat format, Supplier<ShaderProgram> shader, Matrix4f stack, Vec3d start, Vec3d dimensions, Color color, RenderAction action) {
+        private static void genericAABBRender(VertexFormat.DrawMode mode, VertexFormat format, Supplier<ShaderProgram> shader, Matrix4f stack, Vec3d start, Vec3d dimensions, Color color,
+                                              RenderAction action) {
             float red = color.getRed() / 255f;
             float green = color.getGreen() / 255f;
             float blue = color.getBlue() / 255f;
@@ -274,7 +298,7 @@ public class Renderer {
         }
 
         public static void renderFilled(MatrixStack stack, Color color, Vec3d start, Vec3d dimensions) {
-            Matrix4f matrix = stack.peek().getPositionMatrix();
+            Matrix4f s = stack.peek().getPositionMatrix();
             doAction(new Renderable(start.add(dimensions.multiply(.5))) {
                 @Override
                 void draw() {
@@ -282,7 +306,7 @@ public class Renderer {
                             VertexFormat.DrawMode.QUADS,
                             VertexFormats.POSITION_COLOR,
                             GameRenderer::getPositionColorProgram,
-                            matrix,
+                            s,
                             start,
                             dimensions,
                             color,
@@ -291,22 +315,27 @@ public class Renderer {
                                 buffer.vertex(matrix, x1, y2, z2).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y2, z2).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y2, z1).color(red, green, blue, alpha).next();
+
                                 buffer.vertex(matrix, x1, y1, z2).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y1, z2).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y2, z2).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y2, z2).color(red, green, blue, alpha).next();
+
                                 buffer.vertex(matrix, x2, y2, z2).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y1, z2).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y1, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y2, z1).color(red, green, blue, alpha).next();
+
                                 buffer.vertex(matrix, x2, y2, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y1, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y1, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y2, z1).color(red, green, blue, alpha).next();
+
                                 buffer.vertex(matrix, x1, y2, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y1, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y1, z2).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x1, y2, z2).color(red, green, blue, alpha).next();
+
                                 buffer.vertex(matrix, x1, y1, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y1, z1).color(red, green, blue, alpha).next();
                                 buffer.vertex(matrix, x2, y1, z2).color(red, green, blue, alpha).next();
@@ -318,7 +347,7 @@ public class Renderer {
         }
 
         public static void renderLine(MatrixStack matrices, Color color, Vec3d start, Vec3d end) {
-            Matrix4f matrix = matrices.peek().getPositionMatrix();
+            Matrix4f s = matrices.peek().getPositionMatrix();
             doAction(new Renderable(start.add(end.subtract(start)).multiply(.5)) {
                 @Override
                 void draw() {
@@ -326,7 +355,7 @@ public class Renderer {
                             VertexFormat.DrawMode.DEBUG_LINES,
                             VertexFormats.POSITION_COLOR,
                             GameRenderer::getPositionColorProgram,
-                            matrix,
+                            s,
                             start,
                             end.subtract(start),
                             color,
@@ -341,6 +370,7 @@ public class Renderer {
 
         public static Vec3d getCrosshairVector() {
             Camera camera = mc.gameRenderer.getCamera();
+
             float pi = (float) Math.PI;
             float yawRad = (float) Math.toRadians(-camera.getYaw());
             float pitchRad = (float) Math.toRadians(-camera.getPitch());
@@ -348,6 +378,7 @@ public class Renderer {
             float f2 = MathHelper.sin(yawRad - pi);
             float f3 = -MathHelper.cos(pitchRad);
             float f4 = MathHelper.sin(pitchRad);
+
             return new Vec3d(f2 * f3, f4, f1 * f3).add(camera.getPos());
         }
 
@@ -560,7 +591,8 @@ public class Renderer {
             RenderSystem.disableScissor();
         }
 
-        public static void renderTexture(MatrixStack matrices, double x0, double y0, double width, double height, float u, float v, double regionWidth, double regionHeight, double textureWidth, double textureHeight) {
+        public static void renderTexture(MatrixStack matrices, double x0, double y0, double width, double height, float u, float v, double regionWidth, double regionHeight, double textureWidth,
+                                         double textureHeight) {
             double x1 = x0 + width;
             double y1 = y0 + height;
             double z = 0;
@@ -578,7 +610,8 @@ public class Renderer {
             );
         }
 
-        public static void renderRoundedShadowInternal(Matrix4f matrix, float cr, float cg, float cb, float ca, double fromX, double fromY, double toX, double toY, double rad, double samples, double wid) {
+        public static void renderRoundedShadowInternal(Matrix4f matrix, float cr, float cg, float cb, float ca, double fromX, double fromY, double toX, double toY, double rad, double samples,
+                                                       double wid) {
             BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
             bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_STRIP, VertexFormats.POSITION_COLOR);
 
@@ -1012,5 +1045,7 @@ public class Renderer {
                     alphaOverwrite == -1 ? original.getAlpha() : alphaOverwrite
             );
         }
+
     }
+
 }

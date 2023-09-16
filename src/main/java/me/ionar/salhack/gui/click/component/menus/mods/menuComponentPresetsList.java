@@ -2,26 +2,30 @@ package me.ionar.salhack.gui.click.component.menus.mods;
 
 import me.ionar.salhack.gui.click.component.MenuComponent;
 import me.ionar.salhack.gui.click.component.item.ComponentItem;
-import me.ionar.salhack.gui.click.component.item.componentPresetItem;
+import me.ionar.salhack.gui.click.component.item.ComponentPresetItem;
 import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
-import me.ionar.salhack.main.SalHack;
+import me.ionar.salhack.managers.PresetsManager;
+import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.ui.ClickGuiModule;
 import me.ionar.salhack.module.ui.ColorsModule;
 import me.ionar.salhack.preset.Preset;
 
-public class menuComponentPresetsList extends MenuComponent {
-    public menuComponentPresetsList(String displayName, float x, float y, String image, ColorsModule colorsModule, ClickGuiModule clickGuiModule) {
-        super(displayName, x, y, 100f, 105f, image, colorsModule, clickGuiModule);
-        SalHack.getPresetsManager().getItems().forEach(this::addPreset);
+public class MenuComponentPresetsList extends MenuComponent {
+    private final float Width = 105f;
+    private final float Height = 11f;
+
+    public MenuComponentPresetsList(String displayName, ModuleType moduleType, float X, float Y, String image, ColorsModule colorsModule, ClickGuiModule clickGuiModule) {
+        super(displayName, X, Y, 100f, 105f, image, colorsModule, clickGuiModule);
+        PresetsManager.Get().GetItems().forEach(this::AddPreset);
     }
 
-    public void addPreset(Preset preset) {
+    public void AddPreset(Preset preset) {
         ComponentItemListener listener = new ComponentItemListener() {
             @Override
             public void OnEnabled() {}
             @Override
             public void OnToggled() {
-                SalHack.getPresetsManager().setPresetActive(preset);
+                PresetsManager.Get().SetPresetActive(preset);
             }
             @Override
             public void OnDisabled() {}
@@ -36,25 +40,25 @@ public class menuComponentPresetsList extends MenuComponent {
         int flags = ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip;
         int state = 0;
         if (preset.isActive()) state |= ComponentItem.Clicked;
-        float width = 105f;
-        float height = 11f;
-        ComponentItem componentItem = new componentPresetItem(preset, flags, state, listener, width, height);
+
+        ComponentItem componentItem = new ComponentPresetItem(preset, flags, state, listener, Width, Height);
 
         // todo: add values for deleting, renaming, and copying
 
-        addItem(componentItem);
+        AddItem(componentItem);
     }
 
-    public void removePreset(Preset toRemove) {
+    public void RemovePreset(Preset toRemove) {
         ComponentItem removeItem = null;
-        for (ComponentItem componentItem : this.componentItems) {
-            if (componentItem instanceof componentPresetItem comp) {
+        for (ComponentItem componentItem : this.Items) {
+            if (componentItem instanceof ComponentPresetItem) {
+                ComponentPresetItem comp = (ComponentPresetItem) componentItem;
                 if (comp.getPreset() == toRemove) {
                     removeItem = comp;
                     break;
                 }
             }
         }
-        if (removeItem != null) this.componentItems.remove(removeItem);
+        if (removeItem != null) this.Items.remove(removeItem);
     }
 }

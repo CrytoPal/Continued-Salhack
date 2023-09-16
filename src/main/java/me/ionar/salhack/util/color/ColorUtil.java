@@ -3,76 +3,86 @@ package me.ionar.salhack.util.color;
 import java.awt.*;
 
 public class ColorUtil {
-    public Color baseColor;
-    private final float[] hsb;
-    private final float alpha;
+    public Color BaseColor;
+    private final float[] HSB;
+    private final float Alpha;
 
-    public ColorUtil(final Color color) {
+    public ColorUtil(final Color colorBase) {
         super();
-        baseColor = color;
-        hsb = generateHSB(color);
-        alpha = color.getAlpha() / 255.0f;
+        BaseColor = colorBase;
+        HSB = GenerateHSB(colorBase);
+        Alpha = colorBase.getAlpha() / 255.0f;
     }
 
-    public ColorUtil(final float hue, final float saturation, final float brightness) {
-        this(hue, saturation, brightness, 1.0f);
+    public ColorUtil(final float n, final float n2, final float n3) {
+        this(n, n2, n3, 1.0f);
     }
 
-    public ColorUtil(final float[] hsb) {
-        this(hsb, 1.0f);
+    public ColorUtil(final float[] array) {
+        this(array, 1.0f);
     }
 
-    public ColorUtil(final float[] hsb, final float alpha) {
+    public ColorUtil(final float[] d, final float k) {
         super();
-        this.hsb = hsb;
-        this.alpha = alpha;
-        this.baseColor = getRainbowColorFromArray(hsb, alpha);
+        this.HSB = d;
+        this.Alpha = k;
+        this.BaseColor = GetRainbowColorFromArray(d, k);
     }
 
-    public ColorUtil(final float hue, final float saturation, final float brightness, final float alpha) {
+    public ColorUtil(final float n, final float n2, final float n3, final float k) {
         super();
-        final int length = 3;
-        final float[] hsb = new float[length];
-        hsb[0] = hue;
-        hsb[1] = saturation;
-        hsb[2] = brightness;
-        this.hsb = hsb;
-        this.alpha = alpha;
-        this.baseColor = getRainbowColorFromArray(this.hsb, alpha);
+        final int n4 = 3;
+        final float[] d = new float[n4];
+        d[0] = n;
+        d[1] = n2;
+        d[2] = n3;
+        this.HSB = d;
+        this.Alpha = k;
+        this.BaseColor = GetRainbowColorFromArray(this.HSB, k);
     }
 
-    public static float[] generateHSB(final Color color) {
+    public static float[] GenerateHSB(final Color color) {
         final float[] rgbColorComponents = color.getRGBColorComponents(null);
-        final float red = rgbColorComponents[0];
-        final float green = rgbColorComponents[1];
-        final float blue = rgbColorComponents[2];
-        final float min = Math.min(red, Math.min(green, blue));
-        final float max = Math.max(red, Math.max(green, blue));
-        float hue = 0.0f;
-        if (max == min) hue = 0.0f;
-        else if (max == red) hue = (60.0f * (green - blue) / (max - min) + 360.0f) % 360.0f;
-        else if (max == green) hue = 60.0f * (blue - red) / (max - min) + 120.0f;
-        else if (max == blue) hue = 60.0f * (red - green) / (max - min) + 240.0f;
-        final float brightness = (max + min) / 2.0f;
-        float saturation;
-        if (max == min) saturation = 0.0f;
-        else {
-            final float n8 = Math.min(brightness, 0.5f); //maybe max?
-            if (n8 <= 0) saturation = (max - min) / (max + min);
-            else saturation = (max - min) / (2.0f - max - min);
+        final float n = rgbColorComponents[0];
+        final float n2 = rgbColorComponents[1];
+        final float n3 = rgbColorComponents[2];
+        final float min = Math.min(n, Math.min(n2, n3));
+        final float max = Math.max(n, Math.max(n2, n3));
+        float n4 = 0.0f;
+        float n5;
+        if (max == min) {
+            n4 = 0.0f;
+            n5 = max;
+        } else if (max == n) {
+            n4 = (60.0f * (n2 - n3) / (max - min) + 360.0f) % 360.0f;
+            n5 = max;
+        } else if (max == n2) {
+            n4 = 60.0f * (n3 - n) / (max - min) + 120.0f;
+            n5 = max;
+        } else {
+            if (max == n3) n4 = 60.0f * (n - n2) / (max - min) + 240.0f;
+            n5 = max;
         }
-        return new float[]{hue, saturation * 100.0f, brightness * 100.0f};
+        final float n6 = (n5 + min) / 2.0f;
+        float n7;
+        if (max == min) n7 = 0.0f;
+        else {
+            final float n8 = Math.min(n6, 0.5f); //maybe max?
+            if (n8 <= 0) n7 = (max - min) / (max + min);
+            else n7 = (max - min) / (2.0f - max - min);
+        }
+        return new float[]{n4, n7 * 100.0f, n6 * 100.0f};
     }
 
-    public static Color getRainbowColorFromArray(final float[] hsb, final float alpha) {
-        return getRainbowColor(hsb[0], hsb[1], hsb[2], alpha);
+    public static Color GetRainbowColorFromArray(final float[] hSB, final float alpha) {
+        return GetRainbowColor(hSB[0], hSB[1], hSB[2], alpha);
     }
 
-    public static Color getColorWithHSBArray(final float[] hsb) {
-        return getRainbowColorFromArray(hsb, 1.0f);
+    public static Color GetColorWithHSBArray(final float[] HSB) {
+        return GetRainbowColorFromArray(HSB, 1.0f);
     }
 
-    public static String generateMCColorString(String string) {
+    public static String GenerateMCColorString(String string) {
         final char c = 'q';
         final char c2 = '\u0018';
         final int length = string.length();
@@ -92,7 +102,7 @@ public class ColorUtil {
         return new String(array);
     }
 
-    private static float futureClientColorCalculation(final float n, final float n2, float n3) {
+    private static float FutureClientColorCalculation(final float n, final float n2, float n3) {
         if (n3 < 0.0f) ++n3;
         if (n3 > 1.0f) --n3;
         if (6.0f * n3 < 1.0f) return n + (n2 - n) * 6.0f * n3;
@@ -101,79 +111,79 @@ public class ColorUtil {
         return n;
     }
 
-    public static Color colorRainbowWithDefaultAlpha(final float hue, final float saturation, final float brightness) {
-        return getRainbowColor(hue, saturation, brightness, 1.0f);
+    public static Color ColorRainbowWithDefaultAlpha(final float n, final float n2, final float n3) {
+        return GetRainbowColor(n, n2, n3, 1.0f);
     }
 
-    public static Color getRainbowColor(float hue, float saturation, float brightness, final float alpha) {
+    public static Color GetRainbowColor(float hue, float saturation, float lightness, final float alpha) {
         if (saturation < 0.0f || saturation > 100.0f) throw new IllegalArgumentException("Color parameter outside of expected range - Saturation");
-        if (brightness < 0.0f || brightness > 100.0f) throw new IllegalArgumentException("Color parameter outside of expected range - Brightness");
+        if (lightness < 0.0f || lightness > 100.0f) throw new IllegalArgumentException("Color parameter outside of expected range - Lightness");
         if (alpha < 0.0f || alpha > 1.0f) throw new IllegalArgumentException("Color parameter outside of expected range - Alpha");
-        hue = hue % 360.0f / 360.0f;
+        hue = (hue %= 360.0f) / 360.0f;
         saturation /= 100.0f;
-        brightness /= 100.0f;
+        lightness /= 100.0f;
         float n5;
-        if (brightness < 0.0) n5 = brightness * (1.0f + saturation);
-        else n5 = brightness + saturation - saturation * brightness;
-        saturation = 2.0f * brightness - n5;
-        brightness = Math.max(0.0f, futureClientColorCalculation(saturation, n5, hue + 0.33333334f));
-        final float max = Math.max(0.0f, futureClientColorCalculation(saturation, n5, hue));
-        saturation = Math.max(0.0f, futureClientColorCalculation(saturation, n5, hue - 0.33333334f));
-        brightness = Math.min(brightness, 1.0f);
+        if (lightness < 0.0) n5 = lightness * (1.0f + saturation);
+        else n5 = lightness + saturation - saturation * lightness;
+        saturation = 2.0f * lightness - n5;
+        lightness = Math.max(0.0f, FutureClientColorCalculation(saturation, n5, hue + 0.33333334f));
+        final float max = Math.max(0.0f, FutureClientColorCalculation(saturation, n5, hue));
+        saturation = Math.max(0.0f, FutureClientColorCalculation(saturation, n5, hue - 0.33333334f));
+        lightness = Math.min(lightness, 1.0f);
         final float min = Math.min(max, 1.0f);
         saturation = Math.min(saturation, 1.0f);
-        return new Color(brightness, min, saturation, alpha);
+        return new Color(lightness, min, saturation, alpha);
     }
 
     public String toString() {
-        return new StringBuilder().insert(0, "HSLColor[h=").append(this.hsb[0]).append(",s=").append(this.hsb[1]).append(",l=").append(this.hsb[2]).append(",alpha=").append(this.alpha).append("]").toString();
+        return new StringBuilder().insert(0, "HSLColor[h=").append(this.HSB[0]).append(",s=").append(this.HSB[1]).append(",l=").append(this.HSB[2]).append(",alpha=").append(this.Alpha).append("]").toString();
     }
 
-    public Color getColorWithBrightnessMax(float max) {
+    public Color GetColorWithLightnessMax(float max) {
         max = (100.0f - max) / 100.0f;
-        max = Math.max(0.0f, this.hsb[2] * max);
-        return getRainbowColor(this.hsb[0], this.hsb[1], max, this.alpha);
+        max = Math.max(0.0f, this.HSB[2] * max);
+        return GetRainbowColor(this.HSB[0], this.HSB[1], max, this.Alpha);
     }
 
-    public Color getColorWithBrightnessMin(float min) {
+    public Color GetColorWithLightnessMin(float min) {
         min = (100.0f + min) / 100.0f;
-        min = Math.min(100.0f, this.hsb[2] * min);
-        return getRainbowColor(this.hsb[0], this.hsb[1], min, this.alpha);
+        min = Math.min(100.0f, this.HSB[2] * min);
+        return GetRainbowColor(this.HSB[0], this.HSB[1], min, this.Alpha);
     }
 
-    public float getAlpha() {
-        return alpha;
+    public float GetAlpha() {
+        return Alpha;
     }
 
-    public Color getColorWithBrightness(final float brightness) {
-        return getRainbowColor(this.hsb[0], this.hsb[1], brightness, this.alpha);
+    public Color GetColorWithBrightness(final float brightness) {
+        return GetRainbowColor(this.HSB[0], this.HSB[1], brightness, this.Alpha);
     }
 
-    public float getHue() {
-        return hsb[0];
+    public float GetHue() {
+        return HSB[0];
     }
 
-    public float getSaturation() {
-        return hsb[1];
+    public float GetSaturation() {
+        return HSB[1];
     }
 
-    public float getBrightness() {
-        return this.hsb[2];
+    public float GetLightness() {
+        return this.HSB[2];
     }
 
-    public Color getLocalColor() {
-        return this.baseColor;
+    public Color GetLocalColor() {
+        return this.BaseColor;
     }
 
-    public Color getColorWithHue(final float hue) {
-        return getRainbowColor(hue, this.hsb[1], this.hsb[2], this.alpha);
+    public Color GetColorWithHue(final float hue) {
+        return GetRainbowColor(hue, this.HSB[1], this.HSB[2], this.Alpha);
     }
 
-    public Color getColorWithSaturation(final float saturation) {
-        return getRainbowColor(this.hsb[0], saturation, this.hsb[2], this.alpha);
+    public Color GetColorWithSaturation(final float saturation) {
+        return GetRainbowColor(this.HSB[0], saturation, this.HSB[2], this.Alpha);
     }
 
-    public Color getColorWithModifiedHue() {
-        return colorRainbowWithDefaultAlpha((this.hsb[0] + 180.0f) % 360.0f, this.hsb[1], this.hsb[2]);
+    public Color GetColorWithModifiedHue() {
+        return ColorRainbowWithDefaultAlpha((this.HSB[0] + 180.0f) % 360.0f, this.HSB[1], this.HSB[2]);
     }
 }

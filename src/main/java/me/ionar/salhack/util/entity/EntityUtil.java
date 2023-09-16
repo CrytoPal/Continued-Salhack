@@ -1,12 +1,13 @@
 package me.ionar.salhack.util.entity;
 
-import me.ionar.salhack.main.Wrapper;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.*;
+import net.minecraft.entity.mob.AmbientEntity;
+import net.minecraft.entity.mob.EndermanEntity;
+import net.minecraft.entity.mob.HostileEntity;
+import net.minecraft.entity.mob.ZombifiedPiglinEntity;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.BlockPos;
@@ -15,8 +16,11 @@ import net.minecraft.util.math.Vec3d;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class EntityUtil {
-    private static final MinecraftClient mc = Wrapper.GetMC();
+
     public static ArrayList<Entity> getEntities() {
         ArrayList<Entity> entities = new ArrayList<>();
         if (mc.world != null) {
@@ -34,16 +38,20 @@ public class EntityUtil {
     }
 
     public static boolean isLiving(Entity entity) {
-        return entity instanceof LivingEntity && ((LivingEntity) entity).getHealth() != 0;
+        return entity instanceof LivingEntity;
     }
 
-    public static boolean isFakePlayer(Entity entity) {
+    public static boolean isFakeLocalPlayer(Entity entity) {
         return entity != null && entity.getId() == -100 && mc.player != entity;
     }
 
-    public static BlockPos getPositionVectorBlockPos(Entity entity, @Nullable BlockPos toAdd) {
+    public static BlockPos GetPositionVectorBlockPos(Entity entity, @Nullable BlockPos toAdd)
+    {
         final Vec3d v = entity.getPos();
-        if (toAdd == null) return BlockPos.ofFloored(v.x, v.y, v.z);
+
+        if (toAdd == null)
+            return BlockPos.ofFloored(v.x, v.y, v.z);
+
         return BlockPos.ofFloored(v.x, v.y, v.z).add(toAdd);
     }
 
@@ -52,7 +60,7 @@ public class EntityUtil {
      * it
      */
     public static boolean isNeutralMob(Entity entity) {
-        return entity instanceof Angerable;
+        return entity instanceof ZombifiedPiglinEntity || entity instanceof WolfEntity || entity instanceof EndermanEntity;
     }
 
     /**
@@ -126,7 +134,7 @@ public class EntityUtil {
         return MathHelper.cos(yaw * 0.017453292F);
     }
 
-    public static int getPlayerMS(PlayerEntity player) {
+    public static int GetPlayerMS(PlayerEntity player) {
         if (player.getUuid() != null) {
             ClientPlayNetworkHandler handler = mc.getNetworkHandler();
             if (handler != null) {

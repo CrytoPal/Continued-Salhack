@@ -6,48 +6,56 @@ import java.util.ArrayList;
 
 /// Object for rainbow handling
 public class SalRainbowUtil {
-    private final ArrayList<Integer> currentRainbowIndexes = new ArrayList<>();
-    private final ArrayList<Integer> rainbow = new ArrayList<>();
-    private final Timer rainbowSpeed = new Timer();
-    private int timer;
-    private int index = 0;
+    private final ArrayList<Integer> CurrentRainbowIndexes = new ArrayList<>();
+    private final ArrayList<Integer> RainbowArrayList = new ArrayList<>();
+    private final Timer RainbowSpeed = new Timer();
+    private int Timer;
+    private int i = 0;
     public SalRainbowUtil(int timer) {
-        this.timer = timer;
+        Timer = timer;
+
         /// Populate the RainbowArrayList
         for (int i = 0; i < 360; i++) {
-            rainbow.add(ColorUtil.getRainbowColor(i, 90.0f, 50.0f, 1.0f).getRGB());
-            currentRainbowIndexes.add(i);
+            RainbowArrayList.add(ColorUtil.GetRainbowColor(i, 90.0f, 50.0f, 1.0f).getRGB());
+            CurrentRainbowIndexes.add(i);
         }
     }
 
-    public int getRainbowColorAt(int index) {
-        if (index > currentRainbowIndexes.size() - 1) index = currentRainbowIndexes.size() - 1;
-        return rainbow.get(currentRainbowIndexes.get(index));
+    public int GetRainbowColorAt(int index) {
+        if (index > CurrentRainbowIndexes.size() - 1) index = CurrentRainbowIndexes.size() - 1;
+        return RainbowArrayList.get(CurrentRainbowIndexes.get(index));
     }
 
-    public void setTimer(int newTimer) {
-        timer = newTimer;
+    public void SetTimer(int newTimer) {
+        Timer = newTimer;
     }
 
     /// Call this function in your render/update function.
-    public void onRender() {
-        if (rainbowSpeed.passed(timer)) {
-            rainbowSpeed.reset();
-            moveListToNextColor();
+    public void OnRender() {
+        if (RainbowSpeed.passed(Timer)) {
+            RainbowSpeed.reset();
+            MoveListToNextColor();
         }
     }
 
-    private void moveListToNextColor() {
-        if (currentRainbowIndexes.isEmpty()) return;
-        currentRainbowIndexes.remove(currentRainbowIndexes.get(0));
-        int index = currentRainbowIndexes.get(currentRainbowIndexes.size() - 1) + 1;
-        if (index >= rainbow.size() - 1) index = 0;
-        currentRainbowIndexes.add(index);
+    private void MoveListToNextColor() {
+        if (CurrentRainbowIndexes.isEmpty()) return;
+
+        CurrentRainbowIndexes.remove(CurrentRainbowIndexes.get(0));
+
+        int index = CurrentRainbowIndexes.get(CurrentRainbowIndexes.size() - 1) + 1;
+
+        if (index >= RainbowArrayList.size() - 1) index = 0;
+
+        CurrentRainbowIndexes.add(index);
     }
 
     public int getRainbowColorNumber() {
-        index += 1;
-        if (index >= 355) index = 0;
-        return index;
+        i += 1;
+        if (i >= 355) {
+            i = 0;
+        }
+        return i;
     }
+
 }

@@ -3,83 +3,88 @@ package me.ionar.salhack.managers;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.util.Timer;
-// DO NOT TOUCH THESE THEY MAY BREAK OPENING THE GUI
-public class NotificationManager {
-    public final List<Notification> notifications = new CopyOnWriteArrayList<>();
 
-    public void addNotification(String p_Title, String p_Description) {
-        notifications.add(new Notification(p_Title, p_Description));
+public class NotificationManager {
+    public final List<Notification> Notifications = new CopyOnWriteArrayList<>();
+
+    public void AddNotification(String p_Title, String p_Description) {
+        Notifications.add(new Notification(p_Title, p_Description));
+    }
+
+    public static NotificationManager Get() {
+        return SalHack.GetNotificationManager();
     }
 
     public class Notification {
         public Notification(String p_Title, String p_Description) {
-            title = p_Title;
-            description = p_Description;
-            decayTime = 2500;
+            Title = p_Title;
+            Description = p_Description;
+            DecayTime = 2500;
 
             timer.reset();
-            decayTimer.reset();
+            DecayTimer.reset();
         }
 
-        private String title;
-        private String description;
+        private String Title;
+        private String Description;
         private Timer timer = new Timer();
-        private Timer decayTimer = new Timer();
-        private int decayTime;
+        private Timer DecayTimer = new Timer();
+        private int DecayTime;
 
-        private int x;
-        private int y;
+        private int X;
+        private int Y;
 
-        public void onRender() {
-            if (timer.passed(decayTime -500))
-                --y;
+        public void OnRender() {
+            if (timer.passed(DecayTime-500))
+                --Y;
         }
 
-        public boolean isDecayed() {
-            return decayTimer.passed(decayTime);
+        public boolean IsDecayed() {
+            return DecayTimer.passed(DecayTime);
         }
 
         /**
          * @return the description
          */
-        public String getDescription() {
-            return description;
+        public String GetDescription() {
+            return Description;
         }
 
         /**
          * @return the title
          */
-        public String getTitle() {
-            return title;
+        public String GetTitle() {
+            return Title;
         }
 
         /**
          * @return the x
          */
-        public int getX() {
-            return x;
+        public int GetX() {
+            return X;
         }
 
         /**
          * @param x the x to set
          */
-        public void setX(int x) {
-            this.x = x;
+        public void SetX(int x) {
+            X = x;
         }
 
         /**
          * @return the y
          */
-        public int getY() {
-            return y;
+        public int GetY() {
+            return Y;
         }
 
         /**
          * @param y the y to set
          */
-        public void setY(int y) {
-            this.y = y;
+        public void SetY(int y) {
+            Y = y;
         }
     }
 }

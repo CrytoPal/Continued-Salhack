@@ -5,9 +5,12 @@ import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public final class Sprint extends Module {
-    public final Value<modes> mode = new Value<>("Mode", new String[]{"Mode", "M"}, "The sprint mode to use.", modes.Legit);
-    public enum modes {
+    public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode", "M"}, "The sprint mode to use.", Modes.Legit);
+
+    public enum Modes {
         Rage,
         Legit
     }
@@ -24,16 +27,18 @@ public final class Sprint extends Module {
 
     @Override
     public String getMetaData() {
-        return String.valueOf(mode.getValue());
+        return String.valueOf(Mode.getValue());
     }
 
     @EventHandler
-    private void onPlayerUpdate(TickEvent event) {
-        if (event.isPre() || mc.player == null) return;
-        switch (mode.getValue()) {
+    private void OnPlayerUpdate(TickEvent event) {
+        if (event.isPre()) return;
+
+        switch (this.Mode.getValue()) {
             case Rage -> {
                 if (!(mc.player.getHungerManager().getFoodLevel() <= 6)) mc.player.setSprinting(true);
-            } case Legit -> {
+            }
+            case Legit -> {
                 if (mc.player.forwardSpeed > 0 && !(mc.player.getHungerManager().getFoodLevel() <= 6f)) mc.options.sprintKey.setPressed(true);
             }
         }
