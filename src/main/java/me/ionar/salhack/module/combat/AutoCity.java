@@ -3,13 +3,16 @@ package me.ionar.salhack.module.combat;
 import io.github.racoondog.norbit.EventHandler;
 import me.ionar.salhack.events.EventEra;
 import me.ionar.salhack.events.player.PlayerMotionUpdate;
+import me.ionar.salhack.events.render.RenderEvent;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.BlockManager;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.module.Module;
+import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.CrystalUtils;
 import me.ionar.salhack.util.entity.EntityUtil;
 import me.ionar.salhack.util.entity.PlayerUtil;
+import me.ionar.salhack.util.render.RenderUtil;
 import net.minecraft.block.Blocks;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
@@ -20,19 +23,34 @@ import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Formatting;
 import me.ionar.salhack.util.Pair;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 public class AutoCity extends Module {
+
+    public static final Value<Boolean> Render = new Value<Boolean>("Render", new String[]{"Render"}, "Allows for rendering of block placements", true);
+    public static final Value<Integer> Red = new Value<Integer>("Red", new String[]{"Red"}, "Red for rendering", 0x33, 0, 255, 5);
+    public static final Value<Integer> Green = new Value<Integer>("Green", new String[]{"Green"}, "Green for rendering", 0xFF, 0, 255, 5);
+    public static final Value<Integer> Blue = new Value<Integer>("Blue", new String[]{"Blue"}, "Blue for rendering", 0xF3, 0, 255, 5);
+    public static final Value<Integer> Alpha = new Value<Integer>("Alpha", new String[]{"Alpha"}, "Alpha for rendering", 0x99, 0, 255, 5);
     public AutoCity() {
         super("AutoCity", new String[]{ "AutoCityBoss" }, "Automatically mines the city block if a target near you can be citied", 0, 0xDADB24, ModuleType.COMBAT);
     }
 
+    PlayerEntity target = null;
+    BlockPos targetBlock = null;
+    double currDistance = 100;
+
+    PlayerEntity target2 = null;
+    BlockPos targetBlock2 = null;
+    double currDistance2 = 100;
+
     @Override
     public void onEnable() {
         super.onEnable();
-
         final ArrayList<Pair<PlayerEntity, ArrayList<BlockPos>>> cityPlayers = GetPlayersReadyToBeCitied();
 
         if (cityPlayers.isEmpty()) {
@@ -41,9 +59,6 @@ public class AutoCity extends Module {
             return;
         }
 
-        PlayerEntity target = null;
-        BlockPos targetBlock = null;
-        double currDistance = 100;
 
         for (Pair<PlayerEntity, ArrayList<BlockPos>> pair : cityPlayers) {
             for (BlockPos pos : pair.getSecond()) {
@@ -123,12 +138,11 @@ public class AutoCity extends Module {
         BlockManager.Update(3, false);
     }
 
-
     public static ArrayList<Pair<PlayerEntity, ArrayList<BlockPos>>> GetPlayersReadyToBeCitied() {
         ArrayList<Pair<PlayerEntity, ArrayList<BlockPos>>> players = new ArrayList<>();
+        ArrayList<BlockPos> positions = new ArrayList<>();
 
         for (Entity entity : Wrapper.GetMC().world.getPlayers().stream().filter(entityPlayer -> !FriendManager.Get().IsFriend(entityPlayer) && entityPlayer != MinecraftClient.getInstance().player).collect(Collectors.toList())) {
-            ArrayList<BlockPos> positions = new ArrayList<>();
 
             for (int i = 0; i < 4; ++i) {
                 BlockPos o = EntityUtil.GetPositionVectorBlockPos(entity, surroundOffset[i]);
@@ -163,6 +177,32 @@ public class AutoCity extends Module {
                 players.add(new Pair<>((PlayerEntity) entity, positions));
         }
         return players;
+    }
+
+    @EventHandler
+    public void onRender(RenderEvent event) {
+        if (!Render.getValue())
+            return;
+        final ArrayList<Pair<PlayerEntity, ArrayList<BlockPos>>> cityPlayers2 = GetPlayersReadyToBeCitied();
+        for (Pair<PlayerEntity, ArrayList<BlockPos>> pair : cityPlayers2) {
+            for (BlockPos pos : pair.getSecond()) {
+                if (targetBlock2 == null) {
+                    target2 = pair.getFirst();
+                    targetBlock2 = pos;
+                    continue;
+                }
+
+                double dist = pos.getSquaredDistance(targetBlock2.getX(), targetBlock2.getY(), targetBlock2.getZ());
+
+                if (dist < currDistance2) {
+                    currDistance2 = dist;
+                    targetBlock2 = pos;
+                    target2 = pair.getFirst();
+                }
+                RenderUtil.drawBoundingBox(new Box(pos), 2.0f, new Color(Red.getValue(), Green.getValue(), Blue.getValue(), 255));
+                RenderUtil.drawFilledBox(event.getMatrixStack(), new Box(pos), new Color(Red.getValue(), Green.getValue(), Blue.getValue(), Alpha.getValue()));
+            }
+        }
     }
 
     private static final BlockPos[] surroundOffset = {
