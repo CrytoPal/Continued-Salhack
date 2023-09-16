@@ -12,6 +12,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.MathHelper;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class Speed extends Module {
     public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode"}, "The mode of speed to use", Modes.Strafe);
     public final Value<Boolean> UseTimer = new Value<>("UseTimer", new String[]{"UseTimer"}, "Uses timer to go faster", false);

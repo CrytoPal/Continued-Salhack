@@ -5,6 +5,8 @@ import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public final class Rotation extends Module {
     public final Value<Integer> yawLock = new Value<>("Yaw", new String[]{"Y"}, "Lock the player's rotation yaw at a point", 0, 0, 360, 11);
     public final Value<Integer> pitchLock = new Value<>("Pitch", new String[]{"P"}, "Lock the player's rotation pitch", 0, 0, 90, 11);

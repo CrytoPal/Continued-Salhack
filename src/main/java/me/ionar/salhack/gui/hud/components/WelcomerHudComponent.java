@@ -52,7 +52,7 @@ public class WelcomerHudComponent extends HudComponentItem {
             context.drawTextWithShadow(mc.textRenderer, Text.of(WatermarkString), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
         Rainbow.OnRender();
-        SetWidth(Wrapper.GetMC().textRenderer.getWidth(WatermarkString));
-        SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        SetWidth(mc.textRenderer.getWidth(WatermarkString));
+        SetHeight(mc.textRenderer.fontHeight);
     }
 }

@@ -3,6 +3,8 @@ package me.ionar.salhack.module.world;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class CoordsSpoofer extends Module {
     public final Value<Integer> CoordsZ = new Value<>("Z", new String[]{"Z"}, "How much to Spoof Z coord", 0, 0, 30000000, 11);
     public final Value<Integer> CoordsX = new Value<>("X", new String[]{"X"}, "How much to Spoof X coord", 0, 0, 30000000, 11);

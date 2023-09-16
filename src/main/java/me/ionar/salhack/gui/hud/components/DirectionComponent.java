@@ -34,8 +34,8 @@ public class DirectionComponent extends HudComponentItem {
             context.drawTextWithShadow(mc.textRenderer, Text.of(direction), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
         Rainbow.OnRender();
-        SetWidth(Wrapper.GetMC().textRenderer.getWidth(direction));
-        SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        SetWidth(mc.textRenderer.getWidth(direction));
+        SetHeight(mc.textRenderer.fontHeight);
     }
 
     private String getFacing(PlayerEntity player) {

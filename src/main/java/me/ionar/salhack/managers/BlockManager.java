@@ -13,9 +13,10 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.world.RaycastContext;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class BlockManager
 {
-    private static MinecraftClient mc = Wrapper.GetMC();
 
     private static BlockPos _currBlock = null;
     private static boolean _started = false;

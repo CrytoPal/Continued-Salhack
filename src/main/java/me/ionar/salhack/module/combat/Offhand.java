@@ -13,6 +13,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.item.SwordItem;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public final class Offhand extends Module {
     public final Value<Float> health = new Value<>("Health", new String[]
             {"Hp"}, "The amount of health needed to acquire a totem.", 16.0f, 0.0f, 20.0f, 0.5f);

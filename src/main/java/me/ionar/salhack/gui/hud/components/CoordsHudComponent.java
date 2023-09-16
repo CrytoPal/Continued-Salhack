@@ -72,8 +72,8 @@ public class CoordsHudComponent extends HudComponentItem {
                     context.drawTextWithShadow(mc.textRenderer, Text.of(coords), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
                 }
                 Rainbow.OnRender();
-                SetWidth(Wrapper.GetMC().textRenderer.getWidth(coords));
-                SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+                SetWidth(mc.textRenderer.getWidth(coords));
+                SetHeight(mc.textRenderer.fontHeight);
 
                 break;
         }

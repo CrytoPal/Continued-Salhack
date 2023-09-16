@@ -18,6 +18,8 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.nio.ByteBuffer;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class Glyph {
     final Texture imageTex;
     final Font f;
@@ -86,7 +88,7 @@ public class Glyph {
             ByteBuffer data = BufferUtils.createByteBuffer(content.length).put(content);
             data.flip();
             NativeImageBackedTexture tex = new NativeImageBackedTexture(NativeImage.read(data));
-            Wrapper.GetMC().execute(() -> Wrapper.GetMC().getTextureManager().registerTexture(i, tex));
+            mc.execute(() -> mc.getTextureManager().registerTexture(i, tex));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -22,6 +22,8 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class AutoBonemeal extends Module {
     public static Value<Integer> Radius = new Value<>("Radius", new String[] {"R"}, "Radius to search for not fully grown seeds", 4, 0, 10, 1);
 

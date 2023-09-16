@@ -13,6 +13,8 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class FakePlayer extends Module {
     public static final Value<String> name = new Value<>("Name", new String[] {"name"}, "Name of the fake player", "bluegooon");
 

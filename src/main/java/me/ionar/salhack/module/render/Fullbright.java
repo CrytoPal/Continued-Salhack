@@ -9,6 +9,8 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.text.Text;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class Fullbright extends Module {
 
 

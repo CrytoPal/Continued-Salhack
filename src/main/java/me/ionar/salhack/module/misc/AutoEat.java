@@ -11,6 +11,8 @@ import net.minecraft.item.Items;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
 import net.minecraft.util.Hand;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class AutoEat extends Module {
     public final Value<Float> HealthToEatAt = new Value<Float>("HealthToEatAt", new String[] {"Health"}, "Will eat gaps at required health", 15.0f, 0.0f, 36.0f, 3.0f);
     public final Value<Float> RequiredHunger = new Value<Float>("Hunger", new String[] {"Hunger"}, "Required hunger to eat", 18.0f, 0.0f, 20.0f, 1.0f);

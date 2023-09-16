@@ -32,14 +32,14 @@ public class BiomeComponent extends HudComponentItem {
         super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
         if (mc.world != null) {
 
-            if (Wrapper.GetMC().player != null && Wrapper.GetMC().world != null) {
-                BLOCK_POS.set(Wrapper.GetMC().player.getX(), Wrapper.GetMC().player.getY(), Wrapper.GetMC().player.getZ());
-                Identifier id = Wrapper.GetMC().world.getRegistryManager().get(RegistryKeys.BIOME).getId(Wrapper.GetMC().world.getBiome(BLOCK_POS).value());
+            if (mc.player != null && mc.world != null) {
+                BLOCK_POS.set(mc.player.getX(), mc.player.getY(), mc.player.getZ());
+                Identifier id = mc.world.getRegistryManager().get(RegistryKeys.BIOME).getId(mc.world.getBiome(BLOCK_POS).value());
 
                 final String biome = "Biome: " + Formatting.WHITE + Arrays.stream(id.getPath().split("_")).map(StringUtils::capitalize).collect(Collectors.joining(" "));
 
-                SetWidth(Wrapper.GetMC().textRenderer.getWidth(biome));
-                SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+                SetWidth(mc.textRenderer.getWidth(biome));
+                SetHeight(mc.textRenderer.fontHeight);
 
                 if (HudModule.CustomFont.getValue()) {
                     FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), biome, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);

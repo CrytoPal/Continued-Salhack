@@ -6,6 +6,8 @@ import me.ionar.salhack.managers.HudManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public final class HudModule extends Module {
     public static final Value<Integer> ExtraTab = new Value<>("ExtraTab", new String[]{"ET"}, "Max player slots to show in the tab list", 80, 80, 1000, 10);
     public static final Value<Boolean> Rainbow = new Value<>("Rainbow", new String[]{"RGB"}, "Give HUD items rainbow effect.", false);

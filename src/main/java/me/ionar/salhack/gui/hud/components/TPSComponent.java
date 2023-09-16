@@ -46,8 +46,8 @@ public class TPSComponent extends HudComponentItem {
             context.drawTextWithShadow(mc.textRenderer, Text.of(tickrate), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
         Rainbow.OnRender();
-        SetWidth(Wrapper.GetMC().textRenderer.getWidth(tickrate));
-        SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        SetWidth(mc.textRenderer.getWidth(tickrate));
+        SetHeight(mc.textRenderer.fontHeight);
     }
 
 }

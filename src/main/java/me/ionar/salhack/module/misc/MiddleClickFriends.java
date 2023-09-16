@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.module.Module;
 
+import static me.ionar.salhack.main.Wrapper.mc;
 import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_MIDDLE;
 
 public class MiddleClickFriends extends Module {

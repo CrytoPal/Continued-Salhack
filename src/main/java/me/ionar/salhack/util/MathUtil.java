@@ -1,10 +1,11 @@
 package me.ionar.salhack.util;
 
-import me.ionar.salhack.main.Wrapper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+
+import static me.ionar.salhack.main.Wrapper.mc;
 
 public class MathUtil {
     public static Vec3d interpolateEntity(Entity e) {
@@ -26,7 +27,6 @@ public class MathUtil {
     }
 
     public static double[] directionSpeedNoForward(double speed) {
-        final MinecraftClient mc = Wrapper.GetMC();
         if (mc.player == null) return new double[0];
         float forward = 1f;
 
@@ -53,7 +53,6 @@ public class MathUtil {
     }
 
     public static double[] directionSpeed(double speed) {
-        final MinecraftClient mc = Wrapper.GetMC();
         if (mc.player == null) return new double[0];
         float forward = mc.player.input.movementForward;
         float side = mc.player.input.movementSideways;

@@ -10,6 +10,8 @@ import net.minecraft.network.packet.c2s.play.PlayerInteractItemC2SPacket;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class BowSpam extends Module {
     public BowSpam() {
         super("BowSpam", new String[]

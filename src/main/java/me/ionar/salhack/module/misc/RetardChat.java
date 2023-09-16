@@ -6,6 +6,8 @@ import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public final class RetardChat extends Module {
     public final Value<Modes> mode = new Value<>("Mode", new String[] {"M"}, "The retard chat mode", Modes.Spongebob);
 

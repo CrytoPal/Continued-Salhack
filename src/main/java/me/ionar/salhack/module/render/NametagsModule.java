@@ -30,7 +30,6 @@ import java.util.List;
 
 import com.google.common.collect.Lists;
 import org.joml.Vector4d;
-
 public class NametagsModule extends Module {
     public final Value<Boolean> Armor = new Value<>("Armor", new String[]{""}, "", true);
     public final Value<Boolean> Durability = new Value<>("Durability", new String[]{""}, "", true);
@@ -161,7 +160,7 @@ public class NametagsModule extends Module {
     private String getName(PlayerEntity entity, String name) {
         int responseTime = -1;
 
-        ClientPlayNetworkHandler handler = Wrapper.GetMC().getNetworkHandler();
+        ClientPlayNetworkHandler handler = mc.getNetworkHandler();
         if (Ping.getValue() && handler != null) {
             PlayerListEntry entry = handler.getPlayerListEntry(entity.getUuid());
             if (entry != null) responseTime = MathHelper.clamp(entry.getLatency(), 0, 300);

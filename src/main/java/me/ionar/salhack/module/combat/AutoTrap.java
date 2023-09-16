@@ -32,6 +32,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public final class AutoTrap extends Module {
     private final Vec3d[] offsetsDefault = new Vec3d[]{
                     new Vec3d(0.0, 0.0, -1.0), // left

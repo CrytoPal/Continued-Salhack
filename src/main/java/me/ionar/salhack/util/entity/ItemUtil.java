@@ -7,6 +7,8 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.screen.slot.SlotActionType;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class ItemUtil {
     public static boolean Is32k(ItemStack item) {
         if (item.getEnchantments() != null) {
@@ -27,8 +29,8 @@ public class ItemUtil {
     }
 
     public static void Move(int slot_from, int slot_to) {
-        if (Wrapper.GetMC().player == null || Wrapper.GetMC().interactionManager == null) return;
-        Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slot_from, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
-        Wrapper.GetMC().interactionManager.clickSlot(Wrapper.GetMC().player.currentScreenHandler.syncId, slot_to, 0, SlotActionType.PICKUP, Wrapper.GetMC().player);
+        if (mc.player == null || mc.interactionManager == null) return;
+        mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, slot_from, 0, SlotActionType.PICKUP, mc.player);
+        mc.interactionManager.clickSlot(mc.player.currentScreenHandler.syncId, slot_to, 0, SlotActionType.PICKUP, mc.player);
     }
 }

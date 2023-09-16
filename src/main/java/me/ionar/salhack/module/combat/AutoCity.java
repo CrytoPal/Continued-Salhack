@@ -29,6 +29,8 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class AutoCity extends Module {
 
     public static final Value<Boolean> Render = new Value<Boolean>("Render", new String[]{"Render"}, "Allows for rendering of block placements", true);
@@ -142,13 +144,13 @@ public class AutoCity extends Module {
         ArrayList<Pair<PlayerEntity, ArrayList<BlockPos>>> players = new ArrayList<>();
         ArrayList<BlockPos> positions = new ArrayList<>();
 
-        for (Entity entity : Wrapper.GetMC().world.getPlayers().stream().filter(entityPlayer -> !FriendManager.Get().IsFriend(entityPlayer) && entityPlayer != MinecraftClient.getInstance().player).collect(Collectors.toList())) {
+        for (Entity entity : mc.world.getPlayers().stream().filter(entityPlayer -> !FriendManager.Get().IsFriend(entityPlayer) && entityPlayer != MinecraftClient.getInstance().player).collect(Collectors.toList())) {
 
             for (int i = 0; i < 4; ++i) {
                 BlockPos o = EntityUtil.GetPositionVectorBlockPos(entity, surroundOffset[i]);
 
                 // ignore if the surrounding block is not obsidian
-                if (Wrapper.GetMC().world.getBlockState(o).getBlock() != Blocks.OBSIDIAN)
+                if (mc.world.getBlockState(o).getBlock() != Blocks.OBSIDIAN)
                     continue;
 
                 boolean passCheck = false;

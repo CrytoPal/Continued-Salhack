@@ -16,6 +16,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.screen.slot.SlotActionType;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class AutoArmor extends Module {
     public final Value<Float> delay = new Value<>("Delay", new String[]
             {"Del"}, "The amount of delay in milliseconds.", 50.0f, 0.0f, 1000.0f, 1.0f);

@@ -7,6 +7,8 @@ import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 
 public class Flight extends Module {
 

@@ -16,7 +16,6 @@ import me.ionar.salhack.util.Timer;
 import me.ionar.salhack.util.entity.EntityUtil;
 import me.ionar.salhack.util.entity.PlayerUtil;
 import me.ionar.salhack.util.render.RenderUtil;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.decoration.EndCrystalEntity;
 import net.minecraft.entity.effect.StatusEffects;
@@ -45,6 +44,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Collectors;
+
+import static me.ionar.salhack.main.Wrapper.mc;
 
 public class AutoCrystalRewrite extends Module {
     public static final Value<BreakModes> breakMode = new Value<BreakModes>("BreakMode", new String[]{"BM"}, "Mode of breaking to use", BreakModes.Always);
@@ -92,7 +93,6 @@ public class AutoCrystalRewrite extends Module {
     private ConcurrentHashMap<BlockPos, Float> placedCrystalsDamage = new ConcurrentHashMap<>();
     private double[] rotations = null;
     private ConcurrentHashMap<EndCrystalEntity, Integer> attackedEnderCrystals = new ConcurrentHashMap<>();
-    private final MinecraftClient mc = MinecraftClient.getInstance();
     private String lastTarget = null;
     private int remainingTicks;
     private BlockPos lastPlaceLocation = BlockPos.ORIGIN;

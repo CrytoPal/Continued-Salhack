@@ -4,6 +4,8 @@ import me.ionar.salhack.gui.click.component.listeners.ComponentItemListener;
 import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Module;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class ComponentItemMod extends ComponentItem {
     final Module Module;
 
@@ -16,10 +18,10 @@ public class ComponentItemMod extends ComponentItem {
     public String GetDisplayText() {
         String displayText = Module.getDisplayName();
 
-        float width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+        float width = mc.textRenderer.getWidth(displayText);
 
         while (width > GetWidth()) {
-            width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+            width = mc.textRenderer.getWidth(displayText);
             displayText = displayText.substring(0, displayText.length()-1);
         }
 

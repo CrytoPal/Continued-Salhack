@@ -17,6 +17,8 @@ import net.minecraft.util.Hand;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 
 public class AutoDye extends Module {
     public final Value<Integer> Radius = new Value<>("Radius", new String[]{"R"}, "Radius to search for sheep", 4, 0, 10, 1);

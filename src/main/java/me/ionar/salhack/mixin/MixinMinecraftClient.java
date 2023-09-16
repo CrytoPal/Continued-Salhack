@@ -12,18 +12,20 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 @Mixin(MinecraftClient.class)
 public class MixinMinecraftClient {
 
     @Inject(method = "tick", at = @At("TAIL"))
     public void onPreTick(CallbackInfo ci){
-        if (Wrapper.GetMC().player == null) return;
+        if (mc.player == null) return;
         SalHackMod.NORBIT_EVENT_BUS.post(new TickEvent(EventEra.PRE));
     }
 
     @Inject(method = "tick", at = @At("HEAD"))
     public void onTick(CallbackInfo ci){
-        if (Wrapper.GetMC().player == null) return;
+        if (mc.player == null) return;
         SalHackMod.NORBIT_EVENT_BUS.post(new TickEvent(EventEra.POST));
     }
 

@@ -19,6 +19,8 @@ import java.util.ArrayList;
 import me.ionar.salhack.util.BlockInteractionHelper.ValidResult;
 import net.minecraft.util.math.Vec3d;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class AntiCityBoss extends Module
 {
     public final Value<Boolean> TrapCheck = new Value<>("TrapCheck", new String[]

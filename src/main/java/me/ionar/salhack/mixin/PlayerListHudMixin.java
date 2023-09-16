@@ -15,6 +15,8 @@ import net.minecraft.scoreboard.Team;
 import java.util.Comparator;
 import java.util.List;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 @Mixin(PlayerListHud.class)
 public class PlayerListHudMixin {
 
@@ -28,6 +30,6 @@ public class PlayerListHudMixin {
 
     @Inject(method = "collectPlayerEntries", at = @At("HEAD"), cancellable = true)
     private void collectPlayerEntriesHook(CallbackInfoReturnable<List<PlayerListEntry>> cir) {
-        cir.setReturnValue(Wrapper.GetMC().player.networkHandler.getListedPlayerListEntries().stream().sorted(ENTRY_ORDERING).limit(HudModule.ExtraTab.getValue()).toList());
+        cir.setReturnValue(mc.player.networkHandler.getListedPlayerListEntries().stream().sorted(ENTRY_ORDERING).limit(HudModule.ExtraTab.getValue()).toList());
     }
 }

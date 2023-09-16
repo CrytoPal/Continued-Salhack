@@ -46,7 +46,7 @@ public class TrueDurabilityComponent extends HudComponentItem {
             context.drawTextWithShadow(mc.textRenderer, Text.of(durability), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
         Rainbow.OnRender();
-        SetWidth(Wrapper.GetMC().textRenderer.getWidth(durability));
-        SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        SetWidth(mc.textRenderer.getWidth(durability));
+        SetHeight(mc.textRenderer.fontHeight);
     }
 }

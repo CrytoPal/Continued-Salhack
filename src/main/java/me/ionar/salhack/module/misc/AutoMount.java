@@ -20,6 +20,8 @@ import net.minecraft.util.Hand;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class AutoMount extends Module {
     public final Value<Boolean> Boats = new Value<>("Boats", new String[] {"Boat"}, "Mounts boats", true);
     public final Value<Boolean> Horses = new Value<>("Horses", new String[] {"Horse"}, "Mounts Horses", true);

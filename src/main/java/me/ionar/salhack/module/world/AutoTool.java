@@ -14,6 +14,8 @@ import net.minecraft.util.math.BlockPos;
 import java.util.ArrayList;
 import java.util.List;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class AutoTool extends Module {
 
     public final Value<Boolean> swapBack = new Value<>("SwapBack", new String[]{ "" }, "Swaps to the item you originally had.", true);

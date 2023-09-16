@@ -10,6 +10,8 @@ import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.util.Timer;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class ComponentItemKeybind extends ComponentItem {
     public boolean Listening = false;
     final Module Module;
@@ -30,14 +32,14 @@ public class ComponentItemKeybind extends ComponentItem {
 
         String displayText = "Keybind " + KeyUtil.getKeyName(Module.getKey());
 
-        if (HasState(ComponentItem.Hovered) && Wrapper.GetMC().textRenderer.getWidth(displayText) > GetWidth() - 3) {
+        if (HasState(ComponentItem.Hovered) && mc.textRenderer.getWidth(displayText) > GetWidth() - 3) {
             if (DisplayString == null) DisplayString = "Keybind " + KeyUtil.getKeyName(Module.getKey()) + " ";
 
             displayText = DisplayString;
-            float width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+            float width = mc.textRenderer.getWidth(displayText);
 
             while (width > GetWidth() - 3) {
-                width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+                width = mc.textRenderer.getWidth(displayText);
                 displayText = displayText.substring(0, displayText.length() - 1);
             }
 
@@ -50,10 +52,10 @@ public class ComponentItemKeybind extends ComponentItem {
             return displayText;
         } else DisplayString = null;
 
-        float width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+        float width = mc.textRenderer.getWidth(displayText);
 
         while (width > GetWidth() - 3) {
-            width = Wrapper.GetMC().textRenderer.getWidth(displayText);
+            width = mc.textRenderer.getWidth(displayText);
             displayText = displayText.substring(0, displayText.length() - 1);
         }
 

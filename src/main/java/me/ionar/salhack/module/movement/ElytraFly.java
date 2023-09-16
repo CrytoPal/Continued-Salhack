@@ -19,6 +19,8 @@ import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.MathUtil;
 import me.ionar.salhack.util.Timer;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public final class ElytraFly extends Module {
     public final Value<Mode> mode = new Value<>("Mode", new String[]{"Mode", "M"}, "Mode to use for 2b2t flight.", Mode.Superior);
     public final Value<Float> speed = new Value<>("Speed", new String[]{"Spd"}, "Speed multiplier for flight, higher values equals more speed. - 2b speed recommended is 1.8~", 1.82f, 0.0f, 10.0f, 0.1f);

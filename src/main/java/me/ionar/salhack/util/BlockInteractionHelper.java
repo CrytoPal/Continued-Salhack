@@ -1,7 +1,5 @@
 package me.ionar.salhack.util;
 
-import me.ionar.salhack.managers.ModuleManager;
-import me.ionar.salhack.util.entity.PlayerUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -16,7 +14,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.*;
-import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
 import java.util.ArrayList;

@@ -2,7 +2,10 @@ package me.ionar.salhack.main;
 
 import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.managers.*;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
+
+import static me.ionar.salhack.main.Wrapper.mc;
 
 public class SalHack {
 
@@ -67,7 +70,7 @@ public class SalHack {
     /// Writes a message to ingame chat
     /// Player must be ingame for this
     public static void SendMessage(String string) {
-        Wrapper.GetMC().player.sendMessage(Text.of(string));
+        mc.player.sendMessage(Text.of(string));
     }
 
     public static HudManager GetHudManager() {

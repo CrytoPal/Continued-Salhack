@@ -20,6 +20,8 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class AutoFarmland extends Module {
     public final Value<Integer> Radius = new Value<>("Radius", new String[] {"R"}, "Radius to search for grass/dirt", 4, 0, 10, 1);
     public final Value<Float> Delay = new Value<>("Delay", new String[] {"D"}, "Delay to use", 1.0f, 0.0f, 10.0f, 1.0f);

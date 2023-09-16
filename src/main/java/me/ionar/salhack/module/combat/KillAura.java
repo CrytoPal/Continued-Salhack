@@ -27,6 +27,8 @@ import net.minecraft.util.Hand;
 
 import java.util.Comparator;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class KillAura extends Module {
     public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode"}, "The KillAura Mode to use", Modes.Closest);
     public final Value<Float> Distance = new Value<>("Distance", new String[]{"Range"}, "Range for attacking a target", 5.0f, 0.0f, 10.0f, 1.0f);

@@ -23,8 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class CrystalUtils {
-    final static MinecraftClient mc = Wrapper.GetMC();
 
 
     public static boolean canPlaceCrystal(final BlockPos pos) {

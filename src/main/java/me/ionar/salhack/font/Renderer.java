@@ -29,6 +29,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class Renderer {
     public static void setupRender() {
         RenderSystem.enableBlend();
@@ -79,7 +81,7 @@ public class Renderer {
         }
 
         static Vec3d transformVec3d(Vec3d in) {
-            Camera camera = Wrapper.GetMC().gameRenderer.getCamera();
+            Camera camera = mc.gameRenderer.getCamera();
             Vec3d camPos = camera.getPos();
             return in.subtract(camPos);
         }
@@ -367,7 +369,7 @@ public class Renderer {
         }
 
         public static Vec3d getCrosshairVector() {
-            Camera camera = Wrapper.GetMC().gameRenderer.getCamera();
+            Camera camera = mc.gameRenderer.getCamera();
 
             float pi = (float) Math.PI;
             float yawRad = (float) Math.toRadians(-camera.getYaw());
@@ -381,7 +383,7 @@ public class Renderer {
         }
 
         public static void renderActions() {
-            Camera c = Wrapper.GetMC().gameRenderer.getCamera();
+            Camera c = mc.gameRenderer.getCamera();
             Vec3d cp = c.getPos();
             currentStack.stream().sorted(Comparator.comparingDouble(value -> -value.pos.distanceTo(cp))).forEach(Renderable::draw);
             currentStack.clear();
@@ -432,7 +434,7 @@ public class Renderer {
          * @return the start position (0,0) of the tooltip content, after considering where to place it
          */
         public static Vec2f renderTooltip(MatrixStack stack, Color color, double arrowX, double arrowY, double width, double height, boolean renderUpsideDown) {
-            double centerX = Wrapper.GetMC().getWindow().getScaledWidth() / 2d;
+            double centerX = mc.getWindow().getScaledWidth() / 2d;
             /*
             left:
             *           /\
@@ -580,8 +582,8 @@ public class Renderer {
             double height = endY - y;
             width = Math.max(0, width);
             height = Math.max(0, height);
-            float mulScale = (float) Wrapper.GetMC().getWindow().getScaleFactor();
-            int invertedY = (int) ((Wrapper.GetMC().getWindow().getScaledHeight() - (y + height)) * mulScale);
+            float mulScale = (float) mc.getWindow().getScaleFactor();
+            int invertedY = (int) ((mc.getWindow().getScaledHeight() - (y + height)) * mulScale);
             RenderSystem.enableScissor((int) (x * mulScale), invertedY, (int) (width * mulScale), (int) (height * mulScale));
         }
 
@@ -747,9 +749,9 @@ public class Renderer {
         }
 
         public static Vec3d getScreenSpaceCoordinate(Vec3d pos, MatrixStack stack) {
-            Camera camera = Wrapper.GetMC().getEntityRenderDispatcher().camera;
+            Camera camera = mc.getEntityRenderDispatcher().camera;
             Matrix4f matrix = stack.peek().getPositionMatrix();
-            int displayHeight = Wrapper.GetMC().getWindow().getHeight();
+            int displayHeight = mc.getWindow().getHeight();
             int[] viewport = new int[4];
             Vector3f target = new Vector3f();
 
@@ -767,8 +769,8 @@ public class Renderer {
             matrixProj.mul(matrixModel).project(transformedCoordinates.x(), transformedCoordinates.y(), transformedCoordinates.z(), viewport, target);
 
             return new Vec3d(
-                    target.x / Wrapper.GetMC().getWindow().getScaleFactor(),
-                    (displayHeight - target.y) / Wrapper.GetMC().getWindow().getScaleFactor(),
+                    target.x / mc.getWindow().getScaleFactor(),
+                    (displayHeight - target.y) / mc.getWindow().getScaleFactor(),
                     target.z
             );
         }
@@ -777,8 +779,8 @@ public class Renderer {
             double yCopy = y;
             double xCopy = x;
             Matrix4f projMat = RenderSystem.getProjectionMatrix();
-            xCopy /= Wrapper.GetMC().getWindow().getFramebufferWidth();
-            yCopy /= Wrapper.GetMC().getWindow().getFramebufferHeight();
+            xCopy /= mc.getWindow().getFramebufferWidth();
+            yCopy /= mc.getWindow().getFramebufferHeight();
             xCopy = xCopy * 2.0 - 1.0;
             yCopy = yCopy * 2.0 - 1.0;
             Vector4f pos = new Vector4f((float) xCopy, (float) yCopy, (float) z, 1.0F);

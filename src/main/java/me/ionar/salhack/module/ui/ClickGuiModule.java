@@ -6,6 +6,8 @@ import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import org.lwjgl.glfw.GLFW;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 @SuppressWarnings("SuspiciousIndentAfterControlStatement")
 public final class ClickGuiModule extends Module {
     public final Value<Boolean> AllowOverflow = new Value<>("AllowOverflow", new String[]{"AllowOverflow"}, "Allows the GUI to overflow", true);

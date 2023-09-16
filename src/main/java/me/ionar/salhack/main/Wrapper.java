@@ -5,11 +5,7 @@ import net.minecraft.entity.Entity;
 
 public class Wrapper {
 
-    final static MinecraftClient mc = MinecraftClient.getInstance();
-
-    public static MinecraftClient GetMC() {
-        return mc;
-    }
+    public final static MinecraftClient mc = MinecraftClient.getInstance();
 
     public static Entity GetPlayer() {
         return mc.player;

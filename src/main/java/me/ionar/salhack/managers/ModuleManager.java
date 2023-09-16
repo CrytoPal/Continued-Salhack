@@ -26,6 +26,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class ModuleManager {
     public static ModuleManager Get() {
         return SalHack.GetModuleManager();
@@ -179,11 +181,11 @@ public class ModuleManager {
         ArrayListAnimations.add(p_Mod);
 
         final Comparator<Module> comparator = (first, second) -> {
-            if (Wrapper.GetMC().textRenderer == null) {
+            if (mc.textRenderer == null) {
             } else {
                 final String firstName = first.GetFullArrayListDisplayName();
                 final String secondName = second.GetFullArrayListDisplayName();
-                final float dif = Wrapper.GetMC().textRenderer.getWidth(secondName) - Wrapper.GetMC().textRenderer.getWidth(firstName);
+                final float dif = mc.textRenderer.getWidth(secondName) - mc.textRenderer.getWidth(firstName);
                 return dif != 0 ? (int) dif : secondName.compareTo(firstName);
             }
             return 0;
@@ -200,7 +202,7 @@ public class ModuleManager {
 
         Module l_Mod = ArrayListAnimations.get(0);
 
-        if ((l_Mod.RemainingXAnimation -= (Wrapper.GetMC().textRenderer.getWidth(l_Mod.GetFullArrayListDisplayName()) / 10)) <= 0) {
+        if ((l_Mod.RemainingXAnimation -= (mc.textRenderer.getWidth(l_Mod.GetFullArrayListDisplayName()) / 10)) <= 0) {
             ArrayListAnimations.remove(l_Mod);
             l_Mod.RemainingXAnimation = 0;
         }

@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import com.google.gson.Gson;
-
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.managers.CommandManager;
 import me.ionar.salhack.managers.HudManager;
 import me.ionar.salhack.module.Value;
@@ -19,7 +17,7 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.util.Window;
 
 public class HudComponentItem {
-    public ArrayList<Value> ValueList = new ArrayList<Value>();
+    public ArrayList<Value> ValueList = new ArrayList<>();
     private String DisplayName;
     private float X;
     private float Y;
@@ -41,7 +39,7 @@ public class HudComponentItem {
     private boolean Selected = false;
     private boolean MultiSelectedDragging = false;
 
-    protected MinecraftClient mc = Wrapper.GetMC();
+    protected MinecraftClient mc = MinecraftClient.getInstance();
 
     public HudComponentItem(String p_DisplayName, float p_X, float p_Y) {
         DisplayName = p_DisplayName;

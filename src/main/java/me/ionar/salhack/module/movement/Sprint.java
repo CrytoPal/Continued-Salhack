@@ -5,6 +5,8 @@ import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public final class Sprint extends Module {
     public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode", "M"}, "The sprint mode to use.", Modes.Legit);
 

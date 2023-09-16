@@ -32,6 +32,8 @@ import me.ionar.salhack.module.ui.ClickGuiModule;
 import me.ionar.salhack.module.ui.ColorsModule;
 import net.minecraft.util.Identifier;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class ClickGuiScreen extends SalGuiScreen
 {
     private ArrayList<MenuComponent> MenuComponents = new ArrayList<MenuComponent>();
@@ -160,7 +162,7 @@ public class ClickGuiScreen extends SalGuiScreen
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
-        final Window res = Wrapper.GetMC().getWindow();
+        final Window res = mc.getWindow();
 
         if (!_snowList.isEmpty() && ClickGuiMod.Snowing.getValue())
         {

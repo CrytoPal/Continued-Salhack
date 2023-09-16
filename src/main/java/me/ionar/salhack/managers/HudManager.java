@@ -23,6 +23,8 @@ import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ValueListeners;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public class HudManager {
     public HudManager() {
     }
@@ -118,7 +120,7 @@ public class HudManager {
     }
 
     public void OnRender(float p_PartialTicks, DrawContext context) {
-        Screen l_CurrScreen = Wrapper.GetMC().currentScreen;
+        Screen l_CurrScreen = mc.currentScreen;
 
         if (l_CurrScreen != null) {
             if (l_CurrScreen instanceof GuiHudEditor) {

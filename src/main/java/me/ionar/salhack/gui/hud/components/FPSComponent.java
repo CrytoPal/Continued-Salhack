@@ -39,8 +39,8 @@ public class FPSComponent extends HudComponentItem {
             context.drawTextWithShadow(mc.textRenderer, Text.of(fPS), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
         Rainbow.OnRender();
-        SetWidth(Wrapper.GetMC().textRenderer.getWidth(fPS));
-        SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        SetWidth(mc.textRenderer.getWidth(fPS));
+        SetHeight(mc.textRenderer.fontHeight);
     }
 
 }

@@ -24,8 +24,8 @@ public class PlayerCountComponent extends HudComponentItem {
 
         final String playerCount = "Players: " + Formatting.WHITE + mc.world.getPlayers().size();
 
-        SetWidth(Wrapper.GetMC().textRenderer.getWidth(playerCount));
-        SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        SetWidth(mc.textRenderer.getWidth(playerCount));
+        SetHeight(mc.textRenderer.fontHeight);
 
         if (HudModule.CustomFont.getValue()) {
             FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), playerCount, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);

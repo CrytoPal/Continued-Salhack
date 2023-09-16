@@ -67,8 +67,8 @@ public class SpeedComponent extends HudComponentItem {
         }
 
         Rainbow.OnRender();
-        SetWidth(Wrapper.GetMC().textRenderer.getWidth(speed));
-        SetHeight(Wrapper.GetMC().textRenderer.fontHeight);
+        SetWidth(mc.textRenderer.getWidth(speed));
+        SetHeight(mc.textRenderer.fontHeight);
     }
 
     public enum UnitList {

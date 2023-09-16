@@ -4,6 +4,8 @@ import me.ionar.salhack.module.Module;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static me.ionar.salhack.main.Wrapper.mc;
+
 public final class AntiAFK extends Module {
     public AntiAFK() {
         super("AntiAFK", new String[]
