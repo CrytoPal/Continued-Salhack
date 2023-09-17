@@ -7,31 +7,35 @@ import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
+import me.ionar.salhack.module.world.Timer;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.network.packet.c2s.play.PlayerMoveC2SPacket;
 import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 
 import static me.ionar.salhack.main.Wrapper.mc;
 
 public class Speed extends Module {
     public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode"}, "The mode of speed to use", Modes.Strafe);
     public final Value<Boolean> UseTimer = new Value<>("UseTimer", new String[]{"UseTimer"}, "Uses timer to go faster", false);
+    public static final Value<Double> Speed = new Value<>("Speed", new String[] {""}, "Speed you move at (OnGround).", 1.0, 0.0, 2.0, 0.1);
+    public static final Value<Double> StrafeSpeed = new Value<>("StrafeSpeed", new String[] {""}, "Speed you move at (Strafe)", 1.0, 0.0, 2.0, 0.1);
     public final Value<Boolean> AutoSprint = new Value<>("AutoSprint", new String[]{"AutoSprint"}, "Automatically sprints for you", false);
-    public final Value<Boolean> SpeedInWater = new Value<>("SpeedInWater", new String[]{"SpeedInWater"}, "Speeds in water", false);
-    public final Value<Boolean> AutoJump = new Value<>("AutoJump", new String[]{"AutoJump"}, "Automatically jumps", true);
-    public final Value<Boolean> Strict = new Value<>("Strict", new String[]{"Strict"}, "Strict mode, use this for when hauses patch comes back for strafe", false);
+    public final Value<Boolean> SpeedInLiquids = new Value<>("SpeedInWater", new String[]{"SpeedInWater"}, "Speeds in water", false);
 
     public enum Modes {
         Strafe,
         OnGround
     }
 
+    private Timer timer = null;
+
     public Speed() {
         super("Speed", new String[]{ "Strafe" }, "Speed strafe", 0, 0xDB2468, ModuleType.MOVEMENT);
     }
 
-    private me.ionar.salhack.module.world.Timer Timer = null;
 
     @Override
     public String getMetaData() {
@@ -41,50 +45,43 @@ public class Speed extends Module {
     @Override
     public void onEnable() {
         super.onEnable();
-        Timer = (me.ionar.salhack.module.world.Timer) ModuleManager.Get().GetMod(me.ionar.salhack.module.world.Timer.class);
+        timer = (me.ionar.salhack.module.world.Timer) ModuleManager.Get().GetMod(me.ionar.salhack.module.world.Timer.class);
     }
 
     @EventHandler
-    private void OnPlayerTick(TickEvent event) {
-        if (event.isPre()) return;
+    public void OnPlayerTick(TickEvent event) {
+        if (mc.player != null) {
+            double velocity = Math.abs(mc.player.getVelocity().getX()) + Math.abs(mc.player.getVelocity().getZ());
+            if ((mc.player.isTouchingWater() || mc.player.isInLava()) && !SpeedInLiquids.getValue()) return;
+            if (UseTimer.getValue()) timer.SetOverrideSpeed(1.088f);
 
-        if (mc.player == null || mc.player.isRiding()) return;
+            if (Mode.getValue() == Modes.OnGround) {
+                if ((mc.player.forwardSpeed != 0 || mc.player.sidewaysSpeed != 0) && mc.player.isOnGround()) {
+                    if (!mc.player.isSprinting()) {
+                        mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.START_SPRINTING));
+                    }
 
-        if ((mc.player.isTouchingWater() || mc.player.isInLava()) && !SpeedInWater.getValue()) return;
+                    mc.player.setVelocity(new Vec3d(0, mc.player.getVelocity().y, 0));
+                    mc.player.updateVelocity(Speed.getValue().floatValue(), new Vec3d(mc.player.sidewaysSpeed, 0, mc.player.forwardSpeed));
+                }
+            } else if (Mode.getValue() == Modes.Strafe) {
+                if ((mc.player.forwardSpeed != 0 || mc.player.sidewaysSpeed != 0)) {
+                    if (AutoSprint.getValue()) {
+                        if (!mc.player.isSprinting()) {
+                            mc.player.networkHandler.sendPacket(new ClientCommandC2SPacket(mc.player, ClientCommandC2SPacket.Mode.START_SPRINTING));
+                        }
+                    }
 
-        if (UseTimer.getValue()) Timer.SetOverrideSpeed(1.088f);
+                    mc.player.setVelocity(new Vec3d(0, mc.player.getVelocity().y, 0));
+                    mc.player.updateVelocity(StrafeSpeed.getValue().floatValue(), new Vec3d(mc.player.sidewaysSpeed, 0, mc.player.forwardSpeed));
 
-        if (mc.player.forwardSpeed != 0.0f || mc.player.sidewaysSpeed != 0.0f) {
-            if (AutoSprint.getValue()) mc.player.setSprinting(true);
-
-            if (mc.player.isOnGround() && Mode.getValue() == Modes.Strafe) {
-                if (AutoJump.getValue()) mc.player.setVelocity(mc.player.getVelocity().x, 0.405f, mc.player.getVelocity().z);
-
-                final float yaw = GetRotationYawForCalc();
-                mc.player.setVelocity(mc.player.getVelocity().x - MathHelper.sin(yaw) * 0.2f, mc.player.getVelocity().y, mc.player.getVelocity().z + MathHelper.cos(yaw) * 0.2f);
-            } else if (mc.player.isOnGround() && Mode.getValue() == Modes.OnGround) {
-                final float yaw = GetRotationYawForCalc();
-                mc.player.setVelocity(mc.player.getVelocity().x - MathHelper.sin(yaw) * 0.2f, mc.player.getVelocity().y, mc.player.getVelocity().z + MathHelper.cos(yaw) * 0.2f);
-                mc.player.networkHandler.sendPacket(new PlayerMoveC2SPacket.PositionAndOnGround(mc.player.getX(), mc.player.getY()+0.4, mc.player.getZ(), false));
-                /*
-                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY, mc.player.posZ, true));
-                mc.player.connection.sendPacket(new CPacketPlayer.Position(mc.player.posX, mc.player.posY+0.4, mc.player.posZ, true));*/
+                    if (velocity >= 0.12 && mc.player.isOnGround()) {
+                        mc.player.updateVelocity(velocity >= 0.3 ? 0.0f : 0.15f, new Vec3d(mc.player.sidewaysSpeed, 0, mc.player.forwardSpeed));
+                        mc.player.jump();
+                    }
+                }
             }
         }
-
-        if (mc.options.jumpKey.isPressed() && mc.player.isOnGround()) mc.player.setVelocity(mc.player.getVelocity().x, 0.405f, mc.player.getVelocity().z);
-    }
-
-    private float GetRotationYawForCalc() {
-        if (mc.player == null) return 0;
-        float rotationYaw = mc.player.getYaw();
-        if (mc.player.forwardSpeed < 0.0f) rotationYaw += 180.0f;
-        float n = 1.0f;
-        if (mc.player.forwardSpeed < 0.0f) n = -0.5f;
-        else if (mc.player.forwardSpeed > 0.0f) n = 0.5f;
-        if (mc.player.sidewaysSpeed > 0.0f) rotationYaw -= 90.0f * n;
-        if (mc.player.sidewaysSpeed < 0.0f) rotationYaw += 90.0f * n;
-        return rotationYaw * 0.017453292f;
     }
 
     @EventHandler
@@ -92,54 +89,9 @@ public class Speed extends Module {
         if (Mode.getValue() == Modes.Strafe) event.cancel();
     }
 
-    @EventHandler
-    private void OnPlayerMove(PlayerMoveEvent event) {
-        if (!event.isPre() || Mode.getValue() == Modes.OnGround || mc.player == null || mc.player.isOnGround()) return;
-        if ((mc.player.isTouchingWater() || mc.player.isInLava()) && !SpeedInWater.getValue()) return;
-        if (mc.player.getAbilities() != null && (mc.player.getAbilities().flying || mc.player.isFallFlying())) return;
-
-        // movement data variables
-        float playerSpeed = 0.2873f;
-        float moveForward = mc.player.input.movementForward;
-        float moveStrafe = mc.player.input.movementSideways;
-        float rotationYaw = mc.player.getYaw();
-
-        // check for speed potion
-        if (mc.player.hasStatusEffect(StatusEffects.SPEED)) {
-            StatusEffectInstance speed = mc.player.getStatusEffect(StatusEffects.SPEED);
-            if (speed != null) {
-                final int amplifier = speed.getAmplifier();
-                playerSpeed *= (1.0f + 0.2f * (amplifier + 1));
-            }
-        }
-
-        if (!Strict.getValue()) playerSpeed *= 1.0064f;
-
-        // not movement input, stop all motion
-        if (moveForward == 0.0f && moveStrafe == 0.0f) {
-            event.setX(0);
-            event.setZ(0);
-        } else {
-            if (moveForward != 0.0f) {
-
-                if (moveStrafe > 0.0f) rotationYaw += ((moveForward > 0.0f) ? -45 : 45);
-                else if (moveStrafe < 0.0f) rotationYaw += ((moveForward > 0.0f) ? 45 : -45);
-
-                moveStrafe = 0.0f;
-                if (moveForward > 0.0f) moveForward = 1.0f;
-                else if (moveForward < 0.0f) moveForward = -1.0f;
-            }
-            double cos = Math.cos(Math.toRadians((rotationYaw + 90.0f)));
-            double sin = Math.sin(Math.toRadians((rotationYaw + 90.0f)));
-            event.setX((moveForward * playerSpeed) * cos + (moveStrafe * playerSpeed) * sin);
-            event.setZ((moveForward * playerSpeed) * sin - (moveStrafe * playerSpeed) * cos);
-        }
-        event.cancel();
-    }
-
     @Override
     public void onDisable() {
         super.onDisable();
-        if (UseTimer.getValue()) Timer.SetOverrideSpeed(1.0f);
+        if (UseTimer.getValue()) timer.SetOverrideSpeed(1.0f);
     }
 }
