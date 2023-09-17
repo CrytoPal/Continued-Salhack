@@ -16,7 +16,7 @@ import java.util.UUID;
 import static me.ionar.salhack.main.Wrapper.mc;
 
 public class FakePlayer extends Module {
-    public static final Value<String> name = new Value<>("Name", new String[] {"name"}, "Name of the fake player", "bluegooon");
+    public static final Value<String> name = new Value<>("Name", new String[] {"name"}, "Name of the fake player", "blue");
 
     public FakePlayer() {
         super("FakePlayer", new String[] {"Fake"}, "Summons a fake player", 0, 0xDADB25, ModuleType.MISC);
