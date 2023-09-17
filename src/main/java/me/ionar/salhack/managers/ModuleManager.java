@@ -76,6 +76,7 @@ public class ModuleManager {
         Add(new Speed());
         Add(new Sprint());
         Add(new Sneak());
+        Add(new Jesus());
 
         /// Render
         Add(new NametagsModule());
