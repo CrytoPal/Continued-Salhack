@@ -10,7 +10,7 @@ public final class HudEditorModule extends Module {
     private GuiHudEditor HudEditor;
 
     public HudEditorModule() {
-        super("HudEditor", new String[]{"HudEditor"}, "Displays the HudEditor", GLFW.GLFW_KEY_GRAVE_ACCENT, 0xDBC824, ModuleType.UI);
+        super("HudEditor", "Displays the HudEditor", GLFW.GLFW_KEY_GRAVE_ACCENT, 0xDBC824, ModuleType.UI);
     }
 
     @Override

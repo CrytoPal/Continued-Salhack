@@ -8,7 +8,7 @@ import static me.ionar.salhack.main.Wrapper.mc;
 
 public class Sneak extends Module {
     public Sneak() {
-        super("Sneak", new String[]{"S"}, "Automatically Sneaks for you", 0, -1, ModuleType.MOVEMENT);
+        super("Sneak", "Automatically Sneaks for you", 0, -1, ModuleType.MOVEMENT);
     }
 
     @Override

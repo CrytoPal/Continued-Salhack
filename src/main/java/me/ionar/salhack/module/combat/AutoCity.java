@@ -39,7 +39,7 @@ public class AutoCity extends Module {
     public static final Value<Integer> Blue = new Value<Integer>("Blue", new String[]{"Blue"}, "Blue for rendering", 0xF3, 0, 255, 5);
     public static final Value<Integer> Alpha = new Value<Integer>("Alpha", new String[]{"Alpha"}, "Alpha for rendering", 0x99, 0, 255, 5);
     public AutoCity() {
-        super("AutoCity", new String[]{ "AutoCityBoss" }, "Automatically mines the city block if a target near you can be citied", 0, 0xDADB24, ModuleType.COMBAT);
+        super("AutoCity", "Automatically mines the city block if a target near you can be citied", 0, 0xDADB24, ModuleType.COMBAT);
     }
 
     PlayerEntity target = null;

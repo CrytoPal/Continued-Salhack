@@ -17,7 +17,7 @@ public final class HudModule extends Module {
     public static final Value<Integer> Blue = new Value<>("Blue", new String[]{"bBlue"}, "Blue for rendering", 0, 0, 255, 11);
 
     public HudModule() {
-        super("HUD", new String[]{ "HUD" }, "Displays the HUD", 0, 0xD1DB24, ModuleType.UI);
+        super("HUD", "Displays the HUD", 0, 0xD1DB24, ModuleType.UI);
     }
 
     @EventHandler

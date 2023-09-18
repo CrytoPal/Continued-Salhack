@@ -28,8 +28,7 @@ public final class Jesus extends Module {
     }
 
     public Jesus() {
-        super("Jesus", new String[]
-                {"LiquidWalk", "WaterWalk"}, "Allows you to walk on water", 0, 0x24DB6E, ModuleType.MOVEMENT);
+        super("Jesus", "Allows you to walk on water", 0, 0x24DB6E, ModuleType.MOVEMENT);
     }
 
     @Override

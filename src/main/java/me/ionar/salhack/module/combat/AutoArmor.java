@@ -29,8 +29,7 @@ public class AutoArmor extends Module {
     private Timer timer = new Timer();
 
     public AutoArmor() {
-        super("AutoArmor", new String[]
-                {"AutoArm", "AutoArmour"}, "Automatically equips armor", 0, 0x249FDB, ModuleType.COMBAT);
+        super("AutoArmor", "Automatically equips armor", 0, 0x249FDB, ModuleType.COMBAT);
     }
 
     // private AutoMendArmorModule AutoMend = null;

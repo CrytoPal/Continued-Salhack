@@ -55,7 +55,7 @@ public class KillAura extends Module {
     }
 
     public KillAura() {
-        super("KillAura", new String[]{"Aura"}, "Automatically faces and hits entities around you", 0, 0xFF0000, ModuleType.COMBAT);
+        super("KillAura", "Automatically faces and hits entities around you", 0, 0xFF0000, ModuleType.COMBAT);
     }
 
     private Entity CurrentTarget;

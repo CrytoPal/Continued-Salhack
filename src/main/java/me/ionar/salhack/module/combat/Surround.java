@@ -44,8 +44,7 @@ public class Surround extends Module {
     }
 
     public Surround() {
-        super("Surround", new String[]
-                {"NoCrystal"}, "Automatically surrounds you with obsidian in the four cardinal directions", 0, 0x5324DB, ModuleType.COMBAT);
+        super("Surround", "Automatically surrounds you with obsidian in the four cardinal directions", 0, 0x5324DB, ModuleType.COMBAT);
     }
 
     private Vec3d Center = Vec3d.ZERO;

@@ -23,7 +23,7 @@ public class AutoShear extends Module {
 
     public AutoShear()
     {
-        super("AutoShear", new String[] {""}, "Shears sheep in range", 0, -1, ModuleType.MISC);
+        super("AutoShear","Shears sheep in range", 0, -1, ModuleType.MISC);
     }
 
     @EventHandler

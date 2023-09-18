@@ -8,8 +8,7 @@ import static me.ionar.salhack.main.Wrapper.mc;
 
 public final class AntiAFK extends Module {
     public AntiAFK() {
-        super("AntiAFK", new String[]
-                { "BuildH", "BHeight" }, "Makes sure you dont get kicked for afking", 0, 0xDB24C4, ModuleType.MISC);
+        super("AntiAFK", "Makes sure you dont get kicked for afking", 0, 0xDB24C4, ModuleType.MISC);
     }
 
     private Timer timer = new Timer();

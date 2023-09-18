@@ -18,7 +18,7 @@ public class CoordsSpoofer extends Module {
     public final Value<Boolean> BiomeSpoof = new Value<>("Biome Spoof", new String[]{"BiomeSpoof"}, "Prevents biome from changing water or leave color", false);
 
     public CoordsSpoofer() {
-        super("CoordSpoofer", new String[]{"CoordSpoofer"}, "Removes any way for players to get your coords", 0, 0x96DB24, ModuleType.WORLD);
+        super("CoordSpoofer", "Removes any way for players to get your coords", 0, 0x96DB24, ModuleType.WORLD);
     }
 
     @Override

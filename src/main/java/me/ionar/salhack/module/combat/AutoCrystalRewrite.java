@@ -83,7 +83,7 @@ public class AutoCrystalRewrite extends Module {
     }
 
     public AutoCrystalRewrite() {
-        super("AutoCrystalRewrite", new String[]{"AutoCrystal2"}, "Automatically places and destroys crystals", 0, -1, ModuleType.COMBAT);
+        super("AutoCrystalRewrite", "Automatically places and destroys crystals", 0, -1, ModuleType.COMBAT);
     }
 
     private AutoCrystalRewrite Mod = null;

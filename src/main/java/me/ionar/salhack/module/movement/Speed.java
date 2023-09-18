@@ -33,7 +33,7 @@ public class Speed extends Module {
     private Timer timer = null;
 
     public Speed() {
-        super("Speed", new String[]{ "Strafe" }, "Speed strafe", 0, 0xDB2468, ModuleType.MOVEMENT);
+        super("Speed", "Speed strafe", 0, 0xDB2468, ModuleType.MOVEMENT);
     }
 
 

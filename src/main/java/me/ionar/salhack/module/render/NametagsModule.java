@@ -41,7 +41,7 @@ public class NametagsModule extends Module {
     public final Value<Boolean> Ping = new Value<>("Ping", new String[]{""}, "", true);
     Entity camera = mc.getCameraEntity();
     public NametagsModule() {
-        super("NameTags", new String[]{ "Nametag" }, "Improves nametags of players around you", 0, -1, ModuleType.RENDER);
+        super("NameTags", "Improves nametags of players around you", 0, -1, ModuleType.RENDER);
     }
 
     @EventHandler

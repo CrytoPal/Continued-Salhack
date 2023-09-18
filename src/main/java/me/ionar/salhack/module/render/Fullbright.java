@@ -16,7 +16,7 @@ public class Fullbright extends Module {
 
     public final Value<Mode> mode = new Value<>("Mode", new String[]{"Mode", "M"}, "Mode to use for 2b2t flight.", Mode.NightVision);
     public Fullbright() {
-        super("Fullbright", new String[]{"FB"}, "Brights up your world", 0, -1, ModuleType.RENDER);
+        super("Fullbright", "Brights up your world", 0, -1, ModuleType.RENDER);
     }
 
     public enum Mode {

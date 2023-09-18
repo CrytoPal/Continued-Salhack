@@ -24,7 +24,7 @@ public class AutoDye extends Module {
     public final Value<Integer> Radius = new Value<>("Radius", new String[]{"R"}, "Radius to search for sheep", 4, 0, 10, 1);
 
     public AutoDye() {
-        super("AutoDye", new String[]{""}, "Dyes sheep in range, if they are not same color as dye in hand.", 0, -1, ModuleType.MISC);
+        super("AutoDye", "Dyes sheep in range, if they are not same color as dye in hand.", 0, -1, ModuleType.MISC);
     }
 
     @EventHandler

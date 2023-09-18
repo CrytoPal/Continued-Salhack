@@ -83,8 +83,7 @@ public final class AutoTrap extends Module {
     }
 
     public AutoTrap() {
-        super("AutoTrap", new String[]
-                { "AutoTrap" }, "Traps enemies in obsidian", 0, 0x24DB43, Module.ModuleType.COMBAT);
+        super("AutoTrap", "Traps enemies in obsidian", 0, 0x24DB43, Module.ModuleType.COMBAT);
     }
 
     private String lastTickTargetName = "";

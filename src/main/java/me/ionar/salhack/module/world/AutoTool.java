@@ -24,7 +24,7 @@ public class AutoTool extends Module {
     private boolean send;
 
     public AutoTool() {
-        super("AutoTool", new String[]{"S"} ,"yes",0,-1 ,ModuleType.WORLD);
+        super("AutoTool","Switches to the appropriate tool.",0,-1 ,ModuleType.WORLD);
     }
 
     List<Integer> previousSlot = new ArrayList<>();

@@ -5,8 +5,6 @@ import me.ionar.salhack.events.world.TickEvent;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 
-import static me.ionar.salhack.main.Wrapper.mc;
-
 public final class Sprint extends Module {
     public final Value<Modes> Mode = new Value<>("Mode", new String[]{"Mode", "M"}, "The sprint mode to use.", Modes.Legit);
 
@@ -16,7 +14,7 @@ public final class Sprint extends Module {
     }
 
     public Sprint() {
-        super("Sprint", new String[]{ "AutoSprint", "Spr" }, "Automatically sprints for you", 0, 0xDB2450, ModuleType.MOVEMENT);
+        super("Sprint", "Automatically sprints for you", 0, 0xDB2450, ModuleType.MOVEMENT);
     }
 
     @Override

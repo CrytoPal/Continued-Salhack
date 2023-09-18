@@ -19,7 +19,7 @@ public class FakePlayer extends Module {
     public static final Value<String> name = new Value<>("Name", new String[] {"name"}, "Name of the fake player", "blue");
 
     public FakePlayer() {
-        super("FakePlayer", new String[] {"Fake"}, "Summons a fake player", 0, 0xDADB25, ModuleType.MISC);
+        super("FakePlayer", "Summons a fake player", 0, 0xDADB25, ModuleType.MISC);
     }
 
     private OtherClientPlayerEntity FakePlayer;

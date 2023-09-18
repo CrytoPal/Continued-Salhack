@@ -18,7 +18,7 @@ public final class ClickGuiModule extends Module {
     //public TestScreen testScreen = new TestScreen();
 
     public ClickGuiModule() {
-        super("ClickGui", new String[]{ "Gui", "ClickGui" }, "Displays the click gui", GLFW.GLFW_KEY_RIGHT_SHIFT, 0xDB9324, ModuleType.UI);
+        super("ClickGui", "Displays the click gui", GLFW.GLFW_KEY_RIGHT_SHIFT, 0xDB9324, ModuleType.UI);
     }
 
     @Override

@@ -11,6 +11,6 @@ public final class ColorsModule extends Module {
     public final Value<Integer> Alpha = new Value<>("Alpha", new String[]{"bAlpha"}, "Alpha for rendering", 0x99, 0, 255, 11);
 
     public ColorsModule() {
-        super("Colors", new String[]{ "Clrs","Colors" }, "Allows you to modify the GUI Colors", 0, -1, ModuleType.UI);
+        super("Colors", "Allows you to modify the GUI Colors", 0, -1, ModuleType.UI);
     }
 }

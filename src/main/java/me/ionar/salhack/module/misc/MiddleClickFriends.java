@@ -12,7 +12,7 @@ import static org.lwjgl.glfw.GLFW.GLFW_MOUSE_BUTTON_MIDDLE;
 
 public class MiddleClickFriends extends Module {
     public MiddleClickFriends() {
-        super("MiddleClick", new String[] {"MCF", "MiddleClickF"}, "Middle click friends", 0, -1, ModuleType.MISC);
+        super("MiddleClick", "Middle click friends", 0, -1, ModuleType.MISC);
     }
 
     @EventHandler

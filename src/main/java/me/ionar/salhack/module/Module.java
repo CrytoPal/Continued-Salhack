@@ -16,7 +16,6 @@ import java.util.List;
 @SuppressWarnings("rawtypes")
 public abstract class Module {
     public String DisplayName;
-    private String[] Alias;
     private String Description;
     public int Key;
     private int Color;
@@ -29,16 +28,15 @@ public abstract class Module {
     public List<Value> ValueList = new ArrayList<>();
     public float RemainingXAnimation = 0f;
 
-    private Module(String displayName, String[] alias, int key, int color, ModuleType type) {
+    private Module(String displayName, int key, int color, ModuleType type) {
         DisplayName = displayName;
-        Alias = alias;
         Key = key;
         Color = color;
         ModuleType = type;
     }
 
-    public Module(String displayName, String[] alias, String description, int key, int color, ModuleType moduleType) {
-        this(displayName, alias, key, color, moduleType);
+    public Module(String displayName, String description, int key, int color, ModuleType moduleType) {
+        this(displayName, key, color, moduleType);
         Description = description;
     }
 
@@ -81,16 +79,6 @@ public abstract class Module {
         return null;
     }
 
-    public Value find(String alias) {
-        for (Value value : getValueList()) {
-            for (String string : value.getAlias()) {
-                if (alias.equalsIgnoreCase(string)) return value;
-            }
-            if (value.getName().equalsIgnoreCase(alias)) return value;
-        }
-        return null;
-    }
-
     public void unload() {
         ValueList.clear();
     }
@@ -107,14 +95,6 @@ public abstract class Module {
         DisplayName = displayName;
         CommandManager.Get().Reload();
         SaveSettings();
-    }
-
-    public String[] getAlias() {
-        return Alias;
-    }
-
-    public void setAlias(String[] alias) {
-        Alias = alias;
     }
 
     public String getDescription() {

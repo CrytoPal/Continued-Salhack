@@ -164,8 +164,7 @@ public final class AutoExp extends Module {
     }
 
     public AutoExp() {
-        super("AutoExp", new String[]
-                {"AMA"}, "Fixes your armor", 0, 0x24DBD4, ModuleType.COMBAT);
+        super("AutoExp", "Fixes your armor", 0, 0x24DBD4, ModuleType.COMBAT);
     }
 
     @Override

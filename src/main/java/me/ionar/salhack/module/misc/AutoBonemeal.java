@@ -28,7 +28,7 @@ public class AutoBonemeal extends Module {
     public static Value<Integer> Radius = new Value<>("Radius", new String[] {"R"}, "Radius to search for not fully grown seeds", 4, 0, 10, 1);
 
     public AutoBonemeal() {
-        super("AutoBonemeal", new String[] {""}, "Bonemeals anything nearby", 0, -1, ModuleType.MISC);
+        super("AutoBonemeal", "Bonemeals anything nearby", 0, -1, ModuleType.MISC);
     }
 
     private boolean IsRunning = false;

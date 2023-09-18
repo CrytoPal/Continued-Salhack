@@ -18,7 +18,7 @@ public final class Timer extends Module {
     private final me.ionar.salhack.util.Timer timer = new me.ionar.salhack.util.Timer();
 
     public Timer() {
-        super("Timer", new String[]{ "Time", "Tmr" }, "Speeds up the client tick rate", 0, 0x24DBA3, ModuleType.WORLD);
+        super("Timer", "Speeds up the client tick rate", 0, 0x24DBA3, ModuleType.WORLD);
     }
 
     @Override

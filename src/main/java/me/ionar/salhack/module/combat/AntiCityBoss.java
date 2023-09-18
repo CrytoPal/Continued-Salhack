@@ -28,9 +28,7 @@ public class AntiCityBoss extends Module
 
     public AntiCityBoss()
     {
-        super("AntiCityBoss", new String[]
-                        { "AntiTrap" }, "Automatically places 4 obsidian in the direction your facing to prevent getting crystaled",
-                0, -1, ModuleType.COMBAT);
+        super("AntiCityBoss", "Automatically places 4 obsidian in the direction your facing to prevent getting crystaled", 0, -1, ModuleType.COMBAT);
     }
 
 

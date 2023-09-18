@@ -19,9 +19,7 @@ public final class RetardChat extends Module {
     }
 
     public RetardChat() {
-        super("RetardChat", new String[]
-                        { "Retard" }, "Makes your chat retarded", 0,
-                0xDB2485, ModuleType.MISC);
+        super("RetardChat", "Makes your chat retarded", 0, 0xDB2485, ModuleType.MISC);
     }
 
     @Override

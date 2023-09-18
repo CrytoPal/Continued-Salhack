@@ -12,7 +12,7 @@ public final class Rotation extends Module {
     public final Value<Integer> pitchLock = new Value<>("Pitch", new String[]{"P"}, "Lock the player's rotation pitch", 0, 0, 90, 11);
 
     public Rotation() {
-        super("Yaw", new String[]{"RotLock", "Rotation"}, "Locks you rotation for precision", 0, 0xDA24DB, ModuleType.MISC);
+        super("Rotation", "Locks you rotation for precision", 0, 0xDA24DB, ModuleType.MISC);
     }
 
     @Override

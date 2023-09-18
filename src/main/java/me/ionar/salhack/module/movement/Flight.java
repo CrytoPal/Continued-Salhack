@@ -18,7 +18,7 @@ public class Flight extends Module {
     public final Value<Float> Speed = new Value<Float>("Speed", new String[]{""}, "Speed to use", 0.1f, 0.0f, 1.0f, 0.1f);
     // public final Value<Boolean> AntiKick = new Value<Boolean>("AntiKick", new String[]{""}, "Prevents you from getting kicked while flying by vanilla anticheat", true);
     public Flight() {
-        super("Flight", new String[]{ "fly" }, "Lets you fly like a bird", 0, -1, ModuleType.MOVEMENT);
+        super("Flight", "Lets you fly like a bird", 0, -1, ModuleType.MOVEMENT);
     }
 
 

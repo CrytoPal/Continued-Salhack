@@ -24,7 +24,7 @@ public class AutoShovelPath extends Module {
     public final Value<Integer> Radius = new Value<>("Radius", new String[] {"R"}, "Radius to search for grass", 4, 0, 10, 1);
 
     public AutoShovelPath() {
-        super("AutoShovelPath", new String[] {""}, "Automatically shovels path in range", 0, -1, ModuleType.MISC);
+        super("AutoShovelPath", "Automatically shovels path in range", 0, -1, ModuleType.MISC);
     }
 
     @EventHandler

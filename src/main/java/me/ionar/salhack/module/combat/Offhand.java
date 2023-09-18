@@ -26,7 +26,7 @@ public final class Offhand extends Module {
     public final Value<Boolean> OffhandGapOnSword = new Value<>("SwordGap", new String[]{"SwordGap"}, "Will override all else, and try and use a gap in offhand when using a sword in main hand", false);
     public final Value<Boolean> OffhandStrNoStrSword = new Value<>("StrGap", new String[]{"Strength"}, "Will put a potion if offhand if you don't have strength and wearing a sword", false);
     public final Value<Boolean> Override = new Value<>("Override", new String[]{"O"}, "Replaces your current offhand with the item mode if there's another item", false);
-    public final Value<Boolean> NearPlayers = new Value<>("e",new String[]{"NP"},"hi", true);
+    public final Value<Boolean> NearPlayers = new Value<>("Nearby Players",new String[]{"NP"},"Holds crystals only when players are nearby.", true);
 
     // public final Value<Boolean> InventorySwitch = new Value<Boolean>("Switch in Inv", new String[]{"Strength"}, "Puts the Item into your offhand while inventory gui is on.", true);
     // public final Value<Boolean> HotbarFirst = new Value<Boolean>("HotbarFirst", new String[]{"Recursive"}, "Prioritizes your hotbar before inventory slots", false);
@@ -65,8 +65,7 @@ public final class Offhand extends Module {
     }
 
     public Offhand() {
-        super("Offhand", new String[]
-                {"OF"}, "Automatically puts an Item of your choice in your offhand", 0, 0xDADB24, ModuleType.COMBAT);
+        super("Offhand", "Automatically puts an Item of your choice in your offhand", 0, 0xDADB24, ModuleType.COMBAT);
     }
 
     @Override

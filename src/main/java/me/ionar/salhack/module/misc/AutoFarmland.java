@@ -27,7 +27,7 @@ public class AutoFarmland extends Module {
     public final Value<Float> Delay = new Value<>("Delay", new String[] {"D"}, "Delay to use", 1.0f, 0.0f, 10.0f, 1.0f);
 
     public AutoFarmland() {
-        super("AutoFarmland", new String[] {""}, "Automatically sets grass or dirt to farmland", 0, -1, ModuleType.MISC);
+        super("AutoFarmland", "Automatically sets grass or dirt to farmland", 0, -1, ModuleType.MISC);
     }
 
     private Timer timer = new Timer();

@@ -14,8 +14,7 @@ import static me.ionar.salhack.main.Wrapper.mc;
 
 public class BowSpam extends Module {
     public BowSpam() {
-        super("BowSpam", new String[]
-                { "BS" }, "Releases the bow as fast as possible", 0, 0xDB2424, ModuleType.COMBAT);
+        super("BowSpam", "Releases the bow as fast as possible", 0, 0xDB2424, ModuleType.COMBAT);
     }
 
     @EventHandler

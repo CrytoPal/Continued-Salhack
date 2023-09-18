@@ -18,7 +18,7 @@ public class AutoEat extends Module {
     public final Value<Float> RequiredHunger = new Value<Float>("Hunger", new String[] {"Hunger"}, "Required hunger to eat", 18.0f, 0.0f, 20.0f, 1.0f);
 
     public AutoEat() {
-        super("AutoEat", new String[] {"Eat"}, "Automatically eats food, depending on hunger, or health", 0, 0xFFFB11, ModuleType.MISC);
+        super("AutoEat", "Automatically eats food, depending on hunger, or health", 0, 0xFFFB11, ModuleType.MISC);
     }
 
     private boolean m_WasEating = false;
