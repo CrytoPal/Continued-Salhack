@@ -41,24 +41,24 @@ public class HudComponentItem {
 
     protected MinecraftClient mc = MinecraftClient.getInstance();
 
-    public HudComponentItem(String p_DisplayName, float p_X, float p_Y) {
-        DisplayName = p_DisplayName;
-        X = p_X;
-        Y = p_Y;
-        DefaultX = p_X;
-        DefaultY = p_Y;
+    public HudComponentItem(String displayName, float x, float y) {
+        DisplayName = displayName;
+        X = x;
+        Y = y;
+        DefaultX = x;
+        DefaultY = y;
     }
 
     public String GetDisplayName() {
         return DisplayName;
     }
 
-    public void SetWidth(float p_Width) {
-        Width = p_Width;
+    public void SetWidth(float width) {
+        Width = width;
     }
 
-    public void SetHeight(float p_Height) {
-        Height = p_Height;
+    public void SetHeight(float height) {
+        Height = height;
     }
 
     public float GetWidth() {
@@ -73,8 +73,8 @@ public class HudComponentItem {
         return Hidden;
     }
 
-    public void SetHidden(boolean p_Hide) {
-        Hidden = p_Hide;
+    public void SetHidden(boolean hide) {
+        Hidden = hide;
 
         HudManager.Get().ScheduleSave(this);
     }
@@ -87,21 +87,21 @@ public class HudComponentItem {
         return Y;
     }
 
-    public void SetX(float p_X) {
-        if (X == p_X)
+    public void SetX(float x) {
+        if (X == x)
             return;
 
-        X = p_X;
+        X = x;
 
         if (ClampLevel == 0)
             HudManager.Get().ScheduleSave(this);
     }
 
-    public void SetY(float p_Y) {
-        if (Y == p_Y)
+    public void SetY(float y) {
+        if (Y == y)
             return;
 
-        Y = p_Y;
+        Y = y;
 
         if (ClampLevel == 0)
             HudManager.Get().ScheduleSave(this);
