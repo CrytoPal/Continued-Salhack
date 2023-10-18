@@ -16,10 +16,6 @@ repositories {
 		name = "meteor-maven-snapshots"
 		url = "https://maven.meteordev.org/snapshots"
 	}
-	maven {
-		name = 'impactdevelopment-repo'
-		url = 'https://impactdevelopment.github.io/maven/'
-	}
 	mavenCentral()
 }
 

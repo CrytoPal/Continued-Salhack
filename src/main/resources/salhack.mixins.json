@@ -21,6 +21,7 @@
     "MixinPlayerEntity",
     "MixinRenderTickCounter",
     "PlayerListHudMixin",
-    "RotationMixin"
+    "RotationMixin",
+    "VelocityUpdateAccessor"
   ]
 }

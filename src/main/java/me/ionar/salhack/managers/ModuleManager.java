@@ -51,6 +51,7 @@ public class ModuleManager {
         Add(new BowSpam());
         Add(new AutoCity());
         Add(new AutoExp());
+        Add(new Velocity());
 
         /// Exploit
         Add(new Bowbomb());
