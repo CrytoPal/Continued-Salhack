@@ -7,6 +7,7 @@ import me.ionar.salhack.main.SalHack;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.BlockInteractionHelper;
+import me.ionar.salhack.util.ChatUtils;
 import me.ionar.salhack.util.SalUtil;
 import me.ionar.salhack.util.entity.PlayerUtil;
 import net.minecraft.block.Block;
@@ -115,7 +116,7 @@ public final class AutoTrap extends Module {
         lastHotbarSlot = -1;
 
         if (findObiInHotbar() == -1) {
-            SalHack.SendMessage(String.format("[AutoTrap] You do not have any %s in your hotbar!", Formatting.LIGHT_PURPLE + (EChests.getValue() ? "Ender Chests" : "Obsidian") + Formatting.RESET));
+            ChatUtils.errorMessage(String.format(Formatting.BLUE + "[AutoTrap] " + Formatting.RED + "You do not have any %s in your hotbar!", Formatting.LIGHT_PURPLE + (EChests.getValue() ? "Ender Chests" : "Obsidian") + Formatting.RESET));
             toggle(true);
         }
     }
@@ -135,7 +136,7 @@ public final class AutoTrap extends Module {
             playerHotbarSlot = -1;
             lastHotbarSlot = -1;
             if (announceUsage.getValue())
-                SalHack.SendMessage("[AutoTrap] Disabled!");
+                ChatUtils.sendMessage(Formatting.BLUE + "[AutoTrap] " + Formatting.WHITE + "Disabled!");
         }
     }
 
@@ -150,7 +151,7 @@ public final class AutoTrap extends Module {
                 if (firstRun) {
                     firstRun = false;
                     if (announceUsage.getValue()) {
-                        SalHack.SendMessage("[AutoTrap] Enabled, waiting for target.");
+                        ChatUtils.sendMessage(Formatting.BLUE + "[AutoTrap] " + Formatting.WHITE + "Enabled, waiting for target.");
                     }
                 }
                 return;
@@ -159,13 +160,13 @@ public final class AutoTrap extends Module {
                 firstRun = false;
                 lastTickTargetName = closestTarget.getName().getString();
                 if (announceUsage.getValue()) {
-                    SalHack.SendMessage("[AutoTrap] Enabled, target: " + lastTickTargetName);
+                    ChatUtils.sendMessage(Formatting.BLUE + "[AutoTrap]" + Formatting.WHITE + "Target: " + lastTickTargetName);
                 }
             } else if (!lastTickTargetName.equals(closestTarget.getName().getString())) {
                 lastTickTargetName = closestTarget.getName().getString();
                 offsetStep = 0;
                 if (announceUsage.getValue()) {
-                    SalHack.SendMessage("[AutoTrap] New target: " + lastTickTargetName);
+                    ChatUtils.sendMessage(Formatting.BLUE + "[AutoTrap]" + Formatting.WHITE + "New target: " + lastTickTargetName);
                 }
             }
 

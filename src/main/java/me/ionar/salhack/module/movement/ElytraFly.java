@@ -1,6 +1,7 @@
 package me.ionar.salhack.module.movement;
 
 import io.github.racoondog.norbit.EventHandler;
+import me.ionar.salhack.util.ChatUtils;
 import me.ionar.salhack.util.entity.ItemUtil;
 import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.ElytraItem;
@@ -129,7 +130,7 @@ public final class ElytraFly extends Module {
 
         if (YHeight <= CancelAtHeight.getValue()) {
             if (!SendMessage) {
-                SalHack.SendMessage(Formatting.RED + "WARNING, you must scaffold up or use fireworks, as YHeight <= CancelAtHeight!");
+                ChatUtils.warningMessage("WARNING, you must scaffold up or use fireworks, as YHeight <= CancelAtHeight!");
                 SendMessage = true;
             }
             return;

@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
+import me.ionar.salhack.util.ChatUtils;
 import net.minecraft.client.network.OtherClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import org.apache.commons.io.IOUtils;
@@ -39,9 +40,9 @@ public class FakePlayer extends Module {
             FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(name.getValue())), name.getValue()));
         } catch (Exception e) {
             FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(mc.player.getEntityName())), name.getValue()));
-            SendMessage("Failed to load uuid, setting another one.");
+            ChatUtils.warningMessage("Failed to load uuid, setting another one.");
         }
-        SendMessage(String.format("%s has been spawned.", name.getValue()));
+        ChatUtils.sendMessage(String.format("%s has been spawned.", name.getValue()));
 
         FakePlayer.copyFrom(mc.player);
         FakePlayer.headYaw = mc.player.getHeadYaw();

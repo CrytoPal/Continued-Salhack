@@ -9,6 +9,7 @@ import me.ionar.salhack.mixin.ClientPlayerEntityAccessor;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.util.BlockInteractionHelper;
+import me.ionar.salhack.util.ChatUtils;
 import me.ionar.salhack.util.MathUtil;
 import me.ionar.salhack.util.entity.PlayerUtil;
 import net.minecraft.block.Block;
@@ -17,6 +18,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.c2s.play.UpdateSelectedSlotC2SPacket;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 
@@ -121,7 +123,7 @@ public class Surround extends Module {
         if (!mc.player.isOnGround() && !ActivateOnlyOnShift.getValue()) {
             if (ToggleOffGround.getValue()) {
                 toggle(true);
-                SalHack.SendMessage("[Surround]: You are off ground! toggling!");
+                ChatUtils.sendMessage(Formatting.BLUE + "[Surround]: " + Formatting.WHITE + "You are off ground! toggling!");
                 return;
             }
         }

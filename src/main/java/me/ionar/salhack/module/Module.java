@@ -7,6 +7,7 @@ import me.ionar.salhack.managers.CommandManager;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.managers.PresetsManager;
 import me.ionar.salhack.module.ui.Notification;
+import me.ionar.salhack.util.ChatUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -47,7 +48,7 @@ public abstract class Module {
         ModuleManager.Get().OnModEnable(this);
         if (mc.player != null) {
             RemainingXAnimation = mc.textRenderer.getWidth(GetFullArrayListDisplayName())+10f;
-            if (notification.isEnabled()) mc.player.sendMessage(Text.of(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.GREEN + " ON"));
+            if (notification.isEnabled()) ChatUtils.sendMessage(DisplayName + Formatting.GREEN + " ON");
         }
         SalHackMod.NORBIT_EVENT_BUS.post(new ModuleEvent.Enabled(this));
     }
@@ -57,7 +58,7 @@ public abstract class Module {
         /// disallow events to be called
         SalHackMod.NORBIT_EVENT_BUS.unsubscribe(this);
         SalHackMod.NORBIT_EVENT_BUS.post(new ModuleEvent.Disabled(this));
-        if (mc.player != null && notification.isEnabled()) SalHack.SendMessage(Formatting.AQUA + "[Salhack] " + Formatting.WHITE + DisplayName + Formatting.RED + " OFF");
+        if (mc.player != null && notification.isEnabled()) ChatUtils.sendMessage(DisplayName + Formatting.RED + " OFF");
     }
 
     public void onToggle() {}
@@ -194,10 +195,6 @@ public abstract class Module {
 
     public String GetFullArrayListDisplayName() {
         return getDisplayName() + (getMetaData() != null ? " " + Formatting.GRAY + getMetaData() : "");
-    }
-
-    public void SendMessage(String message) {
-        if (mc.player != null) SalHack.SendMessage(Formatting.AQUA + "[" + GetArrayListDisplayName() + "]: " + Formatting.RESET + message);
     }
 
     public void SaveSettings() {

@@ -9,6 +9,7 @@ import me.ionar.salhack.managers.BlockManager;
 import me.ionar.salhack.managers.FriendManager;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
+import me.ionar.salhack.util.ChatUtils;
 import me.ionar.salhack.util.CrystalUtils;
 import me.ionar.salhack.util.entity.EntityUtil;
 import me.ionar.salhack.util.entity.PlayerUtil;
@@ -56,7 +57,7 @@ public class AutoCity extends Module {
         final ArrayList<Pair<PlayerEntity, ArrayList<BlockPos>>> cityPlayers = GetPlayersReadyToBeCitied();
 
         if (cityPlayers.isEmpty()) {
-            SendMessage(Formatting.RED + "There is no one to city!");
+            ChatUtils.errorMessage("There is no one to city!");
             toggle(true);
             return;
         }
@@ -81,13 +82,13 @@ public class AutoCity extends Module {
         }
 
         if (targetBlock == null) {
-            SendMessage(Formatting.RED + "Couldn't find any blocks to mine!");
+            ChatUtils.errorMessage("Couldn't find any blocks to mine!");
             toggle(true);
             return;
         }
 
         BlockManager.SetCurrentBlock(targetBlock);
-        SendMessage(Formatting.LIGHT_PURPLE + "Attempting to mine a block by your target: " + Formatting.RED + target.getName().getString());
+        ChatUtils.sendMessage(Formatting.LIGHT_PURPLE + "Attempting to mine a block by your target: " + Formatting.RED + target.getName().getString());
     }
 
     @EventHandler
@@ -114,7 +115,7 @@ public class AutoCity extends Module {
         }
 
         if (!hasPickaxe) {
-            SendMessage(Formatting.RED + "No pickaxe!");
+            ChatUtils.errorMessage("No pickaxe!");
             toggle(true);
             return;
         }
@@ -122,7 +123,7 @@ public class AutoCity extends Module {
         BlockPos currBlock = BlockManager.GetCurrBlock();
 
         if (currBlock == null) {
-            SendMessage(Formatting.GREEN + "Done!");
+            ChatUtils.sendMessage("Done!");
             toggle(true);
             return;
         }

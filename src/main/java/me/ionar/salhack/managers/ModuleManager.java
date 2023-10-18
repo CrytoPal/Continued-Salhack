@@ -52,6 +52,7 @@ public class ModuleManager {
         Add(new AutoCity());
         Add(new AutoExp());
         Add(new Velocity());
+        Add(new MiddleClickPearl());
 
         /// Exploit
         Add(new Bowbomb());

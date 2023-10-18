@@ -5,6 +5,7 @@ import me.ionar.salhack.events.EventEra;
 import me.ionar.salhack.events.player.PlayerMotionUpdate;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Value;
+import me.ionar.salhack.util.ChatUtils;
 import me.ionar.salhack.util.Timer;
 import me.ionar.salhack.util.entity.ItemUtil;
 import me.ionar.salhack.util.entity.PlayerUtil;
@@ -71,7 +72,7 @@ public final class AutoExp extends Module {
                     ReadyToMend = true;
 
                     if (AllDone) {
-                        SendMessage(Formatting.AQUA + "Disabling.");
+                        ChatUtils.warningMessage("Disabling.");
                         toggle(true);
                         return;
                     }
@@ -92,7 +93,7 @@ public final class AutoExp extends Module {
                         currSlot = mc.player.getInventory().selectedSlot;
                         mc.player.getInventory().selectedSlot = slot;
                     } else {
-                        SendMessage(Formatting.RED + "No XP Found!");
+                        ChatUtils.errorMessage("No XP Found! Disabling.");
 
                         SlotsToMoveTo.forEach(state ->
                         {
@@ -131,7 +132,7 @@ public final class AutoExp extends Module {
                                     state1.MovedToInv = false;
                                     state1.Reequip = true;
                                 });
-                                SendMessage(Formatting.GREEN + "All done!");
+                                ChatUtils.sendMessage(Formatting.GREEN + "All done!");
                                 state.MovedToInv = true;
                                 AllDone = true;
                                 return;
@@ -141,7 +142,7 @@ public final class AutoExp extends Module {
                             state.MovedToInv = false;
                             state.Reequip = false;
 
-                            SendMessage("Done Mending");
+                            ChatUtils.sendMessage("Done Mending");
                             ReadyToMend = false;
 
                             SlotsToMoveTo.remove(0);
@@ -179,7 +180,7 @@ public final class AutoExp extends Module {
         int slot = PlayerUtil.GetItemInHotbar(Items.EXPERIENCE_BOTTLE);
 
         if (slot == -1) {
-            SendMessage("You don't have any XP! Disabling!");
+            ChatUtils.errorMessage("You don't have any XP! Disabling!");
             toggle(true);
             return;
         }
@@ -198,13 +199,13 @@ public final class AutoExp extends Module {
 
                 if (pct < Pct.getValue()) {
                     needMend = true;
-                    SendMessage(Formatting.LIGHT_PURPLE + "[" + ++i + "] Mending " + Formatting.AQUA + item.getName() + Formatting.LIGHT_PURPLE + " it has " + pct + "%.");
+                    ChatUtils.sendMessage(Formatting.LIGHT_PURPLE + "[" + ++i + "] Mending " + Formatting.AQUA + item.getName() + Formatting.LIGHT_PURPLE + " it has " + pct + "%.");
                 }
             }
         }
 
         if (ArmorsToMend.isEmpty() || !needMend) {
-            SendMessage(Formatting.RED + "Nothing to mend!");
+            ChatUtils.warningMessage("Nothing to mend!");
             toggle(true);
             return;
         }
@@ -213,7 +214,7 @@ public final class AutoExp extends Module {
 
         ArmorsToMend.forEach(item ->
         {
-            SendMessage(item.getName() + " " + item.getDamage());
+            ChatUtils.sendMessage(item.getName() + " " + item.getDamage());
         });
 
         i = 0;

@@ -67,12 +67,6 @@ public class SalHack {
 
  */
 
-    /// Writes a message to ingame chat
-    /// Player must be ingame for this
-    public static void SendMessage(String string) {
-        mc.player.sendMessage(Text.of(string));
-    }
-
     public static HudManager GetHudManager() {
         return m_HudManager;
     }
