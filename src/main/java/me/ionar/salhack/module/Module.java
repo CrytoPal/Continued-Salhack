@@ -42,6 +42,7 @@ public abstract class Module {
     }
 
     public void onEnable() {
+        if (Hidden) return;
         Notification notification = (Notification) ModuleManager.Get().GetMod(Notification.class);
         /// allow events to be called
         SalHackMod.NORBIT_EVENT_BUS.subscribe(this);
@@ -54,6 +55,7 @@ public abstract class Module {
     }
 
     public void onDisable() {
+        if (Hidden) return;
         Notification notification = (Notification) ModuleManager.Get().GetMod(Notification.class);
         /// disallow events to be called
         SalHackMod.NORBIT_EVENT_BUS.unsubscribe(this);

@@ -83,7 +83,7 @@ public class MenuComponentModList extends MenuComponent {
                 public void OnMouseLeave() {}
             };
 
-            ComponentItem hideButton = new ComponentItemHiddenMod(module, "Hidden", "Hides " + module.getDisplayName() + " from the arraylist",  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip | ComponentItem.RectDisplayOnClicked | ComponentItem.DontDisplayClickableHighlight, 0, listener, Width, Height);
+            ComponentItem hideButton = new ComponentItemHiddenMod(module, "Hidden", "Hides " + module.getDisplayName() + " from the Arraylist and Notifications",  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip | ComponentItem.RectDisplayOnClicked | ComponentItem.DontDisplayClickableHighlight, 0, listener, Width, Height);
             componentItem.DropdownItems.add(hideButton);
             componentItem.DropdownItems.add(new ComponentItemKeybind(module, "Keybind:"+module.getDisplayName(), module.getDescription(),  ComponentItem.Clickable | ComponentItem.Hoverable | ComponentItem.Tooltip, 0, null, Width, Height));
             AddItem(componentItem);
