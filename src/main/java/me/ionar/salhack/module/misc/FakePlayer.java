@@ -46,7 +46,7 @@ public class FakePlayer extends Module {
 
         FakePlayer.copyFrom(mc.player);
         FakePlayer.headYaw = mc.player.getHeadYaw();
-        mc.world.addEntity(-100, FakePlayer);
+        mc.world.addEntity(FakePlayer);
     }
 
     @Override

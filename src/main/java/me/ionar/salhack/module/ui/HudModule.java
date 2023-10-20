@@ -22,6 +22,6 @@ public final class HudModule extends Module {
 
     @EventHandler
     private void OnRenderGameOverlay(RenderGameOverlayEvent event) {
-        if (!mc.options.debugEnabled) HudManager.Get().OnRender(event.tickDelta, event.getContext());
+        if (!mc.inGameHud.getDebugHud().shouldShowDebugHud()) HudManager.Get().OnRender(event.tickDelta, event.getContext());
     }
 }

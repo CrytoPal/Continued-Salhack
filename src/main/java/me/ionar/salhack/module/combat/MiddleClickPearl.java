@@ -25,14 +25,16 @@ public class MiddleClickPearl extends Module {
     private boolean clicked;
     private MiddleClickFriends _mcf;
     @EventHandler
-    private void OnPlayerUpdate(MouseButtonEvent event) {
-        if (event.getAction() == 0 || event.getButton() != GLFW_MOUSE_BUTTON_MIDDLE) return;
-        if (findPearlInHotbar() != -1) {
-            final int oldSlot = mc.player.getInventory().selectedSlot;
-            mc.player.getInventory().selectedSlot = findPearlInHotbar();
-            mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
-            mc.player.getInventory().selectedSlot = oldSlot;
-        } else ChatUtils.errorMessage("No Ender Pearls found in Hotbar!");
+    private void onMousePress(MouseButtonEvent event) {
+        if (mc.world != null) {
+            if (event.getAction() == 0 || event.getButton() != GLFW_MOUSE_BUTTON_MIDDLE) return;
+            if (findPearlInHotbar() != -1) {
+                final int oldSlot = mc.player.getInventory().selectedSlot;
+                mc.player.getInventory().selectedSlot = findPearlInHotbar();
+                mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
+                mc.player.getInventory().selectedSlot = oldSlot;
+            } else ChatUtils.errorMessage("No Ender Pearls found in Hotbar!");
+        }
     }
 
     public MiddleClickPearl() {

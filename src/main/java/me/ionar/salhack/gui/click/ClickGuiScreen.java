@@ -163,7 +163,7 @@ public class ClickGuiScreen extends SalGuiScreen
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         final Window res = mc.getWindow();
-        super.renderBackground(context);
+        super.renderBackground(context, mouseX, mouseY, delta);
 
         if (!_snowList.isEmpty() && ClickGuiMod.Snowing.getValue())
         {
@@ -186,21 +186,18 @@ public class ClickGuiScreen extends SalGuiScreen
             MenuComponents.remove(l_LastHovered);
             MenuComponents.add(l_LastHovered);
         }
-        super.render(context, mouseX, mouseY, delta);
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        if (amount > 0)
-        {
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        if (verticalAmount > 0) {
             OffsetY = Math.max(0, OffsetY-1);
         }
         /// down
-        else if (amount < 0)
-        {
+        else if (verticalAmount < 0) {
             OffsetY = Math.min(100, OffsetY + 1);
         }
-        return super.mouseScrolled(mouseX, mouseY, amount);
+        return super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount);
     }
 
     @Override

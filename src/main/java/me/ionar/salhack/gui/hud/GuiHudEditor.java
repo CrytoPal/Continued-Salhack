@@ -22,7 +22,6 @@ public class GuiHudEditor extends Screen {
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         super.render(context, mouseX, mouseY, delta);
-        this.renderBackground(context);
 
         context.getMatrices().push();
 
