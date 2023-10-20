@@ -48,20 +48,22 @@ public class CoordsHudComponent extends HudComponentItem {
     @Override
     public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
         super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
+        if (mc.world != null) {
 
-        if (NetherCords.getValue()) {
-            coords = "XYZ: " + Formatting.WHITE + format(getX()) + " , " + format(getY()) + " , " + format(getZ()) + " (" + format(NethergetX()) + ", " + format(NethergetZ()) + ")";
-        } else {
-            coords = "XYZ: " + Formatting.WHITE + format(getX()) + " , " + format(getY()) + " , " + format(getZ());
-        }
-        if (mc.world.getDimension().respawnAnchorWorks()) {
-            if (OverWorldCoords.getValue()) {
-                coords = "XYZ: " + Formatting.WHITE + format(NethergetX()) + " , " + format(getY()) + " , " + format(NethergetZ()) + " (" + format(getX()) + ", " + format(getZ()) + ")";
+            if (NetherCords.getValue()) {
+                coords = "XYZ: " + Formatting.WHITE + format(getX()) + " , " + format(getY()) + " , " + format(getZ()) + " (" + format(NethergetX()) + ", " + format(NethergetZ()) + ")";
             } else {
-                coords = "XYZ: " + Formatting.WHITE + format(NethergetX()) + " , " + format(getY()) + " , " + format(NethergetZ());
+                coords = "XYZ: " + Formatting.WHITE + format(getX()) + " , " + format(getY()) + " , " + format(getZ());
             }
+            if (mc.world.getDimension().respawnAnchorWorks()) {
+                if (OverWorldCoords.getValue()) {
+                    coords = "XYZ: " + Formatting.WHITE + format(NethergetX()) + " , " + format(getY()) + " , " + format(NethergetZ()) + " (" + format(getX()) + ", " + format(getZ()) + ")";
+                } else {
+                    coords = "XYZ: " + Formatting.WHITE + format(NethergetX()) + " , " + format(getY()) + " , " + format(NethergetZ());
+                }
 
-        }
+            }
+        } else coords = "XYZ: " + Formatting.WHITE + format(getX()) + " , " + format(getY()) + " , " + format(getZ());
 
         switch (Mode.getValue()) {
 
@@ -110,103 +112,113 @@ public class CoordsHudComponent extends HudComponentItem {
     }
 
     private double getX() {
-        if (mc.world.getDimension().respawnAnchorWorks()) {
-            if (getCoordSpoofer()) {
-                if (GetRandom()) {
-                    return mc.player.getX() * 8 + randX() * 8;
+        if (mc.world != null) {
+            if (mc.world.getDimension().respawnAnchorWorks()) {
+                if (getCoordSpoofer()) {
+                    if (GetRandom()) {
+                        return mc.player.getX() * 8 + randX() * 8;
+                    }
+                    if (!GetRandom()) {
+                        return mc.player.getX() * 8 + _getCoords.CoordsX.getValue() * 8 + _getCoords.CoordsNegativeX.getValue() * 8;
+                    }
                 }
-                if (!GetRandom()) {
-                    return mc.player.getX() * 8 + _getCoords.CoordsX.getValue() * 8 + _getCoords.CoordsNegativeX.getValue() * 8;
+                return mc.player.getX() * 8;
+            } else {
+                if (getCoordSpoofer()) {
+                    if (GetRandom()) {
+                        return mc.player.getX() + randX();
+                    }
+                    if (!GetRandom()) {
+                        return mc.player.getX() + _getCoords.CoordsX.getValue() + _getCoords.CoordsNegativeX.getValue();
+                    }
                 }
+                return mc.player.getX();
             }
-            return mc.player.getX() * 8;
-        } else {
-            if (getCoordSpoofer()) {
-                if (GetRandom()) {
-                    return mc.player.getX() + randX();
-                }
-                if (!GetRandom()) {
-                    return mc.player.getX() + _getCoords.CoordsX.getValue() + _getCoords.CoordsNegativeX.getValue();
-                }
-            }
-            return mc.player.getX();
-        }
+        } else return 0;
     }
 
     private double NethergetX() {
-        if (mc.world.getDimension().respawnAnchorWorks()) {
-            if (getCoordSpoofer()) {
-                if (GetRandom()) {
-                    return mc.player.getX() + randX();
+        if (mc.world != null) {
+            if (mc.world.getDimension().respawnAnchorWorks()) {
+                if (getCoordSpoofer()) {
+                    if (GetRandom()) {
+                        return mc.player.getX() + randX();
+                    }
+                    if (!GetRandom()) {
+                        return mc.player.getX() + _getCoords.CoordsX.getValue() + _getCoords.CoordsNegativeX.getValue();
+                    }
                 }
-                if (!GetRandom()) {
-                    return mc.player.getX() + _getCoords.CoordsX.getValue() + _getCoords.CoordsNegativeX.getValue();
+                return mc.player.getX();
+            } else {
+                if (getCoordSpoofer()) {
+                    if (GetRandom()) {
+                        return mc.player.getX() / 8 + randX() / 8;
+                    }
+                    if (!GetRandom()) {
+                        return mc.player.getX() / 8 + _getCoords.CoordsX.getValue() / 8 + _getCoords.CoordsNegativeX.getValue() / 8;
+                    }
                 }
+                return mc.player.getX() / 8;
             }
-            return mc.player.getX();
-        } else {
-            if (getCoordSpoofer()) {
-                if (GetRandom()) {
-                    return mc.player.getX() / 8 + randX() / 8;
-                }
-                if (!GetRandom()) {
-                    return mc.player.getX() / 8 + _getCoords.CoordsX.getValue() / 8 + _getCoords.CoordsNegativeX.getValue() / 8;
-                }
-            }
-            return mc.player.getX() / 8;
-        }
+        } else return 0;
     }
 
     private double NethergetZ() {
-        if (mc.world.getDimension().respawnAnchorWorks()) {
-            if (getCoordSpoofer()) {
-                if (GetRandom()) {
-                    return mc.player.getZ() + randZ();
+        if (mc.world != null) {
+            if (mc.world.getDimension().respawnAnchorWorks()) {
+                if (getCoordSpoofer()) {
+                    if (GetRandom()) {
+                        return mc.player.getZ() + randZ();
+                    }
+                    if (!GetRandom()) {
+                        return mc.player.getZ() + _getCoords.CoordsZ.getValue() + _getCoords.CoordsNegativeZ.getValue();
+                    }
                 }
-                if (!GetRandom()) {
-                    return mc.player.getZ() + _getCoords.CoordsZ.getValue() + _getCoords.CoordsNegativeZ.getValue();
+                return mc.player.getZ();
+            } else {
+                if (getCoordSpoofer()) {
+                    if (GetRandom()) {
+                        return mc.player.getZ() / 8 + randZ() / 8;
+                    }
+                    if (!GetRandom()) {
+                        return mc.player.getZ() / 8 + _getCoords.CoordsZ.getValue() / 8 + _getCoords.CoordsNegativeZ.getValue() / 8;
+                    }
                 }
+                return mc.player.getZ() / 8;
             }
-            return mc.player.getZ();
-        } else {
-            if (getCoordSpoofer()) {
-                if (GetRandom()) {
-                    return mc.player.getZ() / 8 + randZ() / 8;
-                }
-                if (!GetRandom()) {
-                    return mc.player.getZ() / 8 + _getCoords.CoordsZ.getValue() / 8 + _getCoords.CoordsNegativeZ.getValue() / 8;
-                }
-            }
-            return mc.player.getZ() / 8;
-        }
+        } else return 0;
     }
 
     private double getZ() {
-        if (mc.world.getDimension().respawnAnchorWorks()) {
-            if (getCoordSpoofer()) {
-                if (GetRandom()) {
-                    return mc.player.getZ() * 8 + randZ() * 8;
+        if (mc.world != null) {
+            if (mc.world.getDimension().respawnAnchorWorks()) {
+                if (getCoordSpoofer()) {
+                    if (GetRandom()) {
+                        return mc.player.getZ() * 8 + randZ() * 8;
+                    }
+                    if (!GetRandom()) {
+                        return mc.player.getZ() * 8 + _getCoords.CoordsZ.getValue() * 8 + _getCoords.CoordsNegativeZ.getValue() * 8;
+                    }
                 }
-                if (!GetRandom()) {
-                    return mc.player.getZ() * 8 + _getCoords.CoordsZ.getValue() * 8 + _getCoords.CoordsNegativeZ.getValue() * 8;
+                return mc.player.getZ() * 8;
+            } else {
+                if (getCoordSpoofer()) {
+                    if (GetRandom()) {
+                        return mc.player.getZ() + randZ();
+                    }
+                    if (!GetRandom()) {
+                        return mc.player.getZ() + _getCoords.CoordsZ.getValue() + _getCoords.CoordsNegativeZ.getValue();
+                    }
                 }
+                return mc.player.getZ();
             }
-            return mc.player.getZ() * 8;
-        } else {
-            if (getCoordSpoofer()) {
-                if (GetRandom()) {
-                    return mc.player.getZ() + randZ();
-                }
-                if (!GetRandom()) {
-                    return mc.player.getZ() + _getCoords.CoordsZ.getValue() + _getCoords.CoordsNegativeZ.getValue();
-                }
-            }
-            return mc.player.getZ();
-        }
+        } else return 0;
     }
 
     private double getY() {
-        return  mc.player.getY();
+        if (mc.world != null) {
+            return mc.player.getY();
+        } else return 0;
     }
 
     public enum Modes {

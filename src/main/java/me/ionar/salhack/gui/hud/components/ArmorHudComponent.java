@@ -4,6 +4,7 @@ import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.module.Value;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
@@ -89,10 +90,14 @@ public class ArmorHudComponent extends HudComponentItem {
                     context.drawTextWithShadow(mc.textRenderer, Text.of(durabilityBoot), (int) GetX() + 57, (int) GetY() - 15, GetTextColor());
                 }
             }
-
-            SetWidth(60);
-            SetHeight(8);
+        } else {
+            context.drawItem(Items.NETHERITE_HELMET.getDefaultStack(), (int) GetX() - 5, (int) GetY() - 5);
+            context.drawItem(Items.NETHERITE_CHESTPLATE.getDefaultStack(), (int) GetX() + 15, (int) GetY() - 5);
+            context.drawItem(Items.NETHERITE_LEGGINGS.getDefaultStack(), (int) GetX() + 35, (int) GetY() - 5);
+            context.drawItem(Items.NETHERITE_BOOTS.getDefaultStack(), (int) GetX() + 55, (int) GetY() - 5);
         }
+        SetWidth(60);
+        SetHeight(8);
     }
 
     public static float GetPctFromStack(ItemStack p_Stack)

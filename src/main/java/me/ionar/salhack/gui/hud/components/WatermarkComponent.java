@@ -11,16 +11,19 @@ import me.ionar.salhack.util.color.SalRainbowUtil;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
 
 public class WatermarkComponent extends HudComponentItem {
 
     private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
 
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
-    public final Value<Boolean> Reliant = new Value<Boolean>("Reliant", new String[]
-            { "" }, "Shows reliant text instead of salhack", false);
+    public final Value<Boolean> Image = new Value<Boolean>("Image", new String[]
+            { "" }, "Shows Image instead of SalHack text", false);
 
     private static String WatermarkString = SalHackMod.NAME + Formatting.WHITE + " " + SalHackMod.VERSION;
+
+    private static final Identifier img = new Identifier("salhack","icon.png");
 
     public WatermarkComponent() {
         super("Watermark", 2, 2);
@@ -31,19 +34,7 @@ public class WatermarkComponent extends HudComponentItem {
     public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
         super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
 
-        if (Reliant.getValue()) {
-            final String l_Text = "Reliant (rel-1.20.1-Fabric)";
-
-            if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), l_Text, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
-            } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(l_Text), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
-            }
-            Rainbow.OnRender();
-            SetWidth(mc.textRenderer.getWidth(l_Text));
-            SetHeight(mc.textRenderer.fontHeight);
-        }
-        else {
+        if (!(Image.getValue())) {
             if (HudModule.CustomFont.getValue()) {
                 FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), WatermarkString, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
             } else {
@@ -52,6 +43,10 @@ public class WatermarkComponent extends HudComponentItem {
             Rainbow.OnRender();
             SetWidth(mc.textRenderer.getWidth(WatermarkString));
             SetHeight(mc.textRenderer.fontHeight);
+        } else {
+            context.drawTexture(img, (int) GetX(), (int) GetY(), 0, 0, 0, 175, 90, 175, 90);
+            SetWidth(175);
+            SetHeight(90);
         }
     }
 }

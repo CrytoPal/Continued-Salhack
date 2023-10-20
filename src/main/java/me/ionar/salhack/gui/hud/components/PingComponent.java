@@ -18,6 +18,8 @@ public class PingComponent extends HudComponentItem {
 
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
     private final int i = 0;
+
+    private String ping = "Ping ";
     public PingComponent() {
         super("Ping", 2, 43);
         SetHidden(false);
@@ -30,16 +32,16 @@ public class PingComponent extends HudComponentItem {
         if (mc.world != null) {
             PlayerListEntry playerListEntry = Objects.requireNonNull(mc.player).networkHandler.getPlayerListEntry(mc.player.getUuid());
 
-            final String ping = "Ping " + Formatting.WHITE + playerListEntry.getLatency();
+            ping = "Ping " + Formatting.WHITE + playerListEntry.getLatency();
 
-            if (HudModule.CustomFont.getValue()) {
-                FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), ping, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
-            } else {
-                context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
-            }
-            Rainbow.OnRender();
-            SetWidth(mc.textRenderer.getWidth(ping));
-            SetHeight(mc.textRenderer.fontHeight);
         }
+        if (HudModule.CustomFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), ping, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+        } else {
+            context.drawTextWithShadow(mc.textRenderer, Text.of(ping), (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
+        }
+        Rainbow.OnRender();
+        SetWidth(mc.textRenderer.getWidth(ping));
+        SetHeight(mc.textRenderer.fontHeight);
     }
 }

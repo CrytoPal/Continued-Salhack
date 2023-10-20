@@ -27,26 +27,24 @@ public class BiomeComponent extends HudComponentItem {
         super("Biome", 2, 123);
     }
 
+    String biome = "Biome: ";
+
     @Override
     public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
         super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
-        if (mc.world != null) {
+        if (mc.world != null & mc.player != null) {
+            BLOCK_POS.set(mc.player.getX(), mc.player.getY(), mc.player.getZ());
+            Identifier id = mc.world.getRegistryManager().get(RegistryKeys.BIOME).getId(mc.world.getBiome(BLOCK_POS).value());
 
-            if (mc.player != null && mc.world != null) {
-                BLOCK_POS.set(mc.player.getX(), mc.player.getY(), mc.player.getZ());
-                Identifier id = mc.world.getRegistryManager().get(RegistryKeys.BIOME).getId(mc.world.getBiome(BLOCK_POS).value());
+            biome = "Biome: " + Formatting.WHITE + Arrays.stream(id.getPath().split("_")).map(StringUtils::capitalize).collect(Collectors.joining(" "));
+        }
+        SetWidth(mc.textRenderer.getWidth(biome));
+        SetHeight(mc.textRenderer.fontHeight);
 
-                final String biome = "Biome: " + Formatting.WHITE + Arrays.stream(id.getPath().split("_")).map(StringUtils::capitalize).collect(Collectors.joining(" "));
-
-                SetWidth(mc.textRenderer.getWidth(biome));
-                SetHeight(mc.textRenderer.fontHeight);
-
-                if (HudModule.CustomFont.getValue()) {
-                    FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), biome, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
-                } else {
-                    context.drawTextWithShadow(mc.textRenderer, biome, (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
-                }
-            }
+        if (HudModule.CustomFont.getValue()) {
+            FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), biome, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
+        } else {
+            context.drawTextWithShadow(mc.textRenderer, biome, (int) GetX(), (int) GetY(), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor());
         }
     }
 }

@@ -21,8 +21,10 @@ public class SpeedComponent extends HudComponentItem {
     final DecimalFormat FormatterKMH = new DecimalFormat("#.#");
     private double PrevPosX;
     private double PrevPosZ;
+    private double deltaX;
+    private double deltaZ;
     private final Timer timer = new Timer();
-    private String speed = "";
+    private String speed = "Speed: ";
     private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
 
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
@@ -35,13 +37,15 @@ public class SpeedComponent extends HudComponentItem {
     public void render(int mouseX, int mouseY, float partialTicks, DrawContext context) {
         super.render(mouseX, mouseY, partialTicks, context);
 
-        if (timer.passed(1000)) {
-            PrevPosX = mc.player.prevX;
-            PrevPosZ = mc.player.prevZ;
-        }
+        if (mc.player != null) {
+            if (timer.passed(1000)) {
+                PrevPosX = mc.player.prevX;
+                PrevPosZ = mc.player.prevZ;
+            }
 
-        final double deltaX = mc.player.getX() - PrevPosX;
-        final double deltaZ = mc.player.getZ() - PrevPosZ;
+            deltaX = mc.player.getX() - PrevPosX;
+            deltaZ = mc.player.getZ() - PrevPosZ;
+        }
 
         float distance = MathHelper.sqrt((float) (deltaX * deltaX + deltaZ * deltaZ));
 
@@ -56,7 +60,7 @@ public class SpeedComponent extends HudComponentItem {
         } else if (SpeedUnit.getValue() == UnitList.KMH) {
             String formatterKMH = FormatterKMH.format(kMH);
 
-            speed = hud.Rainbow.getValue() ? "Speed: " + Formatting.WHITE + formatterKMH + "km/h" : "Speed " + Formatting.WHITE + formatterKMH + "km/h";
+            speed = hud.Rainbow.getValue() ? "Speed: " + Formatting.WHITE + formatterKMH + "km/h" : "Speed: " + Formatting.WHITE + formatterKMH + "km/h";
 
         }
 

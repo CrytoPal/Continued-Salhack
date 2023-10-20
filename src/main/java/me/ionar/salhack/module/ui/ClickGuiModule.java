@@ -20,19 +20,4 @@ public final class ClickGuiModule extends Module {
     public ClickGuiModule() {
         super("ClickGui", "Displays the click gui", GLFW.GLFW_KEY_RIGHT_SHIFT, 0xDB9324, ModuleType.UI);
     }
-
-    @Override
-    public void onEnable() {
-        super.onEnable();
-        //mc.setScreen(testScreen);
-
-        if (ClickGui == null) ClickGui = new ClickGuiScreen(this, (ColorsModule)ModuleManager.Get().GetMod(ColorsModule.class));
-
-        try{
-            System.out.println("open clickgui");
-            mc.setScreen(ClickGui);
-        } catch (NullPointerException exception){
-            System.out.println("invoked before init..");
-        }
-    }
 }

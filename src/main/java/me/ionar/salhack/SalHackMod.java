@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandles;
 
 public class SalHackMod implements ClientModInitializer {
-    public static final Logger log = LoggerFactory.getLogger("sal");
+    public static final Logger log = LoggerFactory.getLogger("SalHack");
 	public static final String NAME = "SalHack";
 	public static final String MOD_ID = "sal-hack";
 	public static final String VERSION = "v0.7 Beta";
@@ -19,7 +19,6 @@ public class SalHackMod implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		// Caller-sensitive, needs to be called from a class within the specified package
 		NORBIT_EVENT_BUS.registerLambdaFactory("me.ionar.salhack", (lookupInMethod, klass) -> (MethodHandles.Lookup) lookupInMethod.invoke(null, klass, MethodHandles.lookup()));
 		log.info("Welcome to " + NAME);
 		SalHack.Init();

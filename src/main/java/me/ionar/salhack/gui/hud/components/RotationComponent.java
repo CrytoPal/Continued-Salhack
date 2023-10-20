@@ -30,6 +30,8 @@ public class RotationComponent extends HudComponentItem {
     }
 
     private String direction;
+    private float l_Yaw;
+    private float l_Pitch;
 
     @Override
     public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context)
@@ -37,8 +39,10 @@ public class RotationComponent extends HudComponentItem {
         super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
 
         DecimalFormat l_Format = new DecimalFormat("#.##");
-        float l_Yaw = MathHelper.wrapDegrees(mc.player.getBodyYaw());
-        float l_Pitch = MathHelper.wrapDegrees(mc.player.getPitch());
+        if (mc.player != null) {
+            l_Yaw = MathHelper.wrapDegrees(mc.player.getBodyYaw());
+            l_Pitch = MathHelper.wrapDegrees(mc.player.getPitch());
+        }
 
         String Yaw2 = l_Format.format(l_Yaw);
         String Pitch2 = l_Format.format(l_Pitch);

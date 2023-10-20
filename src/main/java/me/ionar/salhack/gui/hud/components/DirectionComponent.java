@@ -17,6 +17,8 @@ public class DirectionComponent extends HudComponentItem {
 
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
     private final int i = 0;
+
+    private String direction = "";
     public DirectionComponent() {
         super("Direction", 2, 506);
         SetHidden(false);
@@ -26,7 +28,9 @@ public class DirectionComponent extends HudComponentItem {
     public void render(int mouseX, int mouseY, float partialTicks, DrawContext context) {
         super.render(mouseX, mouseY, partialTicks, context);
 
-        final String direction = this.getFacing(mc.player) + " " + Formatting.GRAY + this.getTowards(mc.player);
+        if (mc.player != null) {
+            direction = this.getFacing(mc.player) + " " + Formatting.GRAY + this.getTowards(mc.player);
+        } else direction = "South West +Z";
 
         if (HudModule.CustomFont.getValue()) {
             FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), direction, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
@@ -39,47 +43,51 @@ public class DirectionComponent extends HudComponentItem {
     }
 
     private String getFacing(PlayerEntity player) {
-        float yaw = player.getYaw();
-        switch (MathHelper.floor((double) (yaw * 8.0F / 360.0F) + 0.5D) & 7) {
-            case 0:
-                return "South";
-            case 1:
-                return "South West";
-            case 2:
-                return "West";
-            case 3:
-                return "North West";
-            case 4:
-                return "North";
-            case 5:
-                return "North East";
-            case 6:
-                return "East";
-            case 7:
-                return "South East";
+        if (mc.player != null) {
+            float yaw = player.getYaw();
+            switch (MathHelper.floor((double) (yaw * 8.0F / 360.0F) + 0.5D) & 7) {
+                case 0:
+                    return "South";
+                case 1:
+                    return "South West";
+                case 2:
+                    return "West";
+                case 3:
+                    return "North West";
+                case 4:
+                    return "North";
+                case 5:
+                    return "North East";
+                case 6:
+                    return "East";
+                case 7:
+                    return "South East";
+            }
         }
         return "Invalid";
     }
 
     private String getTowards(PlayerEntity player) {
-        float yaw = player.getYaw();
-        switch (MathHelper.floor((double) (yaw * 8.0F / 360.0F) + 0.5D) & 7) {
-            case 0:
-                return "+Z";
-            case 1:
-                return "-X +Z";
-            case 2:
-                return "-X";
-            case 3:
-                return "-X -Z";
-            case 4:
-                return "-Z";
-            case 5:
-                return "+X -Z";
-            case 6:
-                return "+X";
-            case 7:
-                return "+X +Z";
+        if (mc.player != null) {
+            float yaw = player.getYaw();
+            switch (MathHelper.floor((double) (yaw * 8.0F / 360.0F) + 0.5D) & 7) {
+                case 0:
+                    return "+Z";
+                case 1:
+                    return "-X +Z";
+                case 2:
+                    return "-X";
+                case 3:
+                    return "-X -Z";
+                case 4:
+                    return "-Z";
+                case 5:
+                    return "+X -Z";
+                case 6:
+                    return "+X";
+                case 7:
+                    return "+X +Z";
+            }
         }
         return "Invalid";
     }

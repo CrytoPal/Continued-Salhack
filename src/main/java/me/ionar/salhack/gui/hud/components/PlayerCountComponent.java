@@ -14,6 +14,7 @@ public class PlayerCountComponent extends HudComponentItem {
     private final HudModule hud = (HudModule) ModuleManager.Get().GetMod(HudModule.class);
 
     private final SalRainbowUtil Rainbow = new SalRainbowUtil(9);
+    private String playerCount;
     public PlayerCountComponent() {
         super("PlayerCount", 2, 133);
     }
@@ -22,7 +23,9 @@ public class PlayerCountComponent extends HudComponentItem {
     public void render(int p_MouseX, int p_MouseY, float p_PartialTicks, DrawContext context) {
         super.render(p_MouseX, p_MouseY, p_PartialTicks, context);
 
-        final String playerCount = "Players: " + Formatting.WHITE + mc.world.getPlayers().size();
+        if (mc.player != null) {
+           playerCount = "Players: " + Formatting.WHITE + mc.world.getPlayers().size();
+        } else playerCount = "Players: ";
 
         SetWidth(mc.textRenderer.getWidth(playerCount));
         SetHeight(mc.textRenderer.fontHeight);

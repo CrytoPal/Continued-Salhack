@@ -163,6 +163,7 @@ public class ClickGuiScreen extends SalGuiScreen
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float delta) {
         final Window res = mc.getWindow();
+        super.renderBackground(context);
 
         if (!_snowList.isEmpty() && ClickGuiMod.Snowing.getValue())
         {

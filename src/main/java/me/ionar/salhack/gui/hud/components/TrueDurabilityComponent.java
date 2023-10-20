@@ -25,21 +25,23 @@ public class TrueDurabilityComponent extends HudComponentItem {
     }
 
 
-    private String durability;
+    private String durability = "Durability: ";
 
     @Override
     public void render(int mouseX, int mouseY, float partialTicks, DrawContext context) {
         super.render(mouseX, mouseY, partialTicks, context);
 
-        ItemStack stack = mc.player.getMainHandStack();
+        if (mc.player != null) {
+            ItemStack stack = mc.player.getMainHandStack();
 
-        if (!stack.isEmpty() && (stack.getItem() instanceof ToolItem || stack.getItem() instanceof ArmorItem || stack.getItem() instanceof SwordItem)) {
-            durability = "Durability: " + Formatting.GREEN + (stack.getMaxDamage() - stack.getDamage());
 
-        } else {
-            durability = "Durability:";
+            if (!stack.isEmpty() && (stack.getItem() instanceof ToolItem || stack.getItem() instanceof ArmorItem || stack.getItem() instanceof SwordItem)) {
+                durability = "Durability: " + Formatting.GREEN + (stack.getMaxDamage() - stack.getDamage());
+
+            } else {
+                durability = "Durability:";
+            }
         }
-
         if (HudModule.CustomFont.getValue()) {
             FontRenderers.getTwCenMtStd22().drawString(context.getMatrices(), durability, (int) (GetX()), (int) (GetY()), hud.Rainbow.getValue() ? Rainbow.GetRainbowColorAt(Rainbow.getRainbowColorNumber()) : GetTextColor(), true);
         } else {
