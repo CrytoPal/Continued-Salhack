@@ -2,7 +2,6 @@ package me.ionar.salhack.managers;
 
 import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Module;
 import me.ionar.salhack.module.Module.ModuleType;
 import me.ionar.salhack.module.Value;

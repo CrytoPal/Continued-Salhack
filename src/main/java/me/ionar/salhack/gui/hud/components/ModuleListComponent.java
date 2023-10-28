@@ -14,8 +14,7 @@ import java.util.*;
 
 public class ModuleListComponent extends HudComponentItem {
 
-    public final Value<Boolean> RainbowVal = new Value<Boolean>("Rainbow", new String[]
-            {""}, "Makes a dynamic rainbow", true);
+    public final Value<Boolean> RainbowVal = new Value<Boolean>("Rainbow", new String[]{""}, "Makes a dynamic rainbow", true);
 
     public static List<Module> moduleArrayList = new ArrayList<>();
     public static List<String> moduleDisplayNames = new ArrayList<>();
