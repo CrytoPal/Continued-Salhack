@@ -38,7 +38,7 @@ public class MiddleClickPearl extends Module {
     }
 
     public MiddleClickPearl() {
-        super("MiddleClickPearl", "Throws a when if you middle-click.", 0, -1, ModuleType.COMBAT);
+        super("Middle Click Pearl", "Throws a when if you middle-click.", 0, -1, ModuleType.COMBAT);
     }
 
     private boolean isItemStackPearl(final ItemStack itemStack) {

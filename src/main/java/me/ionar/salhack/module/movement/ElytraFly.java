@@ -48,7 +48,7 @@ public final class ElytraFly extends Module {
     }
 
     public ElytraFly() {
-        super("ElytraFly", "Allows you to fly with elytra on 2b2t", 0, 0x24DB26, ModuleType.MOVEMENT);
+        super("Elytra Fly", "Allows you to fly with elytra on 2b2t", 0, 0x24DB26, ModuleType.MOVEMENT);
     }
 
     private int ElytraSlot = -1;

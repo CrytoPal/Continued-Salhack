@@ -19,7 +19,6 @@ import me.ionar.salhack.gui.hud.GuiHudEditor;
 import me.ionar.salhack.gui.hud.HudComponentItem;
 import me.ionar.salhack.gui.hud.components.*;
 import me.ionar.salhack.main.SalHack;
-import me.ionar.salhack.main.Wrapper;
 import me.ionar.salhack.module.Value;
 import me.ionar.salhack.module.ValueListeners;
 
@@ -46,6 +45,7 @@ public class HudManager {
         Add(new ArmorHudComponent());
         Add(new BiomeComponent());
         Add(new PlayerCountComponent());
+        Add(new ModuleListComponent());
         /*
         Add(new ArrayListComponent());
         Add(new InventoryComponent());

@@ -24,6 +24,11 @@ public class Fullbright extends Module {
     }
 
     @Override
+    public String getMetaData() {
+        return String.valueOf(mode.getValue());
+    }
+
+    @Override
     public void onEnable() {
         super.onEnable();
         if (mc.player != null) {

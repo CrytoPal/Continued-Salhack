@@ -2,14 +2,13 @@ package me.ionar.salhack.module;
 
 import me.ionar.salhack.SalHackMod;
 import me.ionar.salhack.events.salhack.ModuleEvent;
-import me.ionar.salhack.main.SalHack;
+import me.ionar.salhack.gui.hud.components.ModuleListComponent;
 import me.ionar.salhack.managers.CommandManager;
 import me.ionar.salhack.managers.ModuleManager;
 import me.ionar.salhack.managers.PresetsManager;
 import me.ionar.salhack.module.ui.Notification;
 import me.ionar.salhack.util.ChatUtils;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
 
 import java.util.ArrayList;
@@ -47,19 +46,28 @@ public abstract class Module {
         /// allow events to be called
         SalHackMod.NORBIT_EVENT_BUS.subscribe(this);
         ModuleManager.Get().OnModEnable(this);
-        if (mc.player != null) {
-            RemainingXAnimation = mc.textRenderer.getWidth(GetFullArrayListDisplayName())+10f;
-            if (notification.isEnabled()) ChatUtils.sendMessage(DisplayName + Formatting.GREEN + " ON");
+        ModuleListComponent.moduleArrayList.add(this);
+        if (!this.Hidden) {
+            if (this.getMetaData() != null) {
+                ModuleListComponent.moduleDisplayNames.add(this.getDisplayName() + Formatting.GRAY + " [" + Formatting.WHITE + this.getMetaData() + Formatting.GRAY + "]");
+            } else ModuleListComponent.moduleDisplayNames.add(this.getDisplayName());
+            if (mc.player != null) {
+                RemainingXAnimation = mc.textRenderer.getWidth(GetFullArrayListDisplayName()) + 10f;
+                if (notification.isEnabled()) ChatUtils.sendMessage(DisplayName + Formatting.GREEN + " ON");
+            }
         }
         SalHackMod.NORBIT_EVENT_BUS.post(new ModuleEvent.Enabled(this));
     }
 
     public void onDisable() {
-        if (Hidden) return;
         Notification notification = (Notification) ModuleManager.Get().GetMod(Notification.class);
         /// disallow events to be called
         SalHackMod.NORBIT_EVENT_BUS.unsubscribe(this);
         SalHackMod.NORBIT_EVENT_BUS.post(new ModuleEvent.Disabled(this));
+        ModuleListComponent.moduleArrayList.remove(this);
+        if (this.getMetaData() != null) {
+            ModuleListComponent.moduleDisplayNames.remove(this.getDisplayName() + Formatting.GRAY + " [" + Formatting.WHITE + this.getMetaData() + Formatting.GRAY + "]");
+        } else ModuleListComponent.moduleDisplayNames.remove(this.getDisplayName());
         if (mc.player != null && notification.isEnabled()) ChatUtils.sendMessage(DisplayName + Formatting.RED + " OFF");
     }
 
