@@ -98,7 +98,7 @@ public class CrystalUtils {
             return 0f;
         }
 
-        if (!target.isImmuneToExplosion() && !target.isInvulnerable()) {
+        if (!target.isImmuneToExplosion(explosion) && !target.isInvulnerable()) {
             double distExposure = MathHelper.sqrt((float) target.squaredDistanceTo(new Vec3d(posX, posY, posZ))) / maxDist;
             if (distExposure <= 1.0) {
                 double xDiff = target.getX() - posX;
@@ -128,7 +128,7 @@ public class CrystalUtils {
                     if (toDamage <= 0f) {
                         toDamage = 0f;
                     } else {
-                        int protAmount = EnchantmentHelper.getProtectionAmount(target.getArmorItems(), explosion.getDamageSource());
+                        int protAmount = EnchantmentHelper.getProtectionAmount(target.getArmorItems(),  mc.world.getDamageSources().explosion(explosion));
                         if (protAmount > 0) {
                             toDamage = DamageUtil.getInflictedDamage(toDamage, protAmount);
                         }

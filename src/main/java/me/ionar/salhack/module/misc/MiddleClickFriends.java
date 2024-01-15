@@ -23,10 +23,10 @@ public class MiddleClickFriends extends Module {
                 return;
             if (FriendManager.Get().IsFriend(Entity)) {
                 FriendManager.Get().RemoveFriend(Entity.getDisplayName().getString().toLowerCase());
-                ChatUtils.sendMessage(Entity.getEntityName() + " has been removed.");
+                ChatUtils.sendMessage(Entity.getName().getString() + " has been removed.");
             } else {
                 FriendManager.Get().AddFriend(Entity.getDisplayName().getString().toLowerCase());
-                ChatUtils.sendMessage(Entity.getEntityName() + " has been added.");
+                ChatUtils.sendMessage(Entity.getName().getString() + " has been added.");
             }
         }
     }

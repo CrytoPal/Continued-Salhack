@@ -64,14 +64,14 @@ public class NametagsModule extends Module {
         }
         if (position != null) {
             Vec2f renderer = new Vec2f((float) position.x, (float) position.y);
-            String name = entity.getEntityName();
+            String name = entity.getName().getString();
 
             int color = -1;
 
             final Friend friend = FriendManager.Get().GetFriend(entity);
 
             if (friend != null) {
-                name = entity.getEntityName();
+                name = entity.getName().getString();
                 color = 0x00C3EE;
             }
 

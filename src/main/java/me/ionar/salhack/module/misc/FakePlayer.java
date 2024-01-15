@@ -39,7 +39,7 @@ public class FakePlayer extends Module {
         try {
             FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(name.getValue())), name.getValue()));
         } catch (Exception e) {
-            FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(mc.player.getEntityName())), name.getValue()));
+            FakePlayer = new OtherClientPlayerEntity(mc.world, new GameProfile(UUID.fromString(getUuid(mc.player.getName().getString())), name.getValue()));
             ChatUtils.warningMessage("Failed to load uuid, setting another one.");
         }
         ChatUtils.sendMessage(String.format("%s has been spawned.", name.getValue()));
